@@ -51,7 +51,7 @@ public class UploadController {
 
     //유저 키 생성 함수
     private String createKey(String userId) {
-        log.info("hihi");
+        log.info("커밋테스트");
         String userKey;
         Calendar now = Calendar.getInstance();
         now.setTime(new Date());
