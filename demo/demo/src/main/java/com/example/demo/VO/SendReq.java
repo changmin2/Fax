@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 @Data
 public class SendReq {
-//    private String UserID; //jungly5935
+    private String UserID; //jungly5935
 //    private String UserPW; //sjrnfl0814!
     private String Service; //"TAX"
     private String Type; //"Send"

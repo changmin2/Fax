@@ -3,7 +3,10 @@ package com.example.demo.service;
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
 import com.example.demo.VO.SendReq;
-import com.example.demo.VO.SendRes;
+import com.example.demo.domain.Send;
+import com.example.demo.domain.Upload;
+import com.example.demo.repository.SendRepository;
+import com.example.demo.repository.UploadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -12,6 +15,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +31,24 @@ public class SendService {
 
     private final  GlobalVariables globalVariables;
     private final UploadService uploadService;
+    private final SendRepository sendRepository;
 
+    public  JSONObject sendInsert(SendReq req){
+        Send send = new Send(req);
+        int index = 1;
+        List<SendReq.Destination> DestinationList = req.getDestinationList();
+        for (SendReq.Destination dest:DestinationList) {
+            send.setRECEIVE_FAX_NO(dest.getFax());
+            send.setSTATUS("전송중");
+            send.setSEND_NO(req.getUserKey()+index++);
+        }
+//        sendRepository.save(send);
+        return null;
+    }
     public  JSONObject sendTest(SendReq req) throws IOException, ParseException {
+        //DB저장
+
+
         ////////////////////////////////////////////
         //[문자 - 발송 요청]
         ////////////////////////////////////////////
@@ -70,6 +90,15 @@ public class SendService {
         // Json parse (json.simple 라이브러리)
         JSONParser jsonParse = new JSONParser();
         JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
+
+        String Result = (String) ObjToJson.get("Result");
+        if (Result.equals("OK")) { //성공했을때
+
+        }else{
+
+        }
+        //DB에 저장
+
 
         return ObjToJson;
     }
