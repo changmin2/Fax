@@ -21,6 +21,7 @@ public class SendController {
     public JSONObject Send(@RequestBody SendReq req) throws IOException, ParseException {
         log.info(req.toString());
         return SendService.sendTest(req);
+
     }
 
 }
