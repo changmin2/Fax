@@ -4,12 +4,14 @@ import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
 import com.example.demo.VO.SendReq;
 import com.example.demo.VO.SendRes;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,12 +19,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+@Service
 @Slf4j
+@RequiredArgsConstructor
 public class SendService {
-    @Autowired
-    GlobalVariables globalVariables;
-    
-    public static JSONObject sendTest(SendReq req) throws IOException, ParseException {
+
+    private final  GlobalVariables globalVariables;
+    private final UploadService uploadService;
+
+    public  JSONObject sendTest(SendReq req) throws IOException, ParseException {
         ////////////////////////////////////////////
         //[문자 - 발송 요청]
         ////////////////////////////////////////////
@@ -31,18 +37,23 @@ public class SendService {
         HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
 
         //데이터 (요청변수 대소문자 구분)
-        multipart.addFormField("UserID", req.getUserID());
-        multipart.addFormField("UserPW", req.getUserPW());
+        multipart.addFormField("UserID", globalVariables.getFaxId());
+        multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", req.getService());
         multipart.addFormField("Type", req.getType());
         multipart.addFormField("Send_Date", req.getSend_Date());
 
-        //PDF1 -> 서버파일경로
+        String userKey = req.getUserKey();
+        //파일명 가져오기
+        List<String> fileNameList = uploadService.getFileName(userKey);
+        String filePath = globalVariables.getFilePath();
+        for (String fileSeq : fileNameList) {
+            //PDF1 -> 서버파일경로
+            multipart.addFilePart("PDF1", new File(filePath+userKey+"_"+fileSeq+".pdf"));
+        }
 
-        multipart.addFilePart("PDF1", new File(req.getPDF1()));
         // 데이터 - 수신처
         JSONArray DestArr = new JSONArray();
-
         List<SendReq.Destination> DestinationList = req.getDestinationList();
         for (SendReq.Destination dest:DestinationList) {
             JSONObject Dest1 = new JSONObject();

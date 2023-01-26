@@ -8,4 +8,5 @@ import org.springframework.stereotype.Component;
 public class GlobalVariables {
     private String FaxId = "jungly5935";
     private String FaxPw = "sjrnfl0814!";
+    private String filePath ="C:\\study\\file";
 }
