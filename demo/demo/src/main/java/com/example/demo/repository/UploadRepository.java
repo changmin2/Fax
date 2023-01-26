@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface UploadRepository extends JpaRepository<Upload, UploadPK> {
 
-    @Query(value= "select u.realFileName from Upload u where u.userKey = :userkey", nativeQuery = true)
+    @Query(value= "select u.real_file_name from upload u where u.user_key = :userkey", nativeQuery = true)
     List<String> getrealFileName(@Param(value = "userkey") String userkey);
 }

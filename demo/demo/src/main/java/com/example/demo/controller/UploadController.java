@@ -49,7 +49,7 @@ public class UploadController {
         //DB저장
         userService.register(userForm);
 
-        return "uploaded";
+        return userKey;
     }
 
     //유저 키 생성 함수

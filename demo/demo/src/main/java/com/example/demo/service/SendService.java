@@ -48,6 +48,7 @@ public class SendService {
         List<String> fileNameList = uploadService.getFileName(userKey);
         String filePath = globalVariables.getFilePath();
         for (String fileSeq : fileNameList) {
+            log.info("파일명 테스트  " + filePath+userKey+"_"+fileSeq+".pdf");
             //PDF1 -> 서버파일경로
             multipart.addFilePart("PDF1", new File(filePath+userKey+"_"+fileSeq+".pdf"));
         }
