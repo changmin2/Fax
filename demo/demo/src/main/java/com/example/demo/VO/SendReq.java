@@ -11,6 +11,7 @@ public class SendReq {
     private String Type; //"Send"
 
     private String userKey; //userKey
+
     @JsonProperty("destinationList")
     private List<Destination> DestinationList;
 
