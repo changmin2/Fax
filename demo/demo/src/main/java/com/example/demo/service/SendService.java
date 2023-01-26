@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import classes.Multipart.HttpPostMultipart;
+import com.example.demo.GlobalVariables;
 import com.example.demo.VO.SendReq;
 import com.example.demo.VO.SendRes;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +19,9 @@ import java.util.Map;
 
 @Slf4j
 public class SendService {
+    @Autowired
+    GlobalVariables globalVariables;
+    
     public static JSONObject sendTest(SendReq req) throws IOException, ParseException {
         ////////////////////////////////////////////
         //[문자 - 발송 요청]
