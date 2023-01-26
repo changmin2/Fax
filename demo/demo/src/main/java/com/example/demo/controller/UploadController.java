@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.GlobalVariables;
 import com.example.demo.domain.Upload;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,12 +16,12 @@ import java.util.*;
 
 @Controller
 @Slf4j
-@RequestMapping("/")
 @RequiredArgsConstructor
 public class UploadController {
 
+    private final GlobalVariables globalVariables;
     private final UploadService userService;
-    private final String filePath ="C:\\study\\file";
+    String filePath = "";
     private static int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
