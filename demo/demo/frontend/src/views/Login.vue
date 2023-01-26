@@ -72,43 +72,31 @@ export default {
   },
  
   methods: {
-    
+
     async login() {
       try {
+        let response = await http.post("/login", {
+          userId: this.userId,
+          userPassword: this.userPassword,
+        });
+        let { data } = response;
+        console.log(data);
+
+        if (data.flag == true) {
           // 로그인 성공
+          console.log(data.message);
           this.$store.commit("SET_USER_LOGIN", { isLogin: true });
-          this.$store.commit("SET_USER_INFO", {userId:this.userId, userPassword:this.userPassword});
+          this.$store.commit("SET_USER_INFO", data.userDto);
           this.$router.push("/");
           alertify.success("로그인이 완료되었습니다.", 1.5);
-        
+        } 
 
       } catch (error) {
         // 로그인 실패
+        console.log(data.message);
         alertify.error("로그인에 실패했습니다.", 1.5);
       }
     },
-
-    // async login() {
-    //   try {
-    //     let response = await http.post("/login", {
-    //       userId: this.userId,
-    //       userPassword: this.userPassword,
-    //     });
-    //     let { data } = response;
-
-    //     if (data.result == "success") {
-    //       // 로그인 성공
-    //       this.$store.commit("SET_USER_LOGIN", { isLogin: true });
-    //       this.$store.commit("SET_USER_INFO", data.userDto);
-    //       this.$router.push("/");
-    //       alertify.success("로그인이 완료되었습니다.", 1.5);
-    //     } 
-
-    //   } catch (error) {
-    //     // 로그인 실패
-    //     alertify.error("로그인에 실패했습니다.", 1.5);
-    //   }
-    // },
    
   },
 };
