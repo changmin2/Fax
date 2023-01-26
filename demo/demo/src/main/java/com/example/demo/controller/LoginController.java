@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.SessionManager;
+import com.example.demo.domain.Form.Member;
 import com.example.demo.domain.User.User;
 import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,12 +35,14 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public HashMap<String,Object> login(@RequestParam("userId") String userId, @RequestParam("userpassword") String userpassword,
+    public HashMap<String,Object> login(@ModelAttribute Member member,
                                         HttpServletRequest request, HttpServletResponse response){
         HashMap<String, Object> re = new HashMap<>();
+        User result = userService.login(member.getUserId(), member.getUserpassword());
 
-        User result = userService.login(userId, userpassword);
-
+        log.info("userID"+member.getUserId());
+        log.info("pass"+member.getUserpassword());
+        log.info("user"+" "+result.toString());
         //로그인 실패시
         if(result==null){
             re.put("flag",false);
