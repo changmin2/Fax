@@ -24,7 +24,7 @@ import java.util.Map;
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.HEAD,RequestMethod.OPTIONS}
 )
 @Controller
-@RequestMapping("/fax-api")
+@RequestMapping("/api")
 @Slf4j
 public class LoginController {
 
@@ -35,14 +35,11 @@ public class LoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public HashMap<String,Object> login(@ModelAttribute Member member,
+    public HashMap<String,Object> login(@RequestBody Map<String, String> member,
                                         HttpServletRequest request, HttpServletResponse response){
         HashMap<String, Object> re = new HashMap<>();
-        User result = userService.login(member.getUserId(), member.getUserpassword());
+        User result = userService.login(member.get("userId"), member.get("userPassword"));
 
-        log.info("userID"+member.getUserId());
-        log.info("pass"+member.getUserpassword());
-        log.info("user"+" "+result.toString());
         //로그인 실패시
         if(result==null){
             re.put("flag",false);

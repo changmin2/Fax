@@ -16,7 +16,7 @@ import java.util.*;
 
 @Controller
 @Slf4j
-@RequestMapping("/fax-api")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UploadController {
 

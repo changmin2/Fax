@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/fax-api")
+@RequestMapping("/api")
 public class HelloWorldCtrl {
 
     @GetMapping("/hello")
