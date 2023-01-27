@@ -16,6 +16,6 @@ public interface SendRepository extends JpaRepository<Send, String> {
 
     @Modifying
     @Transactional
-    @Query(value= "UPDATE TB_SEND t SET t.STATUS = :status, t.JOB_NO = :jobno, t.JOB_SEQ = :jobseq WHERE t.SEND_NO = :sendno", nativeQuery = true)
-    int updApiResult(@Param(value = "status") String status,@Param(value = "jobno") String jobno,@Param(value = "jobseq") int jobseq,@Param(value = "sendno") int sendno);
+    @Query(value= "UPDATE TB_SEND t SET t.STATUS = :status, t.JOB_NO = :jobno, t.JOB_SEQ = :jobseq WHERE t.USER_KEY = :userkey", nativeQuery = true)
+    int updApiResult(@Param(value = "status") String status,@Param(value = "jobno") String jobno,@Param(value = "jobseq") int jobseq,@Param(value = "userkey") String userkey);
 }

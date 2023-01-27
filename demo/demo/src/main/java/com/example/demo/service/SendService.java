@@ -3,7 +3,11 @@ package com.example.demo.service;
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
 import com.example.demo.VO.SendReq;
+import com.example.demo.domain.Approval;
 import com.example.demo.domain.Send;
+import com.example.demo.domain.Send_detail;
+import com.example.demo.repository.ApprovalRepository;
+import com.example.demo.repository.SendDRepository;
 import com.example.demo.repository.SendRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +36,10 @@ public class SendService {
     private final  GlobalVariables globalVariables;
     private final UploadService uploadService;
     private final SendRepository sendRepository;
+    private final SendDRepository sendDRepository;
+    private final ApprovalRepository approvalRepository;
     @Transactional
-    public List<Integer> sendInsert(SendReq req){
-        List<Integer> sendNoList = new ArrayList<Integer>();
+    public String sendInsert(SendReq req){
         Calendar now = Calendar.getInstance();
         now.setTime(new Date());
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd- hh:mm");
@@ -44,22 +49,31 @@ public class SendService {
         }
         Send send = new Send(req);
         send.setINSERT_DATE(Date_End);
-        send.setSTATUS("전송중");
+        send.setSTATUS("결재대기");
 
         List<SendReq.Destination> DestinationList = req.getDestinationList();
-
-        int index = sendRepository.getMaxSendNo();
+        int index = 1;
         for (SendReq.Destination dest:DestinationList) {
-            send.setRECEIVE_FAX_NO(dest.getFax());
-            sendNoList.add(index);
-            send.setSEND_NO(index+"");
-            sendRepository.save(send);
+            //발송처 디테일 저장
+            Send_detail sendD = new Send_detail(dest,req.getUserKey(),index++);
+            sendDRepository.save(sendD);
         }
-        return sendNoList;
+
+        //결재 max값 가져오기
+        int i = approvalRepository.getMaxApprNo(req.getUserKey());
+        log.info("맥스번호입니다"+i+"!!");
+        //결재 저장
+        Approval approval = new Approval(req,i);
+        approvalRepository.save(approval);
+
+        //발송정보 저장
+        send.setAPPR_NO(approval.getAPPR_NO());
+        sendRepository.save(send);
+        return "완료";
     }
     public  JSONObject sendTest(SendReq req) throws IOException, ParseException {
         //DB저장 후 sendNo 받아오기
-        List<Integer> sendNoList =sendInsert(req);
+//        List<Integer> sendNoList =sendInsert(req);
 
         ////////////////////////////////////////////
         //[문자 - 발송 요청]
@@ -107,11 +121,11 @@ public class SendService {
         String Result = (String) ObjToJson.get("Result");
         String STATUS = Result.equals("OK")? "전송완료" : "전송실패";
         String JOB_NO = Result.equals("OK")? (String) ObjToJson.get("JOB_NO") : "";
-        for (int i = 0; i < sendNoList.size(); i++) {
-            log.info("JOB_NO "+i+" : "+JOB_NO);
-            int updSend = sendRepository.updApiResult(STATUS,JOB_NO,i+1,sendNoList.get(i));
-            log.info("업데이트 결과 "+i+" : "+updSend);
-        }
+//        for (int i = 0; i < sendNoList.size(); i++) {
+//            log.info("JOB_NO "+i+" : "+JOB_NO);
+//            int updSend = sendRepository.updApiResult(STATUS,JOB_NO,i+1,sendNoList.get(i));
+//            log.info("업데이트 결과 "+i+" : "+updSend);
+//        }
 
         return ObjToJson;
     }
