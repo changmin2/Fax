@@ -52,6 +52,7 @@ public class S3Uploader {
     // 로컬에 저장된 이미지 지우기
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
+            log.info("파일삭제");
             System.out.println("File delete success");
             return;
         }

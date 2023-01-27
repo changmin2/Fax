@@ -32,13 +32,12 @@ public class UploadController {
     private final GlobalVariables globalVariables;
     private final UploadService userService;
     private final S3Uploader s3Uploader;
-    private final SendService sendService;
 
     private  int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
     @ResponseBody
-    public String uploadSingle(@RequestParam("userId") String userId,@RequestParam(value = "userKey",defaultValue = "None") String userKey, @RequestParam("files") MultipartFile file) throws Exception {
+    public String uploadSingle(@RequestParam("userId") String userId,@RequestParam(value = "userKey",defaultValue = "None") String userKey, @RequestParam("files") List<MultipartFile> files) throws Exception {
         Upload userForm = new Upload();
         log.info("=== 이미지파일 수신 거래발생 ===");
         log.info("userKey"+userKey);
@@ -51,24 +50,20 @@ public class UploadController {
 
         ++seq;
         String RealPath =userKey+"_"+seq+".pdf";
-        s3Uploader.uploadFiles(file, "static",RealPath);
-        System.out.println("file RealPath.........."+ RealPath);;
-        String userFileName = file.getOriginalFilename().replace(".pdf","");
-
-        userForm.setUserFileName(userFileName);
-        userForm.setRealFileName(String.valueOf(seq));
+//        s3Uploader.uploadFiles(file, "static",RealPath);
+//        System.out.println("file RealPath.........."+ RealPath);;
+//        String userFileName = file.getOriginalFilename().replace(".pdf","");
+        userService.convertPDF(files,RealPath);
+//        userForm.setUserFileName(userFileName);
+//        userForm.setRealFileName(String.valueOf(seq));
 
         //DB저장
-        userService.register(userForm);
+//        userService.register(userForm);
 
         return userKey;
     }
 
-    @PostMapping("/convertPDF")
-    @ResponseBody
-    public String convertPDF(@RequestParam("files") List<MultipartFile> files) throws Exception {
-        return sendService.convertPDF(files);
-    }
+
 
     //유저 키 생성 함수
     private String createKey(String userId) {

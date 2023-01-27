@@ -2,9 +2,11 @@ package com.example.demo.service;
 
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
+import com.example.demo.S3Uploader;
 import com.example.demo.domain.Upload;
 import com.example.demo.repository.UploadRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,11 +27,14 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UploadService {
 
 
     private  final UploadRepository userRepository;
     private  final GlobalVariables globalVariables;
+    private final S3Uploader s3Uploader;
+
     @Transactional
     public void register(Upload user){
         userRepository.save(user);
@@ -38,7 +43,8 @@ public class UploadService {
     public List<String> getFileName(String userkey){
         return userRepository.getrealFileName(userkey);
     }
-    public  String  convertPDF(List<MultipartFile> files) throws IOException, ParseException {
+
+    public  String  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
 
         ////////////////////////////////////////////
         //[팩스 - 변환 요청]
@@ -52,6 +58,7 @@ public class UploadService {
         multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "Convert");
+
 
         for (int i = 0; i < files.size(); i++) {
             MultipartFile multipartFile = files.get(i);
@@ -76,11 +83,15 @@ public class UploadService {
         if(Result.equals("OK")){
             String PDF = (String) ObjToJson.get("PDF");
             PDF = PDF.substring(28);
+            File f = new File(PDF);
+            log.info("진입");
             byte[] binary = Base64.getDecoder().decode(PDF);
             // 그대로 파일로 생성한다.
-            try (FileOutputStream stream = new FileOutputStream(globalVariables.getFilePath()+"test230127.pdf")) {
+            try (FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" +"temp.pdf")) {
                 stream.write(binary, 0, binary.length);
             }
+            File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
+            s3Uploader.upload(n, "static",RealPath);
         }else{
 
         }
