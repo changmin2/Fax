@@ -52,7 +52,7 @@ public class SendService {
         for (SendReq.Destination dest:DestinationList) {
             send.setRECEIVE_FAX_NO(dest.getFax());
             sendNoList.add(index);
-            send.setSEND_NO((index++)+"");
+            send.setSEND_NO(index+"");
             sendRepository.save(send);
         }
         return sendNoList;
@@ -108,13 +108,15 @@ public class SendService {
         String STATUS = Result.equals("OK")? "전송완료" : "전송실패";
         String JOB_NO = Result.equals("OK")? (String) ObjToJson.get("JOB_NO") : "";
         for (int i = 0; i < sendNoList.size(); i++) {
+            log.info("JOB_NO "+i+" : "+JOB_NO);
             int updSend = sendRepository.updApiResult(STATUS,JOB_NO,i+1,sendNoList.get(i));
             log.info("업데이트 결과 "+i+" : "+updSend);
         }
 
         return ObjToJson;
     }
-    public  JSONObject convertPDF(List<MultipartFile> files) throws IOException, ParseException {
+    public  String  convertPDF(List<MultipartFile> files) throws IOException, ParseException {
+
         ////////////////////////////////////////////
         //[팩스 - 변환 요청]
         ////////////////////////////////////////////
@@ -129,7 +131,15 @@ public class SendService {
         multipart.addFormField("Type", "Convert");
 
         for (int i = 0; i < files.size(); i++) {
-            multipart.addFilePart("Doc_File"+(i+1), (File) files.get(i));
+            MultipartFile multipartFile = files.get(i);
+
+            File convFile = new File(multipartFile.getOriginalFilename());
+            convFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(convFile);
+            fos.write(multipartFile.getBytes());
+            fos.close();
+
+            multipart.addFilePart("Doc_File"+(i+1), convFile);
         }
 
         // 응답 값
@@ -138,51 +148,16 @@ public class SendService {
         JSONParser jsonParse = new JSONParser();
         JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
         String Result = (String) ObjToJson.get("Result");
+//        data:application/pdf;base64,
+        Result = Result.replace("|","");
         if(Result.equals("OK")){
             String PDF = (String) ObjToJson.get("PDF");
+            PDF = PDF.substring(28);
             byte[] binary = Base64.getDecoder().decode(PDF);
             // 그대로 파일로 생성한다.
-            try (FileOutputStream stream = new FileOutputStream("C:\\study\\file\\test230127")) {
+            try (FileOutputStream stream = new FileOutputStream(globalVariables.getFilePath()+"test230127.pdf")) {
                 stream.write(binary, 0, binary.length);
             }
-//            // 문자열이 길기 때문에 TXT 파일에 base64 문자열 저장
-//            FileInputStream fis = new FileInputStream(dataDir + "base64.txt");
-//            String base64 = IOUtils.toString(fis, "UTF-8");
-//            String base64ImageString = base64.replace("data:image/png;base64,", "");
-//            byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64ImageString);
-//            String path = dataDir + "Base64 to Image.png";
-//
-//            // Base64를 PNG 또는 JPG 이미지로 변환
-//            FileOutputStream fos = new FileOutputStream(path);
-//            try {
-//                fos.write(imageBytes);
-//            }
-//            finally {
-//                fos.close();
-//            }
-//
-//            BufferedImage readImage = null;
-//            try {
-//                readImage = ImageIO.read(new File(path));
-//                int h = readImage.getHeight();
-//                int w = readImage.getWidth();
-//
-//                com.aspose.pdf.Document doc = new com.aspose.pdf.Document();
-//                com.aspose.pdf.Page page = doc.getPages().add();
-//                com.aspose.pdf.Image image = new com.aspose.pdf.Image();
-//                image.setFile(path);
-//                page.getPageInfo().setHeight(h);
-//                page.getPageInfo().setWidth(w);
-//                page.getPageInfo().getMargin().setBottom(0);
-//                page.getPageInfo().getMargin().setTop(0);
-//                page.getPageInfo().getMargin().setRight(0);
-//                page.getPageInfo().getMargin().setLeft(0);
-//                page.getParagraphs().add(image);
-//                doc.save(dataDir + "Base64-to-PDF.pdf");
-//            } catch (Exception e) {
-//                readImage = null;
-//            }
-
         }else{
 
         }
@@ -196,6 +171,6 @@ public class SendService {
 //            log.info("업데이트 결과 "+i+" : "+updSend);
 //        }
 
-        return ObjToJson;
+        return Result;
     }
 }
