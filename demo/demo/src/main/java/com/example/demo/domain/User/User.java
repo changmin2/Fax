@@ -20,7 +20,7 @@ public class User {
     private String PASS_WORD;
     private String EMAIL;
     private String HP_NUMBER;
-    private String GRADE_CODE;
+    private int GRADE_CODE;
     private String DEPT_CODE;
     private String CUSTOMER_CODE;
 

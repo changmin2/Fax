@@ -1,8 +1,8 @@
 package com.example.demo;
 
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
+import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +48,7 @@ public class S3Uploader {
     }
 
     // 로컬에 저장된 이미지 지우기
-    private void removeNewFile(File targetFile) {
+    public void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
             log.info("파일삭제");
             System.out.println("File delete success");
@@ -67,5 +67,17 @@ public class S3Uploader {
             return Optional.of(convertFile);
         }
         return Optional.empty();
+    }
+
+    public File download(String RealPath) throws IOException {
+        //RealPath : 폴더명/파일네임.pdf
+        S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucket,RealPath));
+        S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
+        byte[] bytes = IOUtils.toByteArray(objectInputStream);
+        try (FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" +"temp.pdf")) {
+            stream.write(bytes, 0, bytes.length);
+        }
+        File file = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
+        return file;
     }
 }

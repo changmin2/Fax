@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.service.PayService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,35 +25,35 @@ public class PayController {
 
     private final PayService payService;
 
-    //결제 수신함
+    //결재함 목록
     @PostMapping("/payRecieve")
     public List<HashMap<String, Object>> payRecieve(@RequestParam("userId")String userId){
         List<HashMap<String, Object>> hashMaps = payService.apprList(userId);
         return hashMaps;
     }
 
-    //결제 상세정보
+    //결재 상세정보
     @PostMapping("/payDetail")
     public List<HashMap<String, Object>> payDetail(@RequestParam("apprNo")String apprNo){
         List<HashMap<String, Object>> hashMaps = payService.apprDetail(apprNo);
         return hashMaps;
     }
 
-    //결제 승인
+    //결재 승인
     @PostMapping("/apprOk")
-    public void apprOk(@RequestParam("apprNo")String apprNo){
+    public String apprOk(@RequestParam("apprNo")String apprNo) throws IOException{
         log.info("apprOk진입");
-        payService.apprOk(apprNo);
+        return payService.apprOk(apprNo);
     }
 
-    //반려 상태 업데이트
+    //결재 반려
     @PostMapping("/apprReturn")
-    public void apprReturn(@RequestParam("apprNo")String apprNo){
-        log.info("apprOk진입");
-        payService.apprReturn(apprNo);
+    public String apprReturn(@RequestParam("apprNo")String apprNo,@RequestParam("apprRemark")String apprRemark){
+        log.info("apprReturn진입");
+        return payService.apprReturn(apprNo,apprRemark);
     }
 
-    //발신 수신함
+    //보낸팩스함 목록
     @PostMapping("/sendRecieve")
     public List<HashMap<String, Object>> sendRecieve(@RequestParam("userId")String userId){
         log.info("sendRecieve진입");
@@ -59,5 +61,10 @@ public class PayController {
         return hashMaps;
     }
 
-
+    //결재 상세정보
+    @PostMapping("/sendRecieveDetail")
+    public List<HashMap<String, Object>> sendRecieveDetail(@RequestParam("userKey")String userKey){
+        List<HashMap<String, Object>> hashMaps = payService.sendRecieveDetail(userKey);
+        return hashMaps;
+    }
 }

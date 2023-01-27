@@ -1,20 +1,28 @@
 package com.example.demo.VO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class SendRes {
-    @JsonProperty("Message")
     public String Message;
-    @JsonProperty("Service")
     public String Service;
-    @JsonProperty("Point")
     public int Point;
-    @JsonProperty("Cash")
     public int Cash;
-    @JsonProperty("Code")
     public int Code;
-    @JsonProperty("Result")
     public String Result;
-    @JsonProperty("Job_No")
     public int Job_No;
+
+    @Override
+    public String toString() {
+        return "SendRes{" +
+                "Message='" + Message + '\'' +
+                ", Service='" + Service + '\'' +
+                ", Point=" + Point +
+                ", Cash=" + Cash +
+                ", Code=" + Code +
+                ", Result='" + Result + '\'' +
+                ", Job_No=" + Job_No +
+                '}';
+    }
 }

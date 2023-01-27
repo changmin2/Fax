@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "TB_SEND_D")
 public class Send_detail {
     @EmbeddedId
-    private Send_detailPK send_detailPK; //고유키
+    private Send_detailPK id; //고유키
     private String RECEIVE_NAME;
     private String RECEIVE_COMPANY;
     private String RECEIVE_FAX_NO;
@@ -26,7 +26,7 @@ public class Send_detail {
         this.RECEIVE_NAME = dest.getName();
         this.RECEIVE_COMPANY = dest.getCompany();
         this.RECEIVE_FAX_NO = dest.getFax();
-        this.send_detailPK = new Send_detailPK(userKey,index);
+        this.id = new Send_detailPK(userKey,index);
         this.SEND_Status = "1";
     }
 }
