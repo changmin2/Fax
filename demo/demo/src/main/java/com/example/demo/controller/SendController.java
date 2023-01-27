@@ -19,7 +19,7 @@ import java.util.List;
 
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
-        origins = "ttp://localhost:5500h", // allowCredentials = "true" 일 경우, orogins="*" 는 X
+        origins = "http://localhost:5500", // allowCredentials = "true" 일 경우, orogins="*" 는 X
         allowCredentials = "true",
         allowedHeaders = "*",
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.HEAD,RequestMethod.OPTIONS}
