@@ -150,6 +150,8 @@ export default {
       let sendData = {
         destinationList: [{ company: "테스트4", name: "수경", fax: "05042089819" }],
         userKey: this.userKey,
+        Send_Date: "",
+        private_info_yn: "N",
       };
 
       try {
