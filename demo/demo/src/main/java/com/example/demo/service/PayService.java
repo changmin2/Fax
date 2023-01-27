@@ -87,4 +87,17 @@ public class PayService {
         find.setAPPR_DATE(Date_End);
         log.info("apprOk성공");
     }
+
+    @Transactional
+    public void apprReturn(@RequestParam("apprNo")String apprNo){
+        log.info("apprOk접근");
+        Approval find = approvalRepository.findById(apprNo).get();
+        find.setSTATUS("반려");
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd- hh:mm");
+        String Date_End = df.format(now.getTime());
+        find.setAPPR_DATE(Date_End);
+        log.info("apprOk성공");
+    }
 }

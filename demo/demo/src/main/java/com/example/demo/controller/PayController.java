@@ -30,4 +30,10 @@ public class PayController {
         log.info("apprOk진입");
         payService.apprOk(apprNo);
     }
+
+    @PostMapping("/apprReturn")
+    public void apprReturn(@RequestParam("apprNo")String apprNo){
+        log.info("apprOk진입");
+        payService.apprReturn(apprNo);
+    }
 }
