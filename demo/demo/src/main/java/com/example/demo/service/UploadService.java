@@ -40,7 +40,7 @@ public class UploadService {
         userRepository.save(user);
     }
 
-    public List<String> getFileName(String userkey){
+    public String getFileName(String userkey){
         return userRepository.getrealFileName(userkey);
     }
 

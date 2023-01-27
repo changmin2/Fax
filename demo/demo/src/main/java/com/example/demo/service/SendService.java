@@ -91,13 +91,11 @@ public class SendService {
 
         String userKey = req.getUserKey();
         //파일명 가져오기
-        List<String> fileNameList = uploadService.getFileName(userKey);
+        String fileName = uploadService.getFileName(userKey);
         String filePath = globalVariables.getFilePath();
-        for (String fileSeq : fileNameList) {
-            log.info("파일명 테스트  " + filePath+userKey+"_"+fileSeq+".pdf");
-            //PDF1 -> 서버파일경로
-            multipart.addFilePart("PDF1", new File(filePath+userKey+"_"+fileSeq+".pdf"));
-        }
+        log.info("파일명 테스트  " + filePath+fileName);
+        //PDF1 -> 서버파일경로
+        multipart.addFilePart("PDF1", new File(filePath+userKey+"_"+fileName+".pdf"));
 
         // 데이터 - 수신처
         JSONArray DestArr = new JSONArray();

@@ -14,6 +14,6 @@ import java.util.List;
 public interface UploadRepository extends JpaRepository<Upload, UploadPK> {
 
     @Query(value= "select u.realFileName from Upload u where u.userKey = :userkey", nativeQuery = true)
-    List<String> getrealFileName(@Param(value = "userkey") String userkey);
+    String getrealFileName(@Param(value = "userkey") String userkey);
 
 }
