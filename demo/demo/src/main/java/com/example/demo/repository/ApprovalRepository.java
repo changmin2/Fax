@@ -41,8 +41,11 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "where a.APPR_NO =:apprNo",nativeQuery = true)
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
-    @Query(value = "select a.USER_KEY ,a.STATUS ,a.SEND_DATE  ,a.TITLE ,a.FAX_NO ,u1.USER_NAME,a.INSERT_DATE  from TB_SEND a \n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,a.SEND_DATE  ,a.TITLE ,a.FAX_NO ,u1.USER_NAME,a.INSERT_DATE,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME \n" +
+            "from TB_SEND a \n" +
             "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
+            "join TB_APPROVAL t on t.APPR_NO = a.APPR_NO \n" +
+            "join TB_USER u2 on t.APPR_PERSON = u2.USER_ID \n" +
             "where a.USER_NO = :userId",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId);
 }

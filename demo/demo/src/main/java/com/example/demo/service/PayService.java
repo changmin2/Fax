@@ -102,12 +102,10 @@ public class PayService {
     }
 
     public List<HashMap<String,Object>> sendRecieve(@RequestParam("userId")String userId){
-        log.info("sendReceive진입");
         List<Object[]> objects = approvalRepository.sendRecieve(userId);
-        log.info("sendReceive진입2");
-        log.info("objects"+objects.toString());
         List<HashMap<String,Object>> lists = new ArrayList<>();
-        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자"};
+        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름"};
+
         for (Object[] objArr : objects) {
             int idx =-1;
             HashMap<String,Object> map = new HashMap<>();
