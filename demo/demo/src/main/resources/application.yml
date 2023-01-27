@@ -4,7 +4,18 @@ spring:
     username: admin
     password: gkfdkqjwl1
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+cloud:
+  aws:
+    s3:
+      bucket: bnksys
+    credentials:
+      access-key: AKIAQWFGXVGCBCF4XLJA
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
   jpa:
     hibernate:
       naming:

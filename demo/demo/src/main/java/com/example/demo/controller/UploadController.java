@@ -16,13 +16,14 @@ import java.util.*;
 
 @Controller
 @Slf4j
-@RequestMapping("/fax-api")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UploadController {
 
+    //팩스 ID, pass, 경로 전역변수
     private final GlobalVariables globalVariables;
     private final UploadService userService;
-
+    //파일 구분
     private static int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
@@ -31,11 +32,13 @@ public class UploadController {
         Upload userForm = new Upload();
         log.info("=== 이미지파일 수신 거래발생 ===");
         log.info("userKey"+userKey);
+
         //처음 요청 시
         if(userKey.equals("None")){
             userKey = createKey(userId);
             userForm.setUserKey(userKey);
         }
+
         ++seq;
         String RealPath = globalVariables.getFilePath()+userKey+"_"+seq+".pdf";
         File dest = new File(RealPath);

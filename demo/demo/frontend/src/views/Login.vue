@@ -1,57 +1,43 @@
 <template>
-  <section
-    class="section section-shaped section-hero login-section section-lg my-0"
-  >
-    <div class="shape shape-style-1 "></div>
+  <section class="section section-shaped section-hero login-section section-lg my-0">
+    <div class="shape shape-style-1"></div>
     <div class="container pt-lg-md">
       <div class="row justify-content-center">
         <div class="col-lg-5">
-          <card
-            type="secondary"
-            shadow
-            header-classes="bg-white pb-5"
-            body-classes="px-lg-5 py-lg-5"
-            class="border-0"
-          >
-              <div
-                class="display-4 text-left mb-4 font-weight-800 text-default"
-                style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
+          <card type="secondary" shadow header-classes="bg-white pb-5" body-classes="px-lg-5 py-lg-5" class="border-0">
+            <div
+              class="display-4 text-left mb-4 font-weight-800 text-default"
+              style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
+            >
+              로그인
+            </div>
+
+            <form role="form">
+              <base-input
+                alternative
+                class="mb-3"
+                placeholder="Email"
+                addon-left-icon="ni ni-email-83"
+                v-model="userId"
               >
-                로그인
+              </base-input>
+              <base-input
+                alternative
+                type="password"
+                placeholder="Password"
+                addon-left-icon="ni ni-lock-circle-open"
+                v-model="userPassword"
+              >
+              </base-input>
+
+              <div class="text-center">
+                <base-button type="danger" class="my-4 col-12" @click="login">로그인</base-button>
               </div>
-
-              <form role="form">
-                <base-input
-                  alternative
-                  class="mb-3"
-                  placeholder="Email"
-                  addon-left-icon="ni ni-email-83"
-                  v-model="userId"
-                >
-                </base-input>
-                <base-input
-                  alternative
-                  type="password"
-                  placeholder="Password"
-                  addon-left-icon="ni ni-lock-circle-open"
-                  v-model="userPassword"
-                >
-                </base-input>
-
-                <div class="text-center">
-                  <base-button type="danger" class="my-4 col-12" @click="login"
-                    >로그인</base-button
-                  >
-                </div>
-              </form>
+            </form>
           </card>
-
-          
         </div>
       </div>
     </div>
-
-   
   </section>
 </template>
 
@@ -60,9 +46,7 @@ import http from "@/common/axios.js";
 import alertify from "alertifyjs";
 
 export default {
-  components: {
-    
-  },
+  components: {},
 
   data() {
     return {
@@ -70,9 +54,8 @@ export default {
       userPassword: "",
     };
   },
- 
-  methods: {
 
+  methods: {
     async login() {
       try {
         let response = await http.post("/login", {
@@ -89,15 +72,15 @@ export default {
           this.$store.commit("SET_USER_INFO", data.userDto);
           this.$router.push("/");
           alertify.success("로그인이 완료되었습니다.", 1.5);
-        } 
-
+        } else {
+          // 로그인 실패
+          console.log(data.message);
+          alertify.error("로그인에 실패했습니다.", 1.5);
+        }
       } catch (error) {
-        // 로그인 실패
-        console.log(data.message);
-        alertify.error("로그인에 실패했습니다.", 1.5);
+        console.log("에러");
       }
     },
-   
   },
 };
 </script>

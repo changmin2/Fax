@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
         origins = "http://localhost:5500", // allowCredentials = "true" 일 경우, orogins="*" 는 X
@@ -33,16 +34,13 @@ public class LoginController {
     @Autowired
     SessionManager sessionManager;
 
+    //로그인
     @PostMapping("/login")
     @ResponseBody
-    public HashMap<String,Object> login(@ModelAttribute Member member,
+    public HashMap<String,Object> login(@RequestBody Map<String, String> member,
                                         HttpServletRequest request, HttpServletResponse response){
         HashMap<String, Object> re = new HashMap<>();
-        User result = userService.login(member.getUserId(), member.getUserpassword());
-
-        log.info("userID"+member.getUserId());
-        log.info("pass"+member.getUserpassword());
-
+        User result = userService.login(member.get("userId"), member.get("userPassword"));
 
         //로그인 실패시
         if(result==null){
@@ -59,6 +57,7 @@ public class LoginController {
         return re;
     }
 
+    //로그아웃
     @PostMapping("/logout")
     public void logout(HttpServletRequest request){
         sessionManager.expire(request);
