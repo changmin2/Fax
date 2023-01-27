@@ -100,4 +100,23 @@ public class PayService {
         find.setAPPR_DATE(Date_End);
         log.info("apprOk성공");
     }
+
+    public List<HashMap<String,Object>> sendRecieve(@RequestParam("userId")String userId){
+        List<Object[]> objects = approvalRepository.sendRecieve(userId);
+        List<HashMap<String,Object>> lists = new ArrayList<>();
+        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자"};
+        for (Object[] objArr : objects) {
+            int idx =-1;
+            HashMap<String,Object> map = new HashMap<>();
+            for (Object obj : objArr) {
+                // 형 변환 후 출력
+                idx+=1;
+                map.put(arr[idx],obj);
+            }
+            map.put("받는사람정보",lists);
+            lists.add(map);
+        }
+        log.info(lists.toString());
+        return lists;
+    }
 }
