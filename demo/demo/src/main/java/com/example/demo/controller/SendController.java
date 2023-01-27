@@ -33,6 +33,8 @@ public class SendController {
     @RequestMapping(method = RequestMethod.POST, path = "/Send")
     @ResponseBody
     public JSONObject Send(@RequestBody SendReq req) throws IOException, ParseException {
+        System.out.println("req=====================================" + req);
+
         log.info(req.toString());
         return sendService.sendTest(req);
     }
