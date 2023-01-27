@@ -2,8 +2,11 @@ package com.example.demo.domain.Approval;
 
 
 import com.example.demo.VO.SendReq;
+import com.example.demo.domain.Send.Send;
+import com.example.demo.domain.User.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +28,11 @@ public class Approval {
     private String PRIVATE_INFO_YN; //개인정보 포함 여부
     private String USER_KEY; //발송번호
     private String APPR_DATE; //결재일자
+
+    @OneToOne
+    private User user;
+    @OneToOne
+    private Send send;
 
     public Approval(SendReq req,int i) {
         this.USER_KEY = req.getUserKey();
