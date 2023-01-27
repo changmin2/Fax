@@ -20,23 +20,30 @@
               받는사람
               <base-input alternative v-model="receiver"> </base-input>
               첨부파일
-
               <input
                 type="file"
-                accept=".pdf"
                 multiple
                 value="fileData"
                 @change="changeFile"
                 id="inputFileUploadInsert"
               />
-
-              <base-checkbox   v-model="privateInfo">개인정보 포함여부 </base-checkbox>
+              <!-- accept=".pdf" -->
+              <base-checkbox class="mt-2" v-model="privateInfo">개인정보 포함여부</base-checkbox>
               <br />
               결재자
               <base-input v-model="apprUserNo"> </base-input>
-              예약설정
-              <base-radio value="reserve">즉시 </base-radio>
-              <base-radio value="reserve">예약 </base-radio>
+
+              <div class="row reserve-btn">
+                <span class="ml-3">예약설정</span>
+                <!-- <base-radio class="ml-2" v-model="reserve" value="">즉시</base-radio>
+                <base-radio class="ml-3" v-model="reserve" value="20230127">예약</base-radio> -->
+                <div class="ml-3">
+                  <input type="radio" class="ml-1" v-model="reserve" value="" />
+                  <span class="ml-1">즉시</span>
+                  <input type="radio" class="ml-3" v-model="reserve" value="20230127" />
+                  <span class="ml-1">예약</span>
+                </div>
+              </div>
 
               <div class="text-center mt-3">
                 <base-button type="danger" @click="send">전송</base-button>
@@ -63,7 +70,7 @@ export default {
       receiveNo: "",
       receiver: "",
       fileData: "",
-      privateInfo: "",
+      privateInfo: false,
       apprUserNo: "",
       reserve: "",
 
@@ -82,6 +89,9 @@ export default {
     this.$store.commit("SET_USER_KEY_INIT");
   },
   methods: {
+    printTest(e) {
+      console.log(this.privateInfo);
+    },
     async changeFile(fileEvent) {
       // 1. userKey값 없을 때, userKey값 가져오기
       // 2. userKey값 있을 때는 userKey값과 함께 파일을 서버로 전송
@@ -145,11 +155,16 @@ export default {
       // formData.append("DestinationList", { Company: "테스트1", Name: "수경", Fax: "05042089819" }); //"테스트4#수경#05042089819"
       // formData.append("userKey", this.userKey);
 
+      // if (this.privateInfo == true) this.privateInfo = "Y";
+      // else this.privateInfo = "N";
+
       let sendData = {
         destinationList: [{ company: "테스트4", name: "수경", fax: "05042089819" }],
+        // destinationList: [{ company: "회사명", name: this.receiver, fax: this.receiveNo }],
         userKey: this.userKey,
         Send_Date: "",
         private_info_yn: "N",
+        appr_person: "",
       };
 
       try {
