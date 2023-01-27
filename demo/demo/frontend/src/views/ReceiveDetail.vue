@@ -82,7 +82,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .left-content {
   display: flex;
   flex-direction: column;
