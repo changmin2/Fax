@@ -13,7 +13,13 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+@CrossOrigin(
+        // localhost:5500 과 127.0.0.1 구분
+        origins = "http://localhost:5500", // allowCredentials = "true" 일 경우, orogins="*" 는 X
+        allowCredentials = "true",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.HEAD,RequestMethod.OPTIONS}
+)
 @Controller
 @Slf4j
 @RequestMapping("/api")
@@ -31,6 +37,7 @@ public class UploadController {
         Upload userForm = new Upload();
         log.info("=== 이미지파일 수신 거래발생 ===");
         log.info("userKey"+userKey);
+
         //처음 요청 시
         if(userKey.equals("None")){
             userKey = createKey(userId);
@@ -40,7 +47,8 @@ public class UploadController {
         String RealPath = globalVariables.getFilePath()+userKey+"_"+seq+".pdf";
         File dest = new File(RealPath);
         file.transferTo(dest); // 파일 업로드 작업 수행
-
+        System.out.println("file RealPath.........."+ RealPath);
+        System.out.println("file Dest.........."+ dest);
         String userFileName = file.getOriginalFilename().replace(".pdf","");
 
         userForm.setUserFileName(userFileName);
