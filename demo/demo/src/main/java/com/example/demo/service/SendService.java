@@ -39,7 +39,7 @@ public class SendService {
         now.setTime(new Date());
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd- hh:mm");
         String Date_End = df.format(now.getTime());
-        if(req.getSend_Date().equals("")){ //예약전송 아닐때 전송일 지금으로 입력
+        if(req.getSend_Date() == null || req.getSend_Date().equals("")){ //예약전송 아닐때 전송일 지금으로 입력
             req.setSend_Date(Date_End);
         }
         Send send = new Send(req);

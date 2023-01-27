@@ -30,10 +30,8 @@
                 id="inputFileUploadInsert"
               />
 
-              개인정보 포함여부
-              <base-checkbox v-model="privateInfo">
-                <br />
-              </base-checkbox>
+              <base-checkbox   v-model="privateInfo">개인정보 포함여부 </base-checkbox>
+              <br />
               결재자
               <base-input v-model="apprUserNo"> </base-input>
               예약설정

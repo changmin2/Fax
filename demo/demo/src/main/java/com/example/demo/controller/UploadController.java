@@ -29,7 +29,7 @@ public class UploadController {
     private final GlobalVariables globalVariables;
     private final UploadService userService;
 
-    private static int seq =0;
+    private  int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
     @ResponseBody
