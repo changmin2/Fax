@@ -50,15 +50,11 @@ public class UploadController {
 
         ++seq;
         String RealPath =userKey+"_"+seq+".pdf";
-//        s3Uploader.uploadFiles(file, "static",RealPath);
-//        System.out.println("file RealPath.........."+ RealPath);;
-//        String userFileName = file.getOriginalFilename().replace(".pdf","");
+        String userFileName = "temp"+seq;
         userService.convertPDF(files,RealPath);
-//        userForm.setUserFileName(userFileName);
-//        userForm.setRealFileName(String.valueOf(seq));
-
-        //DB저장
-//        userService.register(userForm);
+        userForm.setUserFileName(userFileName);
+        userForm.setRealFileName(RealPath);
+        userService.register(userForm);
 
         return userKey;
     }
