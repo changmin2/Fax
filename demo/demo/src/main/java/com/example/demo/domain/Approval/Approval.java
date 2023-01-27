@@ -30,11 +30,6 @@ public class Approval {
     private String APPR_DATE; //결재일자
     private String APPR_REMARK; //사유
 
-    @OneToOne
-    private User user;
-    @OneToOne
-    private Send send;
-
     public Approval(SendReq req,int i) {
         this.USER_KEY = req.getUserKey();
         this.PRIVATE_INFO_YN = req.getPrivate_info_yn();

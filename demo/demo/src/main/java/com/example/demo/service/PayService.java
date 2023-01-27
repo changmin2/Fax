@@ -6,13 +6,13 @@ import com.example.demo.repository.ApprovalRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -75,5 +75,16 @@ public class PayService {
         return lists;
     }
 
-
+    @Transactional
+    public void apprOk(@RequestParam("apprNo")String apprNo){
+        log.info("apprOk접근");
+        Approval find = approvalRepository.findById(apprNo).get();
+        find.setSTATUS("완료");
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd- hh:mm");
+        String Date_End = df.format(now.getTime());
+        find.setAPPR_DATE(Date_End);
+        log.info("apprOk성공");
+    }
 }

@@ -24,4 +24,10 @@ public class PayController {
         payService.apprDetail(apprNo);
         return null;
     }
+
+    @PostMapping("/apprOk")
+    public void apprOk(@RequestParam("apprNo")String apprNo){
+        log.info("apprOk진입");
+        payService.apprOk(apprNo);
+    }
 }
