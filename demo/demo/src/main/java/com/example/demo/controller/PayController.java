@@ -54,6 +54,7 @@ public class PayController {
     //발신 수신함
     @PostMapping("/sendRecieve")
     public List<HashMap<String, Object>> sendRecieve(@RequestParam("userId")String userId){
+        log.info("sendRecieve진입");
         List<HashMap<String, Object>> hashMaps = payService.sendRecieve(userId);
         return hashMaps;
     }

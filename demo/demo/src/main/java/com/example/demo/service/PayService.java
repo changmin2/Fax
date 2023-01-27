@@ -102,7 +102,10 @@ public class PayService {
     }
 
     public List<HashMap<String,Object>> sendRecieve(@RequestParam("userId")String userId){
+        log.info("sendReceive진입");
         List<Object[]> objects = approvalRepository.sendRecieve(userId);
+        log.info("sendReceive진입2");
+        log.info("objects"+objects.toString());
         List<HashMap<String,Object>> lists = new ArrayList<>();
         String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자"};
         for (Object[] objArr : objects) {
@@ -113,7 +116,6 @@ public class PayService {
                 idx+=1;
                 map.put(arr[idx],obj);
             }
-            map.put("받는사람정보",lists);
             lists.add(map);
         }
         log.info(lists.toString());
