@@ -4,6 +4,20 @@ spring:
     username: admin
     password: gkfdkqjwl1
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none # 자동으로 테이블을 만들어줌 애플리케이션 실행시에 다 지우고 다시 실행
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+server:
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 100MB
 cloud:
   aws:
     s3:
@@ -16,15 +30,7 @@ cloud:
       auto: false
     stack:
       auto: false
-  jpa:
-    hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none # 자동으로 테이블을 만들어줌 애플리케이션 실행시에 다 지우고 다시 실행
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+
 
 logging:
   level:

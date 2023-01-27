@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @IdClass(UploadPK.class)
+@Table(name="Upload")
 public class Upload {
 
     @Id
