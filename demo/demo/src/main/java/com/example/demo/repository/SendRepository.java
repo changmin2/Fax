@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SendRepository extends JpaRepository<Send, String> {
-    @Query(value= "select IFNULL(max(t.SEND_NO),0) from TB_SEND t", nativeQuery = true)
+    @Query(value= "select IFNULL(max(t.SEND_NO),0)+1 from TB_SEND t", nativeQuery = true)
     int getMaxSendNo();
 
     @Modifying

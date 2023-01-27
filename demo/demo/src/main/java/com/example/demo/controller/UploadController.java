@@ -13,7 +13,13 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+@CrossOrigin(
+        // localhost:5500 과 127.0.0.1 구분
+        origins = "http://localhost:5500", // allowCredentials = "true" 일 경우, orogins="*" 는 X
+        allowCredentials = "true",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.HEAD,RequestMethod.OPTIONS}
+)
 @Controller
 @Slf4j
 @RequestMapping("/api")
@@ -23,8 +29,13 @@ public class UploadController {
     //팩스 ID, pass, 경로 전역변수
     private final GlobalVariables globalVariables;
     private final UploadService userService;
+<<<<<<< HEAD
     //파일 구분
     private static int seq =0;
+=======
+
+    private  int seq =0;
+>>>>>>> cb8da83bcdeffb67d20bb8fd1390566e3892229f
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
     @ResponseBody
@@ -43,7 +54,8 @@ public class UploadController {
         String RealPath = globalVariables.getFilePath()+userKey+"_"+seq+".pdf";
         File dest = new File(RealPath);
         file.transferTo(dest); // 파일 업로드 작업 수행
-
+        System.out.println("file RealPath.........."+ RealPath);
+        System.out.println("file Dest.........."+ dest);
         String userFileName = file.getOriginalFilename().replace(".pdf","");
 
         userForm.setUserFileName(userFileName);

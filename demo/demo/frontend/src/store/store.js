@@ -5,7 +5,7 @@ Vue.use(Vuex);
 import getters from "./getters";
 import mutations from "./mutations";
 import actions from "./actions";
-import users from "./getters/users";
+import users from "./state/users";
 import receives from "./state/receives";
 
 export default new Vuex.Store({

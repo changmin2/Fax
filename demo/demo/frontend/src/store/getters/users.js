@@ -8,7 +8,7 @@ export default {
   getUserKey(state) {
     return state.users.userKey;
   },
-  getIsAdminUser(state) {
-    return state.userInfo.code === "001" ? true : false;
-  },
+  // getIsAdminUser(state) {
+  //   return state.userInfo.code === "001" ? true : false;
+  // },
 };

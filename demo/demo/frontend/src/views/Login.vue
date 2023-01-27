@@ -69,7 +69,7 @@ export default {
           // 로그인 성공
           console.log(data.message);
           this.$store.commit("SET_USER_LOGIN", { isLogin: true });
-          this.$store.commit("SET_USER_INFO", data.userDto);
+          this.$store.commit("SET_USER_INFO", { userId: this.userId });
           this.$router.push("/");
           alertify.success("로그인이 완료되었습니다.", 1.5);
         } else {
