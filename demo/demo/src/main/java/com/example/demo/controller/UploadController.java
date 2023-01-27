@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.GlobalVariables;
 import com.example.demo.S3Uploader;
 import com.example.demo.domain.Upload;
+import com.example.demo.service.SendService;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class UploadController {
     private final GlobalVariables globalVariables;
     private final UploadService userService;
     private final S3Uploader s3Uploader;
+    private final SendService sendService;
 
     private  int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
@@ -60,6 +62,12 @@ public class UploadController {
         userService.register(userForm);
 
         return userKey;
+    }
+
+    @PostMapping("/convertPDF")
+    @ResponseBody
+    public String convertPDF(@RequestParam("files") List<MultipartFile> files) throws Exception {
+        return sendService.convertPDF(files);
     }
 
     //유저 키 생성 함수

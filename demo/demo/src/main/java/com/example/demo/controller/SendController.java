@@ -39,9 +39,4 @@ public class SendController {
         return sendService.sendTest(req);
     }
 
-    @PostMapping("/convertPDF")
-    @ResponseBody
-    public String convertPDF(@RequestParam("files") List<MultipartFile> files) throws Exception {
-        return sendService.convertPDF(files);
-    }
 }
