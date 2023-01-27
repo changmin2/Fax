@@ -2,16 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.GlobalVariables;
 import com.example.demo.S3Uploader;
-import com.example.demo.domain.Upload;
-import com.example.demo.service.SendService;
+import com.example.demo.domain.Upload.Upload;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
