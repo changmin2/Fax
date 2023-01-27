@@ -6,17 +6,35 @@
         class="send-title display-4 mb-4 font-weight-800 text-default"
         style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
       >
-        수신팩스정보
+        미결재정보
       </div>
 
       <div class="row">
         <div class="left-content col">
-          <span class="mt-3">> 보낸곳</span>
+          <span class="mt-3">> 결제요청정보</span>
 
           <table class="no-approval-table table">
             <thead>
               <tr>
-                <th scope="col">보낸사람</th>
+                <th scope="col">결재요청자</th>
+                <th scope="col">제목</th>
+                <th scope="col">요청일시</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="mt-3">> 수신자정보</span>
+          <table class="no-approval-table table">
+            <thead>
+              <tr>
+                <th scope="col">이름</th>
                 <th scope="col">팩스번호</th>
               </tr>
             </thead>
@@ -28,12 +46,13 @@
             </tbody>
           </table>
 
-          <span class="mt-3">> 받는곳</span>
+          <!-- <span class="mt-3">> 개인정보검출내용</span> -->
+          <span class="mt-3">> 결재 승인 및 반송</span>
           <table class="no-approval-table table">
             <thead>
               <tr>
-                <th scope="col">받는사람</th>
-                <th scope="col">팩스번호</th>
+                <th scope="col">결재상태</th>
+                <th scope="col">사유</th>
               </tr>
             </thead>
             <tbody>
@@ -43,24 +62,14 @@
               </tr>
             </tbody>
           </table>
-
-          <span class="mt-3">> 수신 정보</span>
-          <table class="no-approval-table table">
-            <thead>
-              <tr>
-                <th scope="col">수신일시</th>
-                <th scope="col">장수</th>
-                <th scope="col">수신상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="row">
+            <base-button type="secondary" class="no-approval-btn btn float-right">
+              승인
+            </base-button>
+            <base-button type="secondary" class="no-approval-btn btn float-right">
+              반송
+            </base-button>
+          </div>
         </div>
 
         <div class="col">
@@ -78,22 +87,21 @@
 
 <script>
 export default {
-  components: {},
+  data() {
+    return {};
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.no-proval-info {
+}
 .left-content {
   display: flex;
   flex-direction: column;
 }
 table {
   display: flex;
-  /* display: -webkit-box; */
-  /* display: -ms-flexbox; */
-  /* overflow-x: auto; */
-  /* overflow-y: hidden; */
-  /* border: 1px solid gainsboro; */
 }
 tbody {
   display: flex;
@@ -115,7 +123,7 @@ th {
 .no-approval-table th,
 .no-approval-table td {
   text-align: center;
-  height: 30px;
+  height: 35px;
   line-height: 0px;
 }
 .no-approval-table th {
@@ -123,5 +131,16 @@ th {
 }
 .no-approval-table td {
   width: 200px;
+  border-top: 0.0625rem solid #dee2e6;
+  border-right: 0.0625rem solid #dee2e6;
+}
+.no-approval-table td:last-child {
+  border-bottom: 0.0625rem solid #dee2e6;
+}
+.no-approval-btn-group {
+}
+.no-approval-btn {
+  padding: 5px;
+  width: 50px;
 }
 </style>
