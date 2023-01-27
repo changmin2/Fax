@@ -58,7 +58,6 @@ public class SendService {
 
         //결재 max값 가져오기
         int i = approvalRepository.getMaxApprNo(req.getUserKey());
-        log.info("맥스번호입니다"+i+"!!");
         //결재 저장
         Approval approval = new Approval(req,i);
         approvalRepository.save(approval);

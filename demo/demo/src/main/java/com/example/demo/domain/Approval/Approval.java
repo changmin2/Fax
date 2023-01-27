@@ -28,6 +28,7 @@ public class Approval {
     private String PRIVATE_INFO_YN; //개인정보 포함 여부
     private String USER_KEY; //발송번호
     private String APPR_DATE; //결재일자
+    private String APPR_REMARK; //사유
 
     @OneToOne
     private User user;
