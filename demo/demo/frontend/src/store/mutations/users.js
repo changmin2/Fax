@@ -2,6 +2,7 @@ export default {
   /* 사용자 로그인 */
   SET_USER_LOGIN(state) {
     state.users.isLogin = true;
+    localStorage.setItem("isLogin",true);
   },
 
   /* 로그인한 사용자 정보 받기 */

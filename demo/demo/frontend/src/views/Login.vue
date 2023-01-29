@@ -72,9 +72,9 @@ export default {
           // 로그인 성공
           console.log(data.message);
           this.$store.commit("SET_USER_LOGIN", { isLogin: true });
-          console.log(data.userInfo);
-          this.$store.commit("SET_USER_INFO", { userId: this.userId,userName: data.userInfo.user_NAME });
-          this.$router.push("/");
+          this.$store.dispatch("getUserInfo");
+          // this.$store.commit("SET_USER_INFO", { userId: this.userId,userName: data.userInfo.user_NAME });
+          // this.$router.push("/");
           alertify.success("로그인이 완료되었습니다.", 1.5);
         } else {
           // 로그인 실패
@@ -82,9 +82,16 @@ export default {
           alertify.error("로그인에 실패했습니다.", 1.5);
         }
       } catch (error) {
-        console.log("에러");
+        console.log(error);
+        console.log("에러1");
       }
     },
+  },
+
+  created() {
+    if(localStorage.getItem("isLogin")){ //로그인 돼있으면 메인으로
+        this.$store.dispatch("getUserInfo");
+    }
   },
 };
 </script>

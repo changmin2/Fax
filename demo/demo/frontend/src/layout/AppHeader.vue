@@ -64,7 +64,7 @@
         <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
           <i class="ni ni-book-bookmark mr-0 d-lg-inline d-sm-none text-default"></i>
           <router-link
-            to="/bookmark"
+            to="/login"
             :class="'nav-link-inner--text font-weight-600 text-' + textColor"
           >
             로그아웃
@@ -136,21 +136,22 @@ export default {
   },
   methods: {
     async logout() {
-      try {
-        let { data } = await http.get("/logout");
-        console.log(data);
+      // try {
+      //   let { data } = await http.get("/logout");
+      //   console.log(data);
 
-        if (data.result == "login") {
-          this.$router.push("/login");
-        } else {
+      //   if (data.result == "login") {
+      //     this.$router.push("/login");
+      //   } else {
           this.doLogout();
-        }
-      } catch (error) {
-        console.log("BoardMainVue: error : ");
-        console.log(error);
-      }
+      //   }
+      // } catch (error) {
+      //   console.log("BoardMainVue: error : ");
+      //   console.log(error);
+      // }
     },
     doLogout() {
+      localStorage.setItem("isLogin",false);
       this.$store.state.isLogin = false;
       this.$store.commit("SET_USER_INFO", {});
       this.$router.push("/login");
