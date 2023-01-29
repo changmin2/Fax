@@ -13,10 +13,11 @@ import store from "@/store/store"; //로그인 여부를 위한 store import
 
 Vue.use(Router);
 const requireAuth = () => (from, to, next) => {
-	console.log('인증');
-	console.log(store.state.users.isLogin);
-	if (store.state.users.isLogin) return next() // isAuth === true면 페이지 이동
-	next('/login') // isAuth === false면 다시 로그인 화면으로 이동
+	// console.log("라우터 로그인확인 :",localStorage.getItem('isLogin'));
+	if (localStorage.getItem('isLogin')){ 
+		store.dispatch("getUserInfo");
+		return next()} // isLogin === true면 페이지 이동
+	next('/login') // isLogin === false면 다시 로그인 화면으로 이동
 }	
 
 export default new Router({

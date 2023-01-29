@@ -63,12 +63,13 @@
         <span v-text="user_info"></span>님 반갑습니다.
         <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
           <i class="ni ni-book-bookmark mr-0 d-lg-inline d-sm-none text-default"></i>
-          <router-link
+          <!-- <router-link
             to="/login"
             :class="'nav-link-inner--text font-weight-600 text-' + textColor"
           >
-            로그아웃
-          </router-link>
+          로그아웃
+        </router-link> -->
+           <span @click="logout" :class="'nav-link-inner--text font-weight-600 text-' + textColor" style="cursor: pointer;">로그아웃</span>
         </a>
 
         
@@ -130,30 +131,31 @@ export default {
     },
     user_info() {
       let user = this.$store.state.users.userInfo;
-      console.log(user);
+      // console.log(user);
       return user.userName+"("+user.userId+")";
     },
   },
   methods: {
     async logout() {
-      // try {
-      //   let { data } = await http.get("/logout");
-      //   console.log(data);
+      try {
+        let { data } = await http.get("/logout");
+        // console.log(data);
 
-      //   if (data.result == "login") {
-      //     this.$router.push("/login");
-      //   } else {
+        // if (data.result == "login") {
+        //   this.$router.push("/login");
+        // } else {
           this.doLogout();
-      //   }
-      // } catch (error) {
-      //   console.log("BoardMainVue: error : ");
-      //   console.log(error);
-      // }
+        // }
+      } catch (error) {
+        console.log("BoardMainVue: error : ");
+        console.log(error);
+      }
     },
     doLogout() {
-      localStorage.setItem("isLogin",false);
+      console.log('로그아웃 실행');
       this.$store.state.isLogin = false;
       this.$store.commit("SET_USER_INFO", {});
+      localStorage.setItem("isLogin",false);
       this.$router.push("/login");
     },
   },

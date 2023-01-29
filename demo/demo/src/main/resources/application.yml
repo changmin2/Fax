@@ -13,6 +13,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  output:
+    ansi:
+      enabled: always
+
 server:
   servlet:
     multipart:
@@ -31,8 +35,13 @@ cloud:
     stack:
       auto: false
 
-
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace # values(?,?)의 ?에 입력되는 로그를 남겨준다.
+    org.hibernate:
+      type:
+        descriptor:
+           sql: trace
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace # values(?,?)의 ?에 입력되는 로그를 남겨준다.

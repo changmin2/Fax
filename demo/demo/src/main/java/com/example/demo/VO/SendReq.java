@@ -5,17 +5,15 @@ import lombok.Data;
 import java.util.List;
 @Data
 public class SendReq {
-    private String UserID; //jungly5935
+    private String userID; //jungly5935
 //    private String UserPW; //sjrnfl0814!
-    private String Service; //"TAX"
-    private String Type; //"Send"
 
     private String userKey; //userKey
 
     @JsonProperty("destinationList")
     private List<Destination> DestinationList;
 
-    private String Send_Date; //발송시각 - 미입력 시 즉시발송예약 날짜형식) YYYY-MM-DD HH:NN
+    private String send_Date; //발송시각 - 미입력 시 즉시발송예약 날짜형식) YYYY-MM-DD HH:NN
 
     private String title; //제목
 
@@ -26,14 +24,13 @@ public class SendReq {
     @Override
     public String toString() {
         return "SendReq{" +
-                "UserID='" + UserID + '\'' +
-                ", Service='" + Service + '\'' +
-                ", Type='" + Type + '\'' +
+                "userID='" + userID + '\'' +
                 ", userKey='" + userKey + '\'' +
                 ", DestinationList=" + DestinationList +
-                ", Send_Date='" + Send_Date + '\'' +
+                ", send_Date='" + send_Date + '\'' +
                 ", title='" + title + '\'' +
                 ", private_info_yn='" + private_info_yn + '\'' +
+                ", appr_person='" + appr_person + '\'' +
                 ", reserve_yn='" + reserve_yn + '\'' +
                 '}';
     }

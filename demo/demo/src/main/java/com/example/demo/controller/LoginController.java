@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.SessionManager;
+import com.example.demo.domain.Approval.ApprUser;
 import com.example.demo.domain.Form.Member;
 import com.example.demo.domain.User.User;
 import com.example.demo.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -66,8 +68,10 @@ public class LoginController {
 
         //로그인 성공시 세션 생성
         Object findUser = sessionManager.getSession(request);
-        //토큰 없을때
+
+        //세션값없을때
         if(findUser==null){
+//            log.info("유저정보를 불러올 수 없습니다.");
             re.put("flag",false);
             re.put("message","유저정보를 불러올 수 없습니다.");
             return re;
@@ -81,7 +85,15 @@ public class LoginController {
     }
     //로그아웃
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request){
         sessionManager.expire(request);
+        return "로그아웃성공";
+    }
+    @PostMapping("/getApprUsers")
+    @ResponseBody
+    public List<HashMap<String, String>> getApprUsers(@RequestBody Map<String,String> map){
+        String userId = map.get("userId"); //유저아이디
+        List<HashMap<String, String>> users = userService.getApprUsers(userId);
+        return users;
     }
 }

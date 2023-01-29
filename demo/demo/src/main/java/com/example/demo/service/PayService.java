@@ -106,11 +106,11 @@ public class PayService {
         User user = userRepository.findById(find.getAPPR_PERSON()).get();
         //GRADE_CODE:  3 지점장
         if(find.getPRIVATE_INFO_YN().equals("Y") && user.getGRADE_CODE()<3){ //개인정보 포함이면 지점장에게 결재
-            Map<String,Object> apprUser = userRepository.getHigherApprUser(find.getAPPR_PERSON());
+            String[] apprUser = (String[]) userRepository.getHigherApprUser(find.getAPPR_PERSON()).get(0);
             //더 높은 결재자 정보
-            String apprUSER_ID = (String) apprUser.get("USER_ID");
-            String apprUSER_NAME = (String) apprUser.get("USER_NAME");
-            String apprCOMM_NAME = (String) apprUser.get("COMM_NAME");
+            String apprUSER_ID = apprUser[0];
+            String apprUSER_NAME = apprUser[1];
+            String apprCOMM_NAME = apprUser[2];
 
             //결재 테이블 insert
             int i = approvalRepository.getMaxApprNo(find.getUSER_KEY()); //seq따기

@@ -7,8 +7,11 @@ import store from "./store/store";
 import Argon from "./plugins/argon-kit";
 import "./registerServiceWorker";
 
+import Datetime from 'vue-datetime';
+
 Vue.config.productionTip = false;
 
+Vue.use(Datetime);
 Vue.use(Argon);
 
 new Vue({

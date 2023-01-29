@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +24,7 @@ import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,14 +42,19 @@ public class SendService {
 
     private final S3Uploader s3Uploader;
     @Transactional
-    public String sendInsert(SendReq req){
+    public String sendInsert(SendReq req) throws ParseException {
         Calendar now = Calendar.getInstance();
         now.setTime(new Date());
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String Date_End = df.format(now.getTime());
-//        if(req.getReserve_yn().equals("N")){ //예약전송 아닐때 전송일 빈칸
-//            req.setSend_Date("");
-//        }
+        if(req.getReserve_yn().equals("Y")){ //예약전송일때
+            String sendDate = req.getSend_Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            Date date = sdf.parse(sendDate);
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            sendDate = sdf.format(date);
+            req.setSend_Date(sendDate);
+        }
         Send send = new Send(req);
         send.setINSERT_DATE(Date_End);
         send.setSTATUS("결재대기");

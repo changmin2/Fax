@@ -37,13 +37,6 @@ public class SessionManager {
         }
         return sessionStore.get(sessionCookie.getValue());
     }
-    public Object getSession(HttpServletRequest request,String sessionId) {
-//        Cookie sessionCookie = findCookie(request, SESSION_COOKIE_NAME);
-        if (sessionId == null) {
-            return null;
-        }
-        return sessionStore.get(sessionId);
-    }
 
     /**
      * 세션 만료
