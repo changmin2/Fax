@@ -16,7 +16,7 @@
               <base-input
                 alternative
                 class="mb-3"
-                placeholder="Email"
+                placeholder="사번"
                 addon-left-icon="ni ni-email-83"
                 v-model="userId"
               >
@@ -24,9 +24,10 @@
               <base-input
                 alternative
                 type="password"
-                placeholder="Password"
+                placeholder="비밀번호"
                 addon-left-icon="ni ni-lock-circle-open"
                 v-model="userPassword"
+                @keyup.enter= "login"
               >
               </base-input>
 
@@ -57,6 +58,8 @@ export default {
 
   methods: {
     async login() {
+      if(this.userId==''){ alertify.error("사번을 입력해주세요.", 1.5); return;}
+      if(this.userPassword==''){ alertify.error("비밀번호를 입력해주세요.", 1.5); return;}
       try {
         let response = await http.post("/login", {
           userId: this.userId,
@@ -69,7 +72,8 @@ export default {
           // 로그인 성공
           console.log(data.message);
           this.$store.commit("SET_USER_LOGIN", { isLogin: true });
-          this.$store.commit("SET_USER_INFO", { userId: this.userId });
+          console.log(data.userInfo);
+          this.$store.commit("SET_USER_INFO", { userId: this.userId,userName: data.userInfo.user_NAME });
           this.$router.push("/");
           alertify.success("로그인이 완료되었습니다.", 1.5);
         } else {

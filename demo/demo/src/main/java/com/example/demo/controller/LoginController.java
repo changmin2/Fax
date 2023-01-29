@@ -51,9 +51,10 @@ public class LoginController {
         //로그인 성공시 세션 생성
         sessionManager.createSession(result,response);
         Object findUser = sessionManager.getSession(request);
-        log.info("user"+findUser);
+        log.info("user"+result);
         re.put("flag",true);
         re.put("message","로그인에 성공하셨습니다.");
+        re.put("userInfo",result);
         return re;
     }
 

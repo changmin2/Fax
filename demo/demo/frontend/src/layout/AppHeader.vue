@@ -60,6 +60,7 @@
 
       <!-- 오른쪽 -->
       <ul v-if="isLogin" class="navbar-nav align-items-lg-center ml-lg-auto">
+        <span v-text="user_info"></span>님 반갑습니다.
         <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
           <i class="ni ni-book-bookmark mr-0 d-lg-inline d-sm-none text-default"></i>
           <router-link
@@ -124,8 +125,13 @@ export default {
     },
 
     isLogin() {
-      console.log(this.$store.state);
-      return this.$store.state.isLogin;
+      // console.log("로그인 상태 :",this.$store.state.users.isLogin);
+      return this.$store.state.users.isLogin;
+    },
+    user_info() {
+      let user = this.$store.state.users.userInfo;
+      console.log(user);
+      return user.userName+"("+user.userId+")";
     },
   },
   methods: {

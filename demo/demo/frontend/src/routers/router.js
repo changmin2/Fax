@@ -9,8 +9,15 @@ import ReceiveDetail from "../views/ReceiveDetail.vue"
 import NotFoundPageView from "../views/NotFoundPageView.vue";
 import SendList from "../views/SendList.vue";
 import ReceiveList from "../views/ReceiveList.vue"
+import store from "@/store/store"; //로그인 여부를 위한 store import
 
 Vue.use(Router);
+const requireAuth = () => (from, to, next) => {
+	console.log('인증');
+	console.log(store.state.users.isLogin);
+	if (store.state.users.isLogin) return next() // isAuth === true면 페이지 이동
+	next('/login') // isAuth === false면 다시 로그인 화면으로 이동
+}	
 
 export default new Router({
 	linkExactActiveClass: "active",
@@ -22,13 +29,14 @@ export default new Router({
 				header: AppHeader,
 				default: Landing,
 				// footer: AppFooter
-			}
+			},
+			beforeEnter: requireAuth(),
 		},
 		{
 			path: "/login",
 			name: "login",
 			components: {
-				header: AppHeader,
+				// header: AppHeader,
 				default: Login,
 				// footer: AppFooter
 			}
@@ -40,7 +48,8 @@ export default new Router({
 				header: AppHeader,
 				default: Send,
 				// footer: AppFooter
-			}
+			},
+			beforeEnter: requireAuth(),
 		},
 		{
 			path: "/receive-detail",
