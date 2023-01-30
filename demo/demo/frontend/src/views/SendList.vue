@@ -126,6 +126,10 @@
                     <div class="left-content col">
                        <span class="mt-3">> 보낸사람</span>
                        <table class="no-approval-table table">
+                           <colgroup>
+                               <col style="width:50%;">
+                               <col style="width:50%;">
+                           </colgroup>
                          <thead>
                            <tr>
                              <th scope="col">보낸사람</th>
@@ -135,13 +139,17 @@
                          <tbody>
                              <tr>
                                  <td>{{ receivelistDetail[0].발송자}}</td>
-                                 <td>{{ receivelist[0].팩스번호}}</td>
+                                 <td>{{ receivelistDetail[0].팩스번호}}</td>
                              </tr>
                          </tbody>
                        </table>
 
                        <span class="mt-3">> 받는곳</span>
                        <table class="no-approval-table table">
+                           <colgroup>
+                               <col style="width:50%;">
+                               <col style="width:50%;">
+                           </colgroup>
                          <thead>
                            <tr>
                              <th scope="col">받는사람</th>
@@ -158,6 +166,10 @@
 
                        <span class="mt-3">> 발신 정보</span>
                        <table class="no-approval-table table">
+                           <colgroup>
+                               <col style="width:50%;">
+                               <col style="width:50%;">
+                           </colgroup>
                          <thead>
                            <tr>
                              <th scope="col">발신일시</th>
