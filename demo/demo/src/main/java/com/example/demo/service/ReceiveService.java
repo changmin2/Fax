@@ -104,9 +104,11 @@ public class ReceiveService {
     @Transactional
     public HashMap<String, String> targetRecieve(String RFax_No_Seq, HashMap<String,String> result,String userName){
         Recieve recieve = recieveRepository.findById(RFax_No_Seq).get();
-        recieve.setREAD_YN("Y");
-        recieve.setREAD_USER("임시유저");
-        recieve.setREAD_USER(userName);
+
+        if(recieve.getREAD_USER().equals("")){
+            recieve.setREAD_USER(userName);
+            recieve.setREAD_YN("Y");
+        }
         result.put("receive_DATE",recieve.getRECEIVE_DATE());
         result.put("receive_No_SEQ",recieve.getRECEIVE_No_SEQ());
         result.put("page_CNT",recieve.getPAGE_CNT());
