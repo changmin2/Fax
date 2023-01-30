@@ -28,21 +28,21 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     List<Object[]> detail(@Param(value = "apprNo")String apprNo);
 
     //결재함 상세
-    @Query(value = "select \n" +
-            "a.APPR_NO,\n" +
-            "a.APPR_PERSON,\n" +
-            "a.USER_NO,\n" +
-            "a.STATUS,\n" +
-            "a.PRIVATE_INFO_YN,\n" +
-            "a.USER_KEY,\n" +
-            "a.APPR_DATE,\n" +
-            "a.APPR_REMARK,\n" +
-            "u1.USER_NAME,u2.USER_NAME APPR_NAME,s.TITLE,s.FAX_NO,s.INSERT_DATE\n" +
-            "from TB_APPROVAL a \n" +
-            "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
-            "join TB_USER u2 on a.APPR_PERSON = u2.USER_ID \n" +
-            "join TB_SEND s on a.USER_KEY = s.USER_KEY \n" +
-            "where a.APPR_NO =:apprNo",nativeQuery = true)
+    @Query(value = "select b.APPR_NO \n" +
+            "      ,b.STATUS\n" +
+            "      ,b.APPR_DATE\n" +
+            "      ,(select USER_NAME\n" +
+            "           from TB_USER\n" +
+            "          where user_id=b.USER_NO) as user_name\n" +
+            "          \n" +
+            "          \n" +
+            "          \n" +
+            "          \n" +
+            "  from TB_SEND a\n" +
+            "       ,TB_APPROVAL b \n" +
+            " where a.STATUS='결재대기'\n" +
+            "   and a.USER_KEY  = b.USER_KEY\n" +
+            "   and b.APPR_PERSON = :apprNo",nativeQuery = true)
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
     //발송대기 현황

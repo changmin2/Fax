@@ -2,6 +2,9 @@ package com.example.demo.service;
 
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
+import com.example.demo.VO.SendRes;
+import com.example.demo.domain.Form.RecieveForm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -11,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -22,7 +24,7 @@ public class ReceiveService {
 
     private final GlobalVariables globalVariables;
 
-    public String Receive() throws IOException, ParseException {
+    public List<RecieveForm> Receive() throws IOException, ParseException {
         Map<String, String> headers = new HashMap<>();
         HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
 
@@ -38,10 +40,49 @@ public class ReceiveService {
         multipart.addFormField("Page", "1");
 
         String ResultJson = multipart.finish();
-        // Json parse (json.simple 라이브러리)
-        JSONParser jsonParse = new JSONParser();
-        JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
-        log.info(ObjToJson.toString());
-        return null;
+        Map<String,Object> map = null;
+        map = new ObjectMapper().readValue(ResultJson,Map.class);
+        Object list = map.get("List");
+
+        String s = String.valueOf(list);
+        s= s.replace("[","");
+        s = s.replace("]","");
+        s= s.replace("{","");
+        s=s.replace("}","");
+        StringTokenizer tokenizer = new StringTokenizer(s,",");
+        log.info(tokenizer.toString());
+
+        int idx = -1;
+        List<RecieveForm> rf = new ArrayList<>();
+        List<String> tempString = new ArrayList<>();
+        RecieveForm nn = new RecieveForm();
+        String[] split = new String[9];
+        while(tokenizer.hasMoreTokens()){
+            idx+=1;
+            String s1 = tokenizer.nextToken();;
+            String[] strings = s1.split("=");
+            if(strings.length==2){
+                split[idx] = strings[1];
+            }else split[idx]="";
+
+            if(idx==8){
+                nn.setNo(split[0]);
+                nn.setRFax_No(split[1]);
+                nn.setRFax_No_Seq(split[2]);
+                nn.setRecv_Date(split[3]);
+                nn.setSender_No(split[4]);
+                nn.setSender_NM(split[5]);
+                nn.setPage_Cnt(split[6]);
+                nn.setRead(split[7]);
+                nn.setMemo(split[8]);
+                idx=-1;
+                rf.add(nn);
+            }
+
+        }
+        log.info(rf.toString());
+
+
+        return rf;
     }
 }
