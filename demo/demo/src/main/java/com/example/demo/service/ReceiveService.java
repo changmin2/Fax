@@ -35,7 +35,7 @@ public class ReceiveService {
     private final S3Uploader s3Uploader;
 
     //발송닷컴에서 수신 목록 모두 가져오기
-    public List<RecieveForm> Receive() throws IOException, ParseException {
+    public List<RecieveForm> Receive(Map<String,String > param) throws IOException, ParseException {
         Map<String, String> headers = new HashMap<>();
         HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
 
@@ -44,9 +44,9 @@ public class ReceiveService {
         multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", "RFAX");
         multipart.addFormField("Type", "Report");
-        multipart.addFormField("RFax_No", "050-4926-0237");
-        multipart.addFormField("Date_Start", "2023-01-01");
-        multipart.addFormField("Date_End", "2023-01-27");
+        multipart.addFormField("RFax_No", param.get("RFax_No"));
+        multipart.addFormField("Date_Start", param.get("Date_Start"));
+        multipart.addFormField("Date_End", param.get("Date_End"));
         multipart.addFormField("List_EA", "10");
         multipart.addFormField("Page", "1");
 

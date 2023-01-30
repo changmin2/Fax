@@ -21,8 +21,4 @@ public class HelloWorldCtrl {
         return "hello!";
     }
 
-    @GetMapping("/onlytest")
-    public void test() throws IOException, ParseException {
-        receiveService.Receive();
-    }
 }
