@@ -13,6 +13,7 @@ import ReceiveList from "../views/ReceiveList.vue";
 import store from "@/store/store"; //로그인 여부를 위한 store import
 import NoApproval from "../views/NoApproval.vue";
 import NoApprovalList from "../views/NoApprovalList.vue";
+import ApprovalCompleteList from "../views/ApprovalCompleteList.vue";
 import MyPage from "../views/MyPage.vue";
 
 Vue.use(Router);
@@ -104,6 +105,16 @@ export default new Router({
         header: AppHeader,
         navbar: AppNavbar,
         default: NoApprovalList,
+        // footer: AppFooter
+      },
+    },
+    {
+      path: "/approval-complete-list",
+      name: "approval-complete-list",
+      components: {
+        header: AppHeader,
+        navbar: AppNavbar,
+        default: ApprovalCompleteList,
         // footer: AppFooter
       },
     },

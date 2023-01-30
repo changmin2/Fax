@@ -15,10 +15,10 @@
             <a href="/#/send">> 팩스보내기</a>
           </li>
           <li :class="{ 'li-a': toggleValue1 === false }">
-            <a href="/#/receive-wait">> 발신대기함</a>
+            <a href="/#/send-wait">> 발신대기함</a>
           </li>
           <li :class="{ 'li-a': toggleValue1 === false }">
-            <a href="#">> 발신팩스함</a>
+            <a href="/#/send-list">> 발신팩스함</a>
           </li>
         </ul>
       </li>
@@ -28,7 +28,7 @@
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue2 === false }">
-            <a href="#">> 부서팩스함</a>
+            <a href="/#/receive-list">> 부서팩스함</a>
           </li>
         </ul>
       </li>
@@ -39,10 +39,10 @@
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue3 === false }">
-            <a href="#">> 미결재</a>
+            <a href="/#/no-approval-list">> 미결재</a>
           </li>
           <li :class="{ 'li-a': toggleValue3 === false }">
-            <a href="#">> 결재완료</a>
+            <a href="/#/approval-complete-list">> 결재완료</a>
           </li>
         </ul>
       </li>
@@ -144,7 +144,8 @@ export default {
 <style scoped>
 .navbar-menu {
   margin-top: 160px;
-  margin-left: 50px;
+  margin-left: 30px;
+  width: 100%;
 }
 .navbar-user-tool {
   padding: 16px 0px 16px 0px;
@@ -166,7 +167,7 @@ ul {
   padding: 0px;
   margin: 0;
   overflow: auto;
-  width: 160px;
+  width: 100%;
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
 }
@@ -203,7 +204,7 @@ li a {
   display: block;
   color: #000;
   padding: 8px 8px 8px 8px;
-  width: 130px;
+
   margin-left: 10px;
   font-size: 1rem;
 }

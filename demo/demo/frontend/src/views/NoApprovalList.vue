@@ -1,7 +1,6 @@
 <template>
-  <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="shape shape-style-1"></div>
-    <div class="container pt-lg-md">
+  <section class="section section-shaped section-hero login-section my-0">
+    <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
         결재함 - <span style="color: #d7191f; display: inline">미결재</span>
       </div>
@@ -60,10 +59,10 @@
       </div>
 
       <hr />
-      <div class="row" style="width: 100%">
+      <div class="container-fluid">
         <div class="top-content search-area">
-          <div class="body-content ApprArea" style="width: 100%">
-            <table style="width: 100%" class="no-approval-table">
+          <div class="body-content">
+            <table class="no-approval-table" style="width: 100%">
               <tr class="ApprArea-header">
                 <th>
                   <input type="checkbox" />
@@ -83,30 +82,36 @@
 
               <tr v-for="(noApproval, index) in noApprovalList" :key="index">
                 <td><input type="checkbox" /></td>
-                <td>{{ noApproval }}</td>
-                <td>dd</td>
-              </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
+                <td>{{ noApproval.상태 }}</td>
+                <td>{{ noApproval.요청일자 }}</td>
+                <td>{{ noApproval.보내는사람 }}</td>
+                <td>{{ noApproval.받는사람 }}</td>
+                <td>{{ noApproval.팩스번호 }}</td>
+                <td>{{ noApproval.제목 }}</td>
                 <td>
-                  <base-button @click="noApprovalDetail('05042089819')">상세test</base-button>
+                  <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
                 </td>
-                <td>8</td>
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
+                <td>{{ noApproval.받는사람 }}</td>
+                <td>{{ noApproval.상태 }}</td>
+                <td>{{ noApproval.결제고유번호 }}</td>
+                <td>{{ noApproval.결재일자 }}</td>
               </tr>
             </table>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- modal 모달창 -->
+    <modal
+      :show.sync="modals.modal3"
+      body-classes="p-1"
+      modal-classes="modal-dialog-centered modal-big"
+      class="modal-class"
+    >
+      <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
+      <no-approval :noApprDetail="noApprDetail"></no-approval>
+    </modal>
   </section>
 </template>
 
@@ -114,13 +119,26 @@
 import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
+import Modal from "@/components/Modal.vue";
+import NoApproval from "@/views/NoApproval.vue";
 
 export default {
+  name: "no-approval-list",
+  components: {
+    Modal,
+    NoApproval,
+  },
   data() {
     return {
       noApprovalList: [],
 
       dateInfo: "",
+      modals: {
+        modal3: false,
+      },
+
+      apprNo: "",
+      noApprDetail: {},
     };
   },
   computed: {
@@ -142,10 +160,19 @@ export default {
       console.log(dateInfo);
     },
 
-    // 결재함
+    // detail - noApproval 설정
+    setNoApproval(apprNo) {
+      this.apprNo = apprNo;
+      this.noApprovalDetail(apprNo);
+      console.log("현재 apprNo = ", apprNo);
+      this.modals.modal3 = true;
+    },
+    // 결재함 리스트
     async noApproval() {
+      let formData = new FormData();
+      formData.append("userId", this.userInfo.userId);
       try {
-        let response = await http.post(`/payRecieve?userId=${this.userInfo.userId}`);
+        let response = await http.post(`/payRecieve`, formData);
         console.log(response);
         let { data } = response;
 
@@ -168,16 +195,21 @@ export default {
 
     // 결재함 상세
     async noApprovalDetail(apprNo) {
+      let formData = new FormData();
+      formData.append("apprNo", apprNo);
+
       try {
-        let response = await http.post(`/payDetail?apprNo=${apprNo}`);
+        let response = await http.post(`/payDetail`, formData);
+        console.log(formData);
         console.log(response);
         let { data } = response;
 
         if (data != null) {
           // 전송 성공
-          console.log(data);
+
           console.log("결재함 상세 조회 성공");
-          this.noApprovalList = data;
+          console.log(data);
+          this.noApprDetail = data[0];
 
           alertify.success("결재함 상세 조회가 완료되었습니다.", 1.5);
         } else {
@@ -194,24 +226,26 @@ export default {
 </script>
 
 <style scoped>
-.send-title {
-}
-.send-main {
-  width: 100vh;
-}
-
-.top-content {
-  display: flex;
-  width: 100%;
+.main-container {
+  margin-top: 100px;
+  margin-left: 3vw;
+  margin-right: 3vw;
 }
 
 .search-area {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
 }
+
 .search-area th,
-td {
+.search-area td {
   height: 40px;
+  width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 5rem;
+  padding: 0px 15px 0px 15px;
 }
 
 th {
@@ -229,7 +263,9 @@ th {
   font-weight: bold;
   padding: 12px;
 }
-
+.no-approval-table {
+  width: inherit;
+}
 .no-approval-table th,
 .no-approval-table td {
   text-align: center;
@@ -241,17 +277,9 @@ th {
   width: 180px;
   border: 0.0625rem solid rgb(169, 169, 169);
 }
-.no-approval-btn-group {
-}
-.no-approval-btn {
-  /* padding: 5px; */
-  /* width: 50px; */
-}
+
 hr {
   margin-top: 15px;
   margin-bottom: 15px;
-}
-.right-option {
-  /* margin-left: 100px; */
 }
 </style>
