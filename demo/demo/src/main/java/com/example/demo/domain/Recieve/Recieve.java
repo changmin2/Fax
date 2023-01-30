@@ -21,5 +21,6 @@ public class Recieve {
     String READ_YN;
     String FILE_DATA;
     String READ_USER;
+    String READ_DATE;
 
 }

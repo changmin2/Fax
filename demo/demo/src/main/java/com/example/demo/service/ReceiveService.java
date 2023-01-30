@@ -2,13 +2,20 @@ package com.example.demo.service;
 
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
+
+import com.example.demo.S3Uploader;
 import com.example.demo.domain.Form.RecieveForm;
 import com.example.demo.domain.Recieve.Recieve;
 import com.example.demo.repository.RecieveRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +32,7 @@ public class ReceiveService {
 
     private final GlobalVariables globalVariables;
     private final RecieveRepository recieveRepository;
+    private final S3Uploader s3Uploader;
 
     //발송닷컴에서 수신 목록 모두 가져오기
     public List<RecieveForm> Receive() throws IOException, ParseException {
@@ -92,6 +100,24 @@ public class ReceiveService {
         return recieveRepository.findAll();
     }
 
+    //DB에 저장된 특정 수신 정보 가져오기
+    @Transactional
+    public HashMap<String, String> targetRecieve(String RFax_No_Seq, HashMap<String,String> result){
+        Recieve recieve = recieveRepository.findById(RFax_No_Seq).get();
+        recieve.setREAD_YN("Y");
+        recieve.setREAD_USER("임시유저");
+        result.put("receive_DATE",recieve.getRECEIVE_DATE());
+        result.put("receive_No_SEQ",recieve.getRECEIVE_No_SEQ());
+        result.put("page_CNT",recieve.getPAGE_CNT());
+        result.put("fax_NO",recieve.getFAX_NO());
+        result.put("title",recieve.getTITLE());
+        result.put("read_DATE",recieve.getREAD_DATE());
+        result.put("read_USER",recieve.getREAD_USER());
+        result.put("read_YN",recieve.getREAD_YN());
+        result.put("sender_NO",recieve.getSENDER_NO());
+        return result;
+    }
+
     //DB에 저장되어 있지 않은 수신 목록 업데이트
     @Transactional
     public List<Recieve> DBListUpdate(List<RecieveForm> recieves){
@@ -113,5 +139,47 @@ public class ReceiveService {
 
         }
         return recieveRepository.findAll();
+    }
+
+    public HashMap<String, String> receiveDetail(String RFax_No_Seq) throws IOException, ParseException {
+        log.info("Service 진입");
+        HashMap<String,String> result = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
+        HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
+        log.info("Service 로직1");
+        //데이터 (요청변수 대소문자 구분)
+        multipart.addFormField("UserID", globalVariables.getFaxId());
+        multipart.addFormField("UserPW", globalVariables.getFaxPw());
+        multipart.addFormField("Service", "RFAX");
+        multipart.addFormField("Type", "Down");
+        multipart.addFormField("RFax_No", "050-4926-0237");
+        multipart.addFormField("RFax_No_Seq", RFax_No_Seq);
+
+        String ResultJson = multipart.finish();
+        JSONParser jsonParse = new JSONParser();
+        JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
+        String Result = (String) ObjToJson.get("Result");
+        Result = Result.replace("|","");
+        if(Result.equals("OK")){
+            String PDF = (String) ObjToJson.get("Data");
+            PDF = PDF.substring(28);
+            File f = new File(PDF);
+            log.info("진입");
+            byte[] binary = Base64.getDecoder().decode(PDF);
+            // 그대로 파일로 생성한다.
+            try (FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" +"temp.pdf")) {
+                stream.write(binary, 0, binary.length);
+            }
+            File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
+            String RealPath = "Receive"+"_"+RFax_No_Seq+".pdf";
+            s3Uploader.upload(n, "receive",RealPath);
+            result.put("filePath",globalVariables.getFilePath()+RealPath);
+        }else{
+            String Message = (String) ObjToJson.get("Message");
+            result.put("Message",Message);
+        }
+        result.put("Result",Result);
+        return result;
+
     }
 }
