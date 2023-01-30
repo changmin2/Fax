@@ -14,11 +14,13 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     int getMaxApprNo(@Param(value = "userkey") String userkey);
 
     //결재함 목록
-    @Query(value = "select a.APPR_NO,a.STATUS,u1.USER_NAME,DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,u2.USER_NAME APPR_NAME,s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE from TB_APPROVAL a \n" +
-            "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
-            "join TB_USER u2 on a.APPR_PERSON = u2.USER_ID \n" +
-            "join TB_SEND s on a.USER_KEY = s.USER_KEY \n" +
-            "where a.APPR_PERSON = :userId",nativeQuery = true)
+    @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
+            "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
+            "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
+            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
+            "       from TB_APPROVAL a,TB_SEND s\n" +
+            "       WHERE a.USER_KEY  = s.USER_KEY \n" +
+            "         AND a.APPR_PERSON = :userId",nativeQuery = true)
     List<Object[]> recieve(@Param(value = "userId")String userId);
 
     //결재함 상세 - 수신자리스트
@@ -28,30 +30,27 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     List<Object[]> detail(@Param(value = "apprNo")String apprNo);
 
     //결재함 상세
-    @Query(value = "select \n" +
-            "a.APPR_NO,\n" +
-            "a.APPR_PERSON,\n" +
-            "a.USER_NO,\n" +
-            "a.STATUS,\n" +
-            "a.PRIVATE_INFO_YN,\n" +
-            "a.USER_KEY,\n" +
-            "DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
-            "a.APPR_REMARK,\n" +
-            "u1.USER_NAME,u2.USER_NAME APPR_NAME,s.TITLE,s.FAX_NO,s.INSERT_DATE\n" +
-            "from TB_APPROVAL a \n" +
-            "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
-            "join TB_USER u2 on a.APPR_PERSON = u2.USER_ID \n" +
-            "join TB_SEND s on a.USER_KEY = s.USER_KEY \n" +
-            "where a.APPR_NO =:apprNo",nativeQuery = true)
+    @Query(value = "select a.APPR_NO,a.APPR_PERSON,a.USER_NO,a.STATUS,a.PRIVATE_INFO_YN,\n" +
+            "       a.USER_KEY,DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
+            "       a.APPR_REMARK,\n" +
+            "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
+            "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
+            "       s.TITLE,s.FAX_NO,s.INSERT_DATE\n" +
+            "from TB_APPROVAL a ,TB_SEND s\n" +
+            "WHERE a.USER_KEY  = s.USER_KEY \n" +
+            "AND a.APPR_NO =:apprNo",nativeQuery = true)
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
     //발송대기 현황
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,a.TITLE ,a.FAX_NO ,u1.USER_NAME,DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME \n" +
-            "from TB_SEND a \n" +
-            "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
-            "join TB_APPROVAL t on t.APPR_NO = a.APPR_NO \n" +
-            "join TB_USER u2 on t.APPR_PERSON = u2.USER_ID \n" +
-            "where a.USER_NO = :userId",nativeQuery = true)
+    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+            "              a.TITLE ,a.FAX_NO ,\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
+            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME\n" +
+            "        from TB_SEND a ,TB_APPROVAL t\n" +
+            "        where a.APPR_NO  = t.APPR_NO \n" +
+            "          and a.USER_NO = :userId",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId);
 
     //발송대기 상세 - 수신자 목록
@@ -60,18 +59,17 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     List<Object[]> detail2(@Param(value = "userKey")String userKey);
 
     //발송대기 상세
-    @Query(value = "select \n" +
-            "a.USER_KEY,\n" +
-            "a.STATUS,\n" +
-            "DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE,\n" +
-            "a.RESERVE_YN,\n" +
-            "a.PRIVATE_INFO_YN,\n" +
-            "a.TITLE,DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
-            "u.USER_NAME,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME,DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE\n" +
-            "from fax.TB_SEND a \n" +
-            "join fax.TB_USER u on a.USER_NO = u.USER_ID \n" +
-            "join fax.TB_APPROVAL t on t.APPR_NO = a.APPR_NO \n" +
-            "join fax.TB_USER u2 on t.APPR_PERSON = u2.USER_ID \n \n" +
-            "where a.USER_KEY =:userKey",nativeQuery = true)
+    @Query(value = "select a.USER_KEY,a.STATUS,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE,\n" +
+            "              a.RESERVE_YN,a.PRIVATE_INFO_YN,a.TITLE,\n" +
+            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
+            "              t.STATUS,\n" +
+            "              t.APPR_PERSON,\n" +
+            "              t.APPR_REMARK,\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
+            "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE\n" +
+            "       from TB_SEND a,TB_APPROVAL t\n" +
+            "       where t.APPR_NO = a.APPR_NO \n" +
+            "         and a.USER_KEY =:userKey",nativeQuery = true)
     List<Object[]> totalDetail2(@Param(value = "userKey")String userKey);
 }

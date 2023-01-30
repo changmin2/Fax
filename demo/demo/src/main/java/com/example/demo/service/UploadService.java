@@ -41,8 +41,8 @@ public class UploadService {
         return userRepository.getrealFileName(userkey);
     }
 
-    public  String  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
-
+    public  HashMap<String,String>  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
+        HashMap<String,String> result = new HashMap<>();
         ////////////////////////////////////////////
         //[팩스 - 변환 요청]
         ////////////////////////////////////////////
@@ -89,9 +89,10 @@ public class UploadService {
             File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
             s3Uploader.upload(n, "static",RealPath);
         }else{
-
+            String Message = (String) ObjToJson.get("Message");
+            result.put("Message",Message);
         }
-
-        return Result;
+        result.put("Result",Result);
+        return result;
     }
 }
