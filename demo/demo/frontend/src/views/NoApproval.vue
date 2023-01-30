@@ -52,23 +52,21 @@
             <thead>
               <tr>
                 <th scope="col">결재상태</th>
-                <th scope="col">사유</th>
+                <th scope="col" style="height: 100px">사유</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td></td>
-                <td></td>
+                <td style="height: 100px">
+                  <textarea class="no-approval-textarea"></textarea>
+                </td>
               </tr>
             </tbody>
           </table>
-          <div class="row">
-            <base-button type="secondary" class="no-approval-btn btn float-right">
-              승인
-            </base-button>
-            <base-button type="secondary" class="no-approval-btn btn float-right">
-              반송
-            </base-button>
+          <div class="no-approval-btn-group">
+            <base-button type="secondary" class="no-approval-btn"> 승인 </base-button>
+            <base-button type="secondary" class="no-approval-btn"> 반송 </base-button>
           </div>
         </div>
 
@@ -130,17 +128,30 @@ th {
   width: 100px;
 }
 .no-approval-table td {
-  width: 200px;
+  width: 250px;
   border-top: 0.0625rem solid #dee2e6;
   border-right: 0.0625rem solid #dee2e6;
 }
 .no-approval-table td:last-child {
   border-bottom: 0.0625rem solid #dee2e6;
+  margin: 0px;
+  padding: 0px;
 }
 .no-approval-btn-group {
+  margin-left: 240px;
 }
 .no-approval-btn {
   padding: 5px;
   width: 50px;
+}
+.no-approval-td-textarea {
+  height: 150px;
+}
+.no-approval-textarea {
+  height: 85px;
+  width: 240px;
+  resize: none;
+  margin: 5px;
+  border: none;
 }
 </style>
