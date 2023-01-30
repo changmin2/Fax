@@ -39,6 +39,7 @@ public class Send {
         this.PRIVATE_INFO_YN = req.getPrivate_info_yn();
         this.RESERVE_YN = req.getReserve_yn();
         this.APPR_USER_NO = req.getAppr_person();
+        this.FAX_NO = req.getFaxNo();
     }
 
 }

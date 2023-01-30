@@ -23,5 +23,7 @@ public class User {
     private int GRADE_CODE;
     private String DEPT_CODE;
     private String CUSTOMER_CODE;
+    private String IS_ABSENCE;
+    private String SUBSTITUTE;
 
 }
