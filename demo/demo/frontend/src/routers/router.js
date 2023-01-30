@@ -13,6 +13,7 @@ import ReceiveList from "../views/ReceiveList.vue";
 import store from "@/store/store"; //로그인 여부를 위한 store import
 import NoApproval from "../views/NoApproval.vue";
 import NoApprovalList from "../views/NoApprovalList.vue";
+import MyPage from "../views/MyPage.vue";
 
 Vue.use(Router);
 const requireAuth = () => (from, to, next) => {
@@ -105,6 +106,17 @@ export default new Router({
         default: NoApprovalList,
         // footer: AppFooter
       },
+    },
+    {
+      path: "/myPage",
+      name: "myPage",
+      components: {
+        header: AppHeader,
+        navbar: AppNavbar,
+        default: MyPage,
+        // footer: AppFooter
+      },
+      beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
     },
     {
       path: "*",

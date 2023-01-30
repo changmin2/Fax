@@ -69,7 +69,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              t.APPR_PERSON,\n" +
             "              t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
-            "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE\n" +
+            "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
+            "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME\n" +
             "       from TB_SEND a,TB_APPROVAL t\n" +
             "       where t.APPR_NO = a.APPR_NO \n" +
             "         and a.USER_KEY =:userKey",nativeQuery = true)
