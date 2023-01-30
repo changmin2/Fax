@@ -16,7 +16,7 @@
               <table>
                 <tr>
                   <th>제목</th>
-                  <td><base-input alternative v-model="title"> </base-input></td>
+                  <td><base-input v-model="title"> </base-input></td>
                 </tr>
                 <tr>
                   <th>발신 팩스번호</th>
@@ -44,6 +44,13 @@
                       placeholder="팩스번호"
                     />
                     <br />
+                  </td>
+                </tr>
+                <tr>
+                  <th></th>
+
+                  <td style="height: 100px">
+                    <textarea class="send-textarea"></textarea>
                   </td>
                 </tr>
                 <tr>

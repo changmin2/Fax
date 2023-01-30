@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view name="header" :userInfo="userInfo"></router-view>
+    <router-view name="navbar"></router-view>
     <main>
       <fade-transition origin="center" mode="out-in" :duration="250">
         <router-view @login-success="loginSuccess" />

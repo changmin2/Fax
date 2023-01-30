@@ -18,9 +18,6 @@
 
       <!-- 왼쪽 -->
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
-        
-       
-
         <li class="nav-item" menu-classes="dropdown-menu-xl ">
           <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
             <i class="ni ni-ui-01 d-lg-none"></i>
@@ -54,35 +51,34 @@
             </router-link>
           </a>
         </li>
-      
-
       </ul>
 
       <!-- 오른쪽 -->
       <ul v-if="isLogin" class="navbar-nav align-items-lg-center ml-lg-auto">
-        <span v-text="user_info"></span>님 반갑습니다.
+        <span v-text="user_info"></span
+        >님 반갑습니다.
         <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
-          <i class="ni ni-book-bookmark mr-0 d-lg-inline d-sm-none text-default"></i>
-          <!-- <router-link
-            to="/login"
+          <i class="fa fa-sign-out mr-0 d-lg-inline d-sm-none text-default"></i>
+          <span
+            @click="logout"
             :class="'nav-link-inner--text font-weight-600 text-' + textColor"
+            style="cursor: pointer"
+            >로그아웃</span
           >
-          로그아웃
-        </router-link> -->
-           <span @click="logout" :class="'nav-link-inner--text font-weight-600 text-' + textColor" style="cursor: pointer;">로그아웃</span>
+          <i class="fa fa-user ml-3 mr-0 d-lg-inline d-sm-none text-default"></i>
+          <span
+            :class="'nav-link-inner--text font-weight-600 text-' + textColor"
+            style="cursor: pointer"
+            >마이페이지</span
+          >
         </a>
-
-        
       </ul>
       <ul v-else class="navbar-nav align-items-lg-center ml-lg-auto">
         <div class="text-center nav-item">
           <router-link to="/login">
-            <base-button type="danger" :class="'my-3 col-12 text-binary'">
-              로그인
-            </base-button>
+            <base-button type="danger" :class="'my-3 col-12 text-binary'"> 로그인 </base-button>
           </router-link>
         </div>
-        
       </ul>
     </base-nav>
   </header>
@@ -105,8 +101,8 @@ export default {
 
   data() {
     return {
-      					// 파일 실제 경로
-					// fileRealPath: require("../../../BackEnd/src/main/resources/static/img/noProfile.png"),
+      // 파일 실제 경로
+      // fileRealPath: require("../../../BackEnd/src/main/resources/static/img/noProfile.png"),
     };
   },
 
@@ -132,7 +128,7 @@ export default {
     user_info() {
       let user = this.$store.state.users.userInfo;
       // console.log(user);
-      return user.userName+"("+user.userId+")";
+      return user.userName + "(" + user.userId + ")";
     },
   },
   methods: {
@@ -144,7 +140,7 @@ export default {
         // if (data.result == "login") {
         //   this.$router.push("/login");
         // } else {
-          this.doLogout();
+        this.doLogout();
         // }
       } catch (error) {
         console.log("BoardMainVue: error : ");
@@ -152,10 +148,10 @@ export default {
       }
     },
     doLogout() {
-      console.log('로그아웃 실행');
+      console.log("로그아웃 실행");
       this.$store.state.isLogin = false;
       this.$store.commit("SET_USER_INFO", {});
-      localStorage.setItem("isLogin",false);
+      localStorage.setItem("isLogin", false);
       this.$router.push("/login");
     },
   },
