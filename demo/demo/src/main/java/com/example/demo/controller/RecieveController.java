@@ -40,8 +40,11 @@ public class RecieveController {
     public HashMap<String,String> recieveDetail(@RequestBody Map<String, String> param, HttpServletRequest request) throws IOException, ParseException {
         String RFax_No_Seq = param.get("RFax_No_Seq");
         User user = (User) sessionManager.getSession(request);
+        //테스트 에러 안나게
+        String name = (user ==null)?"임시유저":user.getUSER_NAME();
+
         HashMap<String, String> result = receiveService.receiveDetail(RFax_No_Seq);
-        HashMap<String,String> re = receiveService.targetRecieve(RFax_No_Seq,result,user.getUSER_NAME());
+        HashMap<String,String> re = receiveService.targetRecieve(RFax_No_Seq,result,name);
         return re;
     }
 
