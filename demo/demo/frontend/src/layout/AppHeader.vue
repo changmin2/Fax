@@ -66,11 +66,13 @@
             >로그아웃</span
           >
           <i class="fa fa-user ml-3 mr-0 d-lg-inline d-sm-none text-default"></i>
+          <router-link to="/mypage">
           <span
             :class="'nav-link-inner--text font-weight-600 text-' + textColor"
             style="cursor: pointer"
             >마이페이지</span
           >
+          </router-link>
         </a>
       </ul>
       <ul v-else class="navbar-nav align-items-lg-center ml-lg-auto">
