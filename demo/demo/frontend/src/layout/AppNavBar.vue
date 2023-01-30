@@ -117,7 +117,7 @@ export default {
   },
   data() {
     return {
-      fileRealPath: require("/Users/sk/Downloads/Cat03.jpg"),
+      // fileRealPath: require("/Users/sk/Downloads/Cat03.jpg"),
       toggleValue1: false,
       toggleValue2: false,
       toggleValue3: false,
