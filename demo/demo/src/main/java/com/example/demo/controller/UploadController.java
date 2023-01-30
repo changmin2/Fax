@@ -35,7 +35,7 @@ public class UploadController {
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
     @ResponseBody
-    public String uploadSingle(@RequestParam("userId") String userId,@RequestParam(value = "userKey",defaultValue = "None") String userKey, @RequestParam("files") List<MultipartFile> files) throws Exception {
+    public HashMap<String,String> uploadSingle(@RequestParam("userId") String userId,@RequestParam(value = "userKey",defaultValue = "None") String userKey, @RequestParam("files") List<MultipartFile> files) throws Exception {
         Upload userForm = new Upload();
         log.info("=== 이미지파일 수신 거래발생 ===");
         log.info("userKey"+userKey);
@@ -49,12 +49,15 @@ public class UploadController {
         ++seq;
         String RealPath =userKey+"_"+seq+".pdf";
         String userFileName = "temp"+seq;
-        userService.convertPDF(files,RealPath);
+        HashMap<String,String> result = userService.convertPDF(files,RealPath);
+        if(result.get("Result").equals("ERROR")){
+            return result;
+        }
         userForm.setUserFileName(userFileName);
         userForm.setRealFileName(RealPath);
         userService.register(userForm);
-
-        return userKey;
+        result.put("userKey",userKey);
+        return result;
     }
 
 

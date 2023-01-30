@@ -61,6 +61,12 @@
               </tr>
             </tbody>
           </table>
+
+          <span class="mt-3">> 제목</span>
+          <div class="row ml-1">
+            <base-input class="receive-detail-title-input" style=""> </base-input>
+            <base-button type="secondary" class="no-approval-btn ml-2"> 제목저장 </base-button>
+          </div>
         </div>
 
         <div class="col">
@@ -115,13 +121,34 @@ th {
 .no-approval-table th,
 .no-approval-table td {
   text-align: center;
-  height: 30px;
+  height: 35px;
   line-height: 0px;
 }
 .no-approval-table th {
   width: 100px;
 }
 .no-approval-table td {
-  width: 200px;
+  width: 250px;
+  border-top: 0.0625rem solid #dee2e6;
+  border-right: 0.0625rem solid #dee2e6;
+}
+.no-approval-table td:last-child {
+  border-bottom: 0.0625rem solid #dee2e6;
+  margin: 0px;
+  padding: 0px;
+}
+.no-approval-btn-group {
+  margin-left: 240px;
+}
+.no-approval-btn {
+  padding: 5px;
+  width: 70px;
+  height: 40px;
+}
+.receive-detail-title-input {
+  width: 270px;
+}
+.receive-detail-title-input >>> .form-control {
+  height: 40px;
 }
 </style>

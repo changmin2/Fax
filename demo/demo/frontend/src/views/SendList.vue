@@ -49,15 +49,18 @@
             <table style="width: 100%;">
                 <tr>
                   <td colspan = "7">
-                      <div class="text-center" style="float:left;">
-                        <base-button type="secondary" class="no-approval-btn btn float-left" @click="apprdelete">
+                      <div class="text-center" style="float:left; margin-bottom:5   px;">
+            <!--           <base-button type="secondary" class="no-approval-btn btn float-left" @click="apprdelete">
                           삭제
-                        </base-button>
+                        </base-button>  -->
                         <base-button type="secondary" class="no-approval-btn btn float-left"@click="reuse">
                           재사용
                         </base-button>
                         <base-button type="secondary" class="no-approval-btn btn float-left" @click="resend">
                           재전송
+                        </base-button>
+                        <base-button type="secondary" class="no-approval-btn btn float-left" @click="back">
+                          회수
                         </base-button>
                       </div>
                   </td>
@@ -77,11 +80,16 @@
                   <th>결과(성공/실패)</th>
                 </tr>
 
-               <tr v-for="(receive, index) in getterReceiveList"
-                  :key="index"
-                >
-                <td>{{ receive.No }}</td>
-                <td>{{ receive.No }}</td>
+               <tr v-for="(receive, index) in receivelist" :key="index" >
+                <td><input type="checkbox" /></td>
+                <td>{{ receive.제목 }}</td>
+                <td>
+                  <base-button @click="noApprovalDetail('')">상세test</base-button>
+                </td>
+                <td>{{ receive.등록일자 }}</td>
+                <td>{{ receive.결재자이름 }}</td>
+                <td>{{ receive.결재상태 }}</td>
+                <td>{{ receive.상태 }}</td>
                 </tr>
             </table>
           </div>
@@ -93,26 +101,76 @@
 
 <script>
 import { mapGetters } from "vuex";
+import http from "@/common/axios.js";
+import alertify from "alertifyjs";
 
 export default {
   components: {
-
   },
   computed: {
     ...mapGetters({
-      getterReceiveList: "getReceiveList",
+      isLogin: "getIsLogin",
+      userKey: "getUserKey",
+      userInfo: "getUserInfo",
     }),
   },
   data() {
     return {
-        list: {},
+        receivelist: [],
     };
   },
   methods: {
     // 조회
     async apprsearch() {
 
+      try {
+        let response = await http.post("/sendRecieve", {
+          userId: this.userInfo.userId,
+        });
+
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          console.log(data);
+          console.log("전송 성공");
+          this.receivelist = data;
+        } else {
+          console.log("전송 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", data.Message);
+        alertify.error("실패했습니다.", 1.5);
+      }
+
       },
+
+    // 상세보기
+    async receiveDetail(apprNo) {
+      try {
+        let response = await http.post("/sendRecieveDetail", {
+          userKey: apprNo,
+        });
+        console.log(response);
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          console.log(data);
+          console.log("상세 조회 성공");
+          this.receivelist = data;
+
+          alertify.success("상세 조회가 완료되었습니다.", 1.5);
+        } else {
+          console.log("상세 조회 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.error("상세 조회가 실패했습니다.", 1.5);
+      }
+    },
     // 삭제
     async apprdelete() {
 
@@ -123,6 +181,11 @@ export default {
       },
     // 재발송
     async resend() {
+
+      },
+
+    // 회수
+    async back() {
 
       },
   }
