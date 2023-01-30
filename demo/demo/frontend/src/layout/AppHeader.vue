@@ -1,18 +1,15 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main mt-lg-0 mt-sm-3" transparent type="" effect="dark" expand>
-      <router-link slot="brand" class="navbar-brand mr-lg-3" to="/">
-        <!-- <img :src="logoImage" alt="logo" /> -->
+      <router-link slot="brand" class="navbar-brand" to="/">
+        <img :src="logoImage" alt="logo" />
       </router-link>
 
-      <div class="row" slot="content-header" slot-scope="{ closeMenu }">
+      <div class="row" slot="content-header">
         <div class="col-6 collapse-brand">
           <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
-            <img src="img/brand/logo1.png" />
+            <img src="img/brand/logo3.png" />
           </a>
-        </div>
-        <div class="col-6 collapse-close">
-          <close-button @click="closeMenu"></close-button>
         </div>
       </div>
 
@@ -67,11 +64,11 @@
           >
           <i class="fa fa-user ml-3 mr-0 d-lg-inline d-sm-none text-default"></i>
           <router-link to="/mypage">
-          <span
-            :class="'nav-link-inner--text font-weight-600 text-' + textColor"
-            style="cursor: pointer"
-            >마이페이지</span
-          >
+            <span
+              :class="'nav-link-inner--text font-weight-600 text-' + textColor"
+              style="cursor: pointer"
+              >마이페이지</span
+            >
           </router-link>
         </a>
       </ul>
@@ -120,7 +117,7 @@ export default {
       return this.$store.state.headerDarkMode ? "default" : "secondary";
     },
     logoImage() {
-      return this.$store.state.headerDarkMode ? "img/brand/logo2.png" : "img/brand/logo1.png";
+      return this.$store.state.headerDarkMode ? "img/brand/logo3.png" : "img/brand/logo3.png";
     },
 
     isLogin() {
@@ -160,4 +157,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.navbar-brand {
+  left: 0px;
+  margin-right: 30px;
+}
+</style>
