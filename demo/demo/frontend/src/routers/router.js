@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import AppHeader from "../layout/AppHeader";
 import AppFooter from "../layout/AppFooter";
+import AppNavbar from "../layout/AppNavBar";
 import Landing from "../views/Landing.vue";
 import Login from "../views/Login.vue";
 import Send from "../views/Send.vue";
@@ -31,8 +32,9 @@ export default new Router({
       name: "components",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: Landing,
-        // footer: AppFooter
+        // footer: AppFooter,
       },
       beforeEnter: requireAuth(),
     },
@@ -53,7 +55,7 @@ export default new Router({
         default: Send,
         // footer: AppFooter
       },
-      beforeEnter: requireAuth(),
+      beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
     },
     {
       path: "/receive-detail",
