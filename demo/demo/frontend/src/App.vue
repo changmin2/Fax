@@ -1,8 +1,9 @@
 <template>
   <div id="app">
+    <!-- include a theme -->
     <router-view name="header" :userInfo="userInfo"></router-view>
     <div class="row">
-      <div class="col-1">
+      <div class="col-lg-2">
         <router-view name="navbar"></router-view>
       </div>
       <div class="col">
@@ -25,7 +26,7 @@ export default {
   components: {
     FadeTransition,
   },
-
+  created() {},
   data() {
     return {
       isLogin: false,
