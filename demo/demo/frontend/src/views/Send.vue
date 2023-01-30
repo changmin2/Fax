@@ -314,6 +314,7 @@ export default {
       }
     },
     async getApprUsers() {
+      
       //결재자 가져오기
       try {
         // console.log(this.userId);
@@ -352,11 +353,9 @@ export default {
     },
   },
   mounted() {
-    let userInfo = this.userInfo;
-    this.userId = userInfo.userId;
-    this.faxNo = userInfo.faxNo;
-    console.log(userInfo);
-    this.getApprUsers();
+    setTimeout(() => {     let userInfo = this.userInfo;
+      this.userId = userInfo.userId;
+      this.faxNo = userInfo.faxNo; this.getApprUsers()}, 0);
   },
 };
 </script>
