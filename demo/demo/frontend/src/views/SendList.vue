@@ -11,7 +11,6 @@
 
       <div class="row" style="width: 100%;">
         <div class="top-content search-area">
-            <form id ="master" role="form" style="width: 100%;">
               <table style="width: 100%;">
                 <colgroup>
                     <col style="width:10%;">
@@ -23,9 +22,25 @@
                 <tr>
                   <th>조회기간</th>
                   <td>
-                    <input type="text" id="searchFrom" name = "searchFrom" style="width:120px;"/>
-                    ~
-                    <input type="text" id="searchTo" name = "searchTo" style="width:120px;"/>
+                    <form style="border: none">
+                      <input
+                        type="date"
+                        id = "searchFrom"
+                        value="today"
+                        class="form-select"
+                        v-model="searchFrom"
+                        @change="setDateInfo(searchFrom)"
+                      />
+                      ~
+                      <input
+                        type="date"
+                        id = "searchTo"
+                        value="today"
+                        class="form-select"
+                        v-model="searchTo"
+                        @change="setDateInfo(searchTo)"
+                      />
+                    </form>
                   </td>
                   <th>조건</th>
                   <td>
@@ -43,7 +58,6 @@
                   </td>
                 </tr>
               </table>
-            </form>
           </div>
           <div class = "body-content ApprArea" style="width: 100%;">
             <table style="width: 100%;">
@@ -80,11 +94,11 @@
                   <th>결과(성공/실패)</th>
                 </tr>
 
-               <tr v-for="(receive, index) in receivelist" :key="index" >
+                <tr v-for="(receive, index) in receivelist" :key="index" >
                 <td><input type="checkbox" /></td>
                 <td>{{ receive.제목 }}</td>
                 <td>
-                  <base-button @click="noApprovalDetail('')">상세test</base-button>
+                  <base-button @click="receiveDetail( receive.발송번호 )">상세test</base-button>
                 </td>
                 <td>{{ receive.등록일자 }}</td>
                 <td>{{ receive.결재자이름 }}</td>
@@ -95,6 +109,84 @@
           </div>
         </div>
       </div>
+
+        <!-- 컴포넌트 MyModal -->
+        <modal :show.sync="modal"
+           modal-classes="modal-big"
+           v-if: detailOpen
+        >
+            <h6 slot="header" class="modal-title" id="modal-title-default">발신팩스내역</h6>
+            <table style="width:100%;">
+               <colgroup>
+                   <col style="width:40%;">
+                   <col style="width:60%;">
+               </colgroup>
+               <tr>
+                 <td>
+                    <div class="left-content col">
+                       <span class="mt-3">> 보낸사람</span>
+                       <table class="no-approval-table table">
+                         <thead>
+                           <tr>
+                             <th scope="col">보낸사람</th>
+                             <th scope="col">팩스번호</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                             <tr>
+                                 <td>{{ receivelistDetail[0].발송자}}</td>
+                                 <td>{{ receivelist[0].팩스번호}}</td>
+                             </tr>
+                         </tbody>
+                       </table>
+
+                       <span class="mt-3">> 받는곳</span>
+                       <table class="no-approval-table table">
+                         <thead>
+                           <tr>
+                             <th scope="col">받는사람</th>
+                             <th scope="col">팩스번호</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           <tr v-for="(detail, index) in receivelistDetail[0].받는사람정보" :key="index" >
+                             <td>{{ detail.이름 }}</td>
+                             <td>{{ detail.팩스번호 }}</td>
+                           </tr>
+                         </tbody>
+                       </table>
+
+                       <span class="mt-3">> 발신 정보</span>
+                       <table class="no-approval-table table">
+                         <thead>
+                           <tr>
+                             <th scope="col">발신일시</th>
+                             <th scope="col">발신상태</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           <tr>
+                             <td>{{ receivelistDetail[0].등록일자 }}</td>
+                             <td>{{ receivelistDetail[0].상태 }}</td>
+                           </tr>
+                         </tbody>
+                       </table>
+                     </div>
+
+                 </td>
+                 <td>
+                     <div class="col" style="width:100%; height:100%;">
+                       <iframe
+                         src="https://bnksys.s3.ap-northeast-2.amazonaws.com/BNK00120230127024348_6.pdf"
+                         style="width: 100%; height: 95%;"
+                       ></iframe>
+                     </div>
+                 </td>
+               </tr>
+            </table>
+            </div>
+        </modal>
+
     </div>
   </section>
 </template>
@@ -103,9 +195,11 @@
 import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
+import Modal from "@/components/Modal.vue";
 
 export default {
   components: {
+    Modal
   },
   computed: {
     ...mapGetters({
@@ -117,15 +211,45 @@ export default {
   data() {
     return {
         receivelist: [],
+        receivelistDetail: ["받는사람정보"],
+        detailOpen : false,
+        searchFrom: '',
+        searchTo: '',
+        modal: false,
     };
   },
   methods: {
+    // date 설정
+    setDateInfo( datedata ) {
+      let dateInfo = this.datedata;
+      dateInfo = datedata.split("-");
+      dateInfo = dateInfo.join("");
+      console.log(dateInfo);
+    },
+    getNow() {
+      const today = new Date();
+
+      const year = today.getFullYear(); // 년
+      const month = today.getMonth();   // 월
+      const day = today.getDate();      // 일
+
+      var searchFrom = new Date(year, month, day - 7)
+      this.searchFrom = searchFrom.toISOString().split("T")[0];
+      var searchTo = new Date(year, month, day + 7)
+      this.searchTo = searchTo.toISOString().split("T")[0];
+      setDateInfo(this.searchFrom);
+      setDateInfo(this.searchTo);
+      console.log(searchFrom + ","+ searchTo);
+    },
+
     // 조회
     async apprsearch() {
 
       try {
         let response = await http.post("/sendRecieve", {
           userId: this.userInfo.userId,
+          searchFrom: this.searchFrom,
+          searchTo: this.searchTo,
         });
 
         let { data } = response;
@@ -135,6 +259,7 @@ export default {
           console.log(data);
           console.log("전송 성공");
           this.receivelist = data;
+          this.detailOpen = false;
         } else {
           console.log("전송 실패");
         }
@@ -148,6 +273,7 @@ export default {
 
     // 상세보기
     async receiveDetail(apprNo) {
+      this.modal = true;
       try {
         let response = await http.post("/sendRecieveDetail", {
           userKey: apprNo,
@@ -159,7 +285,8 @@ export default {
           // 전송 성공
           console.log(data);
           console.log("상세 조회 성공");
-          this.receivelist = data;
+          this.receivelistDetail = data;
+          this.detailOpen = true;
 
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
         } else {
@@ -188,8 +315,20 @@ export default {
     async back() {
 
       },
-  }
 
+    openModal() {
+      this.modal = true
+    },
+    //모달 닫기
+    closeModal() {
+      this.modal = false
+    },
+
+  },
+  mounted() {
+    this.getNow();
+    this.apprsearch();
+  },
 };
 </script>
 
@@ -229,4 +368,18 @@ th {
   border : 1px solid;
 }
 
+.popup-view{
+  opacity: 0;
+  display: none;
+  visibility: hidden;
+}
+.active{
+  opacity: 1;
+  display: block;
+  visibility: visible;
+}
+
+.modal-big{
+  max-width : 1400px;
+}
 </style>
