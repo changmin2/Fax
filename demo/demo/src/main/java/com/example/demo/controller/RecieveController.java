@@ -1,22 +1,15 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.domain.Form.RecieveForm;
+import com.example.demo.domain.Recieve.Recieve;
 import com.example.demo.service.ReceiveService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -26,9 +19,13 @@ public class RecieveController {
 
     private final ReceiveService receiveService;
 
+    //수신 목록함 가져오기
     @RequestMapping("/recieveList")
-    public void recieveList() throws IOException, ParseException {
+    public List<Recieve> recieveList() throws IOException, ParseException {
+        //api호출을 통해 얻은 전체 수신 목록
         List<RecieveForm> receive = receiveService.Receive();
+        //DB에 저장되어 있지 않은 수신 목록 업데이트
+        return receiveService.DBListUpdate(receive);
 
     }
 }

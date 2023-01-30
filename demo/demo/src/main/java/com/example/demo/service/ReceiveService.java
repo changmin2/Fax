@@ -2,15 +2,16 @@ package com.example.demo.service;
 
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
-import com.example.demo.VO.SendRes;
+import java.util.List;
 import com.example.demo.domain.Form.RecieveForm;
+import com.example.demo.domain.Recieve.Recieve;
+import com.example.demo.repository.RecieveRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -23,7 +24,9 @@ import java.util.*;
 public class ReceiveService {
 
     private final GlobalVariables globalVariables;
+    private final RecieveRepository recieveRepository;
 
+    //발송닷컴에서 수신 목록 모두 가져오기
     public List<RecieveForm> Receive() throws IOException, ParseException {
         Map<String, String> headers = new HashMap<>();
         HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
@@ -54,35 +57,61 @@ public class ReceiveService {
 
         int idx = -1;
         List<RecieveForm> rf = new ArrayList<>();
-        List<String> tempString = new ArrayList<>();
-        RecieveForm nn = new RecieveForm();
-        String[] split = new String[9];
+        RecieveForm nn;
+        String[] split = new String[7];
+        List<String> want = new ArrayList<>(Arrays.asList("RFax_No","RFax_No_Seq","Recv_Date","Sender_No","Page_Cnt","Read"));
+
         while(tokenizer.hasMoreTokens()){
-            idx+=1;
+
             String s1 = tokenizer.nextToken();;
             String[] strings = s1.split("=");
-            if(strings.length==2){
+            if(strings.length==2 && want.contains(strings[0].replace(" ",""))){
+                idx+=1;
+                log.info(strings[0] +" "+idx);
                 split[idx] = strings[1];
-            }else split[idx]="";
-
-            if(idx==8){
-                nn.setNo(split[0]);
-                nn.setRFax_No(split[1]);
-                nn.setRFax_No_Seq(split[2]);
-                nn.setRecv_Date(split[3]);
-                nn.setSender_No(split[4]);
-                nn.setSender_NM(split[5]);
-                nn.setPage_Cnt(split[6]);
-                nn.setRead(split[7]);
-                nn.setMemo(split[8]);
+            }
+            if(idx==5){
                 idx=-1;
+                nn = new RecieveForm();
+                nn.setFAX_NO(split[0]);
+                nn.setRECEIVE_No_SEQ(split[1]);
+                nn.setRECEIVE_DATE(split[2]);
+                nn.setSENDER_NO(split[3]);
+                nn.setPAGE_CNT(split[4]);
+                nn.setREAD_YN("N");
                 rf.add(nn);
             }
 
         }
-        log.info(rf.toString());
-
 
         return rf;
+    }
+
+    //TB_RECIEVE에 저장된 모든 수신 목록 가져오기
+    public List<Recieve> allListRecieve(){
+        return recieveRepository.findAll();
+    }
+
+    //DB에 저장되어 있지 않은 수신 목록 업데이트
+    @Transactional
+    public List<Recieve> DBListUpdate(List<RecieveForm> recieves){
+
+        for (RecieveForm recieve : recieves) {
+            if(!recieveRepository.existsById(recieve.getRECEIVE_No_SEQ())){
+                Recieve re = new Recieve();
+                re.setRECEIVE_No_SEQ(recieve.getRECEIVE_No_SEQ());
+                re.setFAX_NO(recieve.getFAX_NO());
+                re.setFILE_DATA("");
+                re.setRECEIVE_DATE(recieve.getRECEIVE_DATE());
+                re.setREAD_USER("");
+                re.setPAGE_CNT(recieve.getPAGE_CNT());
+                re.setTITLE(recieve.getTITLE());
+                re.setREAD_YN("N");
+                re.setSENDER_NO(recieve.getSENDER_NO());
+                recieveRepository.save(re);
+            }
+
+        }
+        return recieveRepository.findAll();
     }
 }

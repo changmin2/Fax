@@ -30,23 +30,6 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     List<Object[]> detail(@Param(value = "apprNo")String apprNo);
 
     //결재함 상세
-<<<<<<< HEAD
-    @Query(value = "select b.APPR_NO \n" +
-            "      ,b.STATUS\n" +
-            "      ,b.APPR_DATE\n" +
-            "      ,(select USER_NAME\n" +
-            "           from TB_USER\n" +
-            "          where user_id=b.USER_NO) as user_name\n" +
-            "          \n" +
-            "          \n" +
-            "          \n" +
-            "          \n" +
-            "  from TB_SEND a\n" +
-            "       ,TB_APPROVAL b \n" +
-            " where a.STATUS='결재대기'\n" +
-            "   and a.USER_KEY  = b.USER_KEY\n" +
-            "   and b.APPR_PERSON = :apprNo",nativeQuery = true)
-=======
     @Query(value = "select a.APPR_NO,a.APPR_PERSON,a.USER_NO,a.STATUS,a.PRIVATE_INFO_YN,\n" +
             "       a.USER_KEY,DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
             "       a.APPR_REMARK,\n" +
@@ -56,7 +39,6 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "from TB_APPROVAL a ,TB_SEND s\n" +
             "WHERE a.USER_KEY  = s.USER_KEY \n" +
             "AND a.APPR_NO =:apprNo",nativeQuery = true)
->>>>>>> a8cd730a705e8f71c7fbb4a0cedf53ba3d6ba671
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
     //발송대기 현황

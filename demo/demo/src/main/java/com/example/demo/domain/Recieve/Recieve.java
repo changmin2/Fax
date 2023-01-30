@@ -1,11 +1,18 @@
-package com.example.demo.domain.Form;
+package com.example.demo.domain.Recieve;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
-public class RecieveForm {
-//{Page_Cnt=1, Read=Y, No=2, RFax_No=05049260237, Sender_NM=, Recv_Date=2023-01-25 16:13, RFax_No_Seq=2, Sender_No=0151801049655017, Memo=}
+@Entity
+@Table(name="TB_RECEIVE")
+public class Recieve {
+    @Id
     String RECEIVE_No_SEQ;
+
     String FAX_NO;
     String TITLE;
     String RECEIVE_DATE;
@@ -14,8 +21,5 @@ public class RecieveForm {
     String READ_YN;
     String FILE_DATA;
     String READ_USER;
-
-
-
 
 }
