@@ -138,7 +138,7 @@ export default {
   methods: {
     async logout() {
       try {
-        let { data } = await http.get("/logout");
+        let { data } = await http.post("/logout");
         // console.log(data);
 
         // if (data.result == "login") {

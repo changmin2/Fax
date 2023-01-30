@@ -11,9 +11,10 @@ export default {
         //   console.log("getUserInfo :",data);
   
           if (data.flag == true) {
+            let userInfo = data.userInfo;
             // 유저정보 받아오기
             commit("SET_USER_LOGIN", { isLogin: true });
-            commit("SET_USER_INFO", { userId: data.userInfo.user_ID,userName: data.userInfo.user_NAME });
+            commit("SET_USER_INFO", { userId: userInfo.USER_ID,userName: userInfo.USER_NAME,faxNo: userInfo.FAX_NO });
           } else {
             // 세션값 없음
             // console.log(data.message);

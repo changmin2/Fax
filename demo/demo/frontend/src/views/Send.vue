@@ -19,6 +19,10 @@
                   <td><base-input alternative v-model="title"> </base-input></td>
                 </tr>
                 <tr>
+                  <th>발신 팩스번호</th>
+                  <td><base-input alternative v-text="faxNo"> </base-input></td>
+                </tr>
+                <tr>
                   <th>수신처</th>
                   <td>
                     <input
@@ -35,7 +39,7 @@
                     />
                     <input
                       alternative
-                      v-model="reserveFax"
+                      v-model="receiveFax"
                       style="width: 30%"
                       placeholder="팩스번호"
                     />
@@ -53,17 +57,15 @@
                       id="inputFileUploadInsert"
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
-                  </td>
-                </tr>
-                <tr>
                   <base-checkbox class="mt-2" v-model="privateInfo"
-                    >개인정보 포함여부</base-checkbox
-                  >
+                    >개인정보 포함여부</base-checkbox>
+                  </td>
+               
                 </tr>
                 <tr>
                   <th>결재자</th>
                   <td>
-                    <select v-model="apprUserNo">
+                    <select v-model="apprUserNo" style="width:40%">
                       <option v-for="(item, index) in apprUsers" :key="index" :value="item.id">
                         {{ item.name }}
                       </option>
@@ -139,9 +141,10 @@ export default {
       reserve: "",
       receiveCompany: "",
       receiveName: "",
-      reserveFax: "",
+      receiveFax: "",
       sendDate: "",
       userId: "",
+      faxNo: "",
       files: [],
       apprUsers: [],
     };
@@ -225,6 +228,7 @@ export default {
 
     // 팩스보내기
     async send() {
+      console.log()
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
       if (attachFiles.length == 0) {
@@ -235,7 +239,7 @@ export default {
       // console.log(this.userId);
       let sendData = {
         destinationList: [
-          { company: this.receiveCompany, name: this.receiveName, fax: this.receiveName },
+          { company: this.receiveCompany, name: this.receiveName, fax: this.receiveFax },
         ],
         // destinationList: [{ company: "회사명", name: this.receiver, fax: this.receiveNo }],
         userKey: this.userKey,
@@ -245,6 +249,7 @@ export default {
         reserve_yn: this.reserve ? "Y" : "N",
         private_info_yn: this.privateInfo ? "Y" : "N",
         appr_person: this.apprUserNo,
+        faxNo: this.faxNo,
       };
 
       try {
@@ -270,12 +275,13 @@ export default {
     async getApprUsers() {
       //결재자 가져오기
       try {
+        // console.log(this.userId);
         let response = await http.post("/getApprUsers", {
           userId: this.userId,
         });
         let { data } = response;
         this.apprUsers = data;
-        console.log(this.apprUsers);
+        // console.log(this.apprUsers);
       } catch (error) {
         console.log(error);
         console.log("에러1");
@@ -285,6 +291,7 @@ export default {
   mounted() {
     let userInfo = this.userInfo;
     this.userId = userInfo.userId;
+    this.faxNo = userInfo.faxNo;
     this.getApprUsers();
   },
 };
