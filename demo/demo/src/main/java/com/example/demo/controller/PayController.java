@@ -79,4 +79,13 @@ public class PayController {
         List<HashMap<String, Object>> hashMaps = payService.sendRecieveDetail(userKey);
         return hashMaps;
     }
+
+    //회수
+    @PostMapping("/withdraw")
+    public String withdraw(@RequestBody Map<String,String> map){
+        String userKey = map.get("userKey");
+        payService.withdraw(userKey);
+        return "회수완료";
+    }
+
 }

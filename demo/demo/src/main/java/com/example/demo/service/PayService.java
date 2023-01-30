@@ -214,4 +214,9 @@ public class PayService {
         log.info(lists.toString());
         return lists;
     }
+
+    public void withdraw(String userKey){
+        Approval appr = approvalRepository.findAppr(userKey);
+        approvalRepository.delete(appr);
+    }
 }
