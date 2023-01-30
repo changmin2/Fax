@@ -1,12 +1,19 @@
 <template>
   <div id="app">
     <router-view name="header" :userInfo="userInfo"></router-view>
-    <router-view name="navbar"></router-view>
-    <main>
-      <fade-transition origin="center" mode="out-in" :duration="250">
-        <router-view @login-success="loginSuccess" />
-      </fade-transition>
-    </main>
+    <div class="row">
+      <div class="col-1">
+        <router-view name="navbar"></router-view>
+      </div>
+      <div class="col">
+        <main>
+          <fade-transition origin="center" mode="out-in" :duration="250">
+            <router-view @login-success="loginSuccess" />
+          </fade-transition>
+        </main>
+      </div>
+    </div>
+
     <router-view name="footer"></router-view>
   </div>
 </template>

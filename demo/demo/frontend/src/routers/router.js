@@ -42,9 +42,7 @@ export default new Router({
       path: "/login",
       name: "login",
       components: {
-        // header: AppHeader,
         default: Login,
-        // footer: AppFooter
       },
     },
     {
@@ -52,6 +50,7 @@ export default new Router({
       name: "send",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: Send,
         // footer: AppFooter
       },
@@ -62,6 +61,7 @@ export default new Router({
       name: "receive-detail",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: ReceiveDetail,
         // footer: AppFooter
       },
@@ -71,6 +71,7 @@ export default new Router({
       name: "send-list",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: SendList,
         // footer: AppFooter
       },
@@ -80,6 +81,7 @@ export default new Router({
       name: "receive-list",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: ReceiveList,
         // footer: AppFooter
       },
@@ -89,6 +91,7 @@ export default new Router({
       name: "no-approval",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: NoApproval,
         // footer: AppFooter
       },
@@ -98,6 +101,7 @@ export default new Router({
       name: "no-approval-list",
       components: {
         header: AppHeader,
+        navbar: AppNavbar,
         default: NoApprovalList,
         // footer: AppFooter
       },
