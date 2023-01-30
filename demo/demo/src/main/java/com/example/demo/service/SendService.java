@@ -79,6 +79,8 @@ public class SendService {
         return "결재 신청 완료";
     }
     public String sendApi(Send send) throws IOException{
+        //gbn : 1 재전송 , 0 : 처음 전송
+
         ////////////////////////////////////////////
         //[팩스 - 발송 요청]
         ////////////////////////////////////////////
@@ -144,5 +146,9 @@ public class SendService {
 
         String msg = Result.equals("OK")? "팩스 발송완료되었습니다.":res.getMessage();
         return msg;
+    }
+    public String reSend(String userKey) throws IOException{
+        Send send = sendRepository.findById(userKey).get();
+        return sendApi(send);
     }
 }

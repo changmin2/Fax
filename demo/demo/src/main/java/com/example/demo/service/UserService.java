@@ -86,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public HashMap<String, Object> setAbsence(String userId,String substitute,String isAbsence,String userName){
+    public HashMap<String, Object> setAbsence(String userId,String substitute,String isAbsence){
         HashMap<String, Object> resultMap = new HashMap<>();
         boolean flag = true;
         String msg = "";
@@ -100,11 +100,10 @@ public class UserService {
         }
         user.setIS_ABSENCE(isAbsence);
         user.setSUBSTITUTE(isAbsence.equals("Y")?substitute:"");
-        user.setUSER_NAME(userName);
 
 //        resultMap.put("user",user);
         resultMap.put("flag",flag);
-        resultMap.put("msg","부재 여부 설정이 완료되었습니다.");
+        resultMap.put("msg","부재여부 설정이 완료되었습니다.");
         return resultMap;
     }
 }

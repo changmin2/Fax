@@ -13,44 +13,53 @@
         <div class="col-lg-5">
           <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
             <form role="form">
+             
               <table>
                 <tr>
                   <th>제목</th>
-                  <td><base-input v-model="title"> </base-input></td>
+                  <td><base-input alternative v-model="title" class="my-1"> </base-input></td>
                 </tr>
                 <tr>
                   <th>발신 팩스번호</th>
-                  <td><base-input alternative v-text="faxNo"> </base-input></td>
+                  <td><base-input  alternative v-model="faxNo" readonly class="my-1"> </base-input></td>
                 </tr>
                 <tr>
                   <th>수신처</th>
                   <td>
-                    <input
+                    <div style="float:left">
+                      <base-input
                       alternative
                       v-model="receiveCompany"
-                      style="width: 30%"
+                      class="d-inline-flex my-1"
+                      style="width: 30%; font-size: 2em;"
                       placeholder="상호"
-                    />
-                    <input
+                    /> 
+                    <base-input
                       alternative
                       v-model="receiveName"
-                      style="width: 30%"
+                      class="d-inline-flex my-1"
+                      style="width: 30%;"
                       placeholder="이름"
                     />
-                    <input
+                    <base-input
                       alternative
                       v-model="receiveFax"
-                      style="width: 30%"
+                      class="d-inline-flex my-1"
+                      style="width: 30%;"
                       placeholder="팩스번호"
                     />
-                    <br />
+                    <base-button icon="fa fa-plus fa-lg" class="px-3 py-2.5" @click="setReceiveJSON"></base-button>
+                    </div>
                   </td>
                 </tr>
                 <tr>
                   <th></th>
+                  <td style="height: 100px;">
+                    <div class="d-flex align-items-start">
+                    <textarea class="send-textarea p-3"  readonly v-model="showJSON" style="width:90%; font-size:0.9em"></textarea>
+                    <base-button icon="fa fa-minus fa-lg"  type="light" class="px-3 py-2.5" @click="setDeleteJSON"/>
+                    </div>
 
-                  <td style="height: 100px">
-                    <textarea class="send-textarea"></textarea>
                   </td>
                 </tr>
                 <tr>
@@ -64,7 +73,7 @@
                       id="inputFileUploadInsert"
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
-                  <base-checkbox class="mt-2" v-model="privateInfo"
+                  <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo"
                     >개인정보 포함여부</base-checkbox>
                   </td>
                
@@ -82,7 +91,7 @@
                 <tr>
                   <th>예약설정</th>
                   <td>
-                    <div class="ml-3">
+                    <div class="ml-1">
                       <label class="ml-1">
                         <input
                           type="radio"
@@ -93,7 +102,7 @@
                         />
                         즉시</label
                       >
-                      <label class="ml-1">
+                      <label class="ml-1 mr-3">
                         <input
                           type="radio"
                           class="ml-3"
@@ -104,15 +113,15 @@
                         />
                         예약</label
                       >
-                      <div v-if="reserve">
-                        예약일시
+                      <div v-if="reserve" class="ml-5 d-inline-flex">
+                        <soan class="mr-4 mt-1">예약일시</soan>
                         <datetime
                           type="datetime"
                           :week-start="7"
                           v-model="sendDate"
                           use12-hour
                         ></datetime>
-                        <span class="ml-3">예약 value: {{ sendDate }}</span>
+                        <!-- <span class="ml-3">예약 value: {{ sendDate }}</span> -->
                       </div>
                     </div>
                   </td>
@@ -120,13 +129,29 @@
               </table>
               <div class="text-center mt-3">
                 <base-button type="danger" @click="send">전송</base-button>
-                <base-button type="danger">미리보기 후 전송</base-button>
+                <base-button type="danger" @click="openModal">미리보기 후 전송</base-button>
               </div>
             </form>
           </card>
         </div>
       </div>
     </div>
+    <div>
+      <modal :show.sync="modal" >
+                <h6 slot="header" class="modal-title" id="modal-title-default">팩스 미리보기</h6>
+                <div style="width:100%; height:650px;">
+                       <iframe
+                         src="https://bnksys.s3.ap-northeast-2.amazonaws.com/BNK00120230127024348_6.pdf"
+                         style="width: 100%; height: 100%;"
+                       ></iframe>
+                     </div>
+                <template slot="footer">
+                    <base-button type="danger" @click="send">전송</base-button>
+                    <base-button type="link" class="ml-auto" @click="modal = false">Close
+                    </base-button>
+                </template>
+            </modal>
+  </div>
   </section>
 </template>
 
@@ -135,9 +160,10 @@ import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
 import "vue-datetime/dist/vue-datetime.css";
+import Modal from "@/components/Modal.vue";
 
 export default {
-  components: {},
+  components: { Modal },
   data() {
     return {
       title: "",
@@ -154,6 +180,10 @@ export default {
       faxNo: "",
       files: [],
       apprUsers: [],
+      receiveJSON: [],
+      showJSON: "",
+      modal: false,
+      detailOpen : false,
     };
   },
   computed: {
@@ -218,15 +248,13 @@ export default {
 
       try {
         let { data } = await http.post("/upload", formData, options);
-        console.log(data);
-
-        if (this.userKey == "None") {
-          this.$store.commit("SET_USER_KEY", data);
-        }
-        if (data != null) {
-          console.log("업로드 성공");
+        if (data.Result=='OK') {
+          alertify.success("업로드 성공", 1.5);
+          if (this.userKey == "None") {
+          this.$store.commit("SET_USER_KEY", data.userKey);
+          }
         } else {
-          console.log("업로드 실패");
+          alertify.error("업로드 실패", 1.5);
         }
       } catch (error) {
         console.log(error);
@@ -235,19 +263,26 @@ export default {
 
     // 팩스보내기
     async send() {
-      console.log()
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
-      if (attachFiles.length == 0) {
+      if (attachFiles.length == 0||this.userKey=='None') {
         //파일선택 필수조건
         alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
         return;
       }
+      if ( this.receiveJSON.length == 0) {
+        //수신처 필수조건
+        alertify.error("수신처를 등록해주세요.", 1.5);
+        return;
+      }
+      if ( this.apprUserNo == '') {
+        //결재자 필수조건
+        alertify.error("결재자를 등록해주세요.", 1.5);
+        return;
+      }
       // console.log(this.userId);
       let sendData = {
-        destinationList: [
-          { company: this.receiveCompany, name: this.receiveName, fax: this.receiveFax },
-        ],
+        destinationList: this.receiveJSON,
         // destinationList: [{ company: "회사명", name: this.receiver, fax: this.receiveNo }],
         userKey: this.userKey,
         userID: this.userId,
@@ -294,11 +329,34 @@ export default {
         console.log("에러1");
       }
     },
+    //수신처 설정
+    setReceiveJSON() {
+      let temp =   { company: this.receiveCompany, name: this.receiveName, fax: this.receiveFax.replaceAll('-','') }
+      this.receiveJSON.push(temp);
+      this.showJSON += '상호 : '+temp.company+', 이름 : '+temp.name+', 팩스번호 : '+this.receiveFax+'\n';
+      this.receiveCompany=''; this.receiveName=''; this.receiveFax=''; 
+    },
+    setDeleteJSON() {
+      this.receiveJSON.pop();
+      this.showJSON = "";
+      for (let index = 0; index < this.receiveJSON.length; index++) {
+        let temp = this.receiveJSON[index];
+        this.showJSON += '상호 : '+temp.company+', 이름 : '+temp.name+', 팩스번호 : '+temp.fax+'\n';
+      }
+    },
+    openModal() {
+      this.modal = true
+    },
+    //모달 닫기
+    closeModal() {
+      this.modal = false
+    },
   },
   mounted() {
     let userInfo = this.userInfo;
     this.userId = userInfo.userId;
     this.faxNo = userInfo.faxNo;
+    console.log(userInfo);
     this.getApprUsers();
   },
 };
@@ -347,6 +405,13 @@ td {
   resize: none;
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
+}
+.vdatetime-input {
+  resize: none;
+  border: 1px solid #cad1d7;
+  padding: 3px 0px 3px 10px;
+  border-radius: 0.25rem;
+  color: #8898aa;
 }
 
 input[type="file"]::file-selector-button {

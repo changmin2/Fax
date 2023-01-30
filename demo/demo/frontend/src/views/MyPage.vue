@@ -23,7 +23,7 @@
                   <th class="pb-3">아이디</th>
                   <td><base-input v-model="USER_ID" class="mr-3" readonly></base-input></td>
                   <th class="pl-4 pb-3">이름</th>
-                  <td><base-input v-model="USER_NAME"> </base-input></td>
+                  <td><base-input v-model="USER_NAME" readonly> </base-input></td>
                 </tr>
                 <tr>
                   <th class="pb-3">부서</th>
@@ -36,8 +36,8 @@
                    <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
                    <td colspan="2"></td>
                 </tr>
-                <tr>
-                  <th v-if="isApprUser">부재여부</th>
+                <tr v-if="isApprUser">
+                  <th>부재여부</th>
                     <td colspan="2" v-if="isApprUser">
                     <div class="d-flex flex-row justify-content-start" style="height:50px">
                     <div class="align-self-center mt-1">
@@ -70,18 +70,10 @@
                       </div>
                     </div>
                   </td>
-                  <td v-else colspan="3"></td>
                   <td class="d-flex justify-content-end">
                    <base-button type="danger"  @click="setAbsence">저장</base-button>
                   </td>
                 </tr>
-                <!-- <tr v-else>
-                   <td colspan="4">
-                    <div style="text-align:right">
-                      <base-button type="danger"  @click="setAbsence">저장</base-button>
-                    </div>
-                  </td>
-                </tr> -->
               </table>
               
           </card>
@@ -187,10 +179,11 @@ export default {
           userName: this.USER_NAME,
         });
         let { data } = response;
-        console.log(data);
-        // if(data.flag){
-        //   console.log(data)
-        // }
+        if (data.flag == true) {
+          alertify.success(data.msg, 1.5);
+        } else {
+          alertify.error(data.msg, 1.5);
+        }
       } catch (error) {
         console.log(error);
         console.log("에러1");

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.VO.SendReq;
+import com.example.demo.domain.Send.Send;
 import com.example.demo.service.SendService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
@@ -36,5 +38,10 @@ public class SendController {
 
         return sendService.sendInsert(req);
     }
-
+    @RequestMapping(method = RequestMethod.POST, path = "/reSend")
+    @ResponseBody
+    public String reSend(@RequestBody Map<String, String> param) throws IOException, ParseException {
+        String userKey = param.get("userKey");
+        return sendService.reSend(userKey);
+    }
 }

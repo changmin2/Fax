@@ -104,8 +104,7 @@ public class LoginController {
         String userId = map.get("userId"); //유저아이디
         String substitute = map.get("substitute"); //부재여부 Y일경우, 대체자 아이디 / N이면 ""
         String isAbsence = map.get("isAbsence"); //부재여부 (Y/N)
-        String userName = map.get("userName"); //유저이름
-        HashMap<String, Object> result = userService.setAbsence(userId,substitute,isAbsence,userName);
+        HashMap<String, Object> result = userService.setAbsence(userId,substitute,isAbsence);
         return result;
     }
 

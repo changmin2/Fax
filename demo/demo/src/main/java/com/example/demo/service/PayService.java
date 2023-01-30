@@ -214,9 +214,13 @@ public class PayService {
         log.info(lists.toString());
         return lists;
     }
-
+    @Transactional
     public void withdraw(String userKey){
         Approval appr = approvalRepository.findAppr(userKey);
         approvalRepository.delete(appr);
+        Send send = sendRepository.findById(userKey).get();
+        send.setSTATUS("회수");
+        send.setAPPR_NO("");
+        send.setAPPR_USER_NO("");
     }
 }

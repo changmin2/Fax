@@ -50,9 +50,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME\n" +
-            "        from TB_SEND a ,TB_APPROVAL t\n" +
-            "        where a.APPR_NO  = t.APPR_NO \n" +
-            "          and a.USER_NO = :userId",nativeQuery = true)
+            "            from TB_SEND a \n" +
+            "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO     \n" +
+            "    where a.USER_NO = :userId",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId);
 
     //발송대기 상세 - 수신자 목록
@@ -71,9 +71,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
             "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME\n" +
-            "       from TB_SEND a,TB_APPROVAL t\n" +
-            "       where t.APPR_NO = a.APPR_NO \n" +
-            "         and a.USER_KEY =:userKey",nativeQuery = true)
+            "       from TB_SEND a \n" +
+            "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO     \n" +
+            "    where a.USER_KEY = :userKey ",nativeQuery = true)
     List<Object[]> totalDetail2(@Param(value = "userKey")String userKey);
 
     @Query(value = "SELECT * FROM TB_APPROVAL\n" +
