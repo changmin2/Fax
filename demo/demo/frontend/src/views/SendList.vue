@@ -49,10 +49,10 @@
             <table style="width: 100%;">
                 <tr>
                   <td colspan = "7">
-                      <div class="text-center" style="float:left;">
-                        <base-button type="secondary" class="no-approval-btn btn float-left" @click="apprdelete">
+                      <div class="text-center" style="float:left; margin-bottom:5   px;">
+            <!--           <base-button type="secondary" class="no-approval-btn btn float-left" @click="apprdelete">
                           삭제
-                        </base-button>
+                        </base-button>  -->
                         <base-button type="secondary" class="no-approval-btn btn float-left"@click="reuse">
                           재사용
                         </base-button>

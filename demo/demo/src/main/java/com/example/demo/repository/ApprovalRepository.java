@@ -14,7 +14,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     int getMaxApprNo(@Param(value = "userkey") String userkey);
 
     //결재함 목록
-    @Query(value = "select a.APPR_NO,a.STATUS,u1.USER_NAME,a.APPR_DATE,u2.USER_NAME APPR_NAME,s.TITLE,s.FAX_NO,s.INSERT_DATE from TB_APPROVAL a \n" +
+    @Query(value = "select a.APPR_NO,a.STATUS,u1.USER_NAME,DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,u2.USER_NAME APPR_NAME,s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE from TB_APPROVAL a \n" +
             "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
             "join TB_USER u2 on a.APPR_PERSON = u2.USER_ID \n" +
             "join TB_SEND s on a.USER_KEY = s.USER_KEY \n" +
@@ -35,7 +35,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "a.STATUS,\n" +
             "a.PRIVATE_INFO_YN,\n" +
             "a.USER_KEY,\n" +
-            "a.APPR_DATE,\n" +
+            "DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
             "a.APPR_REMARK,\n" +
             "u1.USER_NAME,u2.USER_NAME APPR_NAME,s.TITLE,s.FAX_NO,s.INSERT_DATE\n" +
             "from TB_APPROVAL a \n" +
@@ -46,7 +46,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
     //발송대기 현황
-    @Query(value = "select a.USER_KEY ,a.STATUS ,a.SEND_DATE  ,a.TITLE ,a.FAX_NO ,u1.USER_NAME,a.INSERT_DATE,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME \n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,a.TITLE ,a.FAX_NO ,u1.USER_NAME,DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME \n" +
             "from TB_SEND a \n" +
             "join TB_USER u1 on a.USER_NO = u1.USER_ID \n" +
             "join TB_APPROVAL t on t.APPR_NO = a.APPR_NO \n" +
@@ -63,11 +63,11 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     @Query(value = "select \n" +
             "a.USER_KEY,\n" +
             "a.STATUS,\n" +
-            "a.SEND_DATE,\n" +
+            "DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE,\n" +
             "a.RESERVE_YN,\n" +
             "a.PRIVATE_INFO_YN,\n" +
-            "a.TITLE,a.INSERT_DATE,\n" +
-            "u.USER_NAME,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME,t.APPR_DATE\n" +
+            "a.TITLE,DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "u.USER_NAME,t.STATUS,t.APPR_PERSON,t.APPR_REMARK,u2.USER_NAME APPR_NAME,DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE\n" +
             "from fax.TB_SEND a \n" +
             "join fax.TB_USER u on a.USER_NO = u.USER_ID \n" +
             "join fax.TB_APPROVAL t on t.APPR_NO = a.APPR_NO \n" +
