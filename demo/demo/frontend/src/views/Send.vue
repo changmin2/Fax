@@ -64,15 +64,15 @@
                       id="inputFileUploadInsert"
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
-                  <base-checkbox class="mt-2" v-model="privateInfo"
-                    >개인정보 포함여부</base-checkbox>
+                    <base-checkbox class="mt-2" v-model="privateInfo"
+                      >개인정보 포함여부</base-checkbox
+                    >
                   </td>
-               
                 </tr>
                 <tr>
                   <th>결재자</th>
                   <td>
-                    <select v-model="apprUserNo" style="width:40%">
+                    <select v-model="apprUserNo" style="width: 40%">
                       <option v-for="(item, index) in apprUsers" :key="index" :value="item.id">
                         {{ item.name }}
                       </option>
@@ -204,7 +204,7 @@ export default {
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
       console.log(attachFiles);
       if (attachFiles.length > 5) {
-        alertify.success("파일은 최대 5개까지 업로드가능합니다.", 1.5);
+        alertify.alert("오류", "파일은 최대 5개까지 업로드가능합니다.", 1.5);
         return;
       }
       if (attachFiles.length > 0) {
@@ -235,12 +235,12 @@ export default {
 
     // 팩스보내기
     async send() {
-      console.log()
+      console.log();
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
       if (attachFiles.length == 0) {
         //파일선택 필수조건
-        alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
+        alertify.alert("첨부하실 파일을 선택해주세요.", 1.5);
         return;
       }
       // console.log(this.userId);
@@ -269,14 +269,14 @@ export default {
           console.log(data);
           console.log("전송 성공");
           this.$router.push("/");
-          alertify.success("팩스 전송 결재신청이 완료되었습니다.", 1.5);
+          alertify.alert("팩스 전송 결재신청이 완료되었습니다.", 1.5);
         } else {
           console.log("전송 실패");
         }
       } catch (error) {
         // 전송 실패
         console.log("오류메시지 - ", data.Message);
-        alertify.error("팩스 전송 결재신청에 실패했습니다.", 1.5);
+        alertify.alert("팩스 전송 결재신청에 실패했습니다.", 1.5);
       }
     },
     async getApprUsers() {

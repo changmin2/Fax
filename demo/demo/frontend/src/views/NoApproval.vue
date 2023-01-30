@@ -12,11 +12,11 @@
         미결재정보
       </div>
 
-      <div class="row">
+      <div class="container-fluid">
         <div class="left-content col">
           <span class="mt-3">> 결재요청정보</span>
 
-          <table class="no-approval-table table">
+          <table class="no-approval-table table" style="width: 100%">
             <thead>
               <tr>
                 <th scope="col">결재요청자</th>

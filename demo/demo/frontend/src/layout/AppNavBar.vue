@@ -42,7 +42,7 @@
             <a href="/#/no-approval-list">> 미결재</a>
           </li>
           <li :class="{ 'li-a': toggleValue3 === false }">
-            <a href="/#">> 결재완료</a>
+            <a href="/#/approval-complete-list">> 결재완료</a>
           </li>
         </ul>
       </li>
@@ -145,6 +145,7 @@ export default {
 .navbar-menu {
   margin-top: 160px;
   margin-left: 30px;
+  width: 100%;
 }
 .navbar-user-tool {
   padding: 16px 0px 16px 0px;

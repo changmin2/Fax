@@ -3,10 +3,10 @@
     <!-- include a theme -->
     <router-view name="header" :userInfo="userInfo"></router-view>
     <div class="row">
-      <div class="col-lg-2">
+      <div class="col-lg-2 col-md-2 col-sm-2">
         <router-view name="navbar"></router-view>
       </div>
-      <div class="col">
+      <div class="col-lg-10 col-md-9 col-sm-10">
         <main>
           <fade-transition origin="center" mode="out-in" :duration="250">
             <router-view @login-success="loginSuccess" />

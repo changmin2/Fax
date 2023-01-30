@@ -6,7 +6,7 @@
         class="receive-title display-4 mb-4 font-weight-800 text-default"
         style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
       >
-        발신대기함
+        팩스수신함
       </div>
 
       <div class="row" style="width: 100%;">

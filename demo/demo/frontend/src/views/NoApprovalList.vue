@@ -238,7 +238,7 @@ export default {
 }
 
 .search-area th,
-td {
+.search-area td {
   height: 40px;
   width: 80px;
   overflow: hidden;
@@ -281,8 +281,5 @@ th {
 hr {
   margin-top: 15px;
   margin-bottom: 15px;
-}
-.right-option {
-  /* margin-left: 100px; */
 }
 </style>
