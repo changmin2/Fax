@@ -86,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public HashMap<String, Object> setAbsence(String userId,String substitute,String isAbsence){
+    public HashMap<String, Object> setAbsence(String userId,String substitute,String isAbsence,String userName){
         HashMap<String, Object> resultMap = new HashMap<>();
         boolean flag = true;
         String msg = "";
@@ -99,7 +99,8 @@ public class UserService {
             return resultMap;
         }
         user.setIS_ABSENCE(isAbsence);
-        user.setSUBSTITUTE(substitute);
+        user.setSUBSTITUTE(isAbsence.equals("Y")?substitute:"");
+        user.setUSER_NAME(userName);
 
 //        resultMap.put("user",user);
         resultMap.put("flag",flag);

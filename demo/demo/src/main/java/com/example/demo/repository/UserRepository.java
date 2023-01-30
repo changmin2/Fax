@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             "JOIN (SELECT u.DEPT_CODE, u.GRADE_CODE FROM TB_USER u WHERE u.USER_ID = :userId ) u2   \n" +
             "ON u.DEPT_CODE = u2.DEPT_CODE AND u.GRADE_CODE = u2.GRADE_CODE-1                       \n" +
             "JOIN TB_COMM c ON u.GRADE_CODE = c.COMM_CODE                                            \n" +
-            "WHERE u.IS_ABSENCE = 'Y'                                                                 "
+            "WHERE u.IS_ABSENCE != 'Y'                                                                 "
             , nativeQuery = true)
     List<Object[]> getSubstituteUser(@Param(value = "userId") String userId);
 

@@ -12,7 +12,13 @@
       <div class="row">
         <div class="col-lg-5">
           <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
-              <table>
+              <table style="width: 100%">
+                <colgroup>
+                  <col class="col-1">
+                  <col class="col-3">
+                  <col class="col-1">
+                  <col class="col-3">
+                </colgroup>
                 <tr>
                   <th class="pb-3">아이디</th>
                   <td><base-input v-model="USER_ID" class="mr-3" readonly></base-input></td>
@@ -27,11 +33,12 @@
                 </tr>
                 <tr>
                   <th class="pb-3">팩스번호</th>
-                   <td colspan="3"><base-input v-model="FAX_NO" readonly> </base-input></td>
+                   <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
+                   <td colspan="2"></td>
                 </tr>
-                <tr v-if="isApprUser">
-                  <th>부재여부</th>
-                    <td colspan="2">
+                <tr>
+                  <th v-if="isApprUser">부재여부</th>
+                    <td colspan="2" v-if="isApprUser">
                     <div class="d-flex flex-row justify-content-start" style="height:50px">
                     <div class="align-self-center mt-1">
                       <label class="ml-1">
@@ -55,7 +62,7 @@
                     </div>
                       <div v-if="iS_ABSENCEflag" class="ml-3 d-flex flex-row flex-fill align-self-center">
                         <span class="mt-1 ml-3">대체자</span>
-                          <select v-model="SUBSTITUTE" class="ml-3">
+                          <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
                           <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
                             {{ item.name }}
                           </option>
@@ -63,17 +70,18 @@
                       </div>
                     </div>
                   </td>
+                  <td v-else colspan="3"></td>
                   <td class="d-flex justify-content-end">
-                   <base-button type="danger">저장</base-button>
+                   <base-button type="danger"  @click="setAbsence">저장</base-button>
                   </td>
                 </tr>
-                <tr v-else>
-                   <td colspan="4" >
-                    <div class="text-end">
-                   <base-button type="danger">저장</base-button>
+                <!-- <tr v-else>
+                   <td colspan="4">
+                    <div style="text-align:right">
+                      <base-button type="danger"  @click="setAbsence">저장</base-button>
                     </div>
                   </td>
-                </tr>
+                </tr> -->
               </table>
               
           </card>
@@ -99,16 +107,18 @@ export default {
       SUBSTITUTE: "",
       DEPT_NAME: "",
       COMM_NAME: "",
-      DEPT_CODE: 0,
+      GRADE_CODE: 0,
       subUsers: [],
     };
   },
   computed: {
      iS_ABSENCEflag() {
+      console.log(this.IS_ABSENCE);
+      console.log(this.IS_ABSENCE=='Y');
       return this.IS_ABSENCE=='Y';
     },
-     isApprUser() {
-      return this.DEPT_CODE > 1;
+    isApprUser() {
+      return this.GRADE_CODE > 1;
     },
     // ...mapGetters({
     //   userInfo: "getUserInfo",
@@ -122,17 +132,18 @@ export default {
           let { data } = response;
   
           if (data.flag == true) {
+          
             let userInfo = data.userInfo;
-            console.log(userInfo);
+              console.log(userInfo);
             this.USER_ID = userInfo.USER_ID;
             this.FAX_NO = userInfo.FAX_NO;
             this.IS_ABSENCE = userInfo.IS_ABSENCE;
+            console.log(userInfo.IS_ABSENCE);
             this.USER_NAME = userInfo.USER_NAME;
             this.SUBSTITUTE = userInfo.SUBSTITUTE;
             this.DEPT_NAME = userInfo.DEPT_NAME;
             this.COMM_NAME = userInfo.COMM_NAME;
-            this.DEPT_CODE = userInfo.DEPT_CODE;
-            
+            this.GRADE_CODE = userInfo.GRADE_CODE;
             this.getSubstituteUser();
           } else {
             // 세션값 없음
@@ -142,7 +153,7 @@ export default {
             router.push("/login");
           }
         } catch (error) {
-          console.loge(error);
+          console.log(error);
           localStorage.setItem("isLogin",false);
           router.push("/login");
         }
@@ -150,7 +161,6 @@ export default {
     async getSubstituteUser() {
       //결재자 가져오기
       try {
-        console.log(this.USER_ID);
         let response = await http.post("/getSubstituteUser", {
           userId: this.USER_ID,
         });
@@ -158,6 +168,29 @@ export default {
         if(data.flag){
           this.subUsers = data.users;
         }
+      } catch (error) {
+        console.log(error);
+        console.log("에러1");
+      }
+    },
+    async setAbsence() {
+      //대체여부 저장
+      try {
+        console.log(this.USER_ID);
+        console.log(this.SUBSTITUTE);
+        console.log(this.IS_ABSENCE);
+        console.log(this.USER_NAME);
+        let response = await http.post("/setAbsence", {
+          userId: this.USER_ID,
+          substitute: this.SUBSTITUTE,
+          isAbsence: this.IS_ABSENCE,
+          userName: this.USER_NAME,
+        });
+        let { data } = response;
+        console.log(data);
+        // if(data.flag){
+        //   console.log(data)
+        // }
       } catch (error) {
         console.log(error);
         console.log("에러1");
