@@ -22,6 +22,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/api")
 @Slf4j
+
 public class SendController {
     @Autowired
     SendService sendService;

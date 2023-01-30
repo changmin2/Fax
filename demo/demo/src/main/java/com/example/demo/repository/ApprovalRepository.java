@@ -3,9 +3,11 @@ package com.example.demo.repository;
 import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Form.ApprovalForm;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 public interface ApprovalRepository extends JpaRepository<Approval, String> {
@@ -72,4 +74,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       where t.APPR_NO = a.APPR_NO \n" +
             "         and a.USER_KEY =:userKey",nativeQuery = true)
     List<Object[]> totalDetail2(@Param(value = "userKey")String userKey);
+
+    @Query(value = "SELECT * FROM TB_APPROVAL\n" +
+            "where USER_KEY =:userKey\n", nativeQuery = true)
+    Approval findAppr(@Param(value = "userKey")String userKey);
+
+
 }
