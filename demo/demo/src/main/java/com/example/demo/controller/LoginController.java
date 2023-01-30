@@ -77,6 +77,7 @@ public class LoginController {
     }
     //로그아웃
     @PostMapping("/logout")
+    @ResponseBody
     public String logout(HttpServletRequest request){
         sessionManager.expire(request);
         return "로그아웃성공";
@@ -92,6 +93,7 @@ public class LoginController {
     @ResponseBody
     public HashMap<String, Object> getSubstituteUser(@RequestBody Map<String,String> map){
         String userId = map.get("userId"); //유저아이디
+        System.out.println("대체자 불러오기"+userId);
         HashMap<String, Object> result = userService.getSubstituteUser(userId);
         return result;
     }

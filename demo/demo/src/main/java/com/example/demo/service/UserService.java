@@ -66,6 +66,11 @@ public class UserService {
         }
 
         List<HashMap<String, String>> list=new ArrayList<>();
+        HashMap<String, String> tempMap = new HashMap<>();
+        tempMap.put("id", "");
+        tempMap.put("name", "미지정");
+        list.add(tempMap);
+
         List<Object[]> users = userRepository.getSubstituteUser(userId);
         for (Object[] result : users) {
             HashMap<String, String> map = new HashMap<>();

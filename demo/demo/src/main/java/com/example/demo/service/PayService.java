@@ -184,7 +184,7 @@ public class PayService {
         //보내는 사람 정보
         List<Object[]> detail = approvalRepository.detail2(userKey);
         List<Object[]> total = approvalRepository.totalDetail2(userKey);
-        String[] arr2 =  {"발송번호","상태","전송일자","예약여부","개인정보보호여부","제목","등록일자","발송자","결재상태","결재자ID","사유","결재자이름","결재일자", "팩스번호"};
+        String[] arr2 =  {"발송번호","상태","전송일자","예약여부","개인정보보호여부","제목","등록일자","발송자","결재상태","결재자ID","사유","결재자이름","결재일자", "팩스번호","파일명"};
         List<HashMap<String,Object>> lists = new ArrayList<>();
         List<HashMap<String,Object>> lists2 = new ArrayList<>();
 
