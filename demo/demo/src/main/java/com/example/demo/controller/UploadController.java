@@ -47,7 +47,7 @@ public class UploadController {
         }
 
         ++seq;
-        String RealPath =userKey+"_"+seq+".pdf";
+        String RealPath =userKey+"_"+"1.pdf";
         String userFileName = "temp"+seq;
         HashMap<String,String> result = userService.convertPDF(files,RealPath);
         if(result.get("Result").equals("ERROR")){

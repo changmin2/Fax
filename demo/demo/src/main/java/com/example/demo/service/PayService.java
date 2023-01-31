@@ -224,9 +224,14 @@ public class PayService {
         send.setAPPR_NO("");
         send.setAPPR_USER_NO("");
     }
-
+    //회수 -> 삭제
     @Transactional
     public void apprNoDelete(String apprNo) {
         approvalRepository.deleteApproNo(apprNo);
+    }
+
+    //회수->수정
+    public Send sendInfoFind(String userKey){
+        return sendRepository.findById(userKey).get();
     }
 }

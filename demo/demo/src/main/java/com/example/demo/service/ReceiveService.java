@@ -104,7 +104,7 @@ public class ReceiveService {
     @Transactional
     public HashMap<String, String> targetRecieve(String RFax_No_Seq, HashMap<String,String> result,String userId){
         Recieve recieve = recieveRepository.findById(RFax_No_Seq).get();
-
+        log.info(recieve.toString());
         if(recieve.getREAD_USER().equals("")){
             recieve.setREAD_USER(userId);
             recieve.setREAD_YN("Y");

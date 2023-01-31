@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.Send.Send;
+import com.example.demo.repository.SendRepository;
 import com.example.demo.service.PayService;
+import com.example.demo.service.SendService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -29,14 +32,9 @@ public class PayController {
     //결재함 목록
     @PostMapping("/payRecieve")
     @ResponseBody
-<<<<<<< HEAD
-    public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String, String> map) {
-        String userId = map.get("userId"); //유저아이디
-=======
     public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String,String> map){
         String userId= map.get("userId"); //유저아이디
         String status= map.get("status"); //상태 ( 미결재 : 0 , 결재&
->>>>>>> 65870579610cd55baf3dbcb0b0c26a9c24b7ecc6
         List<HashMap<String, Object>> hashMaps = payService.apprList(userId);
         return hashMaps;
     }
@@ -99,14 +97,27 @@ public class PayController {
     public HashMap<String,Object> withdrawDelete(@RequestBody Map<String, String> map) {
         HashMap<String,Object> result = new HashMap<>();
         String apprNo = map.get("APPR_NO");
+
         if (apprNo==null){
             result.put("flag",false);
             result.put("message","찾는 문서고유번호가 없습니다.");
             return result;
         }
+
         result.put("flag",true);
         result.put("message","성공");
         payService.apprNoDelete(apprNo);
+        return result;
+    }
+
+    //회수 -> 수정
+    @PostMapping("/withdrawUpdate")
+    public HashMap<String, Object> withdrawUpdate(@RequestBody Map<String,String > map){
+        HashMap<String,Object> result = new HashMap<>();
+        String userKey = map.get("userKey");
+        Send find = payService.sendInfoFind(userKey);
+        result.put("Info",find);
+        result.put("fileName",userKey+"_"+"1.pdf");
         return result;
     }
 

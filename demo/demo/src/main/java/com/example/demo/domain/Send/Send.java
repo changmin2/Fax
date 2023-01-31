@@ -42,6 +42,24 @@ public class Send {
         this.FAX_NO = req.getFaxNo();
     }
 
+    @Override
+    public String toString() {
+        return "Send{" +
+                "USER_KEY='" + USER_KEY + '\'' +
+                ", USER_NO='" + USER_NO + '\'' +
+                ", FAX_NO='" + FAX_NO + '\'' +
+                ", TITLE='" + TITLE + '\'' +
+                ", PRIVATE_INFO_YN='" + PRIVATE_INFO_YN + '\'' +
+                ", APPR_USER_NO='" + APPR_USER_NO + '\'' +
+                ", RESERVE_YN='" + RESERVE_YN + '\'' +
+                ", SEND_DATE='" + SEND_DATE + '\'' +
+                ", APPR_NO='" + APPR_NO + '\'' +
+                ", STATUS='" + STATUS + '\'' +
+                ", INSERT_DATE='" + INSERT_DATE + '\'' +
+                ", JOB_NO='" + JOB_NO + '\'' +
+                '}';
+    }
+
 }
 
 
