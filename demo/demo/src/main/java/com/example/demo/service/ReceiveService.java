@@ -102,11 +102,11 @@ public class ReceiveService {
 
     //DB에 저장된 특정 수신 정보 가져오기
     @Transactional
-    public HashMap<String, String> targetRecieve(String RFax_No_Seq, HashMap<String,String> result,String userName){
+    public HashMap<String, String> targetRecieve(String RFax_No_Seq, HashMap<String,String> result,String userId){
         Recieve recieve = recieveRepository.findById(RFax_No_Seq).get();
 
         if(recieve.getREAD_USER().equals("")){
-            recieve.setREAD_USER(userName);
+            recieve.setREAD_USER(userId);
             recieve.setREAD_YN("Y");
         }
         result.put("receive_DATE",recieve.getRECEIVE_DATE());

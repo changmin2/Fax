@@ -15,6 +15,7 @@ import NoApproval from "../views/NoApproval.vue";
 import NoApprovalList from "../views/NoApprovalList.vue";
 import ApprovalCompleteList from "../views/ApprovalCompleteList.vue";
 import MyPage from "../views/MyPage.vue";
+import SendWait from "../views/SendWait.vue";
 
 Vue.use(Router);
 const requireAuth = () => (from, to, next) => {
@@ -75,6 +76,16 @@ export default new Router({
         header: AppHeader,
         navbar: AppNavbar,
         default: SendList,
+        // footer: AppFooter
+      },
+    },
+    {
+      path: "/send-wait",
+      name: "send-wait",
+      components: {
+        header: AppHeader,
+        navbar: AppNavbar,
+        default: SendWait,
         // footer: AppFooter
       },
     },
