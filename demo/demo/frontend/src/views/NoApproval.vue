@@ -1,12 +1,10 @@
 <template>
   <section class="section">
     <div class="container">
-      <div
-        class="send-title display-4 mb-4 font-weight-800 text-default"
-        style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
-      >
-        미결재정보
+      <div v-if="isComplete" class="send-title display-4 mb-4 font-weight-800 text-default">
+        결재정보
       </div>
+      <div v-else class="send-title display-4 mb-4 font-weight-800 text-default">미결재정보</div>
 
       <div class="noApproval-detail">
         <div class="left-content col">
@@ -46,24 +44,28 @@
           </table>
 
           <!-- <span class="mt-3">> 개인정보검출내용</span> -->
-          <span class="mt-3">> 결재 승인 및 반송</span>
-          <table class="no-approval-table table">
-            <thead>
-              <tr>
-                <th scope="col">결재상태</th>
-                <th scope="col" style="height: 100px">사유</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ noApprDetail.상태 }}</td>
-                <td style="height: 100px">
-                  <textarea class="no-approval-textarea" value="apprRemark"></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="no-approval-btn-group">
+          <div v-if="!isComplete">
+            <span class="mt-3">> 결재 승인 및 반송</span>
+            <table class="no-approval-table table">
+              <thead>
+                <tr>
+                  <th scope="col">결재상태</th>
+                  <th scope="col" style="height: 100px">사유</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ noApprDetail.상태 }}</td>
+                  <td style="height: 100px">
+                    <textarea class="no-approval-textarea" value="apprRemark"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 승인 반송은 완료에서는 보이지 않게 -->
+          <div v-if="!isComplete" class="no-approval-btn-group">
             <base-button type="secondary" class="no-approval-btn" @click="apprConfirm">
               승인
             </base-button>
@@ -90,7 +92,7 @@ import alertify from "alertifyjs";
 
 export default {
   name: "no-approval",
-  props: ["noApprDetail"],
+  props: ["noApprDetail", "isComplete"],
 
   data() {
     return {

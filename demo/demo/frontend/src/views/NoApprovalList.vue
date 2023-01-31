@@ -113,7 +113,7 @@
       class="modal-class"
     >
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <no-approval :noApprDetail="noApprDetail"></no-approval>
+      <no-approval :noApprDetail="noApprDetail" :isComplete="false"></no-approval>
     </modal>
   </section>
 </template>
@@ -153,7 +153,7 @@ export default {
     }),
   },
   created() {
-    this.noApproval();
+    // this.noApproval();
   },
   methods: {
     // date 설정

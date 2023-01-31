@@ -65,7 +65,7 @@
       <div class="container-fluid">
         <div class="top-content search-area">
           <div class="body-content ApprArea">
-            <table style="width: 100%" class="no-approval-table">
+            <table class="no-approval-table" style="width: 100%">
               <tr class="ApprArea-header">
                 <th>
                   <input type="checkbox" />
@@ -85,25 +85,35 @@
 
               <tr v-for="(noApproval, index) in noApprovalList" :key="index">
                 <td><input type="checkbox" /></td>
-                <td></td>
+                <td>{{ noApproval.상태 }}</td>
                 <td>{{ noApproval.요청일자 }}</td>
                 <td>{{ noApproval.보내는사람 }}</td>
                 <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.받는사람 }}</td>
+                <td>{{ noApproval.팩스번호 }}</td>
+                <td>{{ noApproval.제목 }}</td>
                 <td>
-                  <base-button @click="noApprovalDetail('05042089819')">상세</base-button>
+                  <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
                 </td>
                 <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.받는사람 }}</td>
+                <td>{{ noApproval.상태 }}</td>
+                <td>{{ noApproval.결제고유번호 }}</td>
+                <td>{{ noApproval.결재일자 }}</td>
               </tr>
             </table>
           </div>
         </div>
       </div>
     </div>
+    <!-- modal 모달창 -->
+    <modal
+      :show.sync="modals.modal3"
+      body-classes="p-1"
+      modal-classes="modal-dialog-centered modal-big"
+      class="modal-class"
+    >
+      <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
+      <no-approval :noApprDetail="noApprDetail" :isComplete="true"></no-approval>
+    </modal>
   </section>
 </template>
 
@@ -111,13 +121,26 @@
 import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
+import Modal from "@/components/Modal.vue";
+import NoApproval from "@/views/NoApproval.vue";
 
 export default {
+  name: "no-approval-list",
+  components: {
+    Modal,
+    NoApproval,
+  },
   data() {
     return {
       noApprovalList: [],
 
       dateInfo: "",
+      modals: {
+        modal3: false,
+      },
+
+      apprNo: "",
+      noApprDetail: {},
       apprStatus: "",
     };
   },
@@ -129,7 +152,7 @@ export default {
     }),
   },
   created() {
-    this.noApproval();
+    // this.noApproval();
   },
   methods: {
     // date 설정
@@ -140,12 +163,20 @@ export default {
       console.log(dateInfo);
     },
 
-    // 결재함
+    // detail - noApproval 설정
+    setNoApproval(apprNo) {
+      this.apprNo = apprNo;
+      this.noApprovalDetail(apprNo);
+      console.log("현재 apprNo = ", apprNo);
+      this.modals.modal3 = true;
+    },
+    // 결재함 리스트
     async noApproval() {
       this.$store.commit("SET_LOADING_TRUE");
+
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
-      formData.append("status", "전체"); // 상태 변수 추가 전체, 완료, 회수, 반려
+      formData.append("status", "전체"); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
 
       try {
         let response = await http.post(`/payRecieve`, formData);
@@ -172,16 +203,24 @@ export default {
 
     // 결재함 상세
     async noApprovalDetail(apprNo) {
+      this.$store.commit("SET_LOADING_TRUE");
+
+      let formData = new FormData();
+      formData.append("apprNo", apprNo);
+
       try {
-        let response = await http.post(`/payDetail?apprNo=${apprNo}`);
+        let response = await http.post(`/payDetail`, formData);
+        console.log(formData);
         console.log(response);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
-          console.log(data);
+
           console.log("결재함 상세 조회 성공");
-          this.noApprovalList = data;
+          console.log(data);
+          this.noApprDetail = data[0];
 
           alertify.success("결재함 상세 조회가 완료되었습니다.", 1.5);
         } else {
