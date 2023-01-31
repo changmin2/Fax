@@ -31,6 +31,7 @@ public class PayController {
     @ResponseBody
     public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String,String> map){
         String userId= map.get("userId"); //유저아이디
+        String status= map.get("status"); //상태 ( 미결재 : 0 , 결재&
         List<HashMap<String, Object>> hashMaps = payService.apprList(userId);
         return hashMaps;
     }
