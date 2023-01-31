@@ -224,7 +224,7 @@ export default {
           // 전송 성공
           console.log(data);
           console.log("상세 조회 성공");
-          this.receivelistDetail = data[0];
+          this.receivelistDetail = data;
           this.detailOpen = true;
 
           alertify.success("상세 조회가 완료되었습니다.", 1.5);

@@ -68,6 +68,7 @@ export default new Router({
         default: ReceiveDetail,
         // footer: AppFooter
       },
+      beforeEnter: requireAuth(),
     },
     {
       path: "/send-list",
@@ -98,6 +99,7 @@ export default new Router({
         default: ReceiveList,
         // footer: AppFooter
       },
+      beforeEnter: requireAuth(),
     },
     {
       path: "/no-approval",
