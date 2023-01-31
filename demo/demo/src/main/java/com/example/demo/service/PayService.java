@@ -35,8 +35,13 @@ public class PayService {
     private final SendService sendService;
 
     //결제 수신 리스트
-    public List<HashMap<String,Object>> apprList(String userId){
-        List<Object[]> test = approvalRepository.recieve(userId);
+    public List<HashMap<String,Object>> apprList(String userId,String status){
+        List<Object[]> test = new ArrayList<>();
+        if(status.equals("전체")){ //결재함-전체
+            approvalRepository.recieveAll(userId);
+        }else {
+            approvalRepository.recieve(userId,status);
+        }
         List<HashMap<String,Object>> lists = new ArrayList<>();
         String[] arr = { "결제고유번호","상태","보내는사람","결제일자","받는사람","제목","팩스번호","요청일자"};
 
@@ -163,7 +168,7 @@ public class PayService {
     public List<HashMap<String,Object>> sendRecieve(String userId){
         List<Object[]> objects = approvalRepository.sendRecieve(userId);
         List<HashMap<String,Object>> lists = new ArrayList<>();
-        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름"};
+        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지"};
 
         for (Object[] objArr : objects) {
             int idx =-1;

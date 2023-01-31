@@ -34,15 +34,20 @@ public class PayController {
     @ResponseBody
     public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String,String> map){
         String userId= map.get("userId"); //유저아이디
+<<<<<<< HEAD
         String status= map.get("status"); //상태 ( 미결재 : 0 , 결재&
         List<HashMap<String, Object>> hashMaps = payService.apprList(userId);
+=======
+        String status= map.get("status"); //상태 ( 미결재함 : "결재대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
+        List<HashMap<String, Object>> hashMaps = payService.apprList(userId,status);
+>>>>>>> e0c983f6066cf27edc9fb4912ea4c1e2760e0e3e
         return hashMaps;
     }
 
     //결재 상세정보
     @PostMapping("/payDetail")
     @ResponseBody
-    public List<HashMap<String, Object>> payDetail(@RequestBody Map<String, String> map) {
+    public List<HashMap<String, Object>> payDetail(@RequestBody Map<String,String> map){
         String apprNo = map.get("apprNo");
         List<HashMap<String, Object>> hashMaps = payService.apprDetail(apprNo);
         return hashMaps;
@@ -51,7 +56,7 @@ public class PayController {
     //결재 승인
     @PostMapping("/apprOk")
     @ResponseBody
-    public String apprOk(@RequestBody Map<String, String> map) throws IOException {
+    public String apprOk(@RequestBody Map<String,String> map) throws IOException{
         String apprNo = map.get("apprNo");
         log.info("apprOk진입");
         return payService.apprOk(apprNo);
@@ -60,16 +65,16 @@ public class PayController {
     //결재 반려
     @PostMapping("/apprReturn")
     @ResponseBody
-    public String apprReturn(@RequestBody Map<String, String> map) {
+    public String apprReturn(@RequestBody Map<String,String> map){
         log.info("apprReturn진입");
         String apprNo = map.get("apprNo"); //결재번호
         String apprRemark = map.get("apprRemark"); //반려사유
-        return payService.apprReturn(apprNo, apprRemark);
+        return payService.apprReturn(apprNo,apprRemark);
     }
 
     //보낸팩스함 목록
     @PostMapping("/sendRecieve")
-    public List<HashMap<String, Object>> sendRecieve(@RequestBody Map<String, String> map) {
+    public List<HashMap<String, Object>> sendRecieve(@RequestBody Map<String,String> map){
         String userId = map.get("userId");
         log.info("sendRecieve진입");
         List<HashMap<String, Object>> hashMaps = payService.sendRecieve(userId);
@@ -78,7 +83,7 @@ public class PayController {
 
     //결재 상세정보
     @PostMapping("/sendRecieveDetail")
-    public List<HashMap<String, Object>> sendRecieveDetail(@RequestBody Map<String, String> map) {
+    public List<HashMap<String, Object>> sendRecieveDetail(@RequestBody Map<String,String> map){
         String userKey = map.get("userKey");
         List<HashMap<String, Object>> hashMaps = payService.sendRecieveDetail(userKey);
         return hashMaps;
@@ -86,12 +91,13 @@ public class PayController {
 
     //회수
     @PostMapping("/withdraw")
-    public String withdraw(@RequestBody Map<String, String> map) {
+    public String withdraw(@RequestBody Map<String,String> map){
         String userKey = map.get("userKey");
         payService.withdraw(userKey);
         return "회수완료";
     }
 
+<<<<<<< HEAD
     //회수 -> 삭제
     @PostMapping("/withdrawDelete")
     public HashMap<String,Object> withdrawDelete(@RequestBody Map<String, String> map) {
@@ -121,4 +127,6 @@ public class PayController {
         return result;
     }
 
+=======
+>>>>>>> e0c983f6066cf27edc9fb4912ea4c1e2760e0e3e
 }
