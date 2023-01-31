@@ -140,4 +140,12 @@ public class PayController {
         String fileName = map.get("fileName");
         s3Uploader.removeS3File(fileName);
     }
+
+    //재사용
+    @PostMapping("/reUse")
+    public void reUse(@RequestBody Map<String,String> map){
+        HashMap<String,Object> result = new HashMap<>();
+        String userKey = map.get("userKey");
+
+    }
 }
