@@ -89,7 +89,7 @@ public class PayController {
         receiveService.titleSave(title,RFax_No_Seq);
     }
 
-    //결재 상세정보
+    //부서팩스함 상세정보
     @PostMapping("/sendRecieveDetail")
     public List<HashMap<String, Object>> sendRecieveDetail(@RequestBody Map<String,String> map){
         String userKey = map.get("userKey");

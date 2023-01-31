@@ -7,6 +7,7 @@ import com.example.demo.domain.Upload.Upload;
 import com.example.demo.repository.UploadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -59,13 +60,15 @@ public class UploadService {
 
         for (int i = 0; i < files.size(); i++) {
             MultipartFile multipartFile = files.get(i);
-
             File convFile = new File(multipartFile.getOriginalFilename());
-            convFile.createNewFile();
-            FileOutputStream fos = new FileOutputStream(convFile);
-            fos.write(multipartFile.getBytes());
-            fos.close();
+            multipartFile.transferTo(convFile);
+//            File convFile = new File(multipartFile.getOriginalFilename());
+//            convFile.createNewFile();
+//            FileOutputStream fos = new FileOutputStream(convFile);
+//            fos.write(multipartFile.getBytes());
+//            fos.close();
             multipart.addFilePart("Doc_File"+(i+1), convFile);
+            s3Uploader.removeNewFile(convFile); //파일삭제
         }
 
         // 응답 값
@@ -87,6 +90,13 @@ public class UploadService {
                 stream.write(binary, 0, binary.length);
             }
             File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
+
+//            페이지 가져오기
+            PDDocument pdfDoc;
+            pdfDoc = PDDocument.load(n);
+            int pageCount = pdfDoc.getNumberOfPages();
+            result.put("pageCount",pageCount+"");
+
             s3Uploader.upload(n, "static",RealPath);
         }else{
             String Message = (String) ObjToJson.get("Message");

@@ -32,6 +32,7 @@ public class Send {
     private String JOB_NO; //전송 성공시 발송닷컴에서 주는 NO
     private String ERROR_MSG; //전송 실패 메세지
     private String USE_GBN;
+    private String PAGE_CNT; //PDF 몇장인지
 
     public Send(SendReq req) {
         this.USER_NO = req.getUserID();
