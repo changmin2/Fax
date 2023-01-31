@@ -203,7 +203,6 @@ public class SendService {
         return sendApi(send);
     }
 
-<<<<<<< HEAD
     public String reSendJobNo(Map<String,String> map) throws IOException {
         Send send = sendRepository.findById(map.get("userKey")).get();
         if(map.get("Send_Date")!=null){
@@ -220,8 +219,6 @@ public class SendService {
     public String getJobNo(String userKey) {
         return sendRepository.findById(userKey).get().getJOB_NO();
     }
-
-=======
 
     //결재 완료하거나 전결했을때 send할지 지점장에게 결재 올릴지
     @Transactional
@@ -263,5 +260,4 @@ public class SendService {
         //발송시작
         return sendApi(send);
     }
->>>>>>> e5b7fd3a537f3c787a30a96a4b3f773042be4ba4
 }
