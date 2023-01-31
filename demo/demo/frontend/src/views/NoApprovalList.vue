@@ -49,7 +49,6 @@
             <select v-model="apprStatus" class="form-select ml-2">
               <option value="전체" selected>전체</option>
               <option value="반려">반려</option>
-              <option value="완료">완료</option>
               <option value="회수">회수</option>
             </select>
           </div>
@@ -142,7 +141,7 @@ export default {
 
       apprNo: "",
       noApprDetail: {},
-      apprStatus: "",
+      apprStatus: "전체",
     };
   },
   computed: {

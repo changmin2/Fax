@@ -57,7 +57,20 @@
                 <tr>
                   <td>{{ noApprDetail.상태 }}</td>
                   <td style="height: 100px">
-                    <textarea class="no-approval-textarea" value="apprRemark"></textarea>
+                    <!-- <textarea
+                      class="no-approval-textarea"
+                      v-model="apprRemark"
+                      @change="setRemark"
+                      cols="30"
+                      rows="5"
+                    ></textarea> -->
+                    <textarea
+                      name="opinion"
+                      class="no-approval-textarea"
+                      cols="30"
+                      rows="5"
+                    ></textarea
+                    ><br />
                   </td>
                 </tr>
               </tbody>
@@ -101,6 +114,10 @@ export default {
   },
   created() {},
   methods: {
+    setRemark() {
+      console.log(this.apprRemark);
+    },
+
     /* 승인 */
     async apprConfirm() {
       let formData = new FormData();
@@ -215,10 +232,12 @@ th {
   height: 80px;
 }
 .no-approval-textarea {
-  height: 75px;
-  width: 220px;
+  max-height: 100%;
+  height: inherit;
+  width: 12rem;
   resize: none;
   margin: 0px;
   border: none;
+  line-height: 10px;
 }
 </style>
