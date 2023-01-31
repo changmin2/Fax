@@ -54,7 +54,7 @@ public class ReceiveService {
         Map<String,Object> map = null;
         map = new ObjectMapper().readValue(ResultJson,Map.class);
         Object list = map.get("List");
-
+        log.info("수신목록"+list.toString());
         String s = String.valueOf(list);
         s= s.replace("[","");
         s = s.replace("]","");
