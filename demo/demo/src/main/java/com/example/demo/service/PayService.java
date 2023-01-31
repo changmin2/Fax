@@ -103,28 +103,32 @@ public class PayService {
         String Date_End = globalVariables.getNow();
         find.setAPPR_DATE(Date_End);
 
-        //SEND 테이블에도 결재정보 update
-        Send send = sendRepository.findById(find.getUSER_KEY()).get();
+        return apprUpOrSend(find.getUSER_KEY(),find.getAPPR_PERSON());
+    }
 
+    //결재 완료하거나 전결했을때 send할지 지점장에게 결재 올릴지
+    @Transactional
+    public String apprUpOrSend(String userKey,String userId) throws IOException {
+        Send send = sendRepository.findById(userKey).get();
         //결재자 정보 가져오기
-        User user = userRepository.findById(find.getAPPR_PERSON()).get();
+        User user = userRepository.findById(userId).get();
         //GRADE_CODE:  3 지점장
-        if(find.getPRIVATE_INFO_YN().equals("Y") && user.getGRADE_CODE()<3){ //개인정보 포함이면 지점장에게 결재
-            Object[] apprUser = userRepository.getHigherApprUser(find.getAPPR_PERSON()).get(0);
+        if(send.getPRIVATE_INFO_YN().equals("Y") && user.getGRADE_CODE()<3){ //개인정보 포함이면 지점장에게 결재
+            Object[] apprUser = userRepository.getHigherApprUser(userId).get(0);
             //더 높은 결재자 정보
             String apprUSER_ID = (String) apprUser[0];
             String apprUSER_NAME = (String) apprUser[1];
             String apprCOMM_NAME = (String) apprUser[2];
 
             //결재 테이블 insert
-            int i = approvalRepository.getMaxApprNo(find.getUSER_KEY()); //seq따기
+            int i = approvalRepository.getMaxApprNo(send.getUSER_KEY()); //seq따기
             log.info("결재 seq : "+i);
             Approval approval = new Approval();
-            approval.setAPPR_NO(find.getUSER_KEY()+i);
+            approval.setAPPR_NO(send.getUSER_KEY()+i);
             approval.setAPPR_PERSON(apprUSER_ID);
-            approval.setUSER_KEY(find.getUSER_KEY());
-            approval.setPRIVATE_INFO_YN(find.getPRIVATE_INFO_YN());
-            approval.setUSER_NO(find.getUSER_NO());
+            approval.setUSER_KEY(send.getUSER_KEY());
+            approval.setPRIVATE_INFO_YN(send.getPRIVATE_INFO_YN());
+            approval.setUSER_NO(send.getUSER_NO());
             approval.setSTATUS("대기");
             approvalRepository.save(approval);
 

@@ -36,13 +36,14 @@ public class SendService {
 
     private final  GlobalVariables globalVariables;
     private final UploadService uploadService;
+    private final PayService payService;
     private final SendRepository sendRepository;
     private final SendDRepository sendDRepository;
     private final ApprovalRepository approvalRepository;
 
     private final S3Uploader s3Uploader;
     @Transactional
-    public String sendInsert(SendReq req) throws ParseException {
+    public String sendInsert(SendReq req) throws ParseException, IOException {
         String Date_End = globalVariables.getNow();
         if(req.getReserve_yn().equals("Y")){ //예약전송일때
             String sendDate = req.getSend_Date();
@@ -64,16 +65,22 @@ public class SendService {
             sendDRepository.save(sendD);
         }
 
-        //결재 max값 가져오기
-        int i = approvalRepository.getMaxApprNo(req.getUserKey());
-        //결재 저장
-        Approval approval = new Approval(req,i);
-        approvalRepository.save(approval);
+        if(!req.getAppr_person().equals("")){
+            //결재 max값 가져오기
+            int i = approvalRepository.getMaxApprNo(req.getUserKey());
+            //결재 저장
+            Approval approval = new Approval(req,i);
+            approvalRepository.save(approval);
 
-        //발송정보 저장
-        send.setAPPR_NO(approval.getAPPR_NO());
-        sendRepository.save(send);
-        return "결재 신청 완료";
+            //발송정보 저장
+            send.setAPPR_NO(approval.getAPPR_NO());
+            sendRepository.save(send);
+            return "결재 신청 완료";
+        }else{ //전결일때
+            sendRepository.save(send);
+            return payService.apprUpOrSend(req.getUserKey(),req.getUserID());
+        }
+
     }
     public String sendApi(Send send) throws IOException{
         //gbn : 1 재전송 , 0 : 처음 전송

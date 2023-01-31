@@ -14,7 +14,8 @@ export default {
             let userInfo = data.userInfo;
             // 유저정보 받아오기
             commit("SET_USER_LOGIN", { isLogin: true });
-            commit("SET_USER_INFO", { userId: userInfo.USER_ID,userName: userInfo.USER_NAME,faxNo: userInfo.FAX_NO });
+            commit("SET_USER_INFO", { userId: userInfo.USER_ID,userName: userInfo.USER_NAME,
+              faxNo: userInfo.FAX_NO,grade: userInfo.GRADE_CODE, deptName:userInfo.DEPT_NAME });
           } else {
             // 세션값 없음
             // console.log(data.message);

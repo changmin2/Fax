@@ -62,7 +62,7 @@
                   <td style="height: 100px">
                     <div class="d-flex align-items-start">
                       <textarea
-                        class="send-textarea p-3"
+                        class="send-textarea p-3 shadow-none"
                         readonly
                         v-model="showJSON"
                         style="width: 90%; font-size: 0.9em"
@@ -92,14 +92,15 @@
                     >
                   </td>
                 </tr>
-                <tr>
+                <tr v-if="grade < 3">
                   <th>결재자</th>
                   <td>
-                    <select v-model="apprUserNo" style="width: 40%">
+                    <select v-model="apprUserNo" style="width: 40%" v-if="grade == 1">
                       <option v-for="(item, index) in apprUsers" :key="index" :value="item.id">
                         {{ item.name }}
                       </option>
                     </select>
+                    <span v-if="grade == 2">책임자는 전결처리됩니다.</span>
                   </td>
                 </tr>
                 <tr>
@@ -280,7 +281,7 @@ export default {
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
       if (attachFiles.length == 0 || this.userKey == "None") {
         //파일선택 필수조건
-        alertify.alert("첨부하실 파일을 선택해주세요.", 1.5);
+        alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
         return;
       }
       if (this.receiveJSON.length == 0) {
@@ -288,7 +289,7 @@ export default {
         alertify.error("수신처를 등록해주세요.", 1.5);
         return;
       }
-      if (this.apprUserNo == "") {
+      if (this.apprUserNo == "" && this.grade == 1) {
         //결재자 필수조건
         alertify.error("결재자를 등록해주세요.", 1.5);
         return;
@@ -317,7 +318,7 @@ export default {
           console.log(data);
           console.log("전송 성공");
           this.$router.push("/");
-          alertify.alert("팩스 전송 - 결재신청이 완료되었습니다.", 1.5);
+          alertify.alert("팩스 전송신청이 완료되었습니다.", 1.5);
         } else {
           console.log("전송 실패");
         }
@@ -344,6 +345,11 @@ export default {
     },
     //수신처 설정
     setReceiveJSON() {
+      if (this.receiveFax == "" || this.receiveName == "" || this.receiveCompany == "") {
+        //수신처 필수조건
+        alertify.error("수신처를 입력해주세요.", 1.5);
+        return;
+      }
       let temp = {
         company: this.receiveCompany,
         name: this.receiveName,
@@ -384,6 +390,8 @@ export default {
       let userInfo = this.userInfo;
       this.userId = userInfo.userId;
       this.faxNo = userInfo.faxNo;
+      this.grade = userInfo.grade;
+      console.log("유저등급 : ", userInfo.grade);
       this.getApprUsers();
     }, 0);
   },
@@ -433,6 +441,9 @@ td {
   resize: none;
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
+}
+.send-textarea:focus {
+  outline: none !important;
 }
 .vdatetime-input {
   resize: none;
