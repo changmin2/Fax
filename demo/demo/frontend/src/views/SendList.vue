@@ -13,10 +13,10 @@
         <div class="top-content search-area">
               <table style="width: 100%;">
                 <colgroup>
-                    <col style="width:10%;">
-                    <col style="width:36%;">
-                    <col style="width:10%;">
-                    <col style="width:36%;">
+                    <col style="width:9%;">
+                    <col style="width:37%;">
+                    <col style="width:9%;">
+                    <col style="width:37%;">
                     <col>
                 </colgroup>
                 <tr>
@@ -189,7 +189,7 @@
                  <td>
                      <div class="col" style="width:100%; height:100%;">
                        <iframe
-                         src="https://bnksys.s3.ap-northeast-2.amazonaws.com/BNK00120230127024348_6.pdf"
+                         v-bind:src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${receivelistDetail[0].파일명}`"
                          style="width: 100%; height: 95%;"
                        ></iframe>
                      </div>
@@ -245,12 +245,11 @@ export default {
       const month = today.getMonth();   // 월
       const day = today.getDate();      // 일
 
-      var searchFrom = new Date(year, month, day - 7)
+      var searchFrom = new Date(year, month, day - 6)
       this.searchFrom = searchFrom.toISOString().split("T")[0];
-      var searchTo = new Date(year, month, day + 7)
-      this.searchTo = searchTo.toISOString().split("T")[0];
-      setDateInfo(this.searchFrom);
-      setDateInfo(this.searchTo);
+      this.searchTo = today.toISOString().split("T")[0];
+      this.setDateInfo(this.searchFrom);
+      this.setDateInfo(this.searchTo);
       console.log(searchFrom + ","+ searchTo);
     },
 
@@ -328,9 +327,6 @@ export default {
 
       },
 
-    openModal() {
-      this.modal = true
-    },
     //모달 닫기
     closeModal() {
       this.modal = false
