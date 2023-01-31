@@ -22,7 +22,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
-            "         AND a.APPR_PERSON = :userId AND a.STATUS = :status",nativeQuery = true)
+            "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
+            "        ORDER BY a.USER_KEY",nativeQuery = true)
     List<Object[]> recieve(@Param(value = "userId")String userId,@Param(value = "status")String status);
     //결재함 목록(전체)
     @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
@@ -31,7 +32,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
-            "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수')",nativeQuery = true)
+            "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
+            "        ORDER BY a.USER_KEY",nativeQuery = true)
     List<Object[]> recieveAll(@Param(value = "userId")String userId);
 
     //결재함 상세 - 수신자리스트

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.GlobalVariables;
 import com.example.demo.VO.SendRes;
 import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Form.ApprovalForm;
@@ -33,6 +34,7 @@ public class PayService {
     private final UserRepository userRepository;
     private final SendRepository sendRepository;
     private final SendService sendService;
+    private final GlobalVariables globalVariables;
 
     //결제 수신 리스트
     public List<HashMap<String,Object>> apprList(String userId,String status){
@@ -98,10 +100,7 @@ public class PayService {
 
         Approval find = approvalRepository.findById(apprNo).get();
         find.setSTATUS("완료");
-        Calendar now = Calendar.getInstance();
-        now.setTime(new Date());
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd- hh:mm");
-        String Date_End = df.format(now.getTime());
+        String Date_End = globalVariables.getNow();
         find.setAPPR_DATE(Date_End);
 
         //SEND 테이블에도 결재정보 update
@@ -150,10 +149,9 @@ public class PayService {
         Approval find = approvalRepository.findById(apprNo).get();
         find.setSTATUS("반려");
         find.setAPPR_REMARK(apprRemark); //사유등록
-        Calendar now = Calendar.getInstance();
-        now.setTime(new Date());
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String Date_End = df.format(now.getTime());
+
+        String Date_End = globalVariables.getNow();
+        log.info("Date_End : "+Date_End);
         find.setAPPR_DATE(Date_End);
 
         //SEND 테이블에도 결재정보 update
@@ -223,7 +221,8 @@ public class PayService {
     @Transactional
     public void withdraw(String userKey){
         Approval appr = approvalRepository.findAppr(userKey);
-        approvalRepository.delete(appr);
+        appr.setSTATUS("회수");
+        appr.setAPPR_DATE(globalVariables.getNow());
         Send send = sendRepository.findById(userKey).get();
         send.setSTATUS("회수");
         send.setAPPR_NO("");
