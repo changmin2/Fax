@@ -24,8 +24,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       WHERE a.USER_KEY  = s.USER_KEY                       \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
             "         AND s.USE_GBN = 'Y' \n" +
-            "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo \n" +
-            "        ORDER BY a.USER_KEY",nativeQuery = true)
+            "         AND s.INSERT_DATE BETWEEN :searchFrom AND :searchTo \n" +
+            "        ORDER BY a.USER_KEY ",nativeQuery = true)
     List<Object[]> recieve(@Param(value = "userId")String userId,
                            @Param(value = "status")String status,
                            @Param(value = "searchFrom")String searchFrom,
@@ -38,9 +38,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
-            "         AND s.USE_GBN = 'Y' \n" +
-            "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo \n" +
-            "        ORDER BY a.USER_KEY",nativeQuery = true)
+            "         AND s.USE_GBN = 'Y'                                               \n" +
+            "         AND s.INSERT_DATE BETWEEN :searchFrom AND :searchTo                 \n" +
+            "        ORDER BY a.USER_KEY ",nativeQuery = true)
     List<Object[]> recieveAll(@Param(value = "userId")String userId,
                               @Param(value = "searchFrom")String searchFrom,
                               @Param(value = "searchTo")String searchTo);
@@ -61,7 +61,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "from TB_APPROVAL a ,TB_SEND s\n" +
             "WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND s.USE_GBN = 'Y' \n" +
-            "AND a.APPR_NO =:apprNo",nativeQuery = true)
+            "AND a.APPR_NO =:apprNo ",nativeQuery = true)
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
     //발송대기 현황 전체
@@ -99,7 +99,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
 
     //발송대기 상세 - 수신자 목록
     @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO from TB_SEND_D d\n" +
-            "where d.USER_KEY =:userKey",nativeQuery = true)
+            "where d.USER_KEY =:userKey ",nativeQuery = true)
     List<Object[]> detail2(@Param(value = "userKey")String userKey);
 
     //발송대기 상세
@@ -113,9 +113,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
             "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME\n" +
-            "       from TB_SEND a \n" +
-            "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO     \n" +
-            "    where a.USER_KEY = :userKey  AND a.USE_GBN = 'Y'",nativeQuery = true)
+            "       from TB_SEND a , TB_APPROVAL t \n" +
+            "    where a.APPR_NO  = t.APPR_NO     \n" +
+            "    and a.USER_KEY = :userKey  AND a.USE_GBN = 'Y' ",nativeQuery = true)
     List<Object[]> totalDetail2(@Param(value = "userKey")String userKey);
 
     @Query(value = "SELECT * FROM TB_APPROVAL\n" +
@@ -124,7 +124,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
 
 
     @Query(value = "delete from fax.TB_APPROVAL\n" +
-            "where APPR_NO =:apprNo",nativeQuery = true)
+            "where APPR_NO =:apprNo ",nativeQuery = true)
     void deleteApproNo(@Param(value = "apprNo") String apprNo);
 
 }

@@ -177,6 +177,8 @@ export default {
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
       formData.append("status", this.apprStatus); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
+      formData.append("searchFrom", '2023-01-01'); // 조회기간 (시작)
+      formData.append("searchTo", '2023-02-28'); // 조회기간 (종료)
 
       try {
         let response = await http.post(`/payRecieve`, formData);

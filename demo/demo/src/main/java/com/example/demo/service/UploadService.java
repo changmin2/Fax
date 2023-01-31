@@ -95,6 +95,7 @@ public class UploadService {
             PDDocument pdfDoc;
             pdfDoc = PDDocument.load(n);
             int pageCount = pdfDoc.getNumberOfPages();
+//            log.error("페이지 수 읽어오기 : "+pageCount);
             result.put("pageCount",pageCount+"");
 
             s3Uploader.upload(n, "static",RealPath);

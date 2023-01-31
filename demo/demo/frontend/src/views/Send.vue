@@ -308,6 +308,7 @@ export default {
           this.fileFlag = true;
         }
       } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
         console.log(error);
       }
     },
@@ -366,6 +367,7 @@ export default {
         }
       } catch (error) {
         // 전송 실패
+        this.$store.commit("SET_LOADING_FALSE");
         console.log("오류메시지 - ", data.Message);
         alertify.alert("팩스 전송 결재신청에 실패했습니다.", 1.5);
       }
@@ -383,6 +385,7 @@ export default {
         this.apprUsers = data;
         // console.log(this.apprUsers);
       } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
         console.log(error);
         console.log("에러1");
       }
@@ -406,6 +409,7 @@ export default {
           alertify.error("파일삭제 실패", 1.5);
         }
       } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
         console.log(error);
         console.log("에러1");
       }

@@ -66,7 +66,6 @@ export default {
 
   methods: {
     async login() {
-      this.$store.commit("SET_LOADING_TRUE");
       if (this.userId == "") {
         alertify.error("사번을 입력해주세요.", 1.5);
         return;
@@ -75,6 +74,7 @@ export default {
         alertify.error("비밀번호를 입력해주세요.", 1.5);
         return;
       }
+      this.$store.commit("SET_LOADING_TRUE");
       try {
         let response = await http.post("/login", {
           userId: this.userId,
@@ -96,6 +96,7 @@ export default {
           alertify.error("로그인에 실패했습니다.", 1.5);
         }
       } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
         console.log(error);
         console.log("에러1");
       }

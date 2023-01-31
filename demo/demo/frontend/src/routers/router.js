@@ -119,6 +119,7 @@ export default new Router({
         // footer: AppFooter
         spinner: LoadingSpinner,
       },
+      beforeEnter: requireAuth(),
     },
     {
       path: "/no-approval-list",
@@ -130,6 +131,7 @@ export default new Router({
         // footer: AppFooter
         spinner: LoadingSpinner,
       },
+      beforeEnter: requireAuth(),
     },
     {
       path: "/approval-complete-list",
@@ -141,6 +143,7 @@ export default new Router({
         // footer: AppFooter
         spinner: LoadingSpinner,
       },
+      beforeEnter: requireAuth(),
     },
     {
       path: "/myPage",

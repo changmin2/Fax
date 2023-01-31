@@ -39,6 +39,7 @@ public class PayService {
         String searchFrom= Rmap.get("searchFrom"); //조회기간
         String searchTo= Rmap.get("searchTo"); //조회기간
 
+        System.out.println(searchFrom +" ~ "+ searchTo);
         List<Object[]> test = new ArrayList<>();
         if(status.equals("전체")){ //결재함-전체
             test = approvalRepository.recieveAll(userId,searchFrom,searchTo);
