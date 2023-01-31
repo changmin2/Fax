@@ -228,6 +228,7 @@ export default {
   computed: {
     ...mapGetters({
       isLogin: "getIsLogin",
+      isLoading: "getIsLoading",
       userKey: "getUserKey",
       userInfo: "getUserInfo",
       getterReceiveList: "getReceiveList",
@@ -237,10 +238,6 @@ export default {
   },
   created() {
     this.$store.commit("SET_USER_KEY_INIT");
-
-    console.log("isLogin", this.isLogin);
-    console.log("userKey", this.userKey);
-    console.log("userInfo", this.userInfo);
   },
   methods: {
     getNow() {
@@ -251,6 +248,7 @@ export default {
       console.log(this.privateInfo);
     },
     async changeFile(fileEvent) {
+      this.$store.commit("SET_LOADING_TRUE");
       // 1. userKey값 없을 때, userKey값 가져오기
       // 2. userKey값 있을 때는 userKey값과 함께 파일을 서버로 전송
 
@@ -293,6 +291,8 @@ export default {
 
       try {
         let { data } = await http.post("/upload", formData, options);
+        this.$store.commit("SET_LOADING_FALSE");
+
         if (data.Result == "OK") {
           alertify.success("업로드 성공", 1.5);
           if (this.userKey == "None") {
@@ -313,6 +313,8 @@ export default {
 
     // 팩스보내기
     async send() {
+      this.$store.commit("SET_LOADING_TRUE");
+
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
       if (attachFiles.length == 0 || this.userKey == "None") {
@@ -348,6 +350,7 @@ export default {
         let response = await http.post("/Send", sendData);
 
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공

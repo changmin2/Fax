@@ -16,6 +16,7 @@ import NoApprovalList from "../views/NoApprovalList.vue";
 import ApprovalCompleteList from "../views/ApprovalCompleteList.vue";
 import MyPage from "../views/MyPage.vue";
 import SendWait from "../views/SendWait.vue";
+import LoadingSpinner from "../views/LoadingSpinner.vue";
 
 Vue.use(Router);
 const requireAuth = () => (from, to, next) => {
@@ -37,15 +38,17 @@ export default new Router({
         header: AppHeader,
         navbar: AppNavbar,
         default: Landing,
-        // footer: AppFooter,
+        footer: AppFooter,
       },
       beforeEnter: requireAuth(),
     },
+
     {
       path: "/login",
       name: "login",
       components: {
         default: Login,
+        spinner: LoadingSpinner,
       },
     },
     {
@@ -55,7 +58,7 @@ export default new Router({
         header: AppHeader,
         navbar: AppNavbar,
         default: Send,
-        // footer: AppFooter
+        spinner: LoadingSpinner,
       },
       beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
     },
@@ -67,6 +70,7 @@ export default new Router({
         navbar: AppNavbar,
         default: ReceiveDetail,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
       beforeEnter: requireAuth(),
     },
@@ -78,6 +82,7 @@ export default new Router({
         navbar: AppNavbar,
         default: SendList,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
       beforeEnter: requireAuth(),
     },
@@ -89,6 +94,7 @@ export default new Router({
         navbar: AppNavbar,
         default: SendWait,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
     },
     {
@@ -99,6 +105,7 @@ export default new Router({
         navbar: AppNavbar,
         default: ReceiveList,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
       beforeEnter: requireAuth(),
     },
@@ -110,6 +117,7 @@ export default new Router({
         navbar: AppNavbar,
         default: NoApproval,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
     },
     {
@@ -120,6 +128,7 @@ export default new Router({
         navbar: AppNavbar,
         default: NoApprovalList,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
     },
     {
@@ -130,6 +139,7 @@ export default new Router({
         navbar: AppNavbar,
         default: ApprovalCompleteList,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
     },
     {
@@ -140,6 +150,7 @@ export default new Router({
         navbar: AppNavbar,
         default: MyPage,
         // footer: AppFooter
+        spinner: LoadingSpinner,
       },
       beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
     },
@@ -149,6 +160,7 @@ export default new Router({
         header: AppHeader,
         default: NotFoundPageView,
         footer: AppFooter,
+        spinner: LoadingSpinner,
       },
     },
   ],

@@ -1,10 +1,15 @@
 <template>
   <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="shape shape-style-1"></div>
     <div class="container pt-lg-md">
       <div class="row justify-content-center">
         <div class="col-lg-5">
-          <card type="secondary" shadow header-classes="bg-white pb-5" body-classes="px-lg-5 py-lg-5" class="border-0">
+          <card
+            type="secondary"
+            shadow
+            header-classes="bg-white pb-5"
+            body-classes="px-lg-5 py-lg-5"
+            class="border-0"
+          >
             <div
               class="display-4 text-left mb-4 font-weight-800 text-default"
               style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
@@ -27,7 +32,7 @@
                 placeholder="비밀번호"
                 addon-left-icon="ni ni-lock-circle-open"
                 v-model="userPassword"
-                @keyup.enter= "login"
+                @keyup.enter="login"
               >
               </base-input>
 
@@ -43,12 +48,20 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
+// import LoadingSpinner from "./LoadingSpinner.vue";
 
 export default {
-  components: {},
-
+  components: {
+    // LoadingSpinner,
+  },
+  computed: {
+    ...mapGetters({
+      isLoading: "getIsLoading",
+    }),
+  },
   data() {
     return {
       userId: "",
@@ -58,19 +71,26 @@ export default {
 
   methods: {
     async login() {
-      if(this.userId==''){ alertify.error("사번을 입력해주세요.", 1.5); return;}
-      if(this.userPassword==''){ alertify.error("비밀번호를 입력해주세요.", 1.5); return;}
+      this.$store.commit("SET_LOADING_TRUE");
+      if (this.userId == "") {
+        alertify.error("사번을 입력해주세요.", 1.5);
+        return;
+      }
+      if (this.userPassword == "") {
+        alertify.error("비밀번호를 입력해주세요.", 1.5);
+        return;
+      }
       try {
         let response = await http.post("/login", {
           userId: this.userId,
           userPassword: this.userPassword,
         });
+
         let { data } = response;
-        // console.log(data);
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data.flag == true) {
           // 로그인 성공
-          // console.log(data.message);
           this.$store.commit("SET_USER_LOGIN", { isLogin: true });
           this.$store.dispatch("getUserInfo");
           // this.$store.commit("SET_USER_INFO", { userId: this.userId,userName: data.userInfo.user_NAME });
@@ -78,7 +98,6 @@ export default {
           alertify.success("로그인이 완료되었습니다.", 1.5);
         } else {
           // 로그인 실패
-          // console.log(data.message);
           alertify.error("로그인에 실패했습니다.", 1.5);
         }
       } catch (error) {
@@ -89,9 +108,10 @@ export default {
   },
 
   created() {
-    if(localStorage.getItem("isLogin")==true){ //로그인 돼있으면 메인으로
-        this.$store.dispatch("getUserInfo");
-        this.$router.push("/");
+    if (localStorage.getItem("isLogin") == true) {
+      //로그인 돼있으면 메인으로
+      this.$store.dispatch("getUserInfo");
+      this.$router.push("/");
     }
   },
 };

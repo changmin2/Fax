@@ -150,6 +150,7 @@ export default {
       console.log("로그아웃 실행");
       this.$store.state.isLogin = false;
       this.$store.commit("SET_USER_INFO", {});
+      this.$store.commit("SET_USER_LOGOUT");
       localStorage.setItem("isLogin", false);
       this.$router.push("/login");
     },

@@ -8,7 +8,7 @@ export default {
   },
 
   getIsLoading(state) {
-    return state.getIsLoading;
+    return state.isLoading;
   },
 
   ...users,
