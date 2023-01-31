@@ -50,6 +50,18 @@
                   <base-button type="danger" @click="getSendList">조회</base-button>
                 </div>
               </td>
+              <th>결재구분</th>
+              <td>
+                <select v-model="sendStatus" class="form-select ml-2">
+                  <option value="전체" selected>전체</option>
+                  <option value="결재완료">결재완료</option>
+                  <option value="결재대기">결재대기</option>
+                  <option value="전송완료">전송완료</option>
+                  <option value="전송실패">전송실패</option>
+                  <option value="반려">반려</option>
+                  <option value="회수">회수</option>
+                </select>
+              </td>
             </tr>
           </table>
         </div>
@@ -136,6 +148,7 @@ export default {
       searchFrom: "",
       searchTo: "",
       modal: false,
+      sendStatus: "전체",
     };
   },
   methods: {
@@ -163,13 +176,15 @@ export default {
 
     // 조회
     async getSendList() {
-      try {
-        this.$store.commit("SET_LOADING_TRUE");
+      this.$store.commit("SET_LOADING_TRUE");
 
+      try {
+        console.log("status===>", this.sendStatus);
         let response = await http.post("/sendRecieve", {
           userId: this.userInfo.userId,
           searchFrom: this.searchFrom,
           searchTo: this.searchTo,
+          status: this.sendStatus,
         });
 
         let { data } = response;
