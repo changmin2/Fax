@@ -9,14 +9,14 @@
         <table class="no-approval-table table" style="width: 100%">
           <thead>
             <tr>
-              <th scope="col">보낸사람</th>
               <th scope="col">팩스번호</th>
+              <td>{{ sendDetail.팩스번호 }}</td>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <th scope="col">보낸사람</th>
               <td>{{ sendDetail.발송자 }}</td>
-              <td>{{ sendDetail.팩스번호 }}</td>
             </tr>
           </tbody>
         </table>
@@ -30,10 +30,10 @@
             </tr>
           </thead>
           <tbody>
-               <tr v-for="(detail, index) in sendDetail.받는사람정보" :key="index" >
-                  <td>{{ detail.이름 }} &#40; {{detail.상호}} &#41;</td>
-                  <td>{{ detail.팩스번호 }}</td>
-                </tr>
+            <tr v-for="(detail, index) in sendDetail.받는사람정보" :key="index">
+              <td>{{ detail.이름 }} &#40; {{ detail.상호 }} &#41;</td>
+              <td>{{ detail.팩스번호 }}</td>
+            </tr>
           </tbody>
         </table>
 
@@ -53,6 +53,16 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="no-approval-btn-group">
+          <base-button type="secondary" class="send-detail-btn" @click="getReuse">
+            재사용
+          </base-button>
+
+          <base-button type="secondary" class="send-detail-btn" @click="getUpdate">
+            수정
+          </base-button>
+        </div>
       </div>
 
       <div class="col col-8">
@@ -66,6 +76,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import http from "@/common/axios.js";
+import alertify from "alertifyjs";
+
 export default {
   name: "send-detail",
   props: ["sendDetail"],
@@ -75,8 +89,47 @@ export default {
       apprRemark: "",
     };
   },
+  computed: {
+    ...mapGetters({
+      userKey: "getUserKey",
+      userInfo: "getUserInfo",
+    }),
+  },
   created() {},
-  methods: {},
+  methods: {
+    async getReuse() {
+      let formData = new FormData();
+      formData.append("userKey", this.sendDetail.발송번호);
+      formData.append("userId", this.userInfo.userId);
+      console.log("userKey, userId", this.sendDetail.발송번호, this.userInfo.userId);
+      try {
+        let response = await http.post(`/reUse`, formData);
+        console.log(response);
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          console.log(data);
+          console.log("재사용 요청 성공");
+          this.$store.commit("SET_SEND_DETAIL", data);
+          // alertify.alert("성공", "재사용 요청 완료되었습니다.", 1.5);
+          this.$router.push("/send");
+        } else {
+          console.log("재사용 요청 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.alert("재사용 요청에 실패했습니다.", 1.5);
+      }
+    },
+
+    /* 수정 버튼 클릭 시 -> 팩스보내기에 데이터 전달 */
+    async getUpdate() {
+      this.$store.commit("SET_SEND_UPDATE", this.sendDetail);
+      this.$router.push("/send");
+    },
+  },
 };
 </script>
 

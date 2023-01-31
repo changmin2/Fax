@@ -200,7 +200,7 @@ export default {
 
         if (data != null) {
           // 전송 성공
-          // console.log(data);
+          console.log(data);
           // console.log("상세 조회 성공");
           this.sendDetail = data[0];
           this.detailOpen = true;

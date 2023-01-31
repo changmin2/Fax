@@ -2,70 +2,101 @@
   <section class="section section-shaped section-hero login-section section-lg my-0">
     <div class="shape shape-style-1"></div>
     <div class="container pt-lg-md">
-      <div
-        class="send-title display-4 mb-4 font-weight-800 text-default"
-        style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
-      >
+      <div class="send-title display-4 mb-4 font-weight-800 text-default">
         팩스보내기
+        <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
+        <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
+        <span v-if="getterSendDetail">재사용</span>
+        <span v-if="getterUpdate">수정</span>
       </div>
 
       <div class="row">
         <div class="col-lg-5">
           <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
             <form role="form">
-             
               <table>
                 <tr>
                   <th>제목</th>
-                  <td><base-input alternative v-model="title" class="my-1"> </base-input></td>
+                  <td>
+                    <base-input
+                      v-if="getterSendDetail"
+                      alternative
+                      v-model="title"
+                      class="my-1"
+                    ></base-input>
+                    <base-input
+                      v-else-if="getterUpdate"
+                      alternative
+                      v-model="getterUpdate.제목"
+                      class="my-1"
+                    >
+                    </base-input>
+                    <base-input v-else alternative v-model="title" class="my-1"> </base-input>
+                  </td>
                 </tr>
                 <tr>
                   <th>발신 팩스번호</th>
-                  <td><base-input  alternative v-model="faxNo" readonly class="my-1"> </base-input></td>
+                  <td>
+                    <base-input alternative v-model="faxNo" readonly class="my-1"> </base-input>
+                  </td>
                 </tr>
                 <tr>
                   <th>수신처</th>
                   <td>
-                    <div style="float:left">
+                    <div style="float: left">
                       <base-input
-                      alternative
-                      v-model="receiveCompany"
-                      class="d-inline-flex my-1"
-                      style="width: 30%; font-size: 2em;"
-                      placeholder="상호"
-                    /> 
-                    <base-input
-                      alternative
-                      v-model="receiveName"
-                      class="d-inline-flex my-1"
-                      style="width: 30%;"
-                      placeholder="이름"
-                    />
-                    <base-input
-                      alternative
-                      v-model="receiveFax"
-                      class="d-inline-flex my-1"
-                      style="width: 30%;"
-                      placeholder="팩스번호"
-                    />
-                    <base-button icon="fa fa-plus fa-lg" class="px-3 py-2.5" @click="setReceiveJSON"></base-button>
+                        alternative
+                        v-model="receiveCompany"
+                        class="d-inline-flex my-1"
+                        style="width: 30%; font-size: 2em"
+                        placeholder="상호"
+                      />
+                      <base-input
+                        alternative
+                        v-model="receiveName"
+                        class="d-inline-flex my-1"
+                        style="width: 30%"
+                        placeholder="이름"
+                      />
+                      <base-input
+                        alternative
+                        v-model="receiveFax"
+                        class="d-inline-flex my-1"
+                        style="width: 30%"
+                        placeholder="팩스번호"
+                      />
+                      <base-button
+                        icon="fa fa-plus fa-lg"
+                        class="px-3 py-2.5"
+                        @click="setReceiveJSON"
+                      ></base-button>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <th></th>
-                  <td style="height: 100px;">
+                  <td style="height: 100px">
                     <div class="d-flex align-items-start">
-                    <textarea class="send-textarea p-3 shadow-none"  readonly v-model="showJSON" style="width:90%; font-size:0.9em"></textarea>
-                    <base-button icon="fa fa-minus fa-lg"  type="light" class="px-3 py-2.5" @click="setDeleteJSON"/>
+                      <textarea
+                        class="send-textarea p-3 shadow-none"
+                        readonly
+                        v-model="showJSON"
+                        style="width: 90%; font-size: 0.9em"
+                      ></textarea>
+                      <base-button
+                        icon="fa fa-minus fa-lg"
+                        type="light"
+                        class="px-3 py-2.5"
+                        @click="setDeleteJSON"
+                      />
                     </div>
-
                   </td>
                 </tr>
                 <tr>
                   <th>첨부파일</th>
                   <td>
-                    <input v-if="fileFlag"
+                    <input
+                      v-if="fileFlag"
                       type="file"
                       multiple
                       value="fileData"
@@ -73,24 +104,29 @@
                       id="inputFileUploadInsert"
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
-                    <div v-else class="mt-2 d-inline-flex" style="width: 200px;">
+                    <div v-else class="mt-2 d-inline-flex" style="width: 200px">
                       <a v-bind:href="`${fileUrl}`" target="_new" download="">PDF변환파일.pdf</a>
-                      <i class="fa fa-trash-o  ml-3 mt-1 d-lg-inline d-sm-none text-default" @click="deleteFile" style="cursor: pointer;"></i>
+                      <i
+                        class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
+                        @click="deleteFile"
+                        style="cursor: pointer"
+                      ></i>
                     </div>
 
-                  <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo"
-                    >개인정보 포함여부</base-checkbox>
+                    <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo"
+                      >개인정보 포함여부</base-checkbox
+                    >
                   </td>
                 </tr>
-                <tr v-if="grade<3">
+                <tr v-if="grade < 3">
                   <th>결재자</th>
                   <td>
-                    <select v-model="apprUserNo" style="width: 40%" v-if="grade==1">
+                    <select v-model="apprUserNo" style="width: 40%" v-if="grade == 1">
                       <option v-for="(item, index) in apprUsers" :key="index" :value="item.id">
                         {{ item.name }}
                       </option>
                     </select>
-                    <span v-if="grade==2">책임자는 전결처리됩니다.</span>
+                    <span v-if="grade == 2">책임자는 전결처리됩니다.</span>
                   </td>
                 </tr>
                 <tr>
@@ -142,21 +178,17 @@
       </div>
     </div>
     <div>
-      <modal :show.sync="modal" >
-                <h6 slot="header" class="modal-title" id="modal-title-default">팩스 미리보기</h6>
-                <div style="width:100%; height:650px;">
-                       <iframe
-                         v-bind:src="`${fileUrl}`"
-                         style="width: 100%; height: 100%;"
-                       ></iframe>
-                     </div>
-                <template slot="footer">
-                    <base-button type="danger" @click="send">전송</base-button>
-                    <base-button type="link" class="ml-auto" @click="modal = false">Close
-                    </base-button>
-                </template>
-            </modal>
-  </div>
+      <modal :show.sync="modal">
+        <h6 slot="header" class="modal-title" id="modal-title-default">팩스 미리보기</h6>
+        <div style="width: 100%; height: 650px">
+          <iframe v-bind:src="`${fileUrl}`" style="width: 100%; height: 100%"></iframe>
+        </div>
+        <template slot="footer">
+          <base-button type="danger" @click="send">전송</base-button>
+          <base-button type="link" class="ml-auto" @click="modal = false">Close </base-button>
+        </template>
+      </modal>
+    </div>
   </section>
 </template>
 
@@ -189,8 +221,8 @@ export default {
       receiveJSON: [],
       showJSON: "",
       modal: false,
-      detailOpen : false,
-      fileFlag : true,
+      detailOpen: false,
+      fileFlag: true,
     };
   },
   computed: {
@@ -199,10 +231,16 @@ export default {
       userKey: "getUserKey",
       userInfo: "getUserInfo",
       getterReceiveList: "getReceiveList",
+      getterSendDetail: "getSendDetail",
+      getterUpdate: "getSendUpdate",
     }),
   },
   created() {
     this.$store.commit("SET_USER_KEY_INIT");
+    console.log("getterSendDetail", this.getterSendDetail);
+    console.log("isLogin", this.isLogin);
+    console.log("userKey", this.userKey);
+    console.log("userInfo", this.userInfo);
   },
   methods: {
     getNow() {
@@ -255,12 +293,13 @@ export default {
 
       try {
         let { data } = await http.post("/upload", formData, options);
-        if (data.Result=='OK') {
+        if (data.Result == "OK") {
           alertify.success("업로드 성공", 1.5);
           if (this.userKey == "None") {
-          this.$store.commit("SET_USER_KEY", data.userKey);
+            this.$store.commit("SET_USER_KEY", data.userKey);
           }
-          this.fileUrl = 'https://bnksys.s3.ap-northeast-2.amazonaws.com/'+this.userKey+'_1.pdf';
+          this.fileUrl =
+            "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.userKey + "_1.pdf";
           this.fileFlag = false;
         } else {
           alertify.error("업로드 실패", 1.5);
@@ -276,17 +315,17 @@ export default {
     async send() {
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
-      if (attachFiles.length == 0||this.userKey=='None') {
+      if (attachFiles.length == 0 || this.userKey == "None") {
         //파일선택 필수조건
         alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
         return;
       }
-      if ( this.receiveJSON.length == 0) {
+      if (this.receiveJSON.length == 0) {
         //수신처 필수조건
         alertify.error("수신처를 등록해주세요.", 1.5);
         return;
       }
-      if ( this.apprUserNo == '' && this.grade==1) {
+      if (this.apprUserNo == "" && this.grade == 1) {
         //결재자 필수조건
         alertify.error("결재자를 등록해주세요.", 1.5);
         return;
@@ -326,7 +365,6 @@ export default {
       }
     },
     async getApprUsers() {
-      
       //결재자 가져오기
       try {
         // console.log(this.userId);
@@ -342,19 +380,18 @@ export default {
       }
     },
     async deleteFile() {
-      
       //결재자 가져오기
       try {
         // console.log(this.userId);
         let response = await http.post("/S3fileDelete", {
-          fileName: this.userKey+"_1.pdf",
+          fileName: this.userKey + "_1.pdf",
         });
         let { data } = response;
-        if(data){
+        if (data) {
           this.fileUrl = "";
           this.fileFlag = true;
           alertify.success("파일삭제 성공", 1.5);
-        }else{
+        } else {
           this.fileFlag = false;
           alertify.error("파일삭제 실패", 1.5);
         }
@@ -365,52 +402,72 @@ export default {
     },
     //수신처 설정
     setReceiveJSON() {
-      if ( this.receiveFax == '' || this.receiveName == '' || this.receiveCompany == ''  ) {
+      if (this.receiveFax == "" || this.receiveName == "" || this.receiveCompany == "") {
         //수신처 필수조건
         alertify.error("수신처를 입력해주세요.", 1.5);
         return;
       }
-      let temp =   { company: this.receiveCompany, name: this.receiveName, fax: this.receiveFax.replaceAll('-','') }
+      let temp = {
+        company: this.receiveCompany,
+        name: this.receiveName,
+        fax: this.receiveFax.replaceAll("-", ""),
+      };
       this.receiveJSON.push(temp);
-      this.showJSON += '상호 : '+temp.company+', 이름 : '+temp.name+', 팩스번호 : '+this.receiveFax+'\n';
-      this.receiveCompany=''; this.receiveName=''; this.receiveFax=''; 
+      this.showJSON +=
+        "상호 : " +
+        temp.company +
+        ", 이름 : " +
+        temp.name +
+        ", 팩스번호 : " +
+        this.receiveFax +
+        "\n";
+      this.receiveCompany = "";
+      this.receiveName = "";
+      this.receiveFax = "";
     },
     setDeleteJSON() {
       this.receiveJSON.pop();
       this.showJSON = "";
       for (let index = 0; index < this.receiveJSON.length; index++) {
         let temp = this.receiveJSON[index];
-        this.showJSON += '상호 : '+temp.company+', 이름 : '+temp.name+', 팩스번호 : '+temp.fax+'\n';
+        this.showJSON +=
+          "상호 : " + temp.company + ", 이름 : " + temp.name + ", 팩스번호 : " + temp.fax + "\n";
       }
     },
     openModal() {
-      if( this.fileFlag){
+      if (this.fileFlag) {
         alertify.error("파일을 등록해주세요.", 1.5);
         return;
       }
-      if ( this.receiveJSON.length == 0) {
+      if (this.receiveJSON.length == 0) {
         //수신처 필수조건
         alertify.error("수신처를 등록해주세요.", 1.5);
         return;
       }
-      if ( this.apprUserNo == '' && this.grade==1) {
+      if (this.apprUserNo == "" && this.grade == 1) {
         //결재자 필수조건
         alertify.error("결재자를 등록해주세요.", 1.5);
         return;
       }
-      this.modal = true
+      this.modal = true;
     },
     //모달 닫기
     closeModal() {
-      this.modal = false
+      this.modal = false;
     },
   },
   mounted() {
-    setTimeout(() => {     let userInfo = this.userInfo;
+    setTimeout(() => {
+      let userInfo = this.userInfo;
       this.userId = userInfo.userId;
-      this.faxNo = userInfo.faxNo; 
-      this.grade = userInfo.grade; 
-      this.getApprUsers()}, 0);
+      this.faxNo = userInfo.faxNo;
+      this.grade = userInfo.grade;
+      this.getApprUsers();
+    }, 0);
+  },
+  destroyed() {
+    this.$store.commit("INIT_SEND_DETAIL");
+    this.$store.commit("INIT_SEND_UPDATE");
   },
 };
 </script>
@@ -459,7 +516,10 @@ td {
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
 }
-.send-textarea:focus,select:focus { outline: none !important; }
+.send-textarea:focus,
+select:focus {
+  outline: none !important;
+}
 .vdatetime-input {
   resize: none;
   border: 1px solid #cad1d7;

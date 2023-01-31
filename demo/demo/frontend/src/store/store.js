@@ -7,6 +7,7 @@ import mutations from "./mutations";
 import actions from "./actions";
 import users from "./state/users";
 import receives from "./state/receives";
+import sends from "./state/sends";
 
 export default new Vuex.Store({
   state: {
@@ -14,8 +15,10 @@ export default new Vuex.Store({
 
     // isLogin: false,
     // userInfo: {},
+    isLoading: false,
     users: users,
     receives: receives,
+    sends: sends,
   },
 
   getters,
