@@ -104,13 +104,13 @@ export default {
       console.log("userKey, userId", this.sendDetail.발송번호, this.userInfo.userId);
       try {
         let response = await http.post(`/reUse`, formData);
-        console.log(response);
         let { data } = response;
 
         if (data != null) {
           // 전송 성공
-          console.log(data);
-          console.log("재사용 요청 성공");
+          console.log("재사용 요청 성공", data);
+          console.log("재사용 요청 성공", data.Info);
+          console.log("재사용 요청 성공", data.fileName);
           this.$store.commit("SET_SEND_DETAIL", data);
           // alertify.alert("성공", "재사용 요청 완료되었습니다.", 1.5);
           this.$router.push("/send");

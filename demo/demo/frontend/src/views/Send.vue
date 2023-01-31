@@ -21,7 +21,7 @@
                     <base-input
                       v-if="getterSendDetail"
                       alternative
-                      v-model="title"
+                      v-model="getterSendDetail.Info.title"
                       class="my-1"
                     ></base-input>
                     <base-input
@@ -237,7 +237,7 @@ export default {
   },
   created() {
     this.$store.commit("SET_USER_KEY_INIT");
-    console.log("getterSendDetail", this.getterSendDetail);
+
     console.log("isLogin", this.isLogin);
     console.log("userKey", this.userKey);
     console.log("userInfo", this.userInfo);
