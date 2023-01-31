@@ -34,13 +34,8 @@ public class PayController {
     @ResponseBody
     public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String,String> map){
         String userId= map.get("userId"); //유저아이디
-<<<<<<< HEAD
-        String status= map.get("status"); //상태 ( 미결재 : 0 , 결재&
-        List<HashMap<String, Object>> hashMaps = payService.apprList(userId);
-=======
         String status= map.get("status"); //상태 ( 미결재함 : "결재대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
         List<HashMap<String, Object>> hashMaps = payService.apprList(userId,status);
->>>>>>> e0c983f6066cf27edc9fb4912ea4c1e2760e0e3e
         return hashMaps;
     }
 
@@ -97,7 +92,6 @@ public class PayController {
         return "회수완료";
     }
 
-<<<<<<< HEAD
     //회수 -> 삭제
     @PostMapping("/withdrawDelete")
     public HashMap<String,Object> withdrawDelete(@RequestBody Map<String, String> map) {
@@ -127,6 +121,4 @@ public class PayController {
         return result;
     }
 
-=======
->>>>>>> e0c983f6066cf27edc9fb4912ea4c1e2760e0e3e
 }
