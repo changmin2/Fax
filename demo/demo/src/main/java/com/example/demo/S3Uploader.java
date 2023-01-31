@@ -62,7 +62,8 @@ public class S3Uploader {
 
     //S3파일 삭제
     public void removeS3File(String fileName){
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket,globalVariables.getFilePath()+fileName));
+        log.info("removeS3File"+fileName);
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket,fileName));
     }
 
     // 로컬에 파일 업로드 하기
