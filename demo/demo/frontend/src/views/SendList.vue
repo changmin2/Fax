@@ -164,6 +164,8 @@ export default {
     // 조회
     async getSendList() {
       try {
+        this.$store.commit("SET_LOADING_TRUE");
+
         let response = await http.post("/sendRecieve", {
           userId: this.userInfo.userId,
           searchFrom: this.searchFrom,
@@ -171,6 +173,7 @@ export default {
         });
 
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
@@ -190,6 +193,8 @@ export default {
 
     // 상세보기
     async getSendDetail(apprNo) {
+      this.$store.commit("SET_LOADING_TRUE");
+
       this.modal = true;
       try {
         let response = await http.post("/sendRecieveDetail", {
@@ -197,6 +202,7 @@ export default {
         });
         // console.log(response);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공

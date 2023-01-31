@@ -98,12 +98,15 @@ export default {
   created() {},
   methods: {
     async getReuse() {
+      this.$store.commit("SET_LOADING_TRUE");
+
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
       formData.append("userId", this.userInfo.userId);
       try {
         let response = await http.post(`/reUse`, formData);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공

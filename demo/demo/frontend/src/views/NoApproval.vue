@@ -1,18 +1,12 @@
 <template>
   <section class="section">
-    <!-- alertify.js-->
-    <link rel="stylesheet" href="@/node_modules/alertifyjs/build/css/alertify.min.css" />
-    <link rel="stylesheet" href="@/node_modules/alertifyjs/build/css/alertify.css" />
-    <!-- include a theme -->
     <div class="container">
-      <div
-        class="send-title display-4 mb-4 font-weight-800 text-default"
-        style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
-      >
-        미결재정보
+      <div v-if="isComplete" class="send-title display-4 mb-4 font-weight-800 text-default">
+        결재정보
       </div>
+      <div v-else class="send-title display-4 mb-4 font-weight-800 text-default">미결재정보</div>
 
-      <div class="container-fluid">
+      <div class="noApproval-detail">
         <div class="left-content col">
           <span class="mt-3">> 결재요청정보</span>
 
@@ -50,24 +44,41 @@
           </table>
 
           <!-- <span class="mt-3">> 개인정보검출내용</span> -->
-          <span class="mt-3">> 결재 승인 및 반송</span>
-          <table class="no-approval-table table">
-            <thead>
-              <tr>
-                <th scope="col">결재상태</th>
-                <th scope="col" style="height: 100px">사유</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ noApprDetail.상태 }}</td>
-                <td style="height: 100px">
-                  <textarea class="no-approval-textarea" value="apprRemark"></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="no-approval-btn-group">
+          <div v-if="!isComplete">
+            <span class="mt-3">> 결재 승인 및 반송</span>
+            <table class="no-approval-table table">
+              <thead>
+                <tr>
+                  <th scope="col">결재상태</th>
+                  <th scope="col" style="height: 100px">사유</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ noApprDetail.상태 }}</td>
+                  <td style="height: 100px">
+                    <!-- <textarea
+                      class="no-approval-textarea"
+                      v-model="apprRemark"
+                      @change="setRemark"
+                      cols="30"
+                      rows="5"
+                    ></textarea> -->
+                    <textarea
+                      name="opinion"
+                      class="no-approval-textarea"
+                      cols="30"
+                      rows="5"
+                    ></textarea
+                    ><br />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 승인 반송은 완료에서는 보이지 않게 -->
+          <div v-if="!isComplete" class="no-approval-btn-group">
             <base-button type="secondary" class="no-approval-btn" @click="apprConfirm">
               승인
             </base-button>
@@ -94,7 +105,7 @@ import alertify from "alertifyjs";
 
 export default {
   name: "no-approval",
-  props: ["noApprDetail"],
+  props: ["noApprDetail", "isComplete"],
 
   data() {
     return {
@@ -103,6 +114,10 @@ export default {
   },
   created() {},
   methods: {
+    setRemark() {
+      console.log(this.apprRemark);
+    },
+
     /* 승인 */
     async apprConfirm() {
       let formData = new FormData();
@@ -160,6 +175,9 @@ export default {
 </script>
 
 <style scoped>
+.noApproval-detail {
+  display: flex;
+}
 .no-proval-info {
 }
 .left-content {
@@ -214,10 +232,12 @@ th {
   height: 80px;
 }
 .no-approval-textarea {
-  height: 75px;
-  width: 220px;
+  max-height: 100%;
+  height: inherit;
+  width: 12rem;
   resize: none;
   margin: 0px;
   border: none;
+  line-height: 10px;
 }
 </style>

@@ -46,15 +46,17 @@
           </div>
           <div class="row mt-3">
             결재구분
-            <select class="form-select ml-2">
-              <option selected>전체</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
+            <select v-model="apprStatus" class="form-select ml-2">
+              <option value="전체" selected>전체</option>
+              <option value="반려">반려</option>
+              <option value="회수">회수</option>
             </select>
           </div>
         </div>
         <div class="col col-sm-2">
-          <base-button type="default" class="no-approval-btn mt-2"> 조회 </base-button>
+          <base-button type="default" class="no-approval-btn mt-2" @click="noApproval">
+            조회
+          </base-button>
         </div>
       </div>
 
@@ -110,7 +112,7 @@
       class="modal-class"
     >
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <no-approval :noApprDetail="noApprDetail"></no-approval>
+      <no-approval :noApprDetail="noApprDetail" :isComplete="false"></no-approval>
     </modal>
   </section>
 </template>
@@ -139,6 +141,7 @@ export default {
 
       apprNo: "",
       noApprDetail: {},
+      apprStatus: "전체",
     };
   },
   computed: {
@@ -149,7 +152,7 @@ export default {
     }),
   },
   created() {
-    this.noApproval();
+    // this.noApproval();
   },
   methods: {
     // date 설정
@@ -169,12 +172,17 @@ export default {
     },
     // 결재함 리스트
     async noApproval() {
+      this.$store.commit("SET_LOADING_TRUE");
+
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
+      formData.append("status", this.apprStatus); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
+
       try {
         let response = await http.post(`/payRecieve`, formData);
         console.log(response);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
@@ -195,6 +203,8 @@ export default {
 
     // 결재함 상세
     async noApprovalDetail(apprNo) {
+      this.$store.commit("SET_LOADING_TRUE");
+
       let formData = new FormData();
       formData.append("apprNo", apprNo);
 
@@ -203,6 +213,7 @@ export default {
         console.log(formData);
         console.log(response);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
