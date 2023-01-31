@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: jdbc:mysql://database-2.cok0kgmbqg4l.us-east-1.rds.amazonaws.com:3306/fax?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://database-2.cok0kgmbqg4l.us-east-1.rds.amazonaws.com:3306/fax?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8
     username: admin
     password: gkfdkqjwl1
     driver-class-name: com.mysql.cj.jdbc.Driver
+    sql-script-encoding: UTF-8
   jpa:
     hibernate:
       naming:

@@ -36,9 +36,9 @@ public class PayService {
     public List<HashMap<String,Object>> apprList(String userId,String status){
         List<Object[]> test = new ArrayList<>();
         if(status.equals("전체")){ //결재함-전체
-            approvalRepository.recieveAll(userId);
+            test = approvalRepository.recieveAll(userId);
         }else {
-            approvalRepository.recieve(userId,status);
+            test = approvalRepository.recieve(userId,status);
         }
         List<HashMap<String,Object>> lists = new ArrayList<>();
         String[] arr = { "결제고유번호","상태","보내는사람","결제일자","받는사람","제목","팩스번호","요청일자"};
