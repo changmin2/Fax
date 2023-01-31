@@ -29,11 +29,7 @@ public class Approval {
     private String USER_KEY; //발송번호
     private String APPR_DATE; //결재일자
     private String APPR_REMARK; //사유
-<<<<<<< HEAD
-    private String USE_GBN;
-=======
     private String USE_GBN; //사용구분
->>>>>>> e5b7fd3a537f3c787a30a96a4b3f773042be4ba4
 
     public Approval(SendReq req,int i) {
         this.USER_KEY = req.getUserKey();
