@@ -21,8 +21,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
             "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
-            "       WHERE a.USER_KEY  = s.USER_KEY \n" +
+            "       WHERE a.USER_KEY  = s.USER_KEY                       \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
+            "         AND s.USE_GBN = 'Y' \n" +
             "        ORDER BY a.USER_KEY",nativeQuery = true)
     List<Object[]> recieve(@Param(value = "userId")String userId,@Param(value = "status")String status);
     //결재함 목록(전체)
@@ -33,6 +34,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
+            "         AND s.USE_GBN = 'Y' \n" +
             "        ORDER BY a.USER_KEY",nativeQuery = true)
     List<Object[]> recieveAll(@Param(value = "userId")String userId);
 
@@ -51,6 +53,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       s.TITLE,s.FAX_NO,s.INSERT_DATE\n" +
             "from TB_APPROVAL a ,TB_SEND s\n" +
             "WHERE a.USER_KEY  = s.USER_KEY \n" +
+            "         AND s.USE_GBN = 'Y' \n" +
             "AND a.APPR_NO =:apprNo",nativeQuery = true)
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
@@ -63,8 +66,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG       \n" +
             "            from TB_SEND a \n" +
-            "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO     \n" +
-            "    where a.USER_NO = :userId",nativeQuery = true)
+            "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO      \n" +
+            "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId);
 
     //발송대기 상세 - 수신자 목록
@@ -85,11 +88,11 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME\n" +
             "       from TB_SEND a \n" +
             "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO     \n" +
-            "    where a.USER_KEY = :userKey ",nativeQuery = true)
+            "    where a.USER_KEY = :userKey  AND a.USE_GBN = 'Y'",nativeQuery = true)
     List<Object[]> totalDetail2(@Param(value = "userKey")String userKey);
 
     @Query(value = "SELECT * FROM TB_APPROVAL\n" +
-            "where USER_KEY =:userKey\n", nativeQuery = true)
+            "where APPR_NO = (select APPR_NO from TB_SEND where USER_KEY =:userKey) \n", nativeQuery = true)
     Approval findAppr(@Param(value = "userKey")String userKey);
 
 

@@ -136,9 +136,10 @@ public class PayController {
 
     //회수 -> 수정 -> 파일삭제시
     @PostMapping("/S3fileDelete")
-    public void S3fileDelete(@RequestBody Map<String,String> map){
+    public boolean S3fileDelete(@RequestBody Map<String,String> map){
         String fileName = map.get("fileName");
         s3Uploader.removeS3File(fileName);
+        return true;
     }
 
     //재사용

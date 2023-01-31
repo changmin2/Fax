@@ -36,9 +36,9 @@
                    <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
                    <td colspan="2"></td>
                 </tr>
-                <tr v-if="isApprUser">
+                <tr v-if="GRADE_CODE>1">
                   <th>부재여부</th>
-                    <td colspan="2" v-if="isApprUser">
+                    <td colspan="2" v-if="GRADE_CODE>1">
                     <div class="d-flex flex-row justify-content-start" style="height:50px">
                     <div class="align-self-center mt-1">
                       <label class="ml-1">
@@ -60,7 +60,7 @@
                         N</label
                       >
                     </div>
-                      <div v-if="iS_ABSENCEflag" class="ml-3 d-flex flex-row flex-fill align-self-center">
+                      <div v-if="IS_ABSENCE=='Y'" class="ml-3 d-flex flex-row flex-fill align-self-center">
                         <span class="mt-1 ml-3">대체자</span>
                           <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
                           <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
@@ -102,19 +102,6 @@ export default {
       GRADE_CODE: 0,
       subUsers: [],
     };
-  },
-  computed: {
-     iS_ABSENCEflag() {
-      console.log(this.IS_ABSENCE);
-      console.log(this.IS_ABSENCE=='Y');
-      return this.IS_ABSENCE=='Y';
-    },
-    isApprUser() {
-      return this.GRADE_CODE > 1;
-    },
-    // ...mapGetters({
-    //   userInfo: "getUserInfo",
-    // }),
   },
   methods: {
     async getUserInfo() {

@@ -9,9 +9,11 @@ import com.example.demo.VO.ReSendRes;
 import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.domain.Send.Send_detail;
+import com.example.demo.domain.User.User;
 import com.example.demo.repository.ApprovalRepository;
 import com.example.demo.repository.SendDRepository;
 import com.example.demo.repository.SendRepository;
+import com.example.demo.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,12 +36,11 @@ public class SendService {
 
     private final  GlobalVariables globalVariables;
     private final UploadService uploadService;
-//    private final PayService payService;
     private final SendRepository sendRepository;
     private final SendDRepository sendDRepository;
     private final ApprovalRepository approvalRepository;
+    private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
-
     @Transactional
     public String sendInsert(SendReq req) throws ParseException, IOException {
         String Date_End = globalVariables.getNow();
@@ -63,7 +64,7 @@ public class SendService {
             sendDRepository.save(sendD);
         }
 
-//        if(!req.getAppr_person().equals("")){
+        if(!req.getAppr_person().equals("")){
             //결재 max값 가져오기
             int i = approvalRepository.getMaxApprNo(req.getUserKey());
             //결재 저장
@@ -74,10 +75,10 @@ public class SendService {
             send.setAPPR_NO(approval.getAPPR_NO());
             sendRepository.save(send);
             return "결재 신청 완료";
-//        }else{ //전결일때
-//            sendRepository.save(send);
-//            return payService.apprUpOrSend(req.getUserKey(),req.getUserID());
-//        }
+        }else{ //전결일때
+            sendRepository.save(send);
+            return apprUpOrSend(req.getUserKey(),req.getUserID());
+        }
 
     }
     public String sendApi(Send send) throws IOException{
@@ -139,6 +140,10 @@ public class SendService {
                 send.setSEND_DATE(Date_End);
             }
             send.setJOB_NO(res.getJob_No() + "");
+            for (Send_detail dest:sendDetail) {
+                dest.setJOB_NO(res.getJob_No() + "");
+                sendDRepository.save(dest);
+            }
         }else {
             send.setERROR_MSG(res.getMessage());
         }
@@ -198,6 +203,7 @@ public class SendService {
         return sendApi(send);
     }
 
+<<<<<<< HEAD
     public String reSendJobNo(Map<String,String> map) throws IOException {
         Send send = sendRepository.findById(map.get("userKey")).get();
         if(map.get("Send_Date")!=null){
@@ -215,4 +221,47 @@ public class SendService {
         return sendRepository.findById(userKey).get().getJOB_NO();
     }
 
+=======
+
+    //결재 완료하거나 전결했을때 send할지 지점장에게 결재 올릴지
+    @Transactional
+    public String apprUpOrSend(String userKey,String userId) throws IOException {
+        Send send = sendRepository.findById(userKey).get();
+        //결재자 정보 가져오기
+        User user = userRepository.findById(userId).get();
+        //GRADE_CODE:  3 지점장
+        if(send.getPRIVATE_INFO_YN().equals("Y") && user.getGRADE_CODE()<3){ //개인정보 포함이면 지점장에게 결재
+            Object[] apprUser = userRepository.getHigherApprUser(userId).get(0);
+            //더 높은 결재자 정보
+            String apprUSER_ID = (String) apprUser[0];
+            String apprUSER_NAME = (String) apprUser[1];
+            String apprCOMM_NAME = (String) apprUser[2];
+
+            //결재 테이블 insert
+            int i = approvalRepository.getMaxApprNo(send.getUSER_KEY()); //seq따기
+            log.info("결재 seq : "+i);
+            Approval approval = new Approval();
+            approval.setAPPR_NO(send.getUSER_KEY()+i);
+            approval.setAPPR_PERSON(apprUSER_ID);
+            approval.setUSER_KEY(send.getUSER_KEY());
+            approval.setPRIVATE_INFO_YN(send.getPRIVATE_INFO_YN());
+            approval.setUSER_NO(send.getUSER_NO());
+            approval.setSTATUS("대기");
+            approvalRepository.save(approval);
+
+            //SEND 테이블  update
+            send.setAPPR_NO(approval.getAPPR_NO());
+            send.setAPPR_USER_NO(approval.getAPPR_PERSON());
+
+            return  "개인정보 포함 문서로, "+apprUSER_NAME+"("+apprCOMM_NAME+")에게 결재요청되었습니다.";
+        }
+
+        //아니면 팩스전송
+        //SEND 테이블  update
+        send.setSTATUS("결재완료");
+        sendRepository.save(send);
+        //발송시작
+        return sendApi(send);
+    }
+>>>>>>> e5b7fd3a537f3c787a30a96a4b3f773042be4ba4
 }

@@ -39,8 +39,8 @@
               <th>조건</th>
               <td>
                 <select name="searchGubun" id="searchGubun">
-                  <option value="" selected>받는사람/팩스번호</option>
-                  <option value="1">받는사람</option>
+                  <!-- <option value="" selected>받는사람/팩스번호</option>
+                  <option value="1">받는사람</option> -->
                   <option value="2">팩스번호</option>
                 </select>
                 <input type="text" id="searchGubunData" name="searchGubunData" style="" />
@@ -195,13 +195,13 @@ export default {
         let response = await http.post("/sendRecieveDetail", {
           userKey: apprNo,
         });
-        console.log(response);
+        // console.log(response);
         let { data } = response;
 
         if (data != null) {
           // 전송 성공
-          console.log(data);
-          console.log("상세 조회 성공");
+          // console.log(data);
+          // console.log("상세 조회 성공");
           this.sendDetail = data[0];
           this.detailOpen = true;
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
@@ -231,6 +231,7 @@ export default {
   },
   mounted() {
     this.getNow();
+    this.getSendList();
   },
 };
 </script>

@@ -30,10 +30,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{ sendDetail.이름 }}</td>
-              <td>{{ sendDetail.팩스번호 }}</td>
-            </tr>
+               <tr v-for="(detail, index) in sendDetail.받는사람정보" :key="index" >
+                  <td>{{ detail.이름 }} &#40; {{detail.상호}} &#41;</td>
+                  <td>{{ detail.팩스번호 }}</td>
+                </tr>
           </tbody>
         </table>
 
