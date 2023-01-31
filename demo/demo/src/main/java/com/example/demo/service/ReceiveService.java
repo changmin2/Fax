@@ -144,6 +144,7 @@ public class ReceiveService {
         return recieveRepository.findAll();
     }
 
+    //수신상세
     public HashMap<String, String> receiveDetail(String RFax_No_Seq) throws IOException, ParseException {
         log.info("Service 진입");
         HashMap<String,String> result = new HashMap<>();
@@ -185,4 +186,6 @@ public class ReceiveService {
         return result;
 
     }
+
+
 }

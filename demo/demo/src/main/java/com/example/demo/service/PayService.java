@@ -6,10 +6,7 @@ import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Form.ApprovalForm;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.domain.User.User;
-import com.example.demo.repository.ApprovalRepository;
-import com.example.demo.repository.SendRepository;
-import com.example.demo.repository.UploadRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.UserTokenHandler;
@@ -242,4 +239,5 @@ public class PayService {
     public Send sendInfoFind(String userKey){
         return sendRepository.findById(userKey).get();
     }
+
 }

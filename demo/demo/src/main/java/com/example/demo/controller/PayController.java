@@ -5,6 +5,7 @@ import com.example.demo.S3Uploader;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.repository.SendRepository;
 import com.example.demo.service.PayService;
+import com.example.demo.service.ReceiveService;
 import com.example.demo.service.SendService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,6 @@ public class PayController {
 
     private final PayService payService;
     private final S3Uploader s3Uploader;
-
     //결재함 목록
     @PostMapping("/payRecieve")
     @ResponseBody
@@ -77,6 +77,13 @@ public class PayController {
         log.info("sendRecieve진입");
         List<HashMap<String, Object>> hashMaps = payService.sendRecieve(userId);
         return hashMaps;
+    }
+
+    //부서팩스함 제목 저장
+    @PostMapping("/titleSave")
+    public void titleSave(@RequestBody Map<String,String> map){
+        String title = map.get("Title");
+        String RFax_No_Seq = map.get("RFax_No_Seq");
     }
 
     //결재 상세정보
