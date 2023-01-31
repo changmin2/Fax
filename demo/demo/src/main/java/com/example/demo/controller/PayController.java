@@ -32,6 +32,8 @@ public class PayController {
 
     private final PayService payService;
     private final S3Uploader s3Uploader;
+    private final ReceiveService receiveService;
+
     //결재함 목록
     @PostMapping("/payRecieve")
     @ResponseBody
@@ -84,6 +86,7 @@ public class PayController {
     public void titleSave(@RequestBody Map<String,String> map){
         String title = map.get("Title");
         String RFax_No_Seq = map.get("RFax_No_Seq");
+        receiveService.titleSave(title,RFax_No_Seq);
     }
 
     //결재 상세정보

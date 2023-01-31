@@ -187,6 +187,9 @@ public class ReceiveService {
         return result;
 
     }
-
-
+    //부서팩스함 제목저장
+    @Transactional
+    public void titleSave(String title, String rFax_no_seq) {
+        recieveRepository.findById(rFax_no_seq).get().setTITLE(title);
+    }
 }
