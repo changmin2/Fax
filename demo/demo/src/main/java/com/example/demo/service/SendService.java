@@ -43,10 +43,7 @@ public class SendService {
     private final S3Uploader s3Uploader;
     @Transactional
     public String sendInsert(SendReq req) throws ParseException {
-        Calendar now = Calendar.getInstance();
-        now.setTime(new Date());
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String Date_End = df.format(now.getTime());
+        String Date_End = globalVariables.getNow();
         if(req.getReserve_yn().equals("Y")){ //예약전송일때
             String sendDate = req.getSend_Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
@@ -133,10 +130,7 @@ public class SendService {
 
         if(Result.equals("OK")) {
             if (send.getRESERVE_YN().equals("N")) { //예약전송아닐때 오늘날짜
-                Calendar now = Calendar.getInstance();
-                now.setTime(new Date());
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                String Date_End = df.format(now.getTime());
+                String Date_End = globalVariables.getNow();
                 send.setSEND_DATE(Date_End);
             }
             send.setJOB_NO(res.getJob_No() + "");
