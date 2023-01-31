@@ -1,4 +1,4 @@
 export default {
-  sendDetail: {},
-  sendUpdate: {},
+  sendDetail: "",
+  sendUpdate: "",
 };
