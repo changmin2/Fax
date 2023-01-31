@@ -91,4 +91,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     Approval findAppr(@Param(value = "userKey")String userKey);
 
 
+    @Query(value = "delete from fax.TB_APPROVAL\n" +
+            "where APPR_NO =:apprNo",nativeQuery = true)
+    void deleteApproNo(@Param(value = "apprNo") String apprNo);
+
 }

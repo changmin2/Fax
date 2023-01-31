@@ -219,6 +219,7 @@ public class PayService {
         log.info(lists.toString());
         return lists;
     }
+    //회수
     @Transactional
     public void withdraw(String userKey){
         Approval appr = approvalRepository.findAppr(userKey);
@@ -227,5 +228,10 @@ public class PayService {
         send.setSTATUS("회수");
         send.setAPPR_NO("");
         send.setAPPR_USER_NO("");
+    }
+
+    @Transactional
+    public void apprNoDelete(String apprNo) {
+        approvalRepository.deleteApproNo(apprNo);
     }
 }
