@@ -79,6 +79,7 @@ export default new Router({
         default: SendList,
         // footer: AppFooter
       },
+      beforeEnter: requireAuth(),
     },
     {
       path: "/send-wait",
