@@ -45,16 +45,19 @@
             {{ dateInfo }}
           </div>
           <div class="row mt-3">
-            결재구분
-            <select class="form-select ml-2">
-              <option selected>전체</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-            </select>
+            <!-- 결재구분
+            <select v-model="apprStatus" class="form-select ml-2">
+              <option value="전체" selected>전체</option>
+              <option value="반려">반려</option>
+              <option value="완료">완료</option>
+              <option value="회수">회수</option>
+            </select> -->
           </div>
         </div>
         <div class="col col-sm-2">
-          <base-button type="default" class="no-approval-btn mt-2"> 조회 </base-button>
+          <base-button type="default" class="no-approval-btn mt-2" @click="noApproval">
+            조회
+          </base-button>
         </div>
       </div>
       <hr />
@@ -96,22 +99,6 @@
                 <td>{{ noApproval.받는사람 }}</td>
                 <td>{{ noApproval.받는사람 }}</td>
               </tr>
-              <tr>
-                <td><input type="checkbox" /></td>
-                <td>1</td>
-                <td></td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>
-                  <base-button @click="noApprovalDetail('05042089819')">상세</base-button>
-                </td>
-                <td>8</td>
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
-              </tr>
             </table>
           </div>
         </div>
@@ -131,6 +118,7 @@ export default {
       noApprovalList: [],
 
       dateInfo: "",
+      apprStatus: "",
     };
   },
   computed: {
@@ -154,12 +142,16 @@ export default {
 
     // 결재함
     async noApproval() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
+      formData.append("status", "전체"); // 상태 변수 추가 전체, 완료, 회수, 반려
+
       try {
         let response = await http.post(`/payRecieve`, formData);
         console.log(response);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공

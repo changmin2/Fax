@@ -1,9 +1,5 @@
 <template>
   <section class="section">
-    <!-- alertify.js-->
-    <link rel="stylesheet" href="@/node_modules/alertifyjs/build/css/alertify.min.css" />
-    <link rel="stylesheet" href="@/node_modules/alertifyjs/build/css/alertify.css" />
-    <!-- include a theme -->
     <div class="container">
       <div
         class="send-title display-4 mb-4 font-weight-800 text-default"
@@ -12,7 +8,7 @@
         미결재정보
       </div>
 
-      <div class="container-fluid">
+      <div class="noApproval-detail">
         <div class="left-content col">
           <span class="mt-3">> 결재요청정보</span>
 
@@ -160,6 +156,9 @@ export default {
 </script>
 
 <style scoped>
+.noApproval-detail {
+  display: flex;
+}
 .no-proval-info {
 }
 .left-content {

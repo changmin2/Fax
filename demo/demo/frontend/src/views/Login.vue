@@ -10,12 +10,7 @@
             body-classes="px-lg-5 py-lg-5"
             class="border-0"
           >
-            <div
-              class="display-4 text-left mb-4 font-weight-800 text-default"
-              style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
-            >
-              로그인
-            </div>
+            <div class="display-4 text-left mb-4 font-weight-800 text-default">로그인</div>
 
             <form role="form">
               <base-input
