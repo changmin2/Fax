@@ -113,7 +113,7 @@ public class PayController {
 
         if (userKey==null){
             result.put("flag",false);
-            result.put("message","찾는 문서고유번호가 없습니다.");
+            result.put("message","유저키오류");
             return result;
         }
 
