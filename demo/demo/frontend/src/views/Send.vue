@@ -113,7 +113,19 @@
                       ></i>
                     </div>
 
-                    <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo"
+                    <base-checkbox
+                      v-if="getterSendDetail"
+                      class="mt-2 d-inline-flex"
+                      v-model="getterSendDetail.Info.private_INFO_YN"
+                      >개인정보 포함여부</base-checkbox
+                    >
+                    <base-checkbox
+                      v-else-if="getterUpdate"
+                      class="mt-2 d-inline-flex"
+                      v-model="getterUpdate.개인정보보호여부"
+                      >개인정보 포함여부</base-checkbox
+                    >
+                    <base-checkbox v-else class="mt-2 d-inline-flex" v-model="privateInfo"
                       >개인정보 포함여부</base-checkbox
                     >
                   </td>
