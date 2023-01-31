@@ -16,11 +16,14 @@ spring:
   output:
     ansi:
       enabled: always
-
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 server:
   servlet:
     multipart:
-      maxFileSize: 10MB
+      maxFileSize: 100MB
       maxRequestSize: 100MB
 cloud:
   aws:
