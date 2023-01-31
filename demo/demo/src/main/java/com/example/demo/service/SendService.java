@@ -131,15 +131,17 @@ public class SendService {
         //DB에 결과 저장
         String Result = res.getResult();
 
-        if(Result.equals("OK")){
-            if(send.getRESERVE_YN().equals("N")){ //예약전송아닐때 오늘날짜
+        if(Result.equals("OK")) {
+            if (send.getRESERVE_YN().equals("N")) { //예약전송아닐때 오늘날짜
                 Calendar now = Calendar.getInstance();
                 now.setTime(new Date());
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 String Date_End = df.format(now.getTime());
                 send.setSEND_DATE(Date_End);
             }
-            send.setJOB_NO(res.getJob_No()+"");
+            send.setJOB_NO(res.getJob_No() + "");
+        }else {
+            send.setERROR_MSG(res.getMessage());
         }
         send.setSTATUS(Result.equals("OK")? "전송완료" : "전송실패");
         sendRepository.save(send);

@@ -30,6 +30,7 @@ public class Send {
     private String STATUS; //상태
     private String INSERT_DATE; //생성일시
     private String JOB_NO; //전송 성공시 발송닷컴에서 주는 NO
+    private String ERROR_MSG; //전송 실패 메세지
 
     public Send(SendReq req) {
         this.USER_NO = req.getUserID();

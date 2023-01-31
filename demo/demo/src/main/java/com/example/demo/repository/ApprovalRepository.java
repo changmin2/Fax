@@ -22,8 +22,17 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
-            "         AND a.APPR_PERSON = :userId",nativeQuery = true)
-    List<Object[]> recieve(@Param(value = "userId")String userId);
+            "         AND a.APPR_PERSON = :userId AND a.STATUS = :status",nativeQuery = true)
+    List<Object[]> recieve(@Param(value = "userId")String userId,@Param(value = "status")String status);
+    //결재함 목록(전체)
+    @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
+            "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
+            "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
+            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
+            "       from TB_APPROVAL a,TB_SEND s\n" +
+            "       WHERE a.USER_KEY  = s.USER_KEY \n" +
+            "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수')",nativeQuery = true)
+    List<Object[]> recieveAll(@Param(value = "userId")String userId);
 
     //결재함 상세 - 수신자리스트
     @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO from TB_APPROVAL a \n" +
@@ -49,7 +58,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
-            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
+            "              a.ERROR_MSG       \n" +
             "            from TB_SEND a \n" +
             "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO     \n" +
             "    where a.USER_NO = :userId",nativeQuery = true)
