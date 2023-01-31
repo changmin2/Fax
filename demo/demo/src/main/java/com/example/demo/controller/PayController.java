@@ -38,9 +38,7 @@ public class PayController {
     @PostMapping("/payRecieve")
     @ResponseBody
     public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String,String> map){
-        String userId= map.get("userId"); //유저아이디
-        String status= map.get("status"); //상태 ( 미결재함 : "대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
-        List<HashMap<String, Object>> hashMaps = payService.apprList(userId,status);
+        List<HashMap<String, Object>> hashMaps = payService.apprList(map);
         return hashMaps;
     }
 
@@ -75,9 +73,8 @@ public class PayController {
     //보낸팩스함 목록
     @PostMapping("/sendRecieve")
     public List<HashMap<String, Object>> sendRecieve(@RequestBody Map<String,String> map){
-        String userId = map.get("userId");
         log.info("sendRecieve진입");
-        List<HashMap<String, Object>> hashMaps = payService.sendRecieve(userId);
+        List<HashMap<String, Object>> hashMaps = payService.sendRecieve(map);
         return hashMaps;
     }
 

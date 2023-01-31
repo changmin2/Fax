@@ -6,8 +6,8 @@
         팩스보내기
         <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
         <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
-        <span v-if="getterSendDetail">재사용</span>
-        <span v-if="getterUpdate">수정</span>
+        <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f;">- 재사용 {{ getterSendDetail.userKey }}</span>
+        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f;">- 수정 {{ getterUpdate.Info }}</span>
       </div>
 
       <div class="row">
@@ -18,7 +18,7 @@
                 <tr>
                   <th>제목</th>
                   <td>
-                    <base-input
+                    <!-- <base-input
                       v-if="getterSendDetail"
                       alternative
                       v-model="getterSendDetail.Info.title"
@@ -30,8 +30,9 @@
                       v-model="getterUpdate.제목"
                       class="my-1"
                     >
-                    </base-input>
+                  </base-input> -->
                     <base-input alternative v-model="title" class="my-1"> </base-input>
+                    {{ getterUpdate }}
                   </td>
                 </tr>
                 <tr>
@@ -313,7 +314,7 @@ export default {
 
     // 팩스보내기
     async send() {
-      this.$store.commit("SET_LOADING_TRUE");
+   
 
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
@@ -332,6 +333,8 @@ export default {
         alertify.error("결재자를 등록해주세요.", 1.5);
         return;
       }
+
+      this.$store.commit("SET_LOADING_TRUE");
       // console.log(this.userId);
       let sendData = {
         destinationList: this.receiveJSON,
@@ -370,11 +373,13 @@ export default {
     async getApprUsers() {
       //결재자 가져오기
       try {
+        this.$store.commit("SET_LOADING_TRUE");
         // console.log(this.userId);
         let response = await http.post("/getApprUsers", {
           userId: this.userId,
         });
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
         this.apprUsers = data;
         // console.log(this.apprUsers);
       } catch (error) {
@@ -383,13 +388,15 @@ export default {
       }
     },
     async deleteFile() {
-      //결재자 가져오기
+      //첨부파일 삭제
       try {
         // console.log(this.userId);
+        this.$store.commit("SET_LOADING_TRUE");
         let response = await http.post("/S3fileDelete", {
           fileName: this.userKey + "_1.pdf",
         });
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
         if (data) {
           this.fileUrl = "";
           this.fileFlag = true;

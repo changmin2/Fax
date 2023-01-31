@@ -24,8 +24,12 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       WHERE a.USER_KEY  = s.USER_KEY                       \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
             "         AND s.USE_GBN = 'Y' \n" +
+            "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo \n" +
             "        ORDER BY a.USER_KEY",nativeQuery = true)
-    List<Object[]> recieve(@Param(value = "userId")String userId,@Param(value = "status")String status);
+    List<Object[]> recieve(@Param(value = "userId")String userId,
+                           @Param(value = "status")String status,
+                           @Param(value = "searchFrom")String searchFrom,
+                           @Param(value = "searchTo")String searchTo);
     //결재함 목록(전체)
     @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
@@ -35,8 +39,11 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
             "         AND s.USE_GBN = 'Y' \n" +
+            "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo \n" +
             "        ORDER BY a.USER_KEY",nativeQuery = true)
-    List<Object[]> recieveAll(@Param(value = "userId")String userId);
+    List<Object[]> recieveAll(@Param(value = "userId")String userId,
+                              @Param(value = "searchFrom")String searchFrom,
+                              @Param(value = "searchTo")String searchTo);
 
     //결재함 상세 - 수신자리스트
     @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO from TB_APPROVAL a \n" +
@@ -57,7 +64,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "AND a.APPR_NO =:apprNo",nativeQuery = true)
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
-    //발송대기 현황
+    //발송대기 현황 전체
     @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
@@ -65,10 +72,30 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG       \n" +
-            "            from TB_SEND a \n" +
-            "    left outer join TB_APPROVAL t on a.APPR_NO  = t.APPR_NO      \n" +
-            "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'",nativeQuery = true)
-    List<Object[]> sendRecieve(@Param(value = "userId")String userId);
+            "            from TB_SEND a,TB_APPROVAL t  \n" +
+            "    where a.APPR_NO  = t.APPR_NO                                 \n" +
+            "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                   \n" +
+            "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
+    List<Object[]> sendRecieveAll(@Param(value = "userId")String userId,
+                                  @Param(value = "searchFrom")String searchFrom,
+                                  @Param(value = "searchTo")String searchTo);
+
+    //발송대기 현황 상태값있을때
+    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+            "              a.TITLE ,a.FAX_NO ,\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
+            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
+            "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
+            "              a.ERROR_MSG       \n" +
+            "            from TB_SEND a,TB_APPROVAL t \n" +
+            "    where a.APPR_NO  = t.APPR_NO  and a.STATUS = :status    \n" +
+            "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                  \n" +
+           "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
+    List<Object[]> sendRecieve(@Param(value = "userId")String userId,
+                               @Param(value = "status")String status,
+                               @Param(value = "searchFrom")String searchFrom,
+                               @Param(value = "searchTo")String searchTo);
 
     //발송대기 상세 - 수신자 목록
     @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO from TB_SEND_D d\n" +

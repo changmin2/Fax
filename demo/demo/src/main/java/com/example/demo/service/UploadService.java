@@ -60,7 +60,7 @@ public class UploadService {
 
         for (int i = 0; i < files.size(); i++) {
             MultipartFile multipartFile = files.get(i);
-            File convFile = new File(multipartFile.getOriginalFilename());
+            File convFile = new File(System.getProperty("user.dir") + "/" +multipartFile.getOriginalFilename());
             multipartFile.transferTo(convFile);
 //            File convFile = new File(multipartFile.getOriginalFilename());
 //            convFile.createNewFile();

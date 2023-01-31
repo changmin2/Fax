@@ -52,7 +52,7 @@ import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
 // import LoadingSpinner from "./LoadingSpinner.vue";
-
+// alertify.set('notifier','position', 'top-center');
 export default {
   components: {
     // LoadingSpinner,

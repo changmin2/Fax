@@ -86,6 +86,7 @@ public class LoginController {
     @ResponseBody
     public List<HashMap<String, String>> getApprUsers(@RequestBody Map<String,String> map){
         String userId = map.get("userId"); //유저아이디
+        if(userId==null){return null;}
         List<HashMap<String, String>> users = userService.getApprUsers(userId);
         return users;
     }

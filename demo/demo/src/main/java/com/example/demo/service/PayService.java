@@ -33,12 +33,17 @@ public class PayService {
     private final GlobalVariables globalVariables;
 
     //결제 수신 리스트
-    public List<HashMap<String,Object>> apprList(String userId,String status){
+    public List<HashMap<String,Object>> apprList(Map<String,String> Rmap){
+        String userId= Rmap.get("userId"); //유저아이디
+        String status= Rmap.get("status"); //상태 ( 미결재함 : "대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
+        String searchFrom= Rmap.get("searchFrom"); //조회기간
+        String searchTo= Rmap.get("searchTo"); //조회기간
+
         List<Object[]> test = new ArrayList<>();
         if(status.equals("전체")){ //결재함-전체
-            test = approvalRepository.recieveAll(userId);
+            test = approvalRepository.recieveAll(userId,searchFrom,searchTo);
         }else {
-            test = approvalRepository.recieve(userId,status);
+            test = approvalRepository.recieve(userId,status,searchFrom,searchTo);
         }
         List<HashMap<String,Object>> lists = new ArrayList<>();
         String[] arr = { "결제고유번호","상태","보내는사람","결제일자","받는사람","제목","팩스번호","요청일자"};
@@ -122,8 +127,17 @@ public class PayService {
         return "반려처리 되었습니다.";
     }
 
-    public List<HashMap<String,Object>> sendRecieve(String userId){
-        List<Object[]> objects = approvalRepository.sendRecieve(userId);
+    public List<HashMap<String,Object>> sendRecieve(Map<String,String> Rmap){
+        String userId= Rmap.get("userId"); //유저아이디
+        String status= Rmap.get("status"); //상태 ( 미결재함 : "대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
+        String searchFrom= Rmap.get("searchFrom"); //조회기간
+        String searchTo= Rmap.get("searchTo"); //조회기간
+        List<Object[]> objects = new ArrayList<>();
+        if(status.equals("전체")){ //결재함-전체
+            objects = approvalRepository.sendRecieveAll(userId,searchFrom,searchTo);
+        }else {
+            objects = approvalRepository.sendRecieve(userId,status,searchFrom,searchTo);
+        }
         List<HashMap<String,Object>> lists = new ArrayList<>();
         String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지"};
 
