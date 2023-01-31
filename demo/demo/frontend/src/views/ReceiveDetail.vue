@@ -1,5 +1,4 @@
 <template>
-  <section class="section">
     <div class="container receive-detail-container">
       <div
         class="receive-title display-4 mb-4 font-weight-800 text-default"
@@ -59,8 +58,9 @@
 
           <span class="mt-3">> 제목</span>
           <div class="row ml-1">
-            <base-input class="receive-detail-title-input" style=""> </base-input>
-            <base-button type="secondary" class="receive-detail-btn ml-2"> 제목저장 </base-button>
+            <base-input class="receive-detail-title-input" style="" v-model="title">
+             </base-input>
+            <base-button type="secondary" class="receive-detail-btn ml-2" @click="savetitle"> 제목저장 </base-button>
           </div>
         </div>
 
@@ -72,7 +72,6 @@
         </div>
       </div>
     </div>
-  </section>
 </template>
 
 <script>
@@ -82,11 +81,52 @@ import alertify from "alertifyjs";
 export default {
   name: "receive_detail",
   props: ["receivelistDetail"],
+  computed: {
+
+  },
   data() {
     return {
+       list: this.receivelistDetail,
+       title: this.receivelistDetail.title,
+       RFax_No_Seq: '',
     };
   },
-  created() {},
+  mounted(){
+     this.title = this.list.title;
+     this.RFax_No_Seq = this.list.receive_No_SEQ;
+  },
+
+  methods: {
+
+    // 제목저장
+    async savetitle() {
+        console.log(this.title);
+        console.log(this.RFax_No_Seq);
+      try {
+        let response = await http.post("/titleSave", {
+          RFax_No_Seq : this.RFax_No_Seq,
+          Title: this.title,
+
+        });
+
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          console.log(data);
+          console.log("전송 성공");
+          alertify.success("제목 저장이 완료되었습니다.", 1.5);
+        } else {
+          console.log("전송 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", data.Message);
+        alertify.error("실패했습니다.", 1.5);
+      }
+
+    },
+  },
 };
 </script>
 

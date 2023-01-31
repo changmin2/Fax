@@ -6,7 +6,7 @@
         class="receive-title display-4 mb-4 font-weight-800 text-default"
         style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
       >
-        받은팩스함 - <span style="color: #d7191f; display: inline">부서</span>
+        받은팩스함 - <span style="color: #d7191f; display: inline">{{userInfo.deptName}}</span>
       </div>
 
       <div class="row" style="width: 100%;">
@@ -76,29 +76,33 @@
                   </td>
                 </tr>
                 <tr class="ApprArea-header">
-                  <th>
+                  <!--<th>
                     <input type="checkbox">
-                  </th>
+                  </th> -->
                   <th>확인</th>
                   <th>상세보기</th>
-                  <th>발신자</th>
-                  <th>최초확인자</th>
+                  <th>발신자팩스번호</th>
                   <th>받은날짜</th>
-                  <th>주소록</th>
+                  <th>확인여부</th>
+                  <th>최초확인자</th>
+                  <th>최초확인날짜</th>
+                  <!--<th>주소록</th>-->
                 </tr>
 
                <tr v-for="(receive, index) in receivelist"
                   :key="index"
                 >
-                <td></td>
+                <!--<td></td>-->
                 <td>{{receive.receive_No_SEQ }}</td>
                 <td>
                 <base-button @click="receiveDetail( receive.receive_No_SEQ )">상세</base-button>
                 </td>
                 <td>{{ receive.fax_NO }}</td>
+                <td>{{ receive.receive_DATE }}</td>
+                <td>{{ receive.read_YN }}</td>
                 <td>{{ receive.read_USER }}</td>
                 <td>{{ receive.read_DATE }}</td>
-                <td></td>
+                <!--<td></td>-->
                 </tr>
             </table>
           </div>
@@ -111,6 +115,7 @@
           body-classes="p-1"
           modal-classes="modal-dialog-centered modal-big"
           class="modal-class"
+          @search="apprsearch"
         >
           <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
           <receive-detail :receivelistDetail="receivelistDetail"></receive-detail>
@@ -217,13 +222,10 @@ export default {
           RFax_No_Seq: apprNo,
           userId: user_id.userId,
         });
-        console.log(response);
         let { data } = response;
 
         if (data != null) {
           // 전송 성공
-          console.log(data);
-          console.log("상세 조회 성공");
           this.receivelistDetail = data;
           this.detailOpen = true;
 
@@ -247,6 +249,7 @@ export default {
     //모달 닫기
     closeModal() {
       this.modal = false
+      this.apprsearch();
     },
   },
   mounted() {

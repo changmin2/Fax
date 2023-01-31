@@ -96,6 +96,7 @@ export default {
     closeModal() {
       this.$emit("update:show", false);
       this.$emit("close");
+      this.$emit("search");
     }
   },
   watch: {
