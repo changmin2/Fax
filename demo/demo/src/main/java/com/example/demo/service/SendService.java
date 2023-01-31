@@ -36,7 +36,7 @@ public class SendService {
 
     private final  GlobalVariables globalVariables;
     private final UploadService uploadService;
-    private final PayService payService;
+//    private final PayService payService;
     private final SendRepository sendRepository;
     private final SendDRepository sendDRepository;
     private final ApprovalRepository approvalRepository;
@@ -65,7 +65,7 @@ public class SendService {
             sendDRepository.save(sendD);
         }
 
-        if(!req.getAppr_person().equals("")){
+//        if(!req.getAppr_person().equals("")){
             //결재 max값 가져오기
             int i = approvalRepository.getMaxApprNo(req.getUserKey());
             //결재 저장
@@ -76,10 +76,10 @@ public class SendService {
             send.setAPPR_NO(approval.getAPPR_NO());
             sendRepository.save(send);
             return "결재 신청 완료";
-        }else{ //전결일때
-            sendRepository.save(send);
-            return payService.apprUpOrSend(req.getUserKey(),req.getUserID());
-        }
+//        }else{ //전결일때
+//            sendRepository.save(send);
+//            return payService.apprUpOrSend(req.getUserKey(),req.getUserID());
+//        }
 
     }
     public String sendApi(Send send) throws IOException{
