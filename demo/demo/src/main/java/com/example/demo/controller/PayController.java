@@ -39,7 +39,7 @@ public class PayController {
     @ResponseBody
     public List<HashMap<String, Object>> payRecieve(@RequestBody Map<String,String> map){
         String userId= map.get("userId"); //유저아이디
-        String status= map.get("status"); //상태 ( 미결재함 : "결재대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
+        String status= map.get("status"); //상태 ( 미결재함 : "대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
         List<HashMap<String, Object>> hashMaps = payService.apprList(userId,status);
         return hashMaps;
     }
