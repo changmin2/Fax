@@ -17,7 +17,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class S3Uploader {
+
     private final AmazonS3Client amazonS3Client;
+    private final GlobalVariables globalVariables;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
@@ -57,6 +60,11 @@ public class S3Uploader {
         System.out.println("File delete fail");
     }
 
+    //S3파일 삭제
+    public void removeS3File(String fileName){
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket,globalVariables.getFilePath()+fileName));
+    }
+
     // 로컬에 파일 업로드 하기
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
@@ -80,4 +88,5 @@ public class S3Uploader {
         File file = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
         return file;
     }
+
 }

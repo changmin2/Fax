@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.S3Config;
+import com.example.demo.S3Uploader;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.repository.SendRepository;
 import com.example.demo.service.PayService;
@@ -28,6 +30,7 @@ import java.util.Map;
 public class PayController {
 
     private final PayService payService;
+    private final S3Uploader s3Uploader;
 
     //결재함 목록
     @PostMapping("/payRecieve")
@@ -121,4 +124,10 @@ public class PayController {
         return result;
     }
 
+    //회수 -> 수정 -> 파일삭제시
+    @PostMapping("/S3fileDelete")
+    public void S3fileDelete(@RequestBody Map<String,String> map){
+        String fileName = map.get("fileName");
+        s3Uploader.removeS3File(fileName);
+    }
 }

@@ -43,8 +43,8 @@ public class UploadController {
         //처음 요청 시
         if(userKey.equals("None")){
             userKey = createKey(userId);
-            userForm.setUserKey(userKey);
         }
+        userForm.setUserKey(userKey);
 
         ++seq;
         String RealPath =userKey+"_"+"1.pdf";
