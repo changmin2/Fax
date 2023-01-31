@@ -13,9 +13,9 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
@@ -143,9 +143,29 @@ public class PayController {
 
     //재사용
     @PostMapping("/reUse")
-    public void reUse(@RequestBody Map<String,String> map){
+    public HashMap<String,Object> reUse(@RequestBody Map<String,String> map){
         HashMap<String,Object> result = new HashMap<>();
         String userKey = map.get("userKey");
+        String userId = map.get("userId");
+        String newUserKey = createKey(userId);
 
+        Send find = payService.sendInfoFind(userKey);
+        result.put("Info",find);
+        result.put("fileName",userKey+"_"+"1.pdf");
+        result.put("userKey",newUserKey);
+
+        return result;
+    }
+
+    //유저 키 생성 함수
+    private String createKey(String userId) {
+        String userKey;
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+
+        DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+        String Date_End = df.format(now.getTime());
+        userKey = userId + Date_End;
+        return userKey;
     }
 }
