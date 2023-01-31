@@ -1,51 +1,46 @@
 <template>
-  <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="shape shape-style-1"></div>
-    <div class="container pt-lg-md">
+  <section class="section">
+    <div class="container receive-detail-container">
       <div
-        class="send-title display-4 mb-4 font-weight-800 text-default"
+        class="receive-title display-4 mb-4 font-weight-800 text-default"
         style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
       >
-        수신팩스정보
+        부서 팩스함
       </div>
 
-      <div class="row">
+      <div class="receive-detail">
         <div class="left-content col">
-          <span class="mt-3">> 보낸곳</span>
+          <span class="mt-3">> 보낸 곳</span>
 
-          <table class="send-detail-table table">
+          <table class="receive-detail-table table" style="width: 100%">
             <thead>
               <tr>
-                <th scope="col">보낸사람</th>
                 <th scope="col">팩스번호</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td></td>
-                <td>{{ receivelistDetail }}</td>
+                <td>{{ receivelistDetail.sender_NO }}</td>
               </tr>
             </tbody>
           </table>
 
           <span class="mt-3">> 받는곳</span>
-          <table class="send-detail-table table">
+          <table class="receive-detail-table table">
             <thead>
               <tr>
-                <th scope="col">받는사람</th>
                 <th scope="col">팩스번호</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td></td>
-                <td></td>
+                <td>{{ receivelistDetail.fax_NO }}</td>
               </tr>
             </tbody>
           </table>
 
           <span class="mt-3">> 수신 정보</span>
-          <table class="send-detail-table table">
+          <table class="receive-detail-table table">
             <thead>
               <tr>
                 <th scope="col">수신일시</th>
@@ -55,9 +50,9 @@
             </thead>
             <tbody>
               <tr>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ receivelistDetail.receive_DATE }}</td>
+                <td>{{ receivelistDetail.page_CNT }}</td>
+                <td>{{ receivelistDetail.Result }}</td>
               </tr>
             </tbody>
           </table>
@@ -65,19 +60,17 @@
           <span class="mt-3">> 제목</span>
           <div class="row ml-1">
             <base-input class="receive-detail-title-input" style=""> </base-input>
-            <base-button type="secondary" class="send-detail-btn ml-2"> 제목저장 </base-button>
+            <base-button type="secondary" class="receive-detail-btn ml-2"> 제목저장 </base-button>
           </div>
         </div>
 
-        <div class="col">
+        <div class="col col-8">
           <iframe
-            src="https://bnksys.s3.ap-northeast-2.amazonaws.com/BNK00120230127024348_6.pdf"
+            v-bind:src="`${ receivelistDetail.filePath }`"
             style="width: 100%; height: 100%;"
           ></iframe>
         </div>
       </div>
-
-      <div class="col-lg-5"></div>
     </div>
   </section>
 </template>
@@ -89,6 +82,11 @@ import alertify from "alertifyjs";
 export default {
   name: "receive_detail",
   props: ["receivelistDetail"],
+  data() {
+    return {
+    };
+  },
+  created() {},
 };
 </script>
 
@@ -97,13 +95,16 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.receive-detail-container {
+  max-width: 90%;
+}
+.receive-detail {
+  display: flex;
+  max-width: 100%;
+}
+
 table {
   display: flex;
-  /* display: -webkit-box; */
-  /* display: -ms-flexbox; */
-  /* overflow-x: auto; */
-  /* overflow-y: hidden; */
-  /* border: 1px solid gainsboro; */
 }
 tbody {
   display: flex;
@@ -119,32 +120,30 @@ th {
   font-weight: normal;
 }
 
-.send-detail-table {
+.receive-detail-table {
   font-size: small;
 }
-.send-detail-table th,
-.send-detail-table td {
+.receive-detail-table th,
+.receive-detail-table td {
   text-align: center;
   height: 35px;
   line-height: 0px;
 }
-.send-detail-table th {
+.receive-detail-table th {
   width: 100px;
 }
-.send-detail-table td {
+.receive-detail-table td {
   width: 250px;
   border-top: 0.0625rem solid #dee2e6;
   border-right: 0.0625rem solid #dee2e6;
 }
-.send-detail-table td:last-child {
+.receive-detail-table td:last-child {
   border-bottom: 0.0625rem solid #dee2e6;
-  margin: 0px;
-  padding: 0px;
 }
-.send-detail-btn-group {
+.receive-detail-btn-group {
   margin-left: 240px;
 }
-.send-detail-btn {
+.receive-detail-btn {
   padding: 5px;
   width: 70px;
   height: 40px;
