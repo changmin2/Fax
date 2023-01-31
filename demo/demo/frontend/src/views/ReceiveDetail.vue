@@ -58,7 +58,9 @@
 
           <span class="mt-3">> 제목</span>
           <div class="row ml-1">
-            <base-input class="receive-detail-title-input" style="" v-model.lazy="title" >
+            <base-input class="receive-detail-title-input" style=""
+             v-model="receivelistDetail.title"
+             >
              </base-input>
             <base-button type="secondary" class="receive-detail-btn ml-2" @click="savetitle"> 제목저장 </base-button>
           </div>
@@ -86,12 +88,26 @@ export default {
   },
   data() {
     return {
-       title: this.receivelistDetail.title,
-       RFax_No_Seq: this.receivelistDetail.receive_No_SEQ,
+       title: '',
+       RFax_No_Seq: '',
     };
   },
+  updated(){
+    //상세에서 props 넘긴 후 호출
+     this.title = this.receivelistDetail.title;
+     this.RFax_No_Seq = this.receivelistDetail.receive_No_SEQ;
+  },
   methods: {
-
+    //제목 값세팅
+    getTitle: function() {
+      if(this.title == ''){
+        this.title = this.receivelistDetail.title;
+      }
+        return this.title;
+    },
+    setTitle: function(value) {
+        this.title = value;
+    },
     // 제목저장
     async savetitle() {
         console.log(this.title);
