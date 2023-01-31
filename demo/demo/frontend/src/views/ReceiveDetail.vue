@@ -13,7 +13,7 @@
         <div class="left-content col">
           <span class="mt-3">> 보낸곳</span>
 
-          <table class="no-approval-table table">
+          <table class="send-detail-table table">
             <thead>
               <tr>
                 <th scope="col">보낸사람</th>
@@ -23,13 +23,13 @@
             <tbody>
               <tr>
                 <td></td>
-                <td></td>
+                <td>{{ receivelistDetail }}</td>
               </tr>
             </tbody>
           </table>
 
           <span class="mt-3">> 받는곳</span>
-          <table class="no-approval-table table">
+          <table class="send-detail-table table">
             <thead>
               <tr>
                 <th scope="col">받는사람</th>
@@ -45,7 +45,7 @@
           </table>
 
           <span class="mt-3">> 수신 정보</span>
-          <table class="no-approval-table table">
+          <table class="send-detail-table table">
             <thead>
               <tr>
                 <th scope="col">수신일시</th>
@@ -65,14 +65,14 @@
           <span class="mt-3">> 제목</span>
           <div class="row ml-1">
             <base-input class="receive-detail-title-input" style=""> </base-input>
-            <base-button type="secondary" class="no-approval-btn ml-2"> 제목저장 </base-button>
+            <base-button type="secondary" class="send-detail-btn ml-2"> 제목저장 </base-button>
           </div>
         </div>
 
         <div class="col">
           <iframe
             src="https://bnksys.s3.ap-northeast-2.amazonaws.com/BNK00120230127024348_6.pdf"
-            style="width: 600px; height: 500px"
+            style="width: 100%; height: 100%;"
           ></iframe>
         </div>
       </div>
@@ -83,8 +83,12 @@
 </template>
 
 <script>
+import http from "@/common/axios.js";
+import alertify from "alertifyjs";
+
 export default {
-  components: {},
+  name: "receive_detail",
+  props: ["receivelistDetail"],
 };
 </script>
 
@@ -115,32 +119,32 @@ th {
   font-weight: normal;
 }
 
-.no-approval-table {
+.send-detail-table {
   font-size: small;
 }
-.no-approval-table th,
-.no-approval-table td {
+.send-detail-table th,
+.send-detail-table td {
   text-align: center;
   height: 35px;
   line-height: 0px;
 }
-.no-approval-table th {
+.send-detail-table th {
   width: 100px;
 }
-.no-approval-table td {
+.send-detail-table td {
   width: 250px;
   border-top: 0.0625rem solid #dee2e6;
   border-right: 0.0625rem solid #dee2e6;
 }
-.no-approval-table td:last-child {
+.send-detail-table td:last-child {
   border-bottom: 0.0625rem solid #dee2e6;
   margin: 0px;
   padding: 0px;
 }
-.no-approval-btn-group {
+.send-detail-btn-group {
   margin-left: 240px;
 }
-.no-approval-btn {
+.send-detail-btn {
   padding: 5px;
   width: 70px;
   height: 40px;
