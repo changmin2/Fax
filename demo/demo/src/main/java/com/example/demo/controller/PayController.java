@@ -109,9 +109,9 @@ public class PayController {
     @PostMapping("/withdrawDelete")
     public HashMap<String,Object> withdrawDelete(@RequestBody Map<String, String> map) {
         HashMap<String,Object> result = new HashMap<>();
-        String apprNo = map.get("APPR_NO");
+        String userKey = map.get("userKey");
 
-        if (apprNo==null){
+        if (userKey==null){
             result.put("flag",false);
             result.put("message","찾는 문서고유번호가 없습니다.");
             return result;
@@ -119,7 +119,7 @@ public class PayController {
 
         result.put("flag",true);
         result.put("message","성공");
-        payService.apprNoDelete(apprNo);
+        payService.updateUseGbn(userKey);
         return result;
     }
 

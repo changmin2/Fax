@@ -5,6 +5,7 @@ import com.example.demo.GlobalVariables;
 import com.example.demo.S3Uploader;
 import com.example.demo.VO.SendReq;
 import com.example.demo.VO.SendRes;
+import com.example.demo.VO.ReSendRes;
 import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.domain.Send.Send_detail;
@@ -16,14 +17,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.DataInput;
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -150,8 +148,71 @@ public class SendService {
         String msg = Result.equals("OK")? "팩스 발송완료되었습니다.":res.getMessage();
         return msg;
     }
+
+    //재전송 전용 api
+    public String reSendApi(Send send,String ReSend_List) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
+
+        //데이터 (요청변수 대소문자 구분)
+        multipart.addFormField("UserID", globalVariables.getFaxId());
+        multipart.addFormField("UserPW", globalVariables.getFaxPw());
+        multipart.addFormField("Service", globalVariables.getService());
+        multipart.addFormField("Type", "ReSend");
+        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
+            multipart.addFormField("Send_Date",send.getSEND_DATE());
+        }
+        multipart.addFormField("Job_No", send.getJOB_NO());
+        multipart.addFormField("Subject",send.getTITLE());
+        multipart.addFormField("ReSend_List",ReSend_List);
+
+        // 응답 값
+        String ResultJson = multipart.finish();
+
+        ObjectMapper mapper = new ObjectMapper();
+        ReSendRes res = mapper.readValue( ResultJson, ReSendRes.class);
+        log.info("팩스 발송 결과 : "+res.toString());
+
+        //DB에 결과 저장
+        String Result = res.getResult();
+
+        if(Result.equals("OK")) {
+            if (send.getRESERVE_YN().equals("N")) { //예약전송아닐때 오늘날짜
+                String Date_End = globalVariables.getNow();
+                send.setSEND_DATE(Date_End);
+            }
+            send.setJOB_NO(res.getJob_No() + "");
+        }else {
+            send.setERROR_MSG(res.getMessage());
+        }
+        send.setSTATUS(Result.equals("OK")? "전송완료" : "전송실패");
+        sendRepository.save(send);
+
+        String msg = Result.equals("OK")? "팩스 발송완료되었습니다.":res.getMessage();
+        return msg;
+
+    }
+
     public String reSend(String userKey) throws IOException{
         Send send = sendRepository.findById(userKey).get();
         return sendApi(send);
     }
+
+    public String reSendJobNo(Map<String,String> map) throws IOException {
+        Send send = sendRepository.findById(map.get("userKey")).get();
+        if(map.get("Send_Date")!=null){
+            send.setSEND_DATE(map.get("Send_Date"));
+            send.setRESERVE_YN("Y");
+        }
+        if(map.get("Subject")!=null){
+            send.setTITLE(map.get("Subject"));
+        }
+
+        return reSendApi(sendRepository.findById(map.get("userKey")).get(),map.get("ReSend_List"));
+    }
+
+    public String getJobNo(String userKey) {
+        return sendRepository.findById(userKey).get().getJOB_NO();
+    }
+
 }

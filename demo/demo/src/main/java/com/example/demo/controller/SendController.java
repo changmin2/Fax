@@ -1,17 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.VO.SendReq;
-import com.example.demo.domain.Send.Send;
 import com.example.demo.service.SendService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 @CrossOrigin(
@@ -29,6 +25,7 @@ public class SendController {
     @Autowired
     SendService sendService;
 
+    //발송
     @RequestMapping(method = RequestMethod.POST, path = "/Send")
     @ResponseBody
     public String Send(@RequestBody SendReq req) throws IOException, ParseException {
@@ -38,8 +35,20 @@ public class SendController {
 
         return sendService.sendInsert(req);
     }
-    @RequestMapping(method = RequestMethod.POST, path = "/reSend")
-    @ResponseBody
+
+    //재발송(Job_No있을때)
+    @PostMapping("/reSend")
+    public String reSendJobNo(@RequestBody Map<String,String> map) throws IOException, ParseException {
+        String jobNo = sendService.getJobNo(map.get("userKey"));
+        if(jobNo==null){
+            reSend(map);
+            return null;
+        }
+        sendService.reSendJobNo(map);
+        return null;
+    }
+
+    //재발송(Job_No없을떄)
     public String reSend(@RequestBody Map<String, String> param) throws IOException, ParseException {
         String userKey = param.get("userKey");
         return sendService.reSend(userKey);

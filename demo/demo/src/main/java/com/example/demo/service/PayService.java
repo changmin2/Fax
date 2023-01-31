@@ -240,4 +240,10 @@ public class PayService {
         return sendRepository.findById(userKey).get();
     }
 
+    //회수 -> 삭제 -> 사용여부 변경
+    @Transactional
+    public void updateUseGbn(String userKey) {
+        sendRepository.findById(userKey).get().setUSE_GBN("N");
+        approvalRepository.findAppr(userKey).setUSE_GBN("N");
+    }
 }
