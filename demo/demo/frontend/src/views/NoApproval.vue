@@ -36,10 +36,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{{ noApprDetail.받는사람 }}</td>
-                <td>{{ noApprDetail.팩스번호 }}</td>
-              </tr>
+            <tr v-for="(receive, index) in noApprDetail.받는사람정보 " :key="index">
+              <td>{{ receive.이름 }}</td>
+              <td>{{ receive.팩스번호 }}</td>
+            </tr>
             </tbody>
           </table>
 
@@ -112,7 +112,8 @@ export default {
       apprRemark: "",
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
     setRemark() {
       console.log(this.apprRemark);
@@ -133,7 +134,7 @@ export default {
           console.log("결재 승인 성공");
           this.noApprovalList = data;
 
-          alertify.alert("결재 승인 완료되었습니다.", 1.5);
+          alertify.alert("성공", "결재 승인 완료되었습니다.", 1.5);
         } else {
           console.log("결재 승인  실패");
         }
@@ -184,17 +185,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-table {
-  display: flex;
-}
-tbody {
-  display: flex;
-}
-
-th,
-td {
-  display: block;
-}
 
 th {
   background-color: rgb(224, 224, 224);
@@ -208,18 +198,14 @@ th {
 .no-approval-table td {
   text-align: center;
   height: 35px;
-  line-height: 0px;
+  line-height: 13px;
 }
 .no-approval-table th {
   width: 100px;
 }
 .no-approval-table td {
   width: 250px;
-  border-top: 0.0625rem solid #dee2e6;
-  border-right: 0.0625rem solid #dee2e6;
-}
-.no-approval-table td:last-child {
-  border-bottom: 0.0625rem solid #dee2e6;
+  border: 0.0625rem solid #dee2e6;
 }
 .no-approval-btn-group {
   margin-left: 240px;
