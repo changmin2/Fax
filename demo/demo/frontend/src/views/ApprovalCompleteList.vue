@@ -52,7 +52,6 @@
                 @change="setDateInfo(searchTo)"
               />
             </form>
-            {{ dateInfo }}
           </div>
           <div class="row mt-3">
             결재구분
@@ -77,9 +76,6 @@
           <div class="body-content ApprArea">
             <table class="no-approval-table" style="width: 100%">
               <tr class="ApprArea-header">
-                <th>
-                  <input type="checkbox" />
-                </th>
                 <th>구분</th>
                 <th>요청일자</th>
                 <th>보내는사람</th>
@@ -94,7 +90,6 @@
               </tr>
 
               <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-                <td><input type="checkbox" /></td>
                 <td>{{ noApproval.상태 }}</td>
                 <td>{{ noApproval.요청일자 }}</td>
                 <td>{{ noApproval.보내는사람 }}</td>
@@ -163,11 +158,11 @@ export default {
     }),
   },
   created() {
-    // this.noApproval();
-  },
-  mounted(){
     this.noApproval();
-    this.getNow();
+  },
+  mounted() {
+    // this.noApproval();
+    // this.getNow();
   },
   methods: {
     // date 설정
@@ -179,7 +174,6 @@ export default {
     },
     getNow() {
       const today = new Date();
-
       const year = today.getFullYear(); // 년
       const month = today.getMonth(); // 월
       const day = today.getDate(); // 일
@@ -206,7 +200,8 @@ export default {
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
       formData.append("status", this.apprStatus); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
-
+      formData.append("searchFrom", this.searchFrom); // 조회기간 (시작)
+      formData.append("searchTo", this.searchTo); // 조회기간 (종료)
       try {
         let response = await http.post(`/payRecieve`, formData);
         console.log(response);
