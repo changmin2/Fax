@@ -36,6 +36,14 @@ public class SendController {
         return sendService.sendInsert(req);
     }
 
+    //발송 -> 결제완료시 -> 상세정보
+    @RequestMapping("/sendDetail")
+    @ResponseBody
+    public Map<String,Object> sendDetail(@RequestBody Map<String,String> map) throws IOException {
+        return sendService.sendDetail(map.get("userKey"));
+
+    }
+
     //재발송(Job_No있을때)
     @PostMapping("/reSend")
     public String reSendJobNo(@RequestBody Map<String,String> map) throws IOException, ParseException {
@@ -53,4 +61,8 @@ public class SendController {
         String userKey = param.get("userKey");
         return sendService.reSend(userKey);
     }
+
+
+
+
 }
