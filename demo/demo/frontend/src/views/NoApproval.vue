@@ -36,10 +36,10 @@
               </tr>
             </thead>
             <tbody>
-            <tr v-for="(receive, index) in noApprDetail.받는사람정보 " :key="index">
-              <td>{{ receive.이름 }}</td>
-              <td>{{ receive.팩스번호 }}</td>
-            </tr>
+              <tr v-for="(receive, index) in noApprDetail.받는사람정보" :key="index">
+                <td>{{ receive.이름 }}</td>
+                <td>{{ receive.팩스번호 }}</td>
+              </tr>
             </tbody>
           </table>
 
@@ -88,12 +88,13 @@
           </div>
         </div>
 
-        <div class="col">
+        <div class="col" v-if="noApprDetail">
           <iframe
             :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${noApprDetail.발송고유번호}_1.pdf`"
             style="width: 600px; height: 500px"
           ></iframe>
         </div>
+        <div class="col" v-else>이미지가 없습니다</div>
       </div>
     </div>
   </section>
@@ -112,8 +113,7 @@ export default {
       apprRemark: "",
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     setRemark() {
       console.log(this.apprRemark);
