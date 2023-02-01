@@ -90,7 +90,7 @@
 
         <div class="col">
           <iframe
-            :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${sendDetail.파일명}`"
+            :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${noApprDetail.발송고유번호}_1.pdf`"
             style="width: 600px; height: 500px"
           ></iframe>
         </div>
