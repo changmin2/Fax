@@ -57,7 +57,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       a.APPR_REMARK,\n" +
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
-            "       s.TITLE,s.FAX_NO,s.INSERT_DATE\n" +
+            "       s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') as INSERT_DATE\n" +
             "from TB_APPROVAL a ,TB_SEND s\n" +
             "WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND s.USE_GBN = 'Y' \n" +
