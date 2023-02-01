@@ -157,12 +157,10 @@ export default {
       userInfo: "getUserInfo",
     }),
   },
-  created() {
-    this.noApproval();
-  },
+  created() {},
   mounted() {
-    // this.noApproval();
-    // this.getNow();
+    this.getNow();
+    this.noApproval();
   },
   methods: {
     // date 설정
