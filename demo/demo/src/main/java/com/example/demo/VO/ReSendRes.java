@@ -10,4 +10,6 @@ public class ReSendRes {
     public int Cash;
     public String Service;
     public int Job_No;
+
+    public int Point;
 }

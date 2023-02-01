@@ -210,7 +210,7 @@ export default {
       }
     },
 
-    /* 재사용 */
+    /* 재전송 */
     async resend() {
 
       let formData = new FormData();
