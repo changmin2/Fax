@@ -103,7 +103,7 @@ public class UploadService {
             int pageCount = pdfDoc.getNumberOfPages();
 //            log.error("페이지 수 읽어오기 : "+pageCount);
             result.put("pageCount",pageCount+"");
-
+            pdfDoc.close();
             s3Uploader.upload(n, "static",RealPath);
         }else{
             String Message = (String) ObjToJson.get("Message");

@@ -20,6 +20,7 @@ public class SendReq {
     private String private_info_yn; //개인정보 포함 여부
     private String appr_person; //결재자
     private String reserve_yn; //예약여부
+    private String pageCount; //페이지수
 
     @Override
     public String toString() {

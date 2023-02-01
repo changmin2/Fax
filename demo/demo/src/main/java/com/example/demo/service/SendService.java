@@ -98,9 +98,9 @@ public class SendService {
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "Send");
         multipart.addFormField("Send_Date","");
-//        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
-//            multipart.addFormField("Send_Date",send.getSEND_DATE());
-//        }
+        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
+            multipart.addFormField("Send_Date",send.getSEND_DATE());
+        }
 
         String userKey = send.getUSER_KEY();
         //파일명 가져오기
@@ -269,10 +269,10 @@ public class SendService {
         String Result = res.getResult();
 
         if(Result.equals("OK")) {
-            if (send.getRESERVE_YN().equals("N")) { //예약전송아닐때 오늘날짜
+//            if (send.getRESERVE_YN().equals("N")) { //예약전송아닐때 오늘날짜
                 String Date_End = globalVariables.getNow();
                 send.setSEND_DATE(Date_End);
-            }
+//            }
             send.setJOB_NO(res.getJob_No() + "");
         }else {
             send.setERROR_MSG(res.getMessage());
