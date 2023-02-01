@@ -16,7 +16,12 @@ export default {
   SET_LOADING_TRUE(state) {
     state.isLoading = true;
   },
-
+  SET_MODAL_OPEN(state) {
+    state.isModalOpen = true;
+  },
+  SET_MODAL_CLOSE(state) {
+    state.isModalOpen = false;
+  },
   ...users,
   ...receives,
   ...sends,

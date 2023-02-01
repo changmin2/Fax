@@ -16,6 +16,8 @@ export default new Vuex.Store({
     // isLogin: false,
     // userInfo: {},
     isLoading: false,
+    isModalOpen: false,
+
     users: users,
     receives: receives,
     sends: sends,

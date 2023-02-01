@@ -72,9 +72,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG       \n" +
-            "            from TB_SEND a,TB_APPROVAL t  \n" +
-            "    where a.APPR_NO  = t.APPR_NO                                 \n" +
-            "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                   \n" +
+            "            from TB_SEND a \n" +
+            "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
+            "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'                   \n" +
             "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
     List<Object[]> sendRecieveAll(@Param(value = "userId")String userId,
                                   @Param(value = "searchFrom")String searchFrom,
@@ -88,8 +88,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG       \n" +
-            "            from TB_SEND a,TB_APPROVAL t \n" +
-            "    where a.APPR_NO  = t.APPR_NO  and a.STATUS = :status    \n" +
+            "            from TB_SEND a \n" +
+            "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
+            "    where  a.STATUS = :status    \n" +
             "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                  \n" +
            "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId,
@@ -113,9 +114,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
             "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME\n" +
-            "       from TB_SEND a , TB_APPROVAL t \n" +
-            "    where a.APPR_NO  = t.APPR_NO     \n" +
-            "    and a.USER_KEY = :userKey  AND a.USE_GBN = 'Y' ",nativeQuery = true)
+            "       from TB_SEND a      \n" +
+            "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
+            "   where a.USER_KEY = :userKey  AND a.USE_GBN = 'Y' ",nativeQuery = true)
     List<Object[]> totalDetail2(@Param(value = "userKey")String userKey);
 
     @Query(value = "SELECT * FROM TB_APPROVAL\n" +

@@ -1,14 +1,12 @@
 <template>
-  <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="shape shape-style-1"></div>
-    <div class="container pt-lg-md">
+  <section class="section">
+    <div class="main-container">
       <div
-        class="receive-title display-4 mb-4 font-weight-800 text-default"
-        style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
-      >
+        class="receive-title display-4 mb-4 font-weight-800 text-default">
         받은팩스함 - <span style="color: #d7191f; display: inline">{{userInfo.deptName}}</span>
       </div>
 
+      
       <div class="row" style="width: 100%;">
         <div class="top-content search-area">
             <form id ="master" role="form" style="width: 100%;">

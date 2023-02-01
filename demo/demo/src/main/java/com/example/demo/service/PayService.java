@@ -1,26 +1,15 @@
 package com.example.demo.service;
 
 import com.example.demo.GlobalVariables;
-import com.example.demo.VO.SendRes;
 import com.example.demo.domain.Approval.Approval;
-import com.example.demo.domain.Form.ApprovalForm;
 import com.example.demo.domain.Send.Send;
-import com.example.demo.domain.Send.Send_detail;
-import com.example.demo.domain.User.User;
 import com.example.demo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.UserTokenHandler;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -217,7 +206,7 @@ public class PayService {
 
     //수신처 정보
     public List<Map<String,Object>> sendInfoDetail(String userKey){
-        return sendDRepository.findByAllV3(userKey);
+        return sendDRepository.findByAllByUserKey(userKey);
     }
 
     //회수 -> 삭제 -> 사용여부 변경

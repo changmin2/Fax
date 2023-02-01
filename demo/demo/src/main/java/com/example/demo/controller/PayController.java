@@ -1,20 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.S3Config;
 import com.example.demo.S3Uploader;
 import com.example.demo.domain.Send.Send;
-import com.example.demo.domain.Send.Send_detail;
 import com.example.demo.domain.Upload.Upload;
 import com.example.demo.repository.SendDRepository;
-import com.example.demo.repository.SendRepository;
 import com.example.demo.service.PayService;
 import com.example.demo.service.ReceiveService;
 import com.example.demo.service.SendService;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -51,7 +46,7 @@ public class PayController {
 //            }
 //        }
         log.info("test진입");
-        List<Map<String, Object>> userKey = sendDRepository.findByAllV3(map.get("userKey"));
+        List<Map<String, Object>> userKey = sendDRepository.findByAllByUserKey(map.get("userKey"));
         for (Map<String, Object> stringObjectMap : userKey) {
             log.info(String.valueOf(stringObjectMap.get("USER_KEY")));
         }

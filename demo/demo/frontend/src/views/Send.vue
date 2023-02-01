@@ -1,13 +1,16 @@
 <template>
-  <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="shape shape-style-1"></div>
-    <div class="container pt-lg-md">
+  <section class="section">
+    <div class="send-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
         팩스보내기
         <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
         <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
-        <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f;">- 재사용 {{ getterSendDetail.userKey }}</span>
-        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f;">- 수정 {{ getterUpdate.Info.user_KEY }}</span>
+        <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f"
+          >- 재사용 {{ getterSendDetail.userKey }}</span
+        >
+        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f"
+          >- 수정 {{ getterUpdate.Info.user_KEY }}</span
+        >
       </div>
 
       <div class="row">
@@ -304,11 +307,9 @@ export default {
 
     // 팩스보내기
     async send() {
-   
-
       // file upload
       // let attachFiles = document.querySelector("#inputFileUploadInsert").files;
-      if ( this.fileFlag || this.userKey == "None") {
+      if (this.fileFlag || this.userKey == "None") {
         //파일선택 필수조건
         alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
         return;
@@ -466,9 +467,9 @@ export default {
       this.faxNo = userInfo.faxNo;
       this.grade = userInfo.grade;
       this.getApprUsers();
-      
-      let originData ;
-      if(this.getterUpdate){
+
+      let originData;
+      if (this.getterUpdate) {
         originData = this.getterUpdate;
         console.log(originData.Info);
         this.title = originData.Info.title;
@@ -484,7 +485,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.send-container {
+  margin-top: 6rem;
+  margin-left: 10vw;
+  margin-right: 3vw;
+}
 .send-main {
   width: 100vh;
 }

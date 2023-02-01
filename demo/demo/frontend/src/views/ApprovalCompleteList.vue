@@ -1,5 +1,5 @@
 <template>
-  <section class="section section-shaped section-hero login-section my-0">
+  <section class="section">
     <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
         결재함 - <span style="color: #d7191f; display: inline">결재완료</span>
@@ -259,12 +259,6 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  margin-top: 100px;
-  margin-left: 3vw;
-  margin-right: 3vw;
-}
-
 .search-area {
   border-top: 2px solid black;
   border-bottom: 2px solid black;

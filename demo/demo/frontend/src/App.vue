@@ -61,7 +61,11 @@ export default {
 #app {
   cursor: default;
 }
-
+.main-container {
+  margin-top: 6rem;
+  margin-left: 3vw;
+  margin-right: 3vw;
+}
 .ajs-message .ajs-custom {
   color: #31708f;
   background-color: #d9edf7;

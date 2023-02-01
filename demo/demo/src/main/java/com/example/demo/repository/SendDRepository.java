@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface SendDRepository extends JpaRepository<Send_detail, Send_detailPK> {
+<<<<<<< HEAD
 
     //결재함 상세 - 수신자리스트
     @Query(value = "select a.RECEIVE_NAME,a.RECEIVE_COMPANY,a.RECEIVE_FAX_NO from TB_SEND_D a \n" +
@@ -21,8 +22,10 @@ public interface SendDRepository extends JpaRepository<Send_detail, Send_detailP
             "where a.USER_KEY =:userKey",nativeQuery = true)
     List<Object[]> findByAllV2(@Param(value = "userKey")String userKey);
 
+=======
+>>>>>>> ce7e7520a1f8bb37c8d5f16876b5a5de285ca7ab
     @Query(value = "select a.* from TB_SEND_D a \n" +
             "where a.USER_KEY =:userKey",nativeQuery = true)
-    List<Map<String,Object>> findByAllV3(@Param(value = "userKey")String userKey);
+    List<Map<String,Object>> findByAllByUserKey(@Param(value = "userKey")String userKey);
 
 }
