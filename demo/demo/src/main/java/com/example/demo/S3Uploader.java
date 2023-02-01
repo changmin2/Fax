@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
@@ -88,6 +90,26 @@ public class S3Uploader {
         }
         File file = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
         return file;
+    }
+
+    //파일 이름 변경하기
+    public void changS3FileName(String orgKey,String copyKey){
+        try {
+            //Copy 객체 생성
+            CopyObjectRequest copyObjRequest = new CopyObjectRequest(
+                    bucket,
+                    orgKey,
+                    bucket,
+                    copyKey
+            );
+            //Copy
+            amazonS3Client.copyObject(copyObjRequest);
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

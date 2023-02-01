@@ -10,6 +10,7 @@ import com.example.demo.service.SendService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -146,10 +147,14 @@ public class PayController {
         String userKey = map.get("userKey");
         String userId = map.get("userId");
         String newUserKey = createKey(userId);
+        //s3에서 새로운userKey로 파일 이름 변경하기
+        String orgFileName = userKey+"_"+"1.pdf";
+        String newFileName = newUserKey+"_"+"1.pdf";
+        s3Uploader.changS3FileName(orgFileName,newFileName);
 
         Send find = payService.sendInfoFind(userKey);
         result.put("Info",find);
-        result.put("fileName",userKey+"_"+"1.pdf");
+        result.put("fileName",newFileName);
         result.put("userKey",newUserKey);
 
         return result;
