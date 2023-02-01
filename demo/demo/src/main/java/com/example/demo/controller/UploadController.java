@@ -64,6 +64,7 @@ public class UploadController {
         userForm.setUserFileName(userFileName);
         userForm.setRealFileName(RealPath);
         userService.register(userForm);
+        result.put("newFileName",RealPath);
         result.put("userKey",userKey);
 
         return result;

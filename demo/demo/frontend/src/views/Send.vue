@@ -96,7 +96,7 @@
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
                     <div v-else class="mt-2 d-inline-flex" style="width: 200px">
-                      <a v-bind:href="`${fileUrl}`" target="_new" download="">PDF변환파일.pdf</a>
+                      <a v-bind:href="`${fileUrl}`" target="_new" download="">PDF변환파일.pdf  - {{pageCount}}장</a>
                       <i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
                         @click="deleteFile"
@@ -207,6 +207,7 @@ export default {
       userId: "",
       faxNo: "",
       fileUrl: "",
+      newFileName: "",
       files: [],
       apprUsers: [],
       receiveJSON: [],
@@ -214,6 +215,7 @@ export default {
       modal: false,
       detailOpen: false,
       fileFlag: true,
+      pageCount: 0,
       grade: 0,
     };
   },
@@ -282,27 +284,34 @@ export default {
         headers: { "Content-Type": "multipart/form-data" },
       };
 
-      try {
-        let { data } = await http.post("/upload", formData, options);
-        this.$store.commit("SET_LOADING_FALSE");
+        try {
+          let reqUrl = this.getterUpdate?"/updateUpload":"/upload"; //수정요청인지 아닌지
+          console.log(reqUrl);
 
-        if (data.Result == "OK") {
-          alertify.success("업로드 성공", 1.5);
-          if (this.userKey == "None") {
-            this.$store.commit("SET_USER_KEY", data.userKey);
+          let { data } = await http.post(reqUrl, formData, options);
+          this.$store.commit("SET_LOADING_FALSE");
+  
+          if (data.Result == "OK") {
+            alertify.success("업로드 성공", 1.5);
+            if (this.userKey == "None") {
+              this.$store.commit("SET_USER_KEY", data.userKey);
+            }
+            this.fileUrl =
+              "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + data.newFileName;
+            this.newFileName = data.newFileName;
+            this.fileFlag = false;
+            this.pageCount = data.pageCount;
+            console.log("업로드 성공",data.newFileName);
+          } else {
+            alertify.error("업로드 실패", 1.5);
+            this.fileUrl = "";
+            this.fileFlag = true;
           }
-          this.fileUrl =
-            "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.userKey + "_1.pdf";
-          this.fileFlag = false;
-        } else {
-          alertify.error("업로드 실패", 1.5);
-          this.fileUrl = "";
-          this.fileFlag = true;
+        } catch (error) {
+          this.$store.commit("SET_LOADING_FALSE");
+          console.log(error);
         }
-      } catch (error) {
-        this.$store.commit("SET_LOADING_FALSE");
-        console.log(error);
-      }
+     
     },
 
     // 팩스보내기
@@ -338,10 +347,13 @@ export default {
         private_info_yn: this.privateInfo ? "Y" : "N",
         appr_person: this.apprUserNo,
         faxNo: this.faxNo,
+        pageCount: this.pageCount,
+        newFileName: this.newFileName,
       };
 
       try {
-        let response = await http.post("/Send", sendData);
+        let reqUrl = this.getterUpdate?"/updateSend":"/Send"; //수정요청인지 아닌지
+        let response = await http.post(reqUrl, sendData);
 
         let { data } = response;
         this.$store.commit("SET_LOADING_FALSE");
@@ -470,11 +482,34 @@ export default {
 
       let originData;
       if (this.getterUpdate) {
+        console.log('업데이트 정보 불러오기');
         originData = this.getterUpdate;
-        console.log(originData.Info);
+        console.log(originData);
         this.title = originData.Info.title;
         this.apprUserNo = originData.Info.appr_USER_NO;
-        this.$store.commit("SET_USER_KEY", originData.Info.userKey);
+        this.$store.commit("SET_USER_KEY", originData.Info.user_KEY);
+        let tempArr = originData.details;
+        tempArr.forEach((value, index, array)=>{
+          let tempJson = {company:value.RECEIVE_COMPANY, name:value.RECEIVE_NAME, fax:value.RECEIVE_FAX_NO};
+          this.receiveJSON.push(tempJson);
+          this.showJSON +=
+              "상호 : " +
+              tempJson.company +
+              ", 이름 : " +
+              tempJson.name +
+              ", 팩스번호 : " +
+              tempJson.fax +
+              "\n";
+        });
+        this.fileFlag = false;
+        this.pageCount = originData.Info.page_CNT||0;
+        this.privateInfo = (originData.Info.private_INFO_YN=='Y');
+        this.reserve = (originData.Info.reserve_YN=='Y')?'reserve':'';
+        // this.sendDate = originData.Info.send_DATE;
+        var date = new Date(originData.Info.send_DATE);
+        this.sendDate = date.toISOString();
+        // console.log(originData.Info.send_DATE)
+        this.fileUrl =  "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.userKey + "_1.pdf";
       }
     }, 0);
   },

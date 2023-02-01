@@ -190,8 +190,8 @@ public class PayService {
         appr.setAPPR_DATE(globalVariables.getNow());
         Send send = sendRepository.findById(userKey).get();
         send.setSTATUS("회수");
-        send.setAPPR_NO("");
-        send.setAPPR_USER_NO("");
+//        send.setAPPR_NO("");
+//        send.setAPPR_USER_NO("");
     }
     //회수 -> 삭제
     @Transactional

@@ -22,6 +22,7 @@ public class SendReq {
     private String reserve_yn; //예약여부
     private String pageCount; //페이지수
 
+    private String newFileName; //새로운 파일이름
     @Override
     public String toString() {
         return "SendReq{" +

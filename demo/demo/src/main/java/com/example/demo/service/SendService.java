@@ -55,7 +55,7 @@ public class SendService {
         send.setINSERT_DATE(Date_End);
         send.setSTATUS("결재대기");
         send.setUSE_GBN("Y");
-
+        send.setPAGE_CNT(req.getPageCount()+"");
         List<SendReq.Destination> DestinationList = req.getDestinationList();
         int index = 1;
         for (SendReq.Destination dest:DestinationList) {
