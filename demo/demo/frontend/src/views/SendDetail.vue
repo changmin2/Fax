@@ -197,9 +197,7 @@ export default {
 
         if (data != null) {
           // 전송 성공
-          // console.log("수정 요청 성공", data);
-          // console.log("수정 요청 성공", data.Info);
-          // console.log("수정 요청 성공", data.fileName);
+           alertify.alert("성공", "회수 완료되었습니다.", 1.5);
         } else {
           console.log("회수 요청 실패");
         }
@@ -224,11 +222,16 @@ export default {
         let response = await http.post(`/reSend`, formData);
         let { data } = response;
 
+           console.log("재전송 요청 data", data);
         if (data != null) {
           // 전송 성공
           // console.log("재전송 요청 성공", data);
           // console.log("재전송 요청 성공", data.Info);
           // console.log("재전송 요청 성공", data.fileName);
+        alertify.alert("성공", "재전송 성공했습니다.", function() {
+            alertify.success('ok');
+            //확인 후 모달창 닫기
+        });
         } else {
           console.log("재전송 요청 실패");
         }
