@@ -18,7 +18,7 @@ export default {
 .spinner {
   display: block;
   position: fixed;
-  z-index: 1031;
+  z-index: 100000;
   top: 40%;
   left: 50%;
 }
