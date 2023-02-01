@@ -31,6 +31,20 @@ public class Send_detail {
         this.id = new Send_detailPK(userKey,index);
         this.SEND_Status = "1";
     }
+
+    @Override
+    public String toString() {
+        return "Send_detail{" +
+                "id=" + id +
+                ", RECEIVE_NAME='" + RECEIVE_NAME + '\'' +
+                ", RECEIVE_COMPANY='" + RECEIVE_COMPANY + '\'' +
+                ", RECEIVE_FAX_NO='" + RECEIVE_FAX_NO + '\'' +
+                ", COMPLETE_DATE='" + COMPLETE_DATE + '\'' +
+                ", SEND_Status='" + SEND_Status + '\'' +
+                ", JOB_NO='" + JOB_NO + '\'' +
+                ", JOB_SEQ='" + JOB_SEQ + '\'' +
+                '}';
+    }
 }
 
 
