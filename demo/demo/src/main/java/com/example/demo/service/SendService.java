@@ -112,7 +112,7 @@ public class SendService {
 
         // 데이터 - 수신처
 
-        List<Send_detail> sendDetail = sendDRepository.findByIdUserKey(userKey);
+        List<Send_detail> sendDetail = sendDRepository.findByUserKey(userKey);
         JSONArray DestArr = new JSONArray();
         for (Send_detail dest:sendDetail) {
             log.info("수신처 :"+dest.toString());
