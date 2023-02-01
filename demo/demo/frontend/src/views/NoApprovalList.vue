@@ -44,14 +44,14 @@
             </form>
             {{ dateInfo }}
           </div>
-          <div class="row mt-3">
+          <!-- <div class="row mt-3">
             결재구분
             <select v-model="apprStatus" class="form-select ml-2">
               <option value="전체" selected>전체</option>
               <option value="반려">반려</option>
               <option value="회수">회수</option>
             </select>
-          </div>
+          </div> -->
         </div>
         <div class="col col-sm-2">
           <base-button type="default" class="no-approval-btn mt-2" @click="noApproval">
@@ -176,9 +176,9 @@ export default {
 
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
-      formData.append("status", this.apprStatus); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
-      formData.append("searchFrom", '2023-01-01'); // 조회기간 (시작)
-      formData.append("searchTo", '2023-02-28'); // 조회기간 (종료)
+      formData.append("status", "대기"); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
+      formData.append("searchFrom", "2023-01-01"); // 조회기간 (시작)
+      formData.append("searchTo", "2023-02-28"); // 조회기간 (종료)
 
       try {
         let response = await http.post(`/payRecieve`, formData);
