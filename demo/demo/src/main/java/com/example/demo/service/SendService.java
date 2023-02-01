@@ -97,9 +97,10 @@ public class SendService {
         multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "Send");
-        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
-            multipart.addFormField("Send_Date",send.getSEND_DATE());
-        }
+        multipart.addFormField("Send_Date","");
+//        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
+//            multipart.addFormField("Send_Date",send.getSEND_DATE());
+//        }
 
         String userKey = send.getUSER_KEY();
         //파일명 가져오기
@@ -115,14 +116,16 @@ public class SendService {
         // 데이터 - 수신처
 
 
-        List<Send_detail> sendDetail = sendDRepository.findByUserKey(userKey);
+        List<Map<String,Object>> sendDetail = sendDRepository.findByAllByUserKey(userKey);
         JSONArray DestArr = new JSONArray();
-        for (Send_detail dest:sendDetail) {
-            log.info("수신처 :"+dest.toString());
+        for (Map<String,Object> temp:sendDetail) {
+//            ObjectMapper mapper = new ObjectMapper();
+//            Send_detail dest = mapper.convertValue(temp, Send_detail.class);
+//            log.info("수신처 :"+dest.toString());
             JSONObject Dest1 = new JSONObject();
-            Dest1.put("Company",dest.getRECEIVE_COMPANY());
-            Dest1.put("Name",dest.getRECEIVE_NAME());
-            Dest1.put("Fax",dest.getRECEIVE_FAX_NO());
+            Dest1.put("Company",temp.get("RECEIVE_COMPANY"));
+            Dest1.put("Name",temp.get("RECEIVE_NAME"));
+            Dest1.put("Fax",temp.get("RECEIVE_FAX_NO"));
             DestArr.add(Dest1);
         }
         multipart.addFormField("Destination", DestArr.toString());
@@ -143,7 +146,9 @@ public class SendService {
                 send.setSEND_DATE(Date_End);
             }
             send.setJOB_NO(res.getJob_No() + "");
-            for (Send_detail dest:sendDetail) {
+            for (Map<String,Object> temp:sendDetail) {
+                Send_detail dest = sendDRepository.findById(new Send_detailPK(userKey, (int) temp.get("USER_SEQ"))).get();
+                log.info(dest.toString());
                 dest.setJOB_NO(res.getJob_No() + "");
                 sendDRepository.save(dest);
             }

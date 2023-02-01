@@ -73,7 +73,7 @@ public class UploadController {
         String fileName = userService.getFileName(userKey);
         String[] re = fileName.split("_");
         String[] re2 = re[1].split(".pdf");
-        int newSeq = Integer.parseInt(re2[0]);
+        int newSeq = Integer.parseInt(re2[0])+1;
         String newFileName = createKey(userId)+"_"+String.valueOf(newSeq)+".pdf";
         log.info(newFileName);
 
