@@ -128,7 +128,7 @@ export default {
             // 세션값 없음
             // console.log(data.message);
             localStorage.setItem("isLogin",false);
-            alertify.error("로그인 만료되었습니다. 다시 로그인해주세요.", 1.5);
+            alertify.error("로그인 만료되었습니다.\n다시 로그인해주세요.", 1.5);
             router.push("/login");
           }
         } catch (error) {

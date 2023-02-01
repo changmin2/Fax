@@ -7,7 +7,7 @@
         <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
         <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
         <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f;">- 재사용 {{ getterSendDetail.userKey }}</span>
-        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f;">- 수정 {{ getterUpdate.Info }}</span>
+        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f;">- 수정 {{ getterUpdate.Info.user_KEY }}</span>
       </div>
 
       <div class="row">
@@ -18,19 +18,6 @@
                 <tr>
                   <th>제목</th>
                   <td>
-                    <!-- <base-input
-                      v-if="getterSendDetail"
-                      alternative
-                      v-model="getterSendDetail.Info.title"
-                      class="my-1"
-                    ></base-input>
-                    <base-input
-                      v-else-if="getterUpdate"
-                      alternative
-                      v-model="getterUpdate.제목"
-                      class="my-1"
-                    >
-                  </base-input> -->
                     <base-input alternative v-model="title" class="my-1"> </base-input>
                     {{ getterUpdate }}
                   </td>
@@ -114,7 +101,7 @@
                       ></i>
                     </div>
 
-                    <base-checkbox v-else class="mt-2 d-inline-flex" v-model="privateInfo"
+                    <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo"
                       >개인정보 포함여부</base-checkbox
                     >
                   </td>
@@ -279,6 +266,7 @@ export default {
       console.log(attachFiles);
       if (attachFiles.length > 5) {
         alertify.alert("오류", "파일은 최대 5개까지 업로드가능합니다.", 1.5);
+        this.$store.commit("SET_LOADING_FALSE");
         return;
       }
       if (attachFiles.length > 0) {
@@ -318,8 +306,8 @@ export default {
    
 
       // file upload
-      let attachFiles = document.querySelector("#inputFileUploadInsert").files;
-      if (attachFiles.length == 0 || this.userKey == "None") {
+      // let attachFiles = document.querySelector("#inputFileUploadInsert").files;
+      if (!this.fileFlag || this.userKey == "None") {
         //파일선택 필수조건
         alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
         return;
@@ -477,6 +465,16 @@ export default {
       this.faxNo = userInfo.faxNo;
       this.grade = userInfo.grade;
       this.getApprUsers();
+      
+      let originData ;
+      if(this.getterUpdate){
+        
+        originData = this.getterUpdate;
+        console.log(originData.Info);
+        this.title = originData.Info.title;
+        this.apprUserNo = originData.Info.appr_USER_NO;
+        this.$store.commit("SET_USER_KEY", originData.Info.userKey);
+      }
     }, 0);
   },
   destroyed() {
