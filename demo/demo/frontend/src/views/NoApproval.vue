@@ -90,7 +90,7 @@
 
         <div class="col-8" v-if="noApprDetail.발송고유번호">
           <iframe
-            :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${noApprDetail.발송고유번호}_1.pdf`"
+            :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${noApprDetail.파일명}`"
             style="width: 100%; height: 100%"
           ></iframe>
         </div>

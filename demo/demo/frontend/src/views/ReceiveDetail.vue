@@ -63,11 +63,11 @@
           </tbody>
         </table>
 
-        <span class="mt-3">> 제목</span>
+        <span class="mt-3 mb-1">> 제목</span>
         <div class="row ml-1">
           <base-input class="receive-detail-title-input" style="" v-model="receivelistDetail.title">
           </base-input>
-          <base-button type="secondary" class="receive-detail-btn ml-2" @click="savetitle">
+          <base-button type="secondary" class="receive-detail-btn ml-1 py-2 px-3" @click="savetitle">
             제목저장
           </base-button>
         </div>
@@ -75,7 +75,7 @@
 
       <div class="col col-8">
         <iframe
-          v-bind:src="`${receivelistDetail.filePath}`"
+          v-bind:src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${receivelistDetail.filePath}`"
           style="width: 100%; height: 100%"
         ></iframe>
       </div>
@@ -179,5 +179,9 @@ th {
 }
 .receive-detail-title-input >>> .form-control {
   height: 40px;
+}
+
+.receive-detail-btn{
+  width: fit-content; height: fit-content;
 }
 </style>

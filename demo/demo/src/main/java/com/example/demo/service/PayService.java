@@ -58,7 +58,7 @@ public class PayService {
         List<Object[]> detail = approvalRepository.detail(apprNo);
         List<Object[]> total = approvalRepository.totalDetail(apprNo);
         String[] arr2 =  {"결재고유번호","받는사람ID","보내는사람ID","상태","개인정보보호여부",
-                "발송고유번호","결재일자","사유","보내는사람","받는사람","제목","팩스번호","요청일자","파일이름"};
+                "발송고유번호","결재일자","사유","보내는사람","받는사람","제목","팩스번호","요청일자","파일명"};
         List<HashMap<String,Object>> lists = new ArrayList<>();
         List<HashMap<String,Object>> lists2 = new ArrayList<>();
 
