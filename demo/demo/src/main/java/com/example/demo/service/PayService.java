@@ -216,8 +216,8 @@ public class PayService {
     }
 
     //수신처 정보
-    public List<Send_detail> sendInfoDetail(String userKey){
-        return sendDRepository.findByUserKey(userKey);
+    public List<Map<String,Object>> sendInfoDetail(String userKey){
+        return sendDRepository.findByAllV3(userKey);
     }
 
     //회수 -> 삭제 -> 사용여부 변경

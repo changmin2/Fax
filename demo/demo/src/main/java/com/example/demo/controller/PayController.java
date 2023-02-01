@@ -149,7 +149,7 @@ public class PayController {
         HashMap<String,Object> result = new HashMap<>();
         String userKey = map.get("userKey");
         Send find = payService.sendInfoFind(userKey);
-        List<Send_detail> details = payService.sendInfoDetail(userKey);
+        List<Map<String,Object>> details = payService.sendInfoDetail(userKey);
         result.put("Info",find);
         result.put("fileName",userKey+"_"+"1.pdf");
         result.put("details",details);
@@ -186,7 +186,7 @@ public class PayController {
         uploadService.register(newUpload);
 
         Send find = payService.sendInfoFind(userKey);
-        List<Send_detail> details = payService.sendInfoDetail(userKey);
+        List<Map<String,Object>> details = payService.sendInfoDetail(userKey);
         result.put("Info",find);
         result.put("fileName",newFileName);
         result.put("userKey",newUserKey);
