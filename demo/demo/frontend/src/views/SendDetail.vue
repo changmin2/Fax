@@ -11,12 +11,14 @@
             <tr>
               <th scope="col">보낸사람</th>
               <th scope="col">팩스번호</th>
+              <th scope="col">결재상태</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>{{ sendDetail.발송자 }}</td>
               <td>{{ sendDetail.팩스번호 }}</td>
+              <td>{{ sendDetail.결재상태 }}</td>
             </tr>
           </tbody>
         </table>
@@ -60,12 +62,21 @@
 
             재사용
           </base-button>
-          <base-button type="secondary" class="no-approval-btn" @click="resend">
+          <base-button type="secondary" class="no-approval-btn" @click="resend"
+            v-if="status == '전송실패' || status == '전송완료' "
+            >
             <i class="fa fa-paper-plane" aria-hidden="true"></i>
             재전송
           </base-button>
-          <base-button type="secondary" class="no-approval-btn" @click="getUpdate">
+          <base-button type="secondary" class="no-approval-btn" @click="getUpdate"
+            v-if="status == '회수'"
+            >
             <i class="fa fa-reply" aria-hidden="true"></i> 수정
+          </base-button>
+          <base-button type="secondary" class="no-approval-btn" @click="getBack"
+            v-if="status == '결재대기' || status == '반려'"
+          >
+            <i class="fa fa-reply" aria-hidden="true"></i> 회수
           </base-button>
         </div>
       </div>
@@ -92,6 +103,7 @@ export default {
   data() {
     return {
       apprRemark: "",
+      status: "",
     };
   },
   computed: {
@@ -100,8 +112,12 @@ export default {
       userInfo: "getUserInfo",
     }),
   },
-  created() {},
+  updated() {
+    this.status = this.sendDetail.상태;
+    console.log(this.status);
+  },
   methods: {
+    /* 재사용 */
     async getReuse() {
 
       let formData = new FormData();
@@ -136,6 +152,7 @@ export default {
 
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
+      console.log(this.sendDetail);
 
       try {
         let response = await http.post(`/withdrawUpdate`, formData);
@@ -157,6 +174,38 @@ export default {
         console.log("오류메시지 - ", error);
         alertify.alert("수정 요청에 실패했습니다.", 1.5);
       }
+    },
+
+    /* 회수 버튼 클릭 시 결재정보수정 */
+    async getBack() {
+
+      let formData = new FormData();
+      formData.append("userKey", this.sendDetail.발송번호);
+
+           console.log("수정 요청 param", formData);
+
+
+      try {
+        let response = await http.post(`/withdraw`, formData);
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          // console.log("수정 요청 성공", data);
+          // console.log("수정 요청 성공", data.Info);
+          // console.log("수정 요청 성공", data.fileName);
+        } else {
+          console.log("회수 요청 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.alert("회수 요청에 실패했습니다.", 1.5);
+      }
+    },
+
+    /* 재사용 */
+    async resend() {
     },
   },
 };
