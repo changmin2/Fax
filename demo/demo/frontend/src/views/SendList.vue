@@ -101,7 +101,8 @@
     </div>
 
     <!-- 컴포넌트 MyModal -->
-    <modal :show.sync="modal" modal-classes="modal-big" v-if="detailOpen">
+    <modal :show.sync="modal" modal-classes="modal-big" v-if="detailOpen"
+        @search="getSendList">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
       <send-detail :sendDetail="sendDetail"></send-detail>
     </modal>
@@ -180,7 +181,6 @@ export default {
         if (data != null) {
           // 전송 성공
           console.log(data);
-          console.log("전송 성공");
           this.sendList = data;
           this.detailOpen = false;
         } else {

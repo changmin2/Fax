@@ -1,6 +1,6 @@
 <template>
   <div class="modal-container">
-    <div class="send-title display-4 mb-4 font-weight-800 text-default">미결재정보</div>
+    <div class="send-title display-4 mb-4 font-weight-800 text-default">발신팩스함</div>
 
     <div class="send-detail-container">
       <div class="left-content col">
@@ -112,8 +112,15 @@ export default {
       userInfo: "getUserInfo",
     }),
   },
-  updated() {
+  mounted() {
+    console.log('updated');
     this.status = this.sendDetail.상태;
+    console.log(this.status);
+  },
+  updated() {
+    console.log('updated');
+    this.status = this.sendDetail.상태;
+    console.log(this.status);
   },
   methods: {
     /* 재사용 */
