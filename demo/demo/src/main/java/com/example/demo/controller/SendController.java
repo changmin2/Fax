@@ -71,6 +71,7 @@ public class SendController {
 
     //재발송(Job_No있을때)
     @PostMapping("/reSend")
+    @ResponseBody
     public String reSendJobNo(@RequestBody Map<String,String> map) throws IOException, ParseException {
         String jobNo = sendService.getJobNo(map.get("userKey"));
         if(jobNo==null){
@@ -78,7 +79,7 @@ public class SendController {
             return null;
         }
         sendService.reSendJobNo(map);
-        return null;
+        return "성공";
     }
 
     //재발송(Job_No없을떄)
@@ -86,8 +87,4 @@ public class SendController {
         String userKey = param.get("userKey");
         return sendService.reSend(userKey);
     }
-
-
-
-
 }
