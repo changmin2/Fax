@@ -1,11 +1,60 @@
 <template>
   <div class="modal-container">
-    <div class="send-title display-4 mb-4 font-weight-800 text-default">발신팩스함</div>
+    <div class="send-title display-4 mb-4 font-weight-800 text-default">{{sendDetail.제목}}</div>
 
     <div class="send-detail-container">
       <div class="left-content col">
-        <span class="mt-3">> 결재요청정보</span>
 
+        <!-- <span class="mt-3">> 개인정보검출내용</span> -->
+        <span class="mt-3">> 팩스 발신 정보</span>
+        <table class="no-approval-table table">
+          <thead>
+            <tr>
+              <th scope="col">발신일시</th>
+              <th scope="col">장수</th>
+              <th scope="col">발신상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ sendDetail.등록일자 }}</td>
+              <td>{{ sendDetail.장수 }}</td>
+              <td>{{ sendDetail.상태 }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div>
+        <span class="mt-3" style="display:inline; width:30%; float:left;">> 수신자정보</span>
+        <div class="mt-3" style="display:inline; width:60%; float:right; ">
+        ※ 전체 : {{ sendDetail.받는사람정보.length }}건, 상태 : (<span class="status_s">성공</span> / <span class="status_f">실패</span>)</div>
+        </div>
+        <table class="no-approval-table table">
+          <thead>
+            <tr>
+              <th scope="col">받는사람</th>
+              <th scope="col">팩스번호</th>
+              <th scope="col">상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(sendDetail, index) in sendDetail.받는사람정보" :key="index">
+              <td>{{ sendDetail.이름 }} &#40; {{ sendDetail.상호 }} &#41;</td>
+              <td>{{ sendDetail.팩스번호 }}</td>
+              <td> <div v-if="status=='전송완료' || status=='전송실패'">
+              <span :class="{ 'status_s': detail.Recives[index].Status=='성공', 'status_f': detail.Recives[index].Status=='실패' }">
+              {{ detail.Recives[index].Status }}
+              </span>
+              <span v-if="detail.Recives[index].Status=='실패'" >
+              <br/>
+              ({{ detail.Recives[index].Status_Detail }})
+              </span>
+                   </div></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <span class="mt-3">> 결재요청정보</span>
         <table class="no-approval-table table" style="width: 100%">
           <thead>
             <tr>
@@ -23,39 +72,6 @@
           </tbody>
         </table>
 
-        <span class="mt-3">> 수신자정보</span>
-        <table class="no-approval-table table">
-          <thead>
-            <tr>
-              <th scope="col">받는사람</th>
-              <th scope="col">팩스번호</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(detail, index) in sendDetail.받는사람정보" :key="index">
-              <td>{{ detail.이름 }} &#40; {{ detail.상호 }} &#41;</td>
-              <td>{{ detail.팩스번호 }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- <span class="mt-3">> 개인정보검출내용</span> -->
-        <span class="mt-3">> 결재 승인 및 반송</span>
-        <table class="no-approval-table table">
-          <thead>
-            <tr>
-              <th scope="col">발신일시</th>
-              <th scope="col">발신상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ sendDetail.등록일자 }}</td>
-              <td>{{ sendDetail.상태 }}</td>
-            </tr>
-          </tbody>
-        </table>
-
         <div class="no-approval-btn-group">
           <base-button type="secondary" class="no-approval-btn" @click="getReuse">
             <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -69,12 +85,12 @@
             재전송
           </base-button>
           <base-button type="secondary" class="no-approval-btn" @click="getUpdate"
-            v-if="status == '회수'"
+            v-if="status == '회수' || status == '반려'"
             >
             <i class="fa fa-reply" aria-hidden="true"></i> 수정
           </base-button>
           <base-button type="secondary" class="no-approval-btn" @click="getBack"
-            v-if="status == '결재대기' || status == '반려'"
+            v-if="status == '결재대기' "
           >
             <i class="fa fa-reply" aria-hidden="true"></i> 회수
           </base-button>
@@ -104,6 +120,7 @@ export default {
     return {
       apprRemark: "",
       status: "",
+      detail: [],
     };
   },
   computed: {
@@ -116,13 +133,45 @@ export default {
     console.log('updated');
     this.status = this.sendDetail.상태;
     console.log(this.status);
+    if(this.status == '전송실패' || this.status =='전송완료'){
+        this.getDetail();
+    }
   },
   updated() {
-    console.log('updated');
+    if(this.status == ""){
+    console.log('updated', this.status);
     this.status = this.sendDetail.상태;
     console.log(this.status);
+    if(this.status == '전송실패' || this.status =='전송완료'){
+        this.getDetail();
+    }
+    }
   },
   methods: {
+    /* 전송 상세정보 가져오기 */
+    async getDetail() {
+      let formData = new FormData();
+      formData.append("userKey", this.sendDetail.발송번호);
+
+      try {
+        let response = await http.post(`/sendDetail`, formData);
+        let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
+
+        if (data != null) {
+          // 전송 성공
+          console.log("전송 상세정보 요청 성공", data);
+          this.detail = data;
+        } else {
+          console.log("전송 상세정보 가져오기 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.alert("전송 상세정보 가져오기에 실패했습니다.", 1.5);
+      }
+    },
+
     /* 재사용 */
     async getReuse() {
 
@@ -268,7 +317,7 @@ th {
 .no-approval-table td {
   text-align: center;
   height: 35px;
-  line-height: 0px;
+  line-height: 15px;
 }
 .no-approval-table th {
   width: 100px;
@@ -293,4 +342,15 @@ th {
   margin: 0px;
   border: none;
 }
+
+/* 상태 성공/실패*/
+.status_s {
+  font-weight: bold;
+  color: blue;
+}
+.status_f {
+  font-weight: bold;
+  color: red;
+}
+
 </style>

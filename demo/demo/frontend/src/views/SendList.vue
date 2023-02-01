@@ -104,7 +104,7 @@
     <modal :show.sync="modal" modal-classes="modal-big" v-if="detailOpen"
         @search="getSendList">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <send-detail :sendDetail="sendDetail"></send-detail>
+      <send-detail :sendDetail="sendDetail" ></send-detail>
     </modal>
   </section>
 </template>
@@ -137,6 +137,8 @@ export default {
       searchTo: "",
       modal: false,
       sendStatus: "전체",
+      /*전송결과 상세*/
+      sendStatusDetail: [],
     };
   },
   methods: {
@@ -204,14 +206,14 @@ export default {
         });
         // console.log(response);
         let { data } = response;
-        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
           console.log(data);
-          // console.log("상세 조회 성공");
           this.sendDetail = data[0];
           this.detailOpen = true;
+
+          this.$store.commit("SET_LOADING_FALSE");
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
         } else {
           console.log("상세 조회 실패");
@@ -222,15 +224,6 @@ export default {
         alertify.error("상세 조회가 실패했습니다.", 1.5);
       }
     },
-    // 삭제
-    async apprdelete() {},
-    // 재사용
-    async reuse() {},
-    // 재발송
-    async resend() {},
-
-    // 회수
-    async back() {},
 
     //모달 닫기
     closeModal() {
