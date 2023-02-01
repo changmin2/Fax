@@ -20,4 +20,8 @@ public interface SendDRepository extends JpaRepository<Send_detail, Send_detailP
             "where a.USER_KEY =:userKey",nativeQuery = true)
     List<Object[]> findByAllV2(@Param(value = "userKey")String userKey);
 
+    @Query(value = "select a.* from TB_SEND_D a \n" +
+            "where a.USER_KEY =:userKey",nativeQuery = true)
+    List<Map<String,Object>> findByAllV3(@Param(value = "userKey")String userKey);
+
 }

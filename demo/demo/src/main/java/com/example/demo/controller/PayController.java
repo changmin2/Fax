@@ -43,10 +43,17 @@ public class PayController {
     private final SendService sendService;
     @PostMapping("/testtest")
     public void testtest(@RequestBody Map<String,String> map){
+//        log.info("test진입");
+//        List<Object[]> result = sendDRepository.findByAllV2(map.get("userKey"));
+//        for (Object[] objects : result) {
+//            for (Object object : objects) {
+//                log.info(String.valueOf(object));
+//            }
+//        }
         log.info("test진입");
-        List<Object[]> result = sendDRepository.findByAllV2(map.get("userKey"));
-        for (Object[] objects : result) {
-            for(int i=0; i<1;i++) log.info(objects[1].toString());
+        List<Map<String, Object>> userKey = sendDRepository.findByAllV3(map.get("userKey"));
+        for (Map<String, Object> stringObjectMap : userKey) {
+            log.info(String.valueOf(stringObjectMap.get("USER_KEY")));
         }
     }
 
