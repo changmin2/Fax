@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,6 +41,8 @@ public class LoginController {
     @ResponseBody
     public HashMap<String,Object> login(@RequestBody Map<String, String> member,
                                         HttpServletRequest request, HttpServletResponse response){
+//        StopWatch stopWatch = new StopWatch();
+//        stopWatch.start();
         HashMap<String, Object> re = new HashMap<>();
         Map<String,Object> result = userService.login(member.get("userId"), member.get("userPassword"));
 
@@ -53,6 +56,8 @@ public class LoginController {
         sessionManager.createSession(result,response);
         re.put("flag",true);
         re.put("message","로그인에 성공하셨습니다.");
+//        stopWatch.stop();
+//        log.info("로그인 총 시간"+stopWatch.prettyPrint());
         return re;
     }
     @PostMapping("/getUserInfo")

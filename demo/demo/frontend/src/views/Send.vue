@@ -6,10 +6,10 @@
         <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
         <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
         <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f"
-          >- 재사용 {{ getterSendDetail.userKey }}</span
+          >- 재사용</span
         >
         <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f"
-          >- 수정 {{ getterUpdate.Info.user_KEY }}</span
+          >- 수정</span
         >
       </div>
 
@@ -22,7 +22,6 @@
                   <th>제목</th>
                   <td>
                     <base-input alternative v-model="title" class="my-1"> </base-input>
-                    {{ getterUpdate }}
                   </td>
                 </tr>
                 <tr>
@@ -162,6 +161,10 @@
               <div class="text-center mt-3">
                 <base-button type="danger" @click="send">전송</base-button>
                 <base-button type="danger" @click="openModal">미리보기 후 전송</base-button>
+                <base-button v-if="getterUpdate" type="light" @click="deleteSend">삭제</base-button>
+                <!-- <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f"
+                    >- 수정</span
+                  > -->
               </div>
             </form>
           </card>
@@ -206,7 +209,7 @@ export default {
       sendDate: "",
       userId: "",
       faxNo: "",
-      fileUrl: "",
+      // fileUrl: "",
       newFileName: "",
       files: [],
       apprUsers: [],
@@ -229,6 +232,7 @@ export default {
       getterSendDetail: "getSendDetail",
       getterUpdate: "getSendUpdate",
     }),
+    fileUrl() { return  "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.newFileName; },
   },
   created() {
     this.$store.commit("SET_USER_KEY_INIT");
@@ -296,15 +300,13 @@ export default {
             if (this.userKey == "None") {
               this.$store.commit("SET_USER_KEY", data.userKey);
             }
-            this.fileUrl =
-              "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + data.newFileName;
             this.newFileName = data.newFileName;
             this.fileFlag = false;
             this.pageCount = data.pageCount;
             console.log("업로드 성공",data.newFileName);
           } else {
             alertify.error("업로드 실패", 1.5);
-            this.fileUrl = "";
+            this.newFileName = "";
             this.fileFlag = true;
           }
         } catch (error) {
@@ -393,22 +395,50 @@ export default {
       }
     },
     async deleteFile() {
+      if(this.getterUpdate){ //삭제시키는척만
+        this.newFileName = "";
+        this.fileFlag = true;
+        alertify.success("파일 재등록이 가능합니다.", 1.5);
+        return;
+      }
       //첨부파일 삭제
       try {
         // console.log(this.userId);
         this.$store.commit("SET_LOADING_TRUE");
         let response = await http.post("/S3fileDelete", {
-          fileName: this.userKey + "_1.pdf",
+          fileName: this.newFileName,
         });
         let { data } = response;
         this.$store.commit("SET_LOADING_FALSE");
         if (data) {
-          this.fileUrl = "";
+          this.newFileName = "";
           this.fileFlag = true;
           alertify.success("파일삭제 성공", 1.5);
         } else {
           this.fileFlag = false;
           alertify.error("파일삭제 실패", 1.5);
+        }
+      } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
+        console.log(error);
+        console.log("에러1");
+      }
+    },
+    async deleteSend() {
+      //팩스보내기 삭제
+      try {
+        // console.log(this.userId);
+        this.$store.commit("SET_LOADING_TRUE");
+        let response = await http.post("/withdrawDelete", {
+          userKey: this.userKey,
+        });
+        let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
+        if (data) {
+          this.$router.push("/send-list");
+          alertify.alert("삭제가 완료되었습니다.", 1.5);
+        } else {
+          alertify.error("삭제 실패했습니다.", 1.5);
         }
       } catch (error) {
         this.$store.commit("SET_LOADING_FALSE");
@@ -479,15 +509,17 @@ export default {
       this.faxNo = userInfo.faxNo;
       this.grade = userInfo.grade;
       this.getApprUsers();
-
       let originData;
-      if (this.getterUpdate) {
-        console.log('업데이트 정보 불러오기');
-        originData = this.getterUpdate;
-        console.log(originData);
+      if(this.getterUpdate||this.getterSendDetail){
+        if (this.getterUpdate) {
+          originData = this.getterUpdate;
+          this.$store.commit("SET_USER_KEY", originData.Info.user_KEY);
+        }else if(this.getterSendDetail) {
+          originData = this.getterSendDetail;
+          this.$store.commit("SET_USER_KEY", originData.userKey);
+        }
         this.title = originData.Info.title;
         this.apprUserNo = originData.Info.appr_USER_NO;
-        this.$store.commit("SET_USER_KEY", originData.Info.user_KEY);
         let tempArr = originData.details;
         tempArr.forEach((value, index, array)=>{
           let tempJson = {company:value.RECEIVE_COMPANY, name:value.RECEIVE_NAME, fax:value.RECEIVE_FAX_NO};
@@ -506,10 +538,11 @@ export default {
         this.privateInfo = (originData.Info.private_INFO_YN=='Y');
         this.reserve = (originData.Info.reserve_YN=='Y')?'reserve':'';
         // this.sendDate = originData.Info.send_DATE;
-        var date = new Date(originData.Info.send_DATE);
-        this.sendDate = date.toISOString();
-        // console.log(originData.Info.send_DATE)
-        this.fileUrl =  "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.userKey + "_1.pdf";
+        if(originData.Info.send_DATE!=''){
+          var date = new Date(originData.Info.send_DATE);
+          this.sendDate = date.toISOString();
+        }
+        this.newFileName = originData.fileName;
       }
     }, 0);
   },

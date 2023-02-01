@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,23 +19,22 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-
+    @Transactional(readOnly = true)
     public Map<String,Object> login(String userId,String userPassword){
 
         boolean exist = userRepository.existsById(userId);
 
         if(exist){
             User user = userRepository.findById(userId).get();
-            log.info(userId);
-            log.info(user.getPASS_WORD());
-            log.info(userPassword);
             if(user.getPASS_WORD().equals(userPassword)) {
                 return userRepository.getUserInfo(userId);
             }
         }
+
         return null;
     }
 
+    @Transactional(readOnly = true)
     public List<HashMap<String, String>> getApprUsers(String apprId){
         boolean flag = true;
         String msg = "";
@@ -51,7 +51,7 @@ public class UserService {
         return list;
     }
 
-
+    @Transactional(readOnly = true)
     public HashMap<String, Object> getSubstituteUser(String userId){
         HashMap<String, Object> resultMap = new HashMap<>();
         boolean flag = true;

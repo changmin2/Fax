@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface UploadRepository extends JpaRepository<Upload, UploadPK> {
+public interface UploadRepository extends JpaRepository<Upload, String> {
 
     @Query(value= "select u.realFileName from Upload u where u.userKey = :userkey", nativeQuery = true)
     String getrealFileName(@Param(value = "userkey") String userkey);

@@ -22,7 +22,7 @@ export default {
             localStorage.setItem("isLogin",false);
             state.isLogin = false;
             router.push("/login");
-            alertify.error("로그인 만료되었습니다.\n다시 로그인해주세요.", 1.5);
+            alertify.error("로그인 만료되었습니다.<br>다시 로그인해주세요.", 1.5);
           }
         } catch (error) {
           localStorage.setItem("isLogin",false);

@@ -4,6 +4,7 @@ import com.example.demo.S3Uploader;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.domain.Upload.Upload;
 import com.example.demo.repository.SendDRepository;
+import com.example.demo.repository.UploadRepository;
 import com.example.demo.service.PayService;
 import com.example.demo.service.ReceiveService;
 import com.example.demo.service.SendService;
@@ -35,7 +36,8 @@ public class PayController {
     private final ReceiveService receiveService;
     private final UploadService uploadService;
     private final SendDRepository sendDRepository;
-    private final SendService sendService;
+    private final UploadRepository uploadRepository;
+
     @PostMapping("/testtest")
     public void testtest(@RequestBody Map<String,String> map){
 //        log.info("test진입");
@@ -146,7 +148,8 @@ public class PayController {
         Send find = payService.sendInfoFind(userKey);
         List<Map<String,Object>> details = payService.sendInfoDetail(userKey);
         result.put("Info",find);
-        result.put("fileName",userKey+"_"+"1.pdf");
+        String orgFileName = uploadRepository.getrealFileName(userKey);
+        result.put("fileName",orgFileName);
         result.put("details",details);
         return result;
     }
@@ -168,7 +171,7 @@ public class PayController {
         String newUserKey = createKey(userId);
 
         //s3에서 새로운userKey로 파일 이름 변경하기
-        String orgFileName = userKey+"_"+"1.pdf";
+        String orgFileName = uploadRepository.getrealFileName(userKey);
         String newFileName = newUserKey+"_"+"1.pdf";
         s3Uploader.changS3FileName(orgFileName,newFileName);
 

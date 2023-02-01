@@ -8,13 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@IdClass(UploadPK.class)
+//@IdClass(UploadPK.class)
 @Table(name="Upload")
 public class Upload {
 
     @Id
     private String userKey;
-    @Id
+//    @Id
     private String realFileName;
 
     private String userFileName;

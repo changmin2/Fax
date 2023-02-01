@@ -178,7 +178,7 @@ public class ReceiveService {
             File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
             String RealPath = "Receive"+"_"+RFax_No_Seq+".pdf";
             s3Uploader.upload(n, "receive",RealPath);
-            result.put("filePath",globalVariables.getFilePath()+RealPath);
+            result.put("filePath",RealPath);
         }else{
             String Message = (String) ObjToJson.get("Message");
             result.put("Message",Message);
