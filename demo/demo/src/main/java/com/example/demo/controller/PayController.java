@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.S3Config;
 import com.example.demo.S3Uploader;
 import com.example.demo.domain.Send.Send;
+import com.example.demo.domain.Send.Send_detail;
 import com.example.demo.repository.SendRepository;
 import com.example.demo.service.PayService;
 import com.example.demo.service.ReceiveService;
@@ -127,8 +128,10 @@ public class PayController {
         HashMap<String,Object> result = new HashMap<>();
         String userKey = map.get("userKey");
         Send find = payService.sendInfoFind(userKey);
+        List<Send_detail> details = payService.sendInfoDetail(userKey);
         result.put("Info",find);
         result.put("fileName",userKey+"_"+"1.pdf");
+        result.put("details",details);
         return result;
     }
 
@@ -153,10 +156,11 @@ public class PayController {
         s3Uploader.changS3FileName(orgFileName,newFileName);
 
         Send find = payService.sendInfoFind(userKey);
+        List<Send_detail> details = payService.sendInfoDetail(userKey);
         result.put("Info",find);
         result.put("fileName",newFileName);
         result.put("userKey",newUserKey);
-
+        result.put("details",details);
         return result;
     }
 

@@ -211,6 +211,7 @@ export default {
       modal: false,
       detailOpen: false,
       fileFlag: true,
+      grade: 0,
     };
   },
   computed: {
@@ -468,7 +469,6 @@ export default {
       
       let originData ;
       if(this.getterUpdate){
-        
         originData = this.getterUpdate;
         console.log(originData.Info);
         this.title = originData.Info.title;
