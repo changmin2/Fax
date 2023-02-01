@@ -1,67 +1,74 @@
 <template>
   <section class="section">
     <div class="main-container">
-      <div
-        class="receive-title display-4 mb-4 font-weight-800 text-default">
-        받은팩스함 - <span style="color: #d7191f; display: inline">{{userInfo.deptName}}</span>
+      <div class="receive-title display-4 mb-4 font-weight-800 text-default">
+        받은팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
       </div>
 
-      
-      <div class="row" style="width: 100%;">
+      <div class="row" style="width: 100%">
         <div class="top-content search-area">
-            <form id ="master" role="form" style="width: 100%;">
-              <table style="width: 100%;">
-                <colgroup>
-                    <col style="width:9%;">
-                    <col style="width:37%;">
-                    <col style="width:9%;">
-                    <col style="width:37%;">
-                    <col>
-                </colgroup>
-                <tr>
-                  <th>조회기간</th>
-                  <td>
-                    <form style="border: none">
-                      <input
-                        type="date"
-                        id = "searchFrom"
-                        value="today"
-                        class="form-select"
-                        v-model="searchFrom"
-                        @change="setDateInfo(searchFrom)"
-                      />
-                      ~
-                      <input
-                        type="date"
-                        id = "searchTo"
-                        value="today"
-                        class="form-select"
-                        v-model="searchTo"
-                        @change="setDateInfo(searchTo)"
-                      />
-                    </form>
-                  </td>
-                  <th>조건</th>
-                  <td>
-                    <select name="searchGubun" id="searchGubun">
-                       <option value="" selected>받는사람/팩스번호</option>
-                       <option value="1">받는사람</option>
-                       <option value="2">팩스번호</option>
-                    </select>
-                    <input type="text" id="searchGubunData" name = "searchGubunData" style=""/>
-                  </td>
-                  <td>
-                      <div class="text-center" style="float:right;">
-                        <base-button type="danger" @click="apprsearch">조회</base-button>
-                      </div>
-                  </td>
-                </tr>
-              </table>
-            </form>
-          </div>
-          <div class = "body-content ApprArea" style="width: 100%;">
-            <table style="width: 100%;">
-                <tr>
+          <form id="master" role="form" style="width: 100%">
+            <table class="fax-table fax-table-input">
+              <colgroup>
+                <col style="width: 9%" />
+                <col style="width: 37%" />
+                <col style="width: 9%" />
+                <col style="width: 37%" />
+                <col />
+              </colgroup>
+              <tr>
+                <th>조회기간</th>
+                <td>
+                  <form>
+                    <input
+                      type="date"
+                      id="searchFrom"
+                      value="today"
+                      class="fax-form-input"
+                      v-model="searchFrom"
+                      @change="setDateInfo(searchFrom)"
+                    />
+                    ~
+                    <input
+                      type="date"
+                      id="searchTo"
+                      value="today"
+                      class="fax-form-input"
+                      v-model="searchTo"
+                      @change="setDateInfo(searchTo)"
+                    />
+                  </form>
+                </td>
+                <th>조건</th>
+                <td>
+                  <select
+                    name="searchGubun"
+                    id="searchGubun"
+                    class="fax-form-input ml-1"
+                    style="width: 6rem"
+                  >
+                    <option selected>받는사람</option>
+                  </select>
+                  <input
+                    type="text"
+                    id="searchGubunData"
+                    name="searchGubunData"
+                    class="fax-form-input ml-2"
+                  />
+                </td>
+                <td>
+                  <div class="text-center" style="float: right">
+                    <base-button type="danger" @click="apprsearch">조회</base-button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+
+        <div class="body-content ApprArea" style="width: 100%">
+          <table class="fax-table" style="width: 100%">
+            <!-- <tr>
                   <td colspan = "7">
                       <div class="text-center" style="float:left;">
                         <base-button type="secondary" class="no-approval-btn btn float-left" @click="apprdelete">
@@ -72,52 +79,49 @@
                         </base-button>
                       </div>
                   </td>
-                </tr>
-                <tr class="ApprArea-header">
-                  <!--<th>
+                </tr> -->
+            <tr class="ApprArea-header">
+              <!--<th>
                     <input type="checkbox">
                   </th> -->
-                  <th>확인</th>
-                  <th>상세보기</th>
-                  <th>발신자팩스번호</th>
-                  <th>받은날짜</th>
-                  <th>확인여부</th>
-                  <th>최초확인자</th>
-                  <th>최초확인날짜</th>
-                  <!--<th>주소록</th>-->
-                </tr>
+              <th>확인</th>
+              <th>상세보기</th>
+              <th>발신자팩스번호</th>
+              <th>받은날짜</th>
+              <th>확인여부</th>
+              <th>최초확인자</th>
+              <th>최초확인날짜</th>
+              <!--<th>주소록</th>-->
+            </tr>
 
-               <tr v-for="(receive, index) in receivelist"
-                  :key="index"
-                >
-                <!--<td></td>-->
-                <td>{{receive.receive_No_SEQ }}</td>
-                <td>
-                <base-button @click="receiveDetail( receive.receive_No_SEQ )">상세</base-button>
-                </td>
-                <td>{{ receive.fax_NO }}</td>
-                <td>{{ receive.receive_DATE }}</td>
-                <td>{{ receive.read_YN }}</td>
-                <td>{{ receive.read_USER }}</td>
-                <td>{{ receive.read_DATE }}</td>
-                <!--<td></td>-->
-                </tr>
-            </table>
-          </div>
+            <tr v-for="(receive, index) in receivelist" :key="index">
+              <!--<td></td>-->
+              <td>{{ receive.receive_No_SEQ }}</td>
+              <td>
+                <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
+              </td>
+              <td>{{ receive.fax_NO }}</td>
+              <td>{{ receive.receive_DATE }}</td>
+              <td>{{ receive.read_YN }}</td>
+              <td>{{ receive.read_USER }}</td>
+              <td>{{ receive.read_DATE }}</td>
+              <!--<td></td>-->
+            </tr>
+          </table>
         </div>
       </div>
 
-        <!-- 컴포넌트 MyModal -->
-        <modal
-          :show.sync="modal"
-          body-classes="p-1"
-          modal-classes="modal-dialog-centered modal-big"
-          class="modal-class"
-          @search="apprsearch"
-        >
-          <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-          <receive-detail :receivelistDetail="receivelistDetail"></receive-detail>
-        </modal>
+      <!-- 컴포넌트 MyModal -->
+      <modal
+        :show.sync="modal"
+        body-classes="p-1"
+        modal-classes="modal-dialog-centered modal-big"
+        class="modal-class"
+        @search="apprsearch"
+      >
+        <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
+        <receive-detail :receivelistDetail="receivelistDetail"></receive-detail>
+      </modal>
     </div>
   </section>
 </template>
@@ -144,18 +148,17 @@ export default {
   },
   data() {
     return {
-        receivelist: [],
-        receivelistDetail: {},
-        searchFrom: '',
-        searchTo: '',
-        modal: false,
-        apprNo: "",
+      receivelist: [],
+      receivelistDetail: {},
+      searchFrom: "",
+      searchTo: "",
+      modal: false,
+      apprNo: "",
     };
   },
   methods: {
-
     // date 설정
-    setDateInfo( datedata ) {
+    setDateInfo(datedata) {
       let dateInfo = this.datedata;
       dateInfo = datedata.split("-");
       dateInfo = dateInfo.join("");
@@ -165,25 +168,24 @@ export default {
       const today = new Date();
 
       const year = today.getFullYear(); // 년
-      const month = today.getMonth();   // 월
-      const day = today.getDate();      // 일
+      const month = today.getMonth(); // 월
+      const day = today.getDate(); // 일
 
-      var searchFrom = new Date(year, month, day-6)
+      var searchFrom = new Date(year, month, day - 6);
       this.searchFrom = searchFrom.toISOString().split("T")[0];
       this.searchTo = today.toISOString().split("T")[0];
       this.setDateInfo(this.searchFrom);
       this.setDateInfo(this.searchTo);
-      console.log(searchFrom + ","+ searchTo);
+      console.log(searchFrom + "," + searchTo);
     },
 
     // 조회
     async apprsearch() {
-
       this.$store.commit("SET_LOADING_TRUE");
       try {
         let response = await http.post("/recieveList", {
-          RFax_No : this.userInfo.faxNo,
-          Date_Start : this.searchFrom,
+          RFax_No: this.userInfo.faxNo,
+          Date_Start: this.searchFrom,
           Date_End: this.searchTo,
         });
 
@@ -204,8 +206,7 @@ export default {
         console.log("오류메시지 - ", data.Message);
         alertify.error("실패했습니다.", 1.5);
       }
-
-      },
+    },
 
     // 상세보기
     async receiveDetail(apprNo) {
@@ -237,15 +238,11 @@ export default {
       }
     },
 
-    async apprdelete() {
-
-    },
-    async restore() {
-
-    },
+    async apprdelete() {},
+    async restore() {},
     //모달 닫기
     closeModal() {
-      this.modal = false
+      this.modal = false;
       this.apprsearch();
     },
   },
@@ -253,44 +250,11 @@ export default {
     this.getNow();
     this.apprsearch();
   },
-
 };
 </script>
 
 <style scoped>
-.receive-title {
+.fax-form-input {
+  height: 30px;
 }
-.receive-main {
-  width: 100vh;
-}
-
-.top-content {
-  display: flex;
-  width: 100%;
-}
-
-.search-area {
-  border-top : 2px solid black;
-  border-bottom : 2px solid black;
-}
-.search-area th, td {
-  height: 40px;
-}
-
-
-th {
-  background-color: rgb(224, 224, 224);
-  font-weight: normal;
-  text-align: center;
-}
-
-.body-content {
-  margin-top : 10px;
-}
-.ApprArea-header th{
-
-  background-color: rgb(224, 224, 224);
-  border : 1px solid;
-}
-
 </style>

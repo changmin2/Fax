@@ -5,109 +5,117 @@
         결재함 - <span style="color: #d7191f; display: inline">결재완료</span>
       </div>
 
-      <hr />
-      <div class="row ml-3">
-        <div class="col col-sm-5">
-          <div class="row">
-            점번
-            <select class="form-select ml-2">
-              <option selected>IT개발부</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-            </select>
-          </div>
-          <div class="row mt-3">
-            조건
-            <select class="form-select ml-2" style="width: 100px">
-              <option selected>보낸사람</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-            </select>
-            <select class="form-select ml-2">
-              <option selected></option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-            </select>
-          </div>
-        </div>
-        <div class="col col-sm-5 right-option">
-          <div class="row">
-            조회기간
-            <form class="ml-2" style="border: none">
-              <input
-                type="date"
-                id="searchFrom"
-                value="today"
-                class="form-select"
-                v-model="searchFrom"
-                @change="setDateInfo(searchFrom)"
-              />
-              ~
-              <input
-                type="date"
-                id="searchTo"
-                value="today"
-                class="form-select"
-                v-model="searchTo"
-                @change="setDateInfo(searchTo)"
-              />
-            </form>
-          </div>
-          <div class="row mt-3">
-            결재구분
-            <select v-model="apprStatus" class="form-select ml-2">
-              <option value="전체" selected>전체</option>
-              <option value="완료">완료</option>
-              <option value="회수">회수</option>
-              <option value="반려">반려</option>
-            </select>
-          </div>
-        </div>
-        <div class="col col-sm-2">
-          <base-button type="default" class="no-approval-btn mt-2" @click="noApproval">
-            조회
-          </base-button>
-        </div>
-      </div>
-      <hr />
-
-      <div class="container-fluid">
+      <div class="row" style="width: 100%">
         <div class="top-content search-area">
-          <div class="body-content ApprArea">
-            <table class="no-approval-table" style="width: 100%">
-              <tr class="ApprArea-header">
-                <th>구분</th>
-                <th>요청일자</th>
-                <th>보내는사람</th>
-                <th>받는사람</th>
-                <th>팩스번호</th>
-                <th>제목</th>
-                <th>상세보기</th>
-                <th>장수</th>
-                <th>결재상태</th>
-                <th>결재구분</th>
-                <th>결재일시(요청/완료)</th>
-              </tr>
+          <table class="fax-table fax-table-input" style="width: 100%">
+            <colgroup>
+              <col style="width: 9%" />
+              <col style="width: 38%" />
+              <col style="width: 9%" />
+              <col style="width: 38%" />
+              <col />
+            </colgroup>
+            <tr>
+              <th>조회기간</th>
+              <td>
+                <input
+                  type="date"
+                  id="searchFrom"
+                  value="today"
+                  class="fax-form-input"
+                  v-model="searchFrom"
+                  @change="setDateInfo(searchFrom)"
+                />
+                ~
+                <input
+                  type="date"
+                  id="searchTo"
+                  value="today"
+                  class="fax-form-input"
+                  v-model="searchTo"
+                  @change="setDateInfo(searchTo)"
+                />
+              </td>
+              <th>조건</th>
+              <td>
+                <select
+                  name="searchGubun"
+                  class="fax-form-input"
+                  id="searchGubun"
+                  style="height: 30px"
+                >
+                  <!-- <option value="" selected>받는사람/팩스번호</option>
+                  <option value="1">받는사람</option> -->
+                  <option value="2">팩스번호</option>
+                </select>
+                <input
+                  type="text"
+                  class="fax-form-input ml-1"
+                  id="searchGubunData"
+                  name="searchGubunData"
+                  style="height: 30px"
+                />
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>점번</th>
+              <td>
+                <select class="fax-table-input" style="height: 30px">
+                  <option value="IT개발부" selected>IT개발부</option>
+                </select>
+              </td>
 
-              <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-                <td>{{ noApproval.상태 }}</td>
-                <td>{{ noApproval.요청일자 }}</td>
-                <td>{{ noApproval.보내는사람 }}</td>
-                <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.팩스번호 }}</td>
-                <td>{{ noApproval.제목 }}</td>
-                <td>
-                  <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
-                </td>
-                <td>{{ noApproval.받는사람 }}</td>
-                <td>{{ noApproval.상태 }}</td>
-                <td>{{ noApproval.결제고유번호 }}</td>
-                <td>{{ noApproval.결재일자 }}</td>
-              </tr>
-            </table>
-          </div>
+              <th>결재구분</th>
+              <td>
+                <select v-model="apprStatus" class="fax-table-input ml-2">
+                  <option value="전체" selected>전체</option>
+                  <option value="완료">완료</option>
+                  <option value="회수">회수</option>
+                  <option value="반려">반려</option>
+                </select>
+              </td>
+              <td>
+                <div class="text-center" style="float: right">
+                  <base-button type="danger" @click="setNoApproval">조회</base-button>
+                </div>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
+
+      <table class="fax-table" style="width: 100%">
+        <tr class="ApprArea-header">
+          <th>구분</th>
+          <th>요청일자</th>
+          <th>보내는사람</th>
+          <th>받는사람</th>
+          <th>팩스번호</th>
+          <th>제목</th>
+          <th>상세보기</th>
+          <th>장수</th>
+          <th>결재상태</th>
+          <th>결재구분</th>
+          <th>결재일시<br />(요청/완료)</th>
+        </tr>
+
+        <tr v-for="(noApproval, index) in noApprovalList" :key="index">
+          <td>{{ noApproval.상태 }}</td>
+          <td>{{ noApproval.요청일자 }}</td>
+          <td>{{ noApproval.보내는사람 }}</td>
+          <td>{{ noApproval.받는사람 }}</td>
+          <td>{{ noApproval.팩스번호 }}</td>
+          <td>{{ noApproval.제목 }}</td>
+          <td>
+            <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
+          </td>
+          <td>{{ noApproval.받는사람 }}</td>
+          <td>{{ noApproval.상태 }}</td>
+          <td>{{ noApproval.결제고유번호 }}</td>
+          <td>{{ noApproval.결재일자 }}</td>
+        </tr>
+      </table>
     </div>
     <!-- modal 모달창 -->
     <modal
@@ -260,45 +268,19 @@ export default {
 
 <style scoped>
 .search-area {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  /* border-top: 2px solid black;
+  border-bottom: 2px solid black; */
 }
 
-.search-area th,
-td {
-  height: 40px;
-  width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 5rem;
-  padding: 0px 15px 0px 15px;
-}
-
-th {
-  background-color: rgb(224, 224, 224);
-  font-weight: normal;
-  text-align: center;
-}
-
-.body-content {
+/* .body-content {
   margin-top: 10px;
-}
-.ApprArea-header th {
+} */
+/* .ApprArea-header th {
   background-color: rgb(224, 224, 224);
-  border: 1px solid;
+  border: 1px solid #172b4d;
   font-weight: bold;
-  padding: 12px;
-}
-.no-approval-table {
-  width: inherit;
-}
-.no-approval-table th,
-.no-approval-table td {
-  text-align: center;
-  height: 35px;
-  line-height: 0px;
-}
+  padding: 0.5rem;
+} */
 
 .form-select {
   width: 180px;

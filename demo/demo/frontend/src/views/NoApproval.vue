@@ -7,10 +7,10 @@
       <div v-else class="send-title display-4 mb-4 font-weight-800 text-default">미결재정보</div>
 
       <div class="noApproval-detail">
-        <div class="left-content col">
+        <div class="left-content col-4">
           <span class="mt-3">> 결재요청정보</span>
 
-          <table class="no-approval-table table" style="width: 100%">
+          <table class="fax-table fax-table-detail" style="width: 100%">
             <thead>
               <tr>
                 <th scope="col">결재요청자</th>
@@ -28,7 +28,7 @@
           </table>
 
           <span class="mt-3">> 수신자정보</span>
-          <table class="no-approval-table table">
+          <table class="fax-table fax-table-detail">
             <thead>
               <tr>
                 <th scope="col">이름</th>
@@ -46,7 +46,7 @@
           <!-- <span class="mt-3">> 개인정보검출내용</span> -->
           <div v-if="!isComplete">
             <span class="mt-3">> 결재 승인 및 반송</span>
-            <table class="no-approval-table table">
+            <table class="fax-table fax-table-detail">
               <thead>
                 <tr>
                   <th scope="col">결재상태</th>
@@ -88,10 +88,10 @@
           </div>
         </div>
 
-        <div class="col" v-if="noApprDetail.발송고유번호">
+        <div class="col-8" v-if="noApprDetail.발송고유번호">
           <iframe
             :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${noApprDetail.발송고유번호}_1.pdf`"
-            style="width: 600px; height: 500px"
+            style="width: 100%; height: 100%"
           ></iframe>
         </div>
         <div class="col" v-else>이미지 로딩중..</div>
@@ -185,41 +185,12 @@ export default {
 .noApproval-detail {
   display: flex;
 }
-.no-proval-info {
-}
+
 .left-content {
   display: flex;
   flex-direction: column;
 }
 
-th {
-  background-color: rgb(224, 224, 224);
-  font-weight: normal;
-}
-
-.no-approval-table {
-  font-size: small;
-}
-.no-approval-table th,
-.no-approval-table td {
-  text-align: center;
-  height: 35px;
-  line-height: 13px;
-}
-.no-approval-table th {
-  width: 100px;
-}
-.no-approval-table td {
-  width: 250px;
-  border: 0.0625rem solid #dee2e6;
-}
-.no-approval-btn-group {
-  margin-left: 240px;
-}
-.no-approval-btn {
-  padding: 5px;
-  width: 50px;
-}
 .no-approval-td-textarea {
   height: 80px;
 }
