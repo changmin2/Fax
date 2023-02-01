@@ -80,6 +80,7 @@ public class SendService {
         }
 
     }
+    //그냥 발송
     public String sendApi(Send send) throws IOException{
         //gbn : 1 재전송 , 0 : 처음 전송
 
@@ -95,10 +96,82 @@ public class SendService {
         multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "Send");
+        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
+            multipart.addFormField("Send_Date",send.getSEND_DATE());
+        }
+
+        String userKey = send.getUSER_KEY();
+        //파일명 가져오기
+        String fileName = uploadService.getFileName(userKey);
+        String filePath = globalVariables.getFilePath();
+        //PDF1 -> 서버파일
+        File file = s3Uploader.download(fileName);
+        multipart.addFilePart("PDF1", file);
+
+        //파일첨부 후 삭제
+        s3Uploader.removeNewFile(file);
+
+        // 데이터 - 수신처
+
+
+        List<Send_detail> sendDetail = sendDRepository.findByUserKey(userKey);
+        JSONArray DestArr = new JSONArray();
+        for (Send_detail dest:sendDetail) {
+            log.info("수신처 :"+dest.toString());
+            JSONObject Dest1 = new JSONObject();
+            Dest1.put("Company",dest.getRECEIVE_COMPANY());
+            Dest1.put("Name",dest.getRECEIVE_NAME());
+            Dest1.put("Fax",dest.getRECEIVE_FAX_NO());
+            DestArr.add(Dest1);
+        }
+        multipart.addFormField("Destination", DestArr.toString());
+
+        // 응답 값
+        String ResultJson = multipart.finish();
+
+        ObjectMapper mapper = new ObjectMapper();
+        SendRes res = mapper.readValue( ResultJson, SendRes.class);
+        log.info("팩스 발송 결과 : "+res.toString());
+
+        //DB에 결과 저장
+        String Result = res.getResult();
+
+        if(Result.equals("OK")) {
+            if (send.getRESERVE_YN().equals("N")) { //예약전송아닐때 오늘날짜
+                String Date_End = globalVariables.getNow();
+                send.setSEND_DATE(Date_End);
+            }
+            send.setJOB_NO(res.getJob_No() + "");
+            for (Send_detail dest:sendDetail) {
+                dest.setJOB_NO(res.getJob_No() + "");
+                sendDRepository.save(dest);
+            }
+        }else {
+            send.setERROR_MSG(res.getMessage());
+        }
+        send.setSTATUS(Result.equals("OK")? "전송완료" : "전송실패");
+        sendRepository.save(send);
+
+        String msg = Result.equals("OK")? "팩스 발송완료되었습니다.":res.getMessage();
+        return msg;
+    }
+    //job_no없을 때 재전송
+    public String NoJobsendApi(Send send) throws IOException{
+        //gbn : 1 재전송 , 0 : 처음 전송
+
+        ////////////////////////////////////////////
+        //[팩스 - 발송 요청]
+        ////////////////////////////////////////////
+        // 헤더값 설정
+        Map<String, String> headers = new HashMap<>();
+        HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
+
+        //데이터 (요청변수 대소문자 구분)
+        multipart.addFormField("UserID", globalVariables.getFaxId());
+        multipart.addFormField("UserPW", globalVariables.getFaxPw());
+        multipart.addFormField("Service", globalVariables.getService());
+        multipart.addFormField("Type", "Send");
         multipart.addFormField("Send_Date","");
-//        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
-//            multipart.addFormField("Send_Date",send.getSEND_DATE());
-//        }
 
         String userKey = send.getUSER_KEY();
         //파일명 가져오기
@@ -156,6 +229,7 @@ public class SendService {
         return msg;
     }
 
+
     //재전송 전용 api
     public String reSendApi(Send send,String ReSend_List) throws IOException {
         Map<String, String> headers = new HashMap<>();
@@ -203,7 +277,7 @@ public class SendService {
 
     public String reSend(String userKey) throws IOException{
         Send send = sendRepository.findById(userKey).get();
-        return sendApi(send);
+        return NoJobsendApi(send);
     }
 
     public String reSendJobNo(Map<String,String> map) throws IOException {

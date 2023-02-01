@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.VO.SendReq;
 import com.example.demo.service.SendService;
+import com.example.demo.service.UploadService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api")
 @Slf4j
-
+@RequiredArgsConstructor
 public class SendController {
-    @Autowired
-    SendService sendService;
+
+    private final SendService sendService;
+    private final UploadService uploadService;
 
     //발송
     @RequestMapping(method = RequestMethod.POST, path = "/Send")
@@ -34,6 +37,16 @@ public class SendController {
         log.info(req.toString());
 
         return sendService.sendInsert(req);
+    }
+
+    //수정시 발송
+    @RequestMapping("/updateSend")
+    @ResponseBody
+    public String updateSend(@RequestBody Map<String,Object> map) throws IOException, ParseException {
+        SendReq req = (SendReq) map.get("SendReq");
+        String newFileName = (String) map.get("newFileName");
+        uploadService.updateFileName(newFileName,req.getUserKey());
+        return Send(req);
     }
 
     //발송 -> 결제완료시 -> 상세정보

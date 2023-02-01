@@ -13,4 +13,8 @@ public interface UploadRepository extends JpaRepository<Upload, UploadPK> {
     @Query(value= "select u.realFileName from Upload u where u.userKey = :userkey", nativeQuery = true)
     String getrealFileName(@Param(value = "userkey") String userkey);
 
+    @Query(value = "UPDATE Upload\n" +
+            "SET realFileName =:newFileName\n" +
+            "WHERE userKey=:userKey;",nativeQuery = true)
+    void updateFileName(String newFileName, String userKey);
 }

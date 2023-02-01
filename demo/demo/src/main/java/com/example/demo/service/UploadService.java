@@ -42,6 +42,12 @@ public class UploadService {
         return userRepository.getrealFileName(userkey);
     }
 
+    //파일이름 업데이트
+    @Transactional
+    public void updateFileName(String newFileName,String userKey){
+        userRepository.updateFileName(newFileName,userKey);
+    }
+
     public  HashMap<String,String>  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
         HashMap<String,String> result = new HashMap<>();
         ////////////////////////////////////////////
