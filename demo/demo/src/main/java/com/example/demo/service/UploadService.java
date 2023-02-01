@@ -49,6 +49,7 @@ public class UploadService {
     }
 
     public  HashMap<String,String>  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
+        log.info("converPDF진입");
         HashMap<String,String> result = new HashMap<>();
         ////////////////////////////////////////////
         //[팩스 - 변환 요청]
@@ -75,10 +76,12 @@ public class UploadService {
 //            fos.close();
             multipart.addFilePart("Doc_File"+(i+1), convFile);
             s3Uploader.removeNewFile(convFile); //파일삭제
+
         }
 
         // 응답 값
         String ResultJson = multipart.finish();
+
         // Json parse (json.simple 라이브러리)
         JSONParser jsonParse = new JSONParser();
         JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
@@ -100,6 +103,7 @@ public class UploadService {
 //            페이지 가져오기
             PDDocument pdfDoc;
             pdfDoc = PDDocument.load(n);
+
             int pageCount = pdfDoc.getNumberOfPages();
 //            log.error("페이지 수 읽어오기 : "+pageCount);
             result.put("pageCount",pageCount+"");

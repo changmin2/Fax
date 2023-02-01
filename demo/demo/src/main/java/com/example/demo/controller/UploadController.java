@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,9 +41,10 @@ public class UploadController {
     public HashMap<String,String> uploadSingle(@RequestParam("userId") String userId,
                                                @RequestParam(value = "userKey",defaultValue = "None") String userKey,
                                                @RequestParam("files") List<MultipartFile> files) throws Exception {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         Upload userForm = new Upload();
-        log.info("=== 이미지파일 수신 거래발생 ===");
-        log.info("userKey"+userKey);
+        log.info("UploadController, uploadSingle 메소드 진입");
 
         //처음 요청 시
         if(userKey.equals("None")){
@@ -57,10 +59,13 @@ public class UploadController {
         if(result.get("Result").equals("ERROR")){
             return result;
         }
+        stopWatch.stop();
+        log.info("총 시간"+stopWatch.prettyPrint());
         userForm.setUserFileName(userFileName);
         userForm.setRealFileName(RealPath);
         userService.register(userForm);
         result.put("userKey",userKey);
+
         return result;
     }
 
