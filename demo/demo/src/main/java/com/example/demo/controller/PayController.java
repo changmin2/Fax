@@ -4,10 +4,13 @@ import com.example.demo.S3Config;
 import com.example.demo.S3Uploader;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.domain.Send.Send_detail;
+import com.example.demo.domain.Upload.Upload;
+import com.example.demo.repository.SendDRepository;
 import com.example.demo.repository.SendRepository;
 import com.example.demo.service.PayService;
 import com.example.demo.service.ReceiveService;
 import com.example.demo.service.SendService;
+import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -35,6 +38,17 @@ public class PayController {
     private final PayService payService;
     private final S3Uploader s3Uploader;
     private final ReceiveService receiveService;
+    private final UploadService uploadService;
+    private final SendDRepository sendDRepository;
+    private final SendService sendService;
+    @PostMapping("/testtest")
+    public void testtest(@RequestBody Map<String,String> map){
+        log.info("test진입");
+        List<Object[]> result = sendDRepository.findByAllV2(map.get("userKey"));
+        for (Object[] objects : result) {
+            for(int i=0; i<1;i++) log.info(objects[1].toString());
+        }
+    }
 
     //결재함 목록
     @PostMapping("/payRecieve")
@@ -150,10 +164,19 @@ public class PayController {
         String userKey = map.get("userKey");
         String userId = map.get("userId");
         String newUserKey = createKey(userId);
+
         //s3에서 새로운userKey로 파일 이름 변경하기
         String orgFileName = userKey+"_"+"1.pdf";
         String newFileName = newUserKey+"_"+"1.pdf";
         s3Uploader.changS3FileName(orgFileName,newFileName);
+
+
+        //upload 테이블에 새로운 파일업데이트
+        Upload newUpload = new Upload();
+        newUpload.setUserKey(newUserKey);
+        newUpload.setRealFileName(newFileName);
+        newUpload.setUserFileName("temp");
+        uploadService.register(newUpload);
 
         Send find = payService.sendInfoFind(userKey);
         List<Send_detail> details = payService.sendInfoDetail(userKey);
