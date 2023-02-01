@@ -9,15 +9,15 @@
         <table class="no-approval-table table" style="width: 100%">
           <thead>
             <tr>
-              <th scope="col">보낸사람</th>
-              <th scope="col">팩스번호</th>
+              <th scope="col">결재자</th>
+              <th scope="col">결재시간</th>
               <th scope="col">결재상태</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{{ sendDetail.발송자 }}</td>
-              <td>{{ sendDetail.팩스번호 }}</td>
+              <td>{{ sendDetail.결재자이름 }}</td>
+              <td>{{ sendDetail.결재일자 }}</td>
               <td>{{ sendDetail.결재상태 }}</td>
             </tr>
           </tbody>
@@ -114,7 +114,6 @@ export default {
   },
   updated() {
     this.status = this.sendDetail.상태;
-    console.log(this.status);
   },
   methods: {
     /* 재사용 */
@@ -206,6 +205,31 @@ export default {
 
     /* 재사용 */
     async resend() {
+
+      let formData = new FormData();
+      formData.append("userKey", this.sendDetail.발송번호);
+      formData.append("ReSend_List", "All");
+
+           console.log("재전송 요청 param", formData);
+
+
+      try {
+        let response = await http.post(`/reSend`, formData);
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          // console.log("재전송 요청 성공", data);
+          // console.log("재전송 요청 성공", data.Info);
+          // console.log("재전송 요청 성공", data.fileName);
+        } else {
+          console.log("재전송 요청 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.alert("실패", "재전송 요청에 실패했습니다.", 1.5);
+      }
     },
   },
 };
