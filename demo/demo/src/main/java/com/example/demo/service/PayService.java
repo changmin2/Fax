@@ -5,6 +5,7 @@ import com.example.demo.VO.SendRes;
 import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Form.ApprovalForm;
 import com.example.demo.domain.Send.Send;
+import com.example.demo.domain.Send.Send_detail;
 import com.example.demo.domain.User.User;
 import com.example.demo.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class PayService {
 
     private final ApprovalRepository approvalRepository;
     private final SendRepository sendRepository;
+    private final SendDRepository sendDRepository;
     private final SendService sendService;
     private final GlobalVariables globalVariables;
 
@@ -211,6 +213,11 @@ public class PayService {
     //회수->수정
     public Send sendInfoFind(String userKey){
         return sendRepository.findById(userKey).get();
+    }
+
+    //수신처 정보
+    public List<Send_detail> sendInfoDetail(String userKey){
+        return sendDRepository.findByUserKey(userKey);
     }
 
     //회수 -> 삭제 -> 사용여부 변경
