@@ -46,17 +46,6 @@ public class SendController {
     public String updateSend(@RequestBody SendReq req) throws IOException, ParseException {
         log.info(req.toString());
         uploadService.updateFileName(req.getNewFileName(),req.getUserKey());
-//        SendReq sendReq = new SendReq();
-//        sendReq.setSend_Date(req.getSend_Date());
-//        sendReq.setAppr_person(req.getAppr_person());
-//        sendReq.setDestinationList(req.getDestinationList());
-//        sendReq.setFaxNo(req.getFaxNo());
-//        sendReq.setReserve_yn(req.getReserve_yn());
-//        sendReq.setUserKey(req.getUserKey());
-//        sendReq.setTitle(req.getTitle());
-//        sendReq.setUserID(req.getUserID());
-//        sendReq.setPrivate_info_yn(req.getPrivate_info_yn());
-//        sendReq.setPAGE_CNT(req.getPageCount()+"");
         return Send(req);
     }
 

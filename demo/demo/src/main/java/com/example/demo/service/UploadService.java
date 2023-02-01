@@ -13,6 +13,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -29,23 +31,27 @@ import java.util.Map;
 public class UploadService {
 
 
-    private  final UploadRepository userRepository;
+    private  final UploadRepository uploadRepository;
     private  final GlobalVariables globalVariables;
     private final S3Uploader s3Uploader;
 
     @Transactional
     public void register(Upload user){
-        userRepository.save(user);
+        uploadRepository.save(user);
     }
 
     public String getFileName(String userkey){
-        return userRepository.getrealFileName(userkey);
+        return uploadRepository.getrealFileName(userkey);
     }
 
     //파일이름 업데이트
     @Transactional
     public void updateFileName(String newFileName,String userKey){
-        userRepository.updateFileName(newFileName,userKey);
+        String originFileName = uploadRepository.getrealFileName(userKey);
+        if(!originFileName.equals(newFileName)){
+            s3Uploader.removeS3File(originFileName);
+            uploadRepository.updateFileName(newFileName,userKey);
+        };
     }
 
     public  HashMap<String,String>  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
