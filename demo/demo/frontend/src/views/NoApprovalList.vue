@@ -23,6 +23,7 @@
                   id="searchFrom"
                   value="today"
                   class="fax-form-input"
+                  style="height: 30px"
                   v-model="searchFrom"
                   @change="setDateInfo(searchFrom)"
                 />
@@ -32,6 +33,7 @@
                   id="searchTo"
                   value="today"
                   class="fax-form-input"
+                  style="height: 30px"
                   v-model="searchTo"
                   @change="setDateInfo(searchTo)"
                 />

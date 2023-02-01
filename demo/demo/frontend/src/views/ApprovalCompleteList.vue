@@ -23,6 +23,7 @@
                   id="searchFrom"
                   value="today"
                   class="fax-form-input"
+                  style="height: 30px"
                   v-model="searchFrom"
                   @change="setDateInfo(searchFrom)"
                 />
@@ -32,6 +33,7 @@
                   id="searchTo"
                   value="today"
                   class="fax-form-input"
+                  style="height: 30px"
                   v-model="searchTo"
                   @change="setDateInfo(searchTo)"
                 />
@@ -68,7 +70,7 @@
 
               <th>결재구분</th>
               <td>
-                <select v-model="apprStatus" class="fax-table-input ml-2">
+                <select v-model="apprStatus" class="fax-table-input ml-2" style="height: 30px">
                   <option value="전체" selected>전체</option>
                   <option value="완료">완료</option>
                   <option value="회수">회수</option>
