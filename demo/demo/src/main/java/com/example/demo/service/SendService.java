@@ -123,8 +123,8 @@ public class SendService {
 //            log.info("수신처 :"+dest.toString());
             JSONObject Dest1 = new JSONObject();
             Dest1.put("Company",temp.get("RECEIVE_COMPANY"));
-            Dest1.put("Name",temp.get("RECEIVE_NAME()"));
-            Dest1.put("Fax",temp.get("RECEIVE_FAX_NO()"));
+            Dest1.put("Name",temp.get("RECEIVE_NAME"));
+            Dest1.put("Fax",temp.get("RECEIVE_FAX_NO"));
             DestArr.add(Dest1);
         }
         multipart.addFormField("Destination", DestArr.toString());
