@@ -5,87 +5,85 @@
         결재함 - <span style="color: #d7191f; display: inline">결재완료</span>
       </div>
 
-      <div class="row" style="width: 100%">
-        <div class="top-content search-area">
-          <table class="fax-table fax-table-input" style="width: 100%">
-            <colgroup>
-              <col style="width: 9%" />
-              <col style="width: 38%" />
-              <col style="width: 9%" />
-              <col style="width: 38%" />
-              <col />
-            </colgroup>
-            <tr>
-              <th>조회기간</th>
-              <td>
-                <input
-                  type="date"
-                  id="searchFrom"
-                  value="today"
-                  class="fax-form-input"
-                  style="height: 30px"
-                  v-model="searchFrom"
-                  @change="setDateInfo(searchFrom)"
-                />
-                ~
-                <input
-                  type="date"
-                  id="searchTo"
-                  value="today"
-                  class="fax-form-input"
-                  style="height: 30px"
-                  v-model="searchTo"
-                  @change="setDateInfo(searchTo)"
-                />
-              </td>
-              <th>조건</th>
-              <td>
-                <select
-                  name="searchGubun"
-                  class="fax-form-input"
-                  id="searchGubun"
-                  style="height: 30px"
-                >
-                  <!-- <option value="" selected>받는사람/팩스번호</option>
+      <form id="master" role="form" style="width: 100%">
+        <table class="fax-table fax-table-input" style="width: 100%">
+          <colgroup>
+            <col style="width: 9%" />
+            <col style="width: 38%" />
+            <col style="width: 9%" />
+            <col style="width: 38%" />
+            <col />
+          </colgroup>
+          <tr>
+            <th>조회기간</th>
+            <td>
+              <input
+                type="date"
+                id="searchFrom"
+                value="today"
+                class="fax-form-input"
+                style="height: 30px"
+                v-model="searchFrom"
+                @change="setDateInfo(searchFrom)"
+              />
+              ~
+              <input
+                type="date"
+                id="searchTo"
+                value="today"
+                class="fax-form-input"
+                style="height: 30px"
+                v-model="searchTo"
+                @change="setDateInfo(searchTo)"
+              />
+            </td>
+            <th>조건</th>
+            <td>
+              <select
+                name="searchGubun"
+                class="fax-form-input"
+                id="searchGubun"
+                style="height: 30px"
+              >
+                <!-- <option value="" selected>받는사람/팩스번호</option>
                   <option value="1">받는사람</option> -->
-                  <option value="2">팩스번호</option>
-                </select>
-                <input
-                  type="text"
-                  class="fax-form-input ml-1"
-                  id="searchGubunData"
-                  name="searchGubunData"
-                  style="height: 30px"
-                />
-              </td>
-              <td></td>
-            </tr>
-            <tr>
-              <th>점번</th>
-              <td>
-                <select class="fax-table-input" style="height: 30px">
-                  <option value="IT개발부" selected>IT개발부</option>
-                </select>
-              </td>
+                <option value="2">팩스번호</option>
+              </select>
+              <input
+                type="text"
+                class="fax-form-input ml-1"
+                id="searchGubunData"
+                name="searchGubunData"
+                style="height: 30px"
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>점번</th>
+            <td>
+              <select class="fax-table-input" style="height: 30px">
+                <option value="IT개발부" selected>IT개발부</option>
+              </select>
+            </td>
 
-              <th>결재구분</th>
-              <td>
-                <select v-model="apprStatus" class="fax-table-input ml-2" style="height: 30px">
-                  <option value="전체" selected>전체</option>
-                  <option value="완료">완료</option>
-                  <option value="회수">회수</option>
-                  <option value="반려">반려</option>
-                </select>
-              </td>
-              <td>
-                <div class="text-center" style="float: right">
-                  <base-button type="danger" @click="setNoApproval">조회</base-button>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+            <th>결재구분</th>
+            <td>
+              <select v-model="apprStatus" class="fax-table-input ml-2" style="height: 30px">
+                <option value="전체" selected>전체</option>
+                <option value="완료">완료</option>
+                <option value="회수">회수</option>
+                <option value="반려">반려</option>
+              </select>
+            </td>
+            <td>
+              <div class="text-center" style="float: right">
+                <base-button type="danger" @click="setNoApproval">조회</base-button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
 
       <table class="fax-table" style="width: 100%">
         <tr class="ApprArea-header">
@@ -268,30 +266,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.search-area {
-  /* border-top: 2px solid black;
-  border-bottom: 2px solid black; */
-}
-
-/* .body-content {
-  margin-top: 10px;
-} */
-/* .ApprArea-header th {
-  background-color: rgb(224, 224, 224);
-  border: 1px solid #172b4d;
-  font-weight: bold;
-  padding: 0.5rem;
-} */
-
-.form-select {
-  width: 180px;
-  border: 0.0625rem solid rgb(169, 169, 169);
-  display: flex;
-}
-
-hr {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-</style>
+<style scoped></style>

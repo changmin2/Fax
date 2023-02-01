@@ -5,79 +5,77 @@
         결재함 - <span style="color: #d7191f; display: inline">미결재</span>
       </div>
 
-      <div class="row" style="width: 100%">
-        <div class="top-content search-area">
-          <table class="fax-table fax-table-input" style="width: 100%">
-            <colgroup>
-              <col style="width: 9%" />
-              <col style="width: 38%" />
-              <col style="width: 9%" />
-              <col style="width: 38%" />
-              <col />
-            </colgroup>
-            <tr>
-              <th>조회기간</th>
-              <td>
-                <input
-                  type="date"
-                  id="searchFrom"
-                  value="today"
-                  class="fax-form-input"
-                  style="height: 30px"
-                  v-model="searchFrom"
-                  @change="setDateInfo(searchFrom)"
-                />
-                ~
-                <input
-                  type="date"
-                  id="searchTo"
-                  value="today"
-                  class="fax-form-input"
-                  style="height: 30px"
-                  v-model="searchTo"
-                  @change="setDateInfo(searchTo)"
-                />
-              </td>
-              <th>조건</th>
-              <td>
-                <select
-                  name="searchGubun"
-                  class="fax-form-input"
-                  id="searchGubun"
-                  style="height: 30px"
-                >
-                  <!-- <option value="" selected>받는사람/팩스번호</option>
+      <form id="master" role="form" style="width: 100%">
+        <table class="fax-table fax-table-input" style="width: 100%">
+          <colgroup>
+            <col style="width: 9%" />
+            <col style="width: 38%" />
+            <col style="width: 9%" />
+            <col style="width: 38%" />
+            <col />
+          </colgroup>
+          <tr>
+            <th>조회기간</th>
+            <td>
+              <input
+                type="date"
+                id="searchFrom"
+                value="today"
+                class="fax-form-input"
+                style="height: 30px"
+                v-model="searchFrom"
+                @change="setDateInfo(searchFrom)"
+              />
+              ~
+              <input
+                type="date"
+                id="searchTo"
+                value="today"
+                class="fax-form-input"
+                style="height: 30px"
+                v-model="searchTo"
+                @change="setDateInfo(searchTo)"
+              />
+            </td>
+            <th>조건</th>
+            <td>
+              <select
+                name="searchGubun"
+                class="fax-form-input"
+                id="searchGubun"
+                style="height: 30px"
+              >
+                <!-- <option value="" selected>받는사람/팩스번호</option>
                   <option value="1">받는사람</option> -->
-                  <option value="2">팩스번호</option>
-                </select>
-                <input
-                  type="text"
-                  class="fax-form-input ml-1"
-                  id="searchGubunData"
-                  name="searchGubunData"
-                  style="height: 30px"
-                />
-              </td>
-              <td></td>
-            </tr>
-            <tr>
-              <th>점번</th>
-              <td>
-                <select class="fax-table-input" style="height: 30px">
-                  <option value="IT개발부" selected>IT개발부</option>
-                </select>
-              </td>
-              <td></td>
-              <td></td>
-              <td>
-                <div class="text-center" style="float: right">
-                  <base-button type="danger" @click="setNoApproval">조회</base-button>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+                <option value="2">팩스번호</option>
+              </select>
+              <input
+                type="text"
+                class="fax-form-input ml-1"
+                id="searchGubunData"
+                name="searchGubunData"
+                style="height: 30px"
+              />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>점번</th>
+            <td>
+              <select class="fax-table-input" style="height: 30px">
+                <option value="IT개발부" selected>IT개발부</option>
+              </select>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+              <div class="text-center" style="float: right">
+                <base-button type="danger" @click="setNoApproval">조회</base-button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </form>
 
       <table class="fax-table" style="width: 100%">
         <tr class="ApprArea-header">
@@ -274,40 +272,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* .search-area {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-} */
-
-/* .search-area th,
-.search-area td {
-  height: 40px;
-  width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 5rem;
-  padding: 0px 15px 0px 15px;
-} */
-
-/* th {
-  background-color: rgb(224, 224, 224);
-  font-weight: normal;
-  text-align: center;
-} */
-
-/* .body-content {
-  margin-top: 10px;
-} */
-
-.form-select {
-  width: 180px;
-  border: 0.0625rem solid rgb(169, 169, 169);
-}
-
-hr {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-</style>
+<style scoped></style>

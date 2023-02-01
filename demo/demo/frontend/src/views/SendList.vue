@@ -3,83 +3,77 @@
     <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">발신팩스함</div>
 
-      <div class="top-content search-area">
-        <table class="fax-table fax-table-input" style="width: 100%">
-          <colgroup>
-            <col style="width: 9%" />
-            <col style="width: 38%" />
-            <col style="width: 9%" />
-            <col style="width: 38%" />
-            <col />
-          </colgroup>
-          <tr>
-            <th>조회기간</th>
-            <td>
-              <input
-                type="date"
-                id="searchFrom"
-                value="today"
-                class="fax-form-input"
-                style="height: 30px"
-                v-model="searchFrom"
-                @change="setDateInfo(searchFrom)"
-              />
-              ~
-              <input
-                type="date"
-                id="searchTo"
-                value="today"
-                class="fax-form-input"
-                style="height: 30px"
-                v-model="searchTo"
-                @change="setDateInfo(searchTo)"
-              />
-            </td>
-            <th>조건</th>
-            <td>
-              <select
-                name="searchGubun"
-                class="fax-form-input"
-                style="height: 30px"
-                id="searchGubun"
-              >
-                <!-- <option value="" selected>받는사람/팩스번호</option>
+      <table class="fax-table fax-table-input" style="width: 100%">
+        <colgroup>
+          <col style="width: 9%" />
+          <col style="width: 38%" />
+          <col style="width: 9%" />
+          <col style="width: 38%" />
+          <col />
+        </colgroup>
+        <tr>
+          <th>조회기간</th>
+          <td>
+            <input
+              type="date"
+              id="searchFrom"
+              value="today"
+              class="fax-form-input"
+              style="height: 30px"
+              v-model="searchFrom"
+              @change="setDateInfo(searchFrom)"
+            />
+            ~
+            <input
+              type="date"
+              id="searchTo"
+              value="today"
+              class="fax-form-input"
+              style="height: 30px"
+              v-model="searchTo"
+              @change="setDateInfo(searchTo)"
+            />
+          </td>
+          <th>조건</th>
+          <td>
+            <select name="searchGubun" class="fax-form-input" style="height: 30px" id="searchGubun">
+              <!-- <option value="" selected>받는사람/팩스번호</option>
                   <option value="1">받는사람</option> -->
-                <option value="2">팩스번호</option>
-              </select>
-              <input
-                type="text"
-                class="fax-form-input ml-1"
-                id="searchGubunData"
-                name="searchGubunData"
-                style="height: 30px"
-              />
-            </td>
-            <td></td>
-          </tr>
-          <tr>
-            <th>결재구분</th>
-            <td>
-              <select v-model="sendStatus" class="fax-table-input" style="height: 30px">
-                <option value="전체" selected>전체</option>
-                <option value="결재완료">결재완료</option>
-                <option value="결재대기">결재대기</option>
-                <option value="전송완료">전송완료</option>
-                <option value="전송실패">전송실패</option>
-                <option value="반려">반려</option>
-                <option value="회수">회수</option>
-              </select>
-            </td>
-            <td></td>
-            <td></td>
-            <td>
-              <div class="text-center" style="float: right">
-                <base-button type="danger" @click="getSendList">조회</base-button>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </div>
+              <option value="2">팩스번호</option>
+            </select>
+            <input
+              type="text"
+              class="fax-form-input ml-1"
+              id="searchGubunData"
+              name="searchGubunData"
+              style="height: 30px"
+            />
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>결재구분</th>
+          <td>
+            <select v-model="sendStatus" class="fax-table-input" style="height: 30px">
+              <option value="전체" selected>전체</option>
+              <option value="결재완료">결재완료</option>
+              <option value="결재대기">결재대기</option>
+              <option value="전송완료">전송완료</option>
+              <option value="전송실패">전송실패</option>
+              <option value="반려">반려</option>
+              <option value="회수">회수</option>
+            </select>
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="text-center" style="float: right">
+              <base-button type="danger" @click="getSendList">조회</base-button>
+            </div>
+          </td>
+        </tr>
+      </table>
+
       <table class="fax-table" style="width: 100%">
         <tr class="ApprArea-header">
           <th>제목</th>
@@ -240,15 +234,6 @@ export default {
 </script>
 
 <style scoped>
-.send-main {
-  width: 100vh;
-}
-
-.top-content {
-  display: flex;
-  width: 100%;
-}
-
 .popup-view {
   opacity: 0;
   display: none;
