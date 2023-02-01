@@ -88,13 +88,13 @@
           </div>
         </div>
 
-        <div class="col" v-if="noApprDetail">
+        <div class="col" v-if="noApprDetail.발송고유번호">
           <iframe
             :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${noApprDetail.발송고유번호}_1.pdf`"
             style="width: 600px; height: 500px"
           ></iframe>
         </div>
-        <div class="col" v-else>이미지가 없습니다</div>
+        <div class="col" v-else>이미지 로딩중..</div>
       </div>
     </div>
   </section>
