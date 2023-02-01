@@ -114,9 +114,11 @@ public class SendService {
         // 데이터 - 수신처
 
 
-        List<Send_detail> sendDetail = sendDRepository.findByUserKey(userKey);
+        List<Map<String,Object>> sendDetail = sendDRepository.findByAllByUserKey(userKey);
         JSONArray DestArr = new JSONArray();
-        for (Send_detail dest:sendDetail) {
+        for (Map<String,Object> temp:sendDetail) {
+            ObjectMapper mapper = new ObjectMapper();
+            Send_detail dest = mapper.convertValue(temp, Send_detail.class);
             log.info("수신처 :"+dest.toString());
             JSONObject Dest1 = new JSONObject();
             Dest1.put("Company",dest.getRECEIVE_COMPANY());
@@ -142,7 +144,9 @@ public class SendService {
                 send.setSEND_DATE(Date_End);
             }
             send.setJOB_NO(res.getJob_No() + "");
-            for (Send_detail dest:sendDetail) {
+            for (Map<String,Object> temp:sendDetail) {
+                ObjectMapper mapperT = new ObjectMapper();
+                Send_detail dest = mapperT.convertValue(temp, Send_detail.class);
                 dest.setJOB_NO(res.getJob_No() + "");
                 sendDRepository.save(dest);
             }
