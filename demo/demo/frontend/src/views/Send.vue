@@ -348,7 +348,7 @@ export default {
           // 전송 성공
           console.log(data);
           console.log("전송 성공");
-          this.$router.push("/");
+          this.$router.push("/send-list");
           alertify.alert("팩스 전송신청이 완료되었습니다.", 1.5);
         } else {
           console.log("전송 실패");

@@ -53,6 +53,7 @@ public class SendService {
         Send send = new Send(req);
         send.setINSERT_DATE(Date_End);
         send.setSTATUS("결재대기");
+        send.setUSE_GBN("Y");
 
         List<SendReq.Destination> DestinationList = req.getDestinationList();
         int index = 1;
