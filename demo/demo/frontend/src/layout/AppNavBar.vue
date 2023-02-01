@@ -14,9 +14,9 @@
           <li :class="{ 'li-a': toggleValue1 === false }">
             <a href="/#/send">> 팩스보내기</a>
           </li>
-          <li :class="{ 'li-a': toggleValue1 === false }">
+          <!-- <li :class="{ 'li-a': toggleValue1 === false }">
             <a href="/#/send-wait">> 발신대기함</a>
-          </li>
+          </li> -->
           <li :class="{ 'li-a': toggleValue1 === false }">
             <a href="/#/send-list">> 발신팩스함</a>
           </li>
@@ -42,7 +42,7 @@
             <a href="/#/no-approval-list">> 미결재</a>
           </li>
           <li :class="{ 'li-a': toggleValue3 === false }">
-            <a href="/#/approval-complete-list">> 결재완료</a>
+            <a href="/#/approval-complete-list">> 결재함</a>
           </li>
         </ul>
       </li>
