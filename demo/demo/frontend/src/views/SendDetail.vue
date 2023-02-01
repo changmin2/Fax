@@ -24,7 +24,9 @@
 
         <div>
           <span class="mt-3" style="display: inline; width: 30%; float: left">> 수신자정보</span>
-          <div class="mt-3" style="display: inline; width: 60%; float: right">
+          <div class="mt-3" style="display: inline; width: 60%; float: right"
+          v-if="status == '전송완료' || status == '전송실패'"
+          >
             ※ 전체 : {{ sendDetail.받는사람정보.length }}건, 상태 : (<span class="status_s"
               >성공</span
             >
@@ -36,15 +38,15 @@
             <tr>
               <th scope="col">받는사람</th>
               <th scope="col">팩스번호</th>
-              <th scope="col">상태</th>
+              <th scope="col" v-if="status == '전송완료' || status == '전송실패'">상태</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(sendDetail, index) in sendDetail.받는사람정보" :key="index">
               <td>{{ sendDetail.이름 }} &#40; {{ sendDetail.상호 }} &#41;</td>
               <td>{{ sendDetail.팩스번호 }}</td>
-              <td>
-                <div v-if="status == '전송완료' || status == '전송실패'">
+              <td v-if="status == '전송완료' || status == '전송실패'">
+                <div>
                   <span
                     :class="{
                       status_s: detail.Recives[index].Status == '성공',
@@ -168,25 +170,28 @@ export default {
   methods: {
     /* 전송 상세정보 가져오기 */
     async getDetail() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
 
       try {
         let response = await http.post(`/sendDetail`, formData);
         let { data } = response;
-        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
+          this.$store.commit("SET_LOADING_FALSE");
           console.log("전송 상세정보 요청 성공", data);
           this.detail = data;
         } else {
+          this.$store.commit("SET_LOADING_FALSE");
           console.log("전송 상세정보 가져오기 실패");
         }
       } catch (error) {
         // 전송 실패
         console.log("오류메시지 - ", error);
         alertify.alert("전송 상세정보 가져오기에 실패했습니다.", 1.5);
+        this.$store.commit("SET_LOADING_FALSE");
       }
     },
 
