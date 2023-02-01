@@ -120,6 +120,7 @@ export default {
     },
     // 제목저장
     async savetitle() {
+      this.$store.commit("SET_LOADING_TRUE");
       console.log(this.title);
       console.log(this.RFax_No_Seq);
       try {
@@ -129,6 +130,7 @@ export default {
         });
 
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
