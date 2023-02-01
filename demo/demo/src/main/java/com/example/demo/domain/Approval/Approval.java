@@ -2,11 +2,8 @@ package com.example.demo.domain.Approval;
 
 
 import com.example.demo.VO.SendReq;
-import com.example.demo.domain.Send.Send;
-import com.example.demo.domain.User.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +36,7 @@ public class Approval {
         this.APPR_PERSON = req.getAppr_person();
         this.APPR_NO = req.getUserKey()+i;
     }
+
 }
 
 

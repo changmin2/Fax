@@ -3,9 +3,7 @@ package com.example.demo.service;
 import classes.Multipart.HttpPostMultipart;
 import com.example.demo.GlobalVariables;
 import com.example.demo.S3Uploader;
-import com.example.demo.VO.SendReq;
-import com.example.demo.VO.SendRes;
-import com.example.demo.VO.ReSendRes;
+import com.example.demo.VO.*;
 import com.example.demo.domain.Approval.Approval;
 import com.example.demo.domain.Send.Send;
 import com.example.demo.domain.Send.Send_detail;
@@ -112,6 +110,7 @@ public class SendService {
         s3Uploader.removeNewFile(file);
 
         // 데이터 - 수신처
+
         List<Send_detail> sendDetail = sendDRepository.findByIdUserKey(userKey);
         JSONArray DestArr = new JSONArray();
         for (Send_detail dest:sendDetail) {
@@ -259,5 +258,65 @@ public class SendService {
         sendRepository.save(send);
         //발송시작
         return sendApi(send);
+    }
+
+    //발송 상세 -> 결제 완료일 때 상세정보
+    public Map<String,Object> sendDetail(String userKey) throws IOException {
+        if(!sendRepository.existsById(userKey)){
+            Map<String,Object> result = new HashMap<>();
+            result.put("Result","fail");
+            result.put("message","결과가 없습니다.");
+            return result;
+        }
+        Send find = sendRepository.findById(userKey).get();
+        return sendDetailApi(find);
+    }
+
+    //발송 상세정보 api
+    private Map<String,Object> sendDetailApi(Send find) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
+        Map<String,Object> result = new HashMap<>();
+
+        //데이터 (요청변수 대소문자 구분)
+        multipart.addFormField("UserID", globalVariables.getFaxId());
+        multipart.addFormField("UserPW", globalVariables.getFaxPw());
+        multipart.addFormField("Service", globalVariables.getService());
+        multipart.addFormField("Type", "Report_Detail");
+        multipart.addFormField("Job_No", find.getJOB_NO());
+        multipart.addFormField("List_EA", "10");
+        multipart.addFormField("Page", "1");
+
+        // 응답 값
+        String ResultJson = multipart.finish();
+        log.info("ReusltJson"+" "+ResultJson);
+
+        ObjectMapper mapper = new ObjectMapper();
+        SendDetailRes res = mapper.readValue( ResultJson, SendDetailRes.class);
+        log.info("팩스 발송 결과 : "+res.toString());
+        List<ETC> list = res.getList();
+        int success = 0;
+        int fail = 0;
+        if (list != null){
+            result.put("Result",res.getResult());
+            result.put("Job_No",res.getJob_No());
+            result.put("Subject",res.getSubject());
+            result.put("Total_Cnt",res.getTotal_Cnt());
+            result.put("Total_Page",res.getTotal_Page());
+            result.put("Recives",list);
+            for (ETC etc : list) {
+                String status = etc.getStatus();
+                if(status.equals("성공")) success++;
+                else fail++;
+            }
+            result.put("sucess",success);
+            result.put("fail",fail);
+        } else{
+            result.put("Result","fail");
+            result.put("message","결과가 없습니다.");
+        }
+
+        log.info(result.toString());
+        return result;
     }
 }
