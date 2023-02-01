@@ -9,14 +9,14 @@
         <table class="no-approval-table table" style="width: 100%">
           <thead>
             <tr>
+              <th scope="col">보낸사람</th>
               <th scope="col">팩스번호</th>
-              <td>{{ sendDetail.팩스번호 }}</td>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="col">보낸사람</th>
               <td>{{ sendDetail.발송자 }}</td>
+              <td>{{ sendDetail.팩스번호 }}</td>
             </tr>
           </tbody>
         </table>
@@ -55,19 +55,24 @@
         </table>
 
         <div class="no-approval-btn-group">
-          <base-button type="secondary" class="send-detail-btn" @click="getReuse">
+          <base-button type="secondary" class="no-approval-btn" @click="getReuse">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+
             재사용
           </base-button>
-
-          <base-button type="secondary" class="send-detail-btn" @click="getUpdate">
-            수정
+          <base-button type="secondary" class="no-approval-btn" @click="resend">
+            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            재전송
+          </base-button>
+          <base-button type="secondary" class="no-approval-btn" @click="getUpdate">
+            <i class="fa fa-reply" aria-hidden="true"></i> 수정
           </base-button>
         </div>
       </div>
 
       <div class="col col-8">
         <iframe
-          src="https://bnksys.s3.ap-northeast-2.amazonaws.com/BNK00120230127024348_6.pdf"
+          :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${sendDetail.파일명}`"
           style="width: 100%; height: 100%"
         ></iframe>
       </div>
@@ -103,6 +108,7 @@ export default {
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
       formData.append("userId", this.userInfo.userId);
+      console.log("userKey, userId", this.sendDetail.발송번호, this.userInfo.userId);
       try {
         let response = await http.post(`/reUse`, formData);
         let { data } = response;
@@ -110,14 +116,14 @@ export default {
 
         if (data != null) {
           // 전송 성공
-          // console.log("재사용 요청 성공", data);
-          // console.log("재사용 요청 성공", data.Info);
-          // console.log("재사용 요청 성공", data.fileName);
+          console.log("재사용 요청 성공", data);
+          console.log("재사용 요청 성공", data.Info);
+          console.log("재사용 요청 성공", data.fileName);
           this.$store.commit("SET_SEND_DETAIL", data);
           // alertify.alert("성공", "재사용 요청 완료되었습니다.", 1.5);
           this.$router.push("/send");
         } else {
-          // console.log("재사용 요청 실패");
+          console.log("재사용 요청 실패");
         }
       } catch (error) {
         // 전송 실패
@@ -128,30 +134,9 @@ export default {
 
     /* 수정 버튼 클릭 시 -> 팩스보내기에 데이터 전달 */
     async getUpdate() {
-      let formData = new FormData();
-      formData.append("userKey", this.sendDetail.발송번호);
-      try {
-        let response = await http.post(`/withdrawUpdate`, formData);
-        let { data } = response;
-
-        if (data != null) {
-          // 전송 성공
-          // console.log("수정 요청 성공", data);
-          // console.log("수정 요청 성공", data.Info);
-          // console.log("수정 요청 성공", data.fileName);
-          this.$store.commit("SET_SEND_UPDATE", data);
-          // alertify.alert("성공", "수정 요청 완료되었습니다.", 1.5);
-          this.$router.push("/send");
-        } else {
-          // console.log("수정 요청 실패");
-        }
-      } catch (error) {
-        // 전송 실패
-        console.log("오류메시지 - ", error);
-        alertify.alert("수정 요청에 실패했습니다.", 1.5);
-      }
+      this.$store.commit("SET_SEND_UPDATE", this.sendDetail);
+      this.$router.push("/send");
     },
-
   },
 };
 </script>
@@ -165,17 +150,6 @@ export default {
 .left-content {
   display: flex;
   flex-direction: column;
-}
-table {
-  display: flex;
-}
-tbody {
-  display: flex;
-}
-
-th,
-td {
-  display: block;
 }
 
 th {
@@ -197,18 +171,13 @@ th {
 }
 .no-approval-table td {
   width: 180px;
-  border-top: 0.0625rem solid #dee2e6;
-  border-right: 0.0625rem solid #dee2e6;
-}
-.no-approval-table td:last-child {
-  border-bottom: 0.0625rem solid #dee2e6;
+  border: 0.0625rem solid #dee2e6;
 }
 .no-approval-btn-group {
-  margin-left: 240px;
 }
 .no-approval-btn {
   padding: 5px;
-  width: 50px;
+  /* border: 0.0625rem solid #bcbcbc; */
 }
 .no-approval-td-textarea {
   height: 80px;

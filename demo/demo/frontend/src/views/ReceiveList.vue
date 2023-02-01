@@ -254,6 +254,7 @@ export default {
   },
   mounted() {
     this.getNow();
+    this.apprsearch();
   },
 
 };

@@ -46,10 +46,9 @@
                 <input type="text" id="searchGubunData" name="searchGubunData" style="" />
               </td>
               <td>
-                <div class="text-center" style="float: right">
-                  <base-button type="danger" @click="getSendList">조회</base-button>
-                </div>
               </td>
+            </tr>
+            <tr>
               <th>결재구분</th>
               <td>
                 <select v-model="sendStatus" class="form-select ml-2">
@@ -62,33 +61,21 @@
                   <option value="회수">회수</option>
                 </select>
               </td>
+              <td>
+              </td>
+              <td>
+              </td>
+              <td>
+                <div class="text-center" style="float: right">
+                  <base-button type="danger" @click="getSendList">조회</base-button>
+                </div>
+              </td>
             </tr>
           </table>
         </div>
         <div class="body-content ApprArea" style="width: 100%">
           <table style="width: 100%">
-            <tr>
-              <td colspan="7">
-                <div class="no-approval-btn-group">
-                  <base-button type="secondary" class="no-approval-btn" @click="reuse">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
-
-                    재사용
-                  </base-button>
-                  <base-button type="secondary" class="no-approval-btn" @click="resend">
-                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                    재전송
-                  </base-button>
-                  <base-button type="secondary" class="no-approval-btn" @click="back">
-                    <i class="fa fa-reply" aria-hidden="true"></i> 회수
-                  </base-button>
-                </div>
-              </td>
-            </tr>
             <tr class="ApprArea-header">
-              <th>
-                <input type="checkbox" />
-              </th>
               <th>제목</th>
               <th>상세보기</th>
               <th>요청일자</th>
@@ -98,7 +85,6 @@
             </tr>
 
             <tr v-for="(send, index) in sendList" :key="index">
-              <td><input type="checkbox" /></td>
               <td>{{ send.제목 }}</td>
               <td>
                 <base-button @click="getSendDetail(send.발송번호)">상세</base-button>
@@ -305,11 +291,5 @@ th {
 
 .modal-big {
   max-width: 1400px;
-}
-.no-approval-btn-group {
-}
-.no-approval-btn {
-  padding: 5px;
-  /* border: 0.0625rem solid #bcbcbc; */
 }
 </style>

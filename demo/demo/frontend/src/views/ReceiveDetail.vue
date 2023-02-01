@@ -28,11 +28,13 @@
           <table class="receive-detail-table table">
             <thead>
               <tr>
+                <th scope="col">부서명</th>
                 <th scope="col">팩스번호</th>
               </tr>
             </thead>
             <tbody>
               <tr>
+                <td>{{ this.userInfo.deptName }}</td>
                 <td>{{ receivelistDetail.fax_NO }}</td>
               </tr>
             </tbody>
@@ -40,6 +42,11 @@
 
           <span class="mt-3">> 수신 정보</span>
           <table class="receive-detail-table table">
+            <colgroup>
+              <col style="width: 50%" />
+              <col style="width: 25%" />
+              <col style="width: 25%" />
+            </colgroup>
             <thead>
               <tr>
                 <th scope="col">수신일시</th>
@@ -77,6 +84,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
 
@@ -84,7 +92,9 @@ export default {
   name: "receive_detail",
   props: ["receivelistDetail"],
   computed: {
-
+    ...mapGetters({
+      userInfo: "getUserInfo",
+    }),
   },
   data() {
     return {
@@ -153,17 +163,6 @@ export default {
   max-width: 100%;
 }
 
-table {
-  display: flex;
-}
-tbody {
-  display: flex;
-}
-
-th,
-td {
-  display: block;
-}
 
 th {
   background-color: rgb(224, 224, 224);
@@ -184,19 +183,13 @@ th {
 }
 .receive-detail-table td {
   width: 250px;
-  border-top: 0.0625rem solid #dee2e6;
-  border-right: 0.0625rem solid #dee2e6;
+  border: 0.0625rem solid #dee2e6;
 }
-.receive-detail-table td:last-child {
-  border-bottom: 0.0625rem solid #dee2e6;
+.no-approval-btn-group {
 }
-.receive-detail-btn-group {
-  margin-left: 240px;
-}
-.receive-detail-btn {
+.no-approval-btn {
   padding: 5px;
-  width: 70px;
-  height: 40px;
+  /* border: 0.0625rem solid #bcbcbc; */
 }
 .receive-detail-title-input {
   width: 270px;
