@@ -11,6 +11,10 @@ export default {
     return state.isLoading;
   },
 
+  getModalState(state) {
+    return state.isModalOpen;
+  },
+
   ...users,
   ...receives,
   ...sends,

@@ -1,6 +1,6 @@
 <template>
-  <section class="section section-shaped section-hero login-section my-0">
-    <div class="container pt-lg-md">
+  <section class="section ">
+    <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">발신팩스함</div>
 
       <div class="row" style="width: 100%">

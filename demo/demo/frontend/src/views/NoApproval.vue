@@ -83,7 +83,7 @@
               승인
             </base-button>
             <base-button type="secondary" class="no-approval-btn" @click="apprBack">
-              반송
+              반려
             </base-button>
           </div>
         </div>
@@ -103,11 +103,14 @@
 <script>
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
+import Modal from "@/components/Modal.vue";
 
 export default {
   name: "no-approval",
   props: ["noApprDetail", "isComplete"],
-
+  components: {
+    Modal,
+  },
   data() {
     return {
       apprRemark: "",
@@ -133,8 +136,9 @@ export default {
           console.log(data);
           console.log("결재 승인 성공");
           this.noApprovalList = data;
-
           alertify.alert("성공", "결재 승인 완료되었습니다.", 1.5);
+          // 승인 시 모달 닫고 리스트로 이동
+          this.$store.commit("SET_MODAL_CLOSE");
         } else {
           console.log("결재 승인  실패");
         }
@@ -162,6 +166,8 @@ export default {
           this.noApprovalList = data;
 
           alertify.alert("성공", "결재 반려 완료되었습니다.", 1.5);
+          // 반려 시 모달 닫고 리스트로 이동
+          this.$store.commit("SET_MODAL_CLOSE");
         } else {
           console.log("결재 반려  실패");
         }
