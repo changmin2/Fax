@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.VO.SendReq;
+import com.example.demo.VO.UpdateSendReq;
+import com.example.demo.domain.Send.Send;
 import com.example.demo.service.SendService;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +44,21 @@ public class SendController {
     //수정시 발송
     @RequestMapping("/updateSend")
     @ResponseBody
-    public String updateSend(@RequestBody Map<String,Object> map) throws IOException, ParseException {
-        SendReq req = (SendReq) map.get("SendReq");
-        String newFileName = (String) map.get("newFileName");
-        uploadService.updateFileName(newFileName,req.getUserKey());
-        return Send(req);
+    public String updateSend(@RequestBody UpdateSendReq req) throws IOException, ParseException {
+        log.info(req.toString());
+        uploadService.updateFileName(req.getNewFileName(),req.getUserKey());
+        SendReq sendReq = new SendReq();
+        sendReq.setSend_Date(req.getSend_Date());
+        sendReq.setAppr_person(req.getAppr_person());
+        sendReq.setDestinationList(req.getDestinationList());
+        sendReq.setFaxNo(req.getFaxNo());
+        sendReq.setReserve_yn(req.getReserve_yn());
+        sendReq.setUserKey(req.getUserKey());
+        sendReq.setTitle(req.getTitle());
+        sendReq.setUserID(req.getUserID());
+        sendReq.setPrivate_info_yn(req.getPrivate_info_yn());
+
+        return Send(sendReq);
     }
 
     //발송 -> 결제완료시 -> 상세정보
