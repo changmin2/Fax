@@ -192,6 +192,8 @@ export default {
 
     /* 재사용 */
     async getReuse() {
+
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
       formData.append("userId", this.userInfo.userId);
@@ -221,6 +223,7 @@ export default {
 
     /* 수정 버튼 클릭 시 -> 팩스보내기에 데이터 전달 */
     async getUpdate() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
       console.log(this.sendDetail);
@@ -249,6 +252,7 @@ export default {
 
     /* 회수 버튼 클릭 시 결재정보수정 */
     async getBack() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
 
@@ -257,6 +261,7 @@ export default {
       try {
         let response = await http.post(`/withdraw`, formData);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
@@ -273,6 +278,7 @@ export default {
 
     /* 재전송 */
     async resend() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
       formData.append("ReSend_List", "All");
@@ -283,6 +289,7 @@ export default {
         let response = await http.post(`/reSend`, formData);
         let { data } = response;
 
+        this.$store.commit("SET_LOADING_FALSE");
         console.log("재전송 요청 data", data);
         if (data != null) {
           // 전송 성공

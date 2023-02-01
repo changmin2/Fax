@@ -206,6 +206,7 @@ export default {
 
     // 상세보기
     async receiveDetail(apprNo) {
+      this.$store.commit("SET_LOADING_TRUE");
       this.modal = true;
       this.apprNo = apprNo;
 
@@ -217,6 +218,7 @@ export default {
           userId: user_id.userId,
         });
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공

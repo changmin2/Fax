@@ -202,6 +202,7 @@ export default {
         });
         // console.log(response);
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
@@ -209,7 +210,6 @@ export default {
           this.sendDetail = data[0];
           this.detailOpen = true;
 
-          this.$store.commit("SET_LOADING_FALSE");
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
         } else {
           console.log("상세 조회 실패");
