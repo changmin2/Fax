@@ -307,7 +307,7 @@ export default {
 
       // file upload
       // let attachFiles = document.querySelector("#inputFileUploadInsert").files;
-      if (!this.fileFlag || this.userKey == "None") {
+      if ( this.fileFlag || this.userKey == "None") {
         //파일선택 필수조건
         alertify.error("첨부하실 파일을 선택해주세요.", 1.5);
         return;
