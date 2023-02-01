@@ -244,13 +244,11 @@ export default {
       const month = today.getMonth();   // 월
       const day = today.getDate();      // 일
 
-      var searchFrom = new Date(year, month, day - 7)
-      this.searchFrom = searchFrom.toISOString().split("T")[0];
-      var searchTo = new Date(year, month, day + 7)
-      this.searchTo = searchTo.toISOString().split("T")[0];
+      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(year, month, day - 6))
+      this.searchTo = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now())
       this.setDateInfo(this.searchFrom);
       this.setDateInfo(this.searchTo);
-      console.log(searchFrom + ","+ searchTo);
+      console.log(this.searchFrom +" ~ "+ this.searchTo);
     },
 
     // 조회
