@@ -7,37 +7,30 @@
           <div class="send-title font-weight-700 text-default">받은팩스</div>
           <div class="table-container">
             <hr />
-            <table class="no-approval-table">
+            <table class="fax-table">
               <tr class="ApprArea-header">
-                <th>
-                  <input type="checkbox" />
-                </th>
                 <th>구분</th>
                 <th>제목</th>
-                <th>결재상태</th>
-                <th>요청자</th>
-                <th>요청일</th>
+                <th>보낸사람</th>
+                <th>읽은사람</th>
+                <th>받은날짜</th>
               </tr>
 
-              <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-                <td><input type="checkbox" /></td>
-                <td>{{ noApproval.상태 }}</td>
-                <td>{{ noApproval.제목 }}</td>
-                <td>{{ noApproval.상태 }}</td>
-                <td>{{ noApproval.보내는사람 }}</td>
-                <td>{{ noApproval.요청일자 }}</td>
+              <tr v-for="(receive, index) in receivelist" :key="index">
+                <td>{{ receive.read_YN }}</td>
+                <td>{{ receive.title }}</td>
+                <td>{{ receive.sender_NO }}</td>
+                <td>{{ receive.read_USER }}</td>
+                <td>{{ receive.receive_No_SEQ }}</td>
               </tr>
             </table>
             <hr />
           </div>
-          <div class="send-title font-weight-700 text-default">보낸팩스함</div>
+          <div class="send-title font-weight-700 text-default">보낸팩스</div>
           <div class="table-container">
             <hr />
-            <table class="no-approval-table">
+            <table class="fax-table">
               <tr class="ApprArea-header">
-                <th>
-                  <input type="checkbox" />
-                </th>
                 <th>구분</th>
                 <th>제목</th>
                 <th>결재상태</th>
@@ -45,13 +38,12 @@
                 <th>요청일</th>
               </tr>
 
-              <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-                <td><input type="checkbox" /></td>
-                <td>{{ noApproval.상태 }}</td>
-                <td>{{ noApproval.제목 }}</td>
-                <td>{{ noApproval.상태 }}</td>
-                <td>{{ noApproval.보내는사람 }}</td>
-                <td>{{ noApproval.요청일자 }}</td>
+              <tr v-for="(send, index) in sendList" :key="index">
+                <td>{{ send.결재상태 }}</td>
+                <td>{{ send.제목 }}</td>
+                <td>{{ send.결재상태 }}</td>
+                <td>{{ send.발송자 }}</td>
+                <td>{{ send.전송일자 }}</td>
               </tr>
             </table>
             <hr />
@@ -61,11 +53,8 @@
 
           <div class="table-container">
             <hr />
-            <table class="no-approval-table">
+            <table class="fax-table">
               <tr class="ApprArea-header">
-                <th>
-                  <input type="checkbox" />
-                </th>
                 <th>구분</th>
                 <th>제목</th>
                 <th>결재상태</th>
@@ -74,7 +63,6 @@
               </tr>
 
               <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-                <td><input type="checkbox" /></td>
                 <td>{{ noApproval.상태 }}</td>
                 <td>{{ noApproval.제목 }}</td>
                 <td>{{ noApproval.상태 }}</td>
@@ -100,7 +88,9 @@ export default {
   components: {},
   data() {
     return {
-      noApprovalList: {},
+      receivelist: [],
+      sendList: [],
+      noApprovalList: [],
     };
   },
   computed: {
@@ -109,17 +99,92 @@ export default {
     }),
   },
   created() {
+    this.getReceiveList();
+
+    this.getSendList();
     this.noApproval();
   },
   methods: {
+    // 받은팩스
+    async getReceiveList() {
+      this.$store.commit("SET_LOADING_TRUE");
+      try {
+        let response = await http.post("/recieveList", {
+          RFax_No: this.userInfo.faxNo,
+          Date_Start: "2023-01-29",
+          Date_End: "2023-02-01",
+        });
+
+        let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
+
+        if (data != null) {
+          // 전송 성공
+          if (data.length > 3) data = data.splice(0, 3);
+          console.log(data);
+          console.log("전송 성공");
+          this.receivelist = data;
+          this.detailOpen = false;
+        } else {
+          console.log("전송 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", data.Message);
+        alertify.error("실패했습니다.", 1.5);
+      }
+    },
+
+    // 보낸팩스함 조회
+    async getSendList() {
+      this.$store.commit("SET_LOADING_TRUE");
+      try {
+        let response = await http.post("/sendRecieve", {
+          userId: this.userInfo.userId,
+          // searchFrom: this.searchFrom,
+          // searchTo: this.searchTo,
+          searchFrom: "2023-01-29",
+          searchTo: "2023-02-01",
+          status: "전체",
+        });
+
+        let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
+
+        if (data != null) {
+          // 전송 성공
+          if (data.length > 3) data = data.splice(0, 3);
+          console.log(data);
+
+          this.sendList = data;
+          this.detailOpen = false;
+        } else {
+          console.log("전송 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", data.Message);
+        alertify.error("실패했습니다.", 1.5);
+      }
+    },
     // 결재함 리스트
     async noApproval() {
+      this.$store.commit("SET_LOADING_TRUE");
+
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
+      formData.append("status", "전체"); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
+      formData.append("searchFrom", "2023-01-29"); // 조회기간 (시작)
+      formData.append("searchTo", "2023-02-01"); // 조회기간 (종료)
       try {
         let response = await http.post(`/payRecieve`, formData);
         console.log(response);
         let { data } = response;
+
+        // 랜딩 페이지에서 보이는 개수 조정
+        if (data.length > 3) data = data.splice(0, 3);
+
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
@@ -168,27 +233,30 @@ th {
 .body-content {
   margin-top: 10px;
 }
-.ApprArea-header th {
+.fax-table {
+  table-layout: fixed;
+  width: 32rem;
+  height: 100px;
+}
+.fax-table td {
+  height: 2.3rem;
+}
+/* .ApprArea-header th {
   background-color: rgb(224, 224, 224);
   border: 1px solid;
   font-weight: bold;
-  /* padding: 12px; */
 }
 .no-approval-table {
 }
 .no-approval-table th,
 .no-approval-table td {
-  /* text-align: center;
-  height: 35px;
-  line-height: 0px; */
   height: 30px;
-  /* width: 150px; */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 120px;
   padding: 0px 8px 0px 8px;
-}
+} */
 
 .form-select {
   width: 180px;
@@ -196,6 +264,7 @@ th {
 }
 
 hr {
+  width: 32rem;
   margin-top: 15px;
   margin-bottom: 15px;
 }
