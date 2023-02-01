@@ -45,13 +45,13 @@
             {{ dateInfo }}
           </div>
           <div class="row mt-3">
-            <!-- 결재구분
+            결재구분
             <select v-model="apprStatus" class="form-select ml-2">
               <option value="전체" selected>전체</option>
-              <option value="반려">반려</option>
               <option value="완료">완료</option>
               <option value="회수">회수</option>
-            </select> -->
+              <option value="반려">반려</option>
+            </select>
           </div>
         </div>
         <div class="col col-sm-2">
@@ -141,7 +141,7 @@ export default {
 
       apprNo: "",
       noApprDetail: {},
-      apprStatus: "",
+      apprStatus: "전체",
     };
   },
   computed: {
@@ -176,7 +176,7 @@ export default {
 
       let formData = new FormData();
       formData.append("userId", this.userInfo.userId);
-      formData.append("status", "전체"); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
+      formData.append("status", this.apprStatus); // 상태 변수 추가 [대기, 전체, 완료, 회수, 반려]
 
       try {
         let response = await http.post(`/payRecieve`, formData);
