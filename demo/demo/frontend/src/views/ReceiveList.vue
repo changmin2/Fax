@@ -154,9 +154,6 @@ export default {
         apprNo: "",
     };
   },
-  created() {
-    this.apprsearch();
-  },
   methods: {
 
     // date 설정
@@ -184,6 +181,7 @@ export default {
     // 조회
     async apprsearch() {
 
+      this.$store.commit("SET_LOADING_TRUE");
       try {
         let response = await http.post("/recieveList", {
           RFax_No : this.userInfo.faxNo,
@@ -192,6 +190,7 @@ export default {
         });
 
         let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공

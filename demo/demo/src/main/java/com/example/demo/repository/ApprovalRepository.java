@@ -24,7 +24,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       WHERE a.USER_KEY  = s.USER_KEY                       \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
             "         AND s.USE_GBN = 'Y' \n" +
-            "         AND s.INSERT_DATE BETWEEN :searchFrom AND :searchTo \n" +
+            "         AND STR_TO_DATE(s.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +
             "        ORDER BY a.USER_KEY ",nativeQuery = true)
     List<Object[]> recieve(@Param(value = "userId")String userId,
                            @Param(value = "status")String status,
@@ -39,7 +39,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
             "         AND s.USE_GBN = 'Y'                                               \n" +
-            "         AND s.INSERT_DATE BETWEEN :searchFrom AND :searchTo                 \n" +
+            "         AND STR_TO_DATE(s.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo                 \n" +
             "        ORDER BY a.USER_KEY ",nativeQuery = true)
     List<Object[]> recieveAll(@Param(value = "userId")String userId,
                               @Param(value = "searchFrom")String searchFrom,
@@ -75,7 +75,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "            from TB_SEND a,TB_APPROVAL t  \n" +
             "    where a.APPR_NO  = t.APPR_NO                                 \n" +
             "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                   \n" +
-            "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
+            "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
     List<Object[]> sendRecieveAll(@Param(value = "userId")String userId,
                                   @Param(value = "searchFrom")String searchFrom,
                                   @Param(value = "searchTo")String searchTo);
@@ -91,7 +91,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "            from TB_SEND a,TB_APPROVAL t \n" +
             "    where a.APPR_NO  = t.APPR_NO  and a.STATUS = :status    \n" +
             "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                  \n" +
-           "         AND a.INSERT_DATE BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
+           "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo ",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId,
                                @Param(value = "status")String status,
                                @Param(value = "searchFrom")String searchFrom,
