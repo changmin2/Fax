@@ -70,7 +70,7 @@
             <td></td>
             <td>
               <div class="text-center" style="float: right">
-                <base-button type="danger" @click="setNoApproval">조회</base-button>
+                <base-button type="danger" @click="noApproval">조회</base-button>
               </div>
             </td>
           </tr>
