@@ -36,10 +36,20 @@
             <form class="ml-2" style="border: none">
               <input
                 type="date"
+                id="searchFrom"
                 value="today"
                 class="form-select"
-                v-model="dateInfo"
-                @change="setDateInfo"
+                v-model="searchFrom"
+                @change="setDateInfo(searchFrom)"
+              />
+              ~
+              <input
+                type="date"
+                id="searchTo"
+                value="today"
+                class="form-select"
+                v-model="searchTo"
+                @change="setDateInfo(searchTo)"
               />
             </form>
             {{ dateInfo }}
@@ -134,13 +144,14 @@ export default {
     return {
       noApprovalList: [],
 
-      dateInfo: "",
       modals: {
         modal3: false,
       },
 
       apprNo: "",
       noApprDetail: {},
+      searchFrom: "",
+      searchTo: "",
       apprStatus: "전체",
     };
   },
@@ -154,13 +165,31 @@ export default {
   created() {
     // this.noApproval();
   },
+  mounted(){
+    this.noApproval();
+    this.getNow();
+  },
   methods: {
     // date 설정
-    setDateInfo() {
-      let dateInfo = this.dateInfo;
-      dateInfo = dateInfo.split("-");
+    setDateInfo(datedata) {
+      let dateInfo = this.datedata;
+      dateInfo = datedata.split("-");
       dateInfo = dateInfo.join("");
       console.log(dateInfo);
+    },
+    getNow() {
+      const today = new Date();
+
+      const year = today.getFullYear(); // 년
+      const month = today.getMonth(); // 월
+      const day = today.getDate(); // 일
+
+      var searchFrom = new Date(year, month, day - 6);
+      this.searchFrom = searchFrom.toISOString().split("T")[0];
+      this.searchTo = today.toISOString().split("T")[0];
+      this.setDateInfo(this.searchFrom);
+      this.setDateInfo(this.searchTo);
+      console.log(searchFrom + "," + searchTo);
     },
 
     // detail - noApproval 설정
@@ -287,6 +316,7 @@ th {
 .form-select {
   width: 180px;
   border: 0.0625rem solid rgb(169, 169, 169);
+  display: flex;
 }
 
 hr {

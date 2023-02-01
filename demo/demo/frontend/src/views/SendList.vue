@@ -1,5 +1,5 @@
 <template>
-  <section class="section section-shaped section-hero login-section section-lg my-0">
+  <section class="section section-shaped section-hero login-section my-0">
     <div class="container pt-lg-md">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">발신팩스함</div>
 
@@ -8,18 +8,18 @@
           <table style="width: 100%">
             <colgroup>
               <col style="width: 9%" />
-              <col style="width: 37%" />
+              <col style="width: 38%" />
               <col style="width: 9%" />
-              <col style="width: 37%" />
+              <col style="width: 38%" />
               <col />
             </colgroup>
             <tr>
               <th>조회기간</th>
               <td>
-                <form style="border: none">
                   <input
                     type="date"
                     id="searchFrom"
+                    style="width:180px;"
                     value="today"
                     class="form-select"
                     v-model="searchFrom"
@@ -29,6 +29,7 @@
                   <input
                     type="date"
                     id="searchTo"
+                    style="width:180px;"
                     value="today"
                     class="form-select"
                     v-model="searchTo"
