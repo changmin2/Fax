@@ -177,7 +177,6 @@ public class PayController {
         String newFileName = newUserKey+"_"+"1.pdf";
         s3Uploader.changS3FileName(orgFileName,newFileName);
 
-
         //upload 테이블에 새로운 파일업데이트
         Upload newUpload = new Upload();
         newUpload.setUserKey(newUserKey);

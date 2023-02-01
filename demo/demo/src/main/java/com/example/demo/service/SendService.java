@@ -95,9 +95,10 @@ public class SendService {
         multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "Send");
-        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
-            multipart.addFormField("Send_Date",send.getSEND_DATE());
-        }
+        multipart.addFormField("Send_Date","");
+//        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
+//            multipart.addFormField("Send_Date",send.getSEND_DATE());
+//        }
 
         String userKey = send.getUSER_KEY();
         //파일명 가져오기
@@ -165,9 +166,10 @@ public class SendService {
         multipart.addFormField("UserPW", globalVariables.getFaxPw());
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "ReSend");
-        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
-            multipart.addFormField("Send_Date",send.getSEND_DATE());
-        }
+        multipart.addFormField("Send_Date","");
+        //        if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
+//            multipart.addFormField("Send_Date",send.getSEND_DATE());
+//        }
         multipart.addFormField("Job_No", send.getJOB_NO());
         multipart.addFormField("Subject",send.getTITLE());
         multipart.addFormField("ReSend_List",ReSend_List);
