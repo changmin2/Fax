@@ -97,7 +97,7 @@
             <td>
               <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
             </td>
-            <td>{{ receive.fax_NO }}</td>
+            <td> {{ receive.sender_NO }} </td>
             <td>{{ receive.receive_DATE }}</td>
             <td>{{ receive.read_YN }}</td>
             <td>{{ receive.read_USER }}</td>
@@ -174,6 +174,15 @@ export default {
       console.log(this.searchFrom +" ~ "+ this.searchTo);
     },
 
+    //팩스번호 포맷화
+    setFormatting(fax_no_list) {
+      for(let fax_no in fax_no_list.sender_NO){
+        fax_no
+      }
+      let data = fax_no;
+      fax_no.substr
+    },
+
     // 조회
     async apprsearch() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -193,6 +202,9 @@ export default {
           console.log("전송 성공");
           this.receivelist = data;
           this.detailOpen = false;
+
+          //발신자 팩스번호 포맷지정
+          this.setFormatting(this.receivelist);
         } else {
           console.log("전송 실패");
         }
