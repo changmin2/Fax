@@ -189,6 +189,7 @@ export default {
           // console.log("재사용 요청 성공", data.Info);
           // console.log("재사용 요청 성공", data.fileName);
           // alertify.alert("성공", "재사용 요청 완료되었습니다.", 1.5);
+          this.$parent.$parent.closeModal();
           this.$store.commit("SET_SEND_DETAIL", data);
           this.$router.push("/send");
         } else {
@@ -217,6 +218,7 @@ export default {
           // console.log("수정 요청 성공", data);
           // console.log("수정 요청 성공", data.Info);
           // console.log("수정 요청 성공", data.fileName);
+          this.$parent.$parent.closeModal();
           this.$store.commit("SET_SEND_UPDATE", data);
           // alertify.alert("성공", "수정 요청 완료되었습니다.", 1.5);
           this.$router.push("/send");
@@ -245,8 +247,19 @@ export default {
 
         if (data != null) {
           // 전송 성공
-          alertify.alert("성공", "회수 완료되었습니다.", 1.5);
-          this.$store.commit("SET_MODAL_CLOSE");
+          this.$parent.$parent.closeModal();
+
+          let mine = this;
+
+          alertify.confirm("성공", "회수 완료되었습니다. <BR/>수정화면으로 이동하시겠습니까?", function() {
+            mine.getUpdate();
+            this.destroy();
+            }
+           ,function() {
+            this.destroy();
+           }
+          );
+
         } else {
           console.log("회수 요청 실패");
         }
@@ -278,7 +291,7 @@ export default {
           // console.log("재전송 요청 성공", data.Info);
           // console.log("재전송 요청 성공", data.fileName);
           alertify.alert("성공", "재전송 성공했습니다.");
-          this.$store.commit("SET_MODAL_CLOSE");
+          this.$parent.$parent.closeModal();
         } else {
           console.log("재전송 요청 실패");
         }
