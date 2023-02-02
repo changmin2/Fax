@@ -22,8 +22,12 @@ public class MainService {
     @Transactional(readOnly = true)
     public HashMap<String,Object> mainInfo(String userId){
         HashMap<String,Object> result = new HashMap<>();
-        result.put("noticeInfo",mainRepository.selectNotice());
-        return null;
+        result.put("NoticeInfo",mainRepository.selectNotice());
+        result.put("NotApprList",mainRepository.selectNotAppr(userId));
+        result.put("NotApprCount",mainRepository.selectNotApprCount(userId));
+        result.put("ReceiveLsit",mainRepository.selectReceiveNotRead(userId));
+        result.put("ReceiveCount",mainRepository.selectReceiveNotReadCount(userId));
+        return result;
     }
 
 }

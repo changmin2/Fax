@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             " WHERE u.USER_ID = :apprId ) u2                                             \n" +
             "   ON u.DEPT_CODE = u2.DEPT_CODE                                                       \n" +
             " WHERE (u.IS_ABSENCE != 'Y' OR u.SUBSTITUTE != '')       \n" +
-            "  AND u.GRADE_CODE IN (SELECT tc.COMM_CODE FROM TB_COMM tc WHERE tc.LEVEL > u2.LEVEL)                                                                                            "
+            "  AND u.GRADE_CODE IN (SELECT tc.COMM_CODE FROM TB_COMM tc WHERE tc.LEVEL = u2.LEVEL+1 AND tc.COMM_CODE != 10)                                                                                            "
             , nativeQuery = true)
     List<Object[]> getHigherApprUser(@Param(value = "apprId") String apprId);
     @Query(value= "SELECT u.USER_ID,u.USER_NAME,\n" +
@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             "ON u.DEPT_CODE = u2.DEPT_CODE                                        \n" +
             "WHERE u.IS_ABSENCE != 'Y'    \n" +
             "AND u.GRADE_CODE IN\n" +
-            "(SELECT tc.COMM_CODE FROM TB_COMM tc WHERE tc.LEVEL < u2.GRADE_CODE)     "
+            "(SELECT tc.COMM_CODE FROM TB_COMM tc WHERE tc.LEVEL < u2.GRADE_CODE AND tc.COMM_CODE != 10)     "
             , nativeQuery = true)
     List<Object[]> getSubstituteUser(@Param(value = "userId") String userId);
 
