@@ -109,13 +109,10 @@
         </tr>
       </table>
     </div>
-
     <!-- modal 모달창 -->
     <modal
       :show.sync="isModalState"
-      body-classes="p-1"
       modal-classes="modal-dialog-centered modal-big"
-      class="modal-class"
       @search="noApproval"
     >
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
@@ -193,11 +190,19 @@ export default {
       // this.searchFrom = searchFrom.toISOString().split("T")[0];
       // this.searchTo = today.toISOString().split("T")[0];
       // var searchFrom = new Date(year, month, day - 6);
-      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(year, month, day - 6))
-      this.searchTo = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now())
+      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(new Date(year, month, day - 6));
+      this.searchTo = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(Date.now());
       this.setDateInfo(this.searchFrom);
       this.setDateInfo(this.searchTo);
-      console.log(this.searchFrom +" ~ "+ this.searchTo);
+      console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
     // detail - noApproval 설정

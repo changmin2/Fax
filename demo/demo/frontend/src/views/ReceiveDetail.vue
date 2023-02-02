@@ -1,15 +1,9 @@
 <template>
-  <div class="container receive-detail-container">
-    <div
-      class="receive-title display-4 mb-4 font-weight-800 text-default"
-      style="text-shadow: 2px 1px 2px rgba(0, 0, 0, 0.2)"
-    >
-      부서 팩스함
-    </div>
-
-    <div class="receive-detail">
+  <div class="modal-container">
+    <div class="display-4 mb-4 font-weight-800 text-default ml-2">부서 팩스함</div>
+    <div class="modal-container-detail">
       <div class="left-content col">
-        <span class="mt-3">> 보낸 곳</span>
+        <span class="mt-3"><i class="fa fa-caret-right" aria-hidden="true"></i> 보낸 곳</span>
 
         <table class="fax-table fax-table-detail" style="width: 100%">
           <thead>
@@ -24,7 +18,7 @@
           </tbody>
         </table>
 
-        <span class="mt-3">> 받는곳</span>
+        <span class="mt-3"><i class="fa fa-caret-right" aria-hidden="true"></i> 받는곳</span>
         <table class="fax-table fax-table-detail">
           <thead>
             <tr>
@@ -40,7 +34,7 @@
           </tbody>
         </table>
 
-        <span class="mt-3">> 수신 정보</span>
+        <span class="mt-3"><i class="fa fa-caret-right" aria-hidden="true"></i> 수신 정보</span>
         <table class="fax-table fax-table-detail">
           <colgroup>
             <col style="width: 50%" />
@@ -63,17 +57,31 @@
           </tbody>
         </table>
 
-        <span class="mt-3 mb-1">> 제목</span>
+        <span class="mt-3 mb-1"><i class="fa fa-caret-right" aria-hidden="true"></i> 제목</span>
         <div class="row ml-1">
-          <base-input class="receive-detail-title-input" style="" v-model="receivelistDetail.title">
-          </base-input>
-          <base-button type="secondary" class="receive-detail-btn ml-1 py-2 px-3" @click="savetitle">
+          <!-- <base-input
+            class="fax-table-input"
+            style="height: 30px; width: 15rem"
+            v-model="receivelistDetail.title"
+          >
+          </base-input> -->
+          <input
+            type="text"
+            class="fax-form-input"
+            style="height: 2.5rem; width: 15rem"
+            v-model="receivelistDetail.title"
+          />
+          <base-button
+            type="secondary"
+            class="receive-detail-btn ml-1 py-2 px-3"
+            @click="savetitle"
+          >
             제목저장
           </base-button>
         </div>
       </div>
 
-      <div class="col col-8">
+      <div class="right-content col col-8" v-if="receivelistDetail.filePath">
         <iframe
           v-bind:src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${receivelistDetail.filePath}`"
           style="width: 100%; height: 100%"
@@ -151,37 +159,8 @@ export default {
 </script>
 
 <style scoped>
-.left-content {
-  display: flex;
-  flex-direction: column;
-}
-.receive-detail-container {
-  max-width: 90%;
-}
-.receive-detail {
-  display: flex;
-  max-width: 100%;
-}
-
-th {
-  background-color: rgb(224, 224, 224);
-  font-weight: normal;
-}
-
-.no-approval-btn-group {
-}
-.no-approval-btn {
-  padding: 5px;
-  /* border: 0.0625rem solid #bcbcbc; */
-}
-.receive-detail-title-input {
-  width: 270px;
-}
-.receive-detail-title-input >>> .form-control {
-  height: 40px;
-}
-
-.receive-detail-btn{
-  width: fit-content; height: fit-content;
+.receive-detail-btn {
+  width: fit-content;
+  height: fit-content;
 }
 </style>

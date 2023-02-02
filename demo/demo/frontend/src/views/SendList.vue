@@ -100,9 +100,13 @@
     </div>
 
     <!-- 컴포넌트 MyModal -->
-    <modal :show.sync="isModalState" modal-classes="modal-big" @search="getSendList">
+    <modal
+      :show.sync="isModalState"
+      modal-classes="modal-dialog-centered modal-big"
+      @search="getSendList"
+    >
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <send-detail :sendDetail="sendDetail" ></send-detail>
+      <send-detail :sendDetail="sendDetail"></send-detail>
     </modal>
   </section>
 </template>
@@ -163,11 +167,19 @@ export default {
       const month = today.getMonth(); // 월
       const day = today.getDate(); // 일
 
-      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(year, month, day - 6))
-      this.searchTo = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now())
+      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(new Date(year, month, day - 6));
+      this.searchTo = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(Date.now());
       this.setDateInfo(this.searchFrom);
       this.setDateInfo(this.searchTo);
-      console.log(this.searchFrom +" ~ "+ this.searchTo);
+      console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
     // 조회
@@ -252,9 +264,5 @@ export default {
   opacity: 1;
   display: block;
   visibility: visible;
-}
-
-.modal-big {
-  max-width: 1400px;
 }
 </style>

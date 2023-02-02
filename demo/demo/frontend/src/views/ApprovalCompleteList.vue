@@ -113,17 +113,12 @@
           <td>{{ noApproval.받는사람 }}</td>
           <td>{{ noApproval.상태 }}</td>
           <td>{{ noApproval.결제고유번호 }}</td>
-          <td>{{ noApproval.결재일자 }}</td>
+          <td>{{ noApproval.결제일자 }}</td>
         </tr>
       </table>
     </div>
     <!-- modal 모달창 -->
-    <modal
-      :show.sync="modals.modal3"
-      body-classes="p-1"
-      modal-classes="modal-dialog-centered modal-big"
-      class="modal-class"
-    >
+    <modal :show.sync="modals.modal3" modal-classes="modal-dialog-centered modal-big">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
       <no-approval :noApprDetail="noApprDetail" :isComplete="true"></no-approval>
     </modal>
@@ -184,11 +179,19 @@ export default {
       const month = today.getMonth(); // 월
       const day = today.getDate(); // 일
 
-      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(year, month, day - 6))
-      this.searchTo = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now())
+      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(new Date(year, month, day - 6));
+      this.searchTo = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(Date.now());
       this.setDateInfo(this.searchFrom);
       this.setDateInfo(this.searchTo);
-      console.log(this.searchFrom +" ~ "+ this.searchTo);
+      console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
     // detail - noApproval 설정

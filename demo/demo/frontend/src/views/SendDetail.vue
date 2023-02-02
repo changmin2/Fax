@@ -1,8 +1,7 @@
 <template>
   <div class="modal-container">
-    <div class="send-title display-4 mb-4 font-weight-800 text-default">{{ sendDetail.제목 }}</div>
-
-    <div class="send-detail-container">
+    <div class="display-4 mb-4 font-weight-800 text-default ml-2">{{ sendDetail.제목 }}</div>
+    <div class="modal-container-detail">
       <div class="left-content col">
         <div>
           <span class="mt-3" style="display: inline; float: left"
@@ -56,7 +55,9 @@
             <tr>
               <th scope="col">받는사람</th>
               <th scope="col">팩스번호</th>
-              <th scope="col" v-if="sendDetail.상태 == '전송완료' || sendDetail.상태 == '전송실패'">상태</th>
+              <th scope="col" v-if="sendDetail.상태 == '전송완료' || sendDetail.상태 == '전송실패'">
+                상태
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -136,7 +137,7 @@
         </div>
       </div>
 
-      <div class="col col-8">
+      <div class="right-content col col-8" v-if="sendDetail.파일명">
         <iframe
           :src="`https://bnksys.s3.ap-northeast-2.amazonaws.com/${sendDetail.파일명}`"
           style="width: 100%; height: 100%"
@@ -167,10 +168,8 @@ export default {
       userInfo: "getUserInfo",
     }),
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
-
     /* 재사용 */
     async getReuse() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -251,15 +250,17 @@ export default {
 
           let mine = this;
 
-          alertify.confirm("성공", "회수 완료되었습니다. <BR/>수정화면으로 이동하시겠습니까?", function() {
-            mine.getUpdate();
-            this.destroy();
+          alertify.confirm(
+            "성공",
+            "회수 완료되었습니다. <BR/>수정화면으로 이동하시겠습니까?",
+            function () {
+              mine.getUpdate();
+              this.destroy();
+            },
+            function () {
+              this.destroy();
             }
-           ,function() {
-            this.destroy();
-           }
           );
-
         } else {
           console.log("회수 요청 실패");
         }
@@ -306,52 +307,12 @@ export default {
 </script>
 
 <style scoped>
-.send-detail-container {
-  display: flex;
-}
-.no-proval-info {
-}
-.left-content {
-  display: flex;
-  flex-direction: column;
-}
-
-th {
-  background-color: rgb(224, 224, 224);
-  font-weight: normal;
-}
-
-.no-approval-table {
-  font-size: small;
-}
-.no-approval-table th,
-.no-approval-table td {
-  text-align: center;
-  height: 35px;
-  line-height: 15px;
-}
-.no-approval-table th {
-  width: 100px;
-}
-.no-approval-table td {
-  width: 180px;
-  border: 0.0625rem solid #dee2e6;
-}
-.no-approval-btn-group {
-}
 .no-approval-btn {
   padding: 5px;
   /* border: 0.0625rem solid #bcbcbc; */
 }
 .no-approval-td-textarea {
   height: 80px;
-}
-.no-approval-textarea {
-  height: 75px;
-  width: 220px;
-  resize: none;
-  margin: 0px;
-  border: none;
 }
 
 /* 상태 성공/실패*/

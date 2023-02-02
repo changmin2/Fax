@@ -81,7 +81,7 @@
             <!--<th>
                     <input type="checkbox">
                   </th> -->
-            <th>제목</th>
+            <th>확인</th>
             <th>상세보기</th>
             <th>발신자팩스번호</th>
             <th>받은날짜</th>
@@ -93,11 +93,11 @@
 
           <tr v-for="(receive, index) in receivelist" :key="index">
             <!--<td></td>-->
-            <td>{{ receive.title }}</td>
+            <td>{{ receive.receive_No_SEQ }}</td>
             <td>
               <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
             </td>
-            <td> {{ receive.sender_NO }} </td>
+            <td>{{ receive.fax_NO }}</td>
             <td>{{ receive.receive_DATE }}</td>
             <td>{{ receive.read_YN }}</td>
             <td>{{ receive.read_USER }}</td>
@@ -109,13 +109,7 @@
     </div>
 
     <!-- 컴포넌트 MyModal -->
-    <modal
-      :show.sync="modal"
-      body-classes="p-1"
-      modal-classes="modal-dialog-centered modal-big"
-      class="modal-class"
-      @search="apprsearch"
-    >
+    <modal :show.sync="modal" modal-classes="modal-dialog-centered modal-big" @search="apprsearch">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
       <receive-detail :receivelistDetail="receivelistDetail"></receive-detail>
     </modal>
@@ -167,17 +161,19 @@ export default {
       const month = today.getMonth(); // 월
       const day = today.getDate(); // 일
 
-      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date(year, month, day - 6))
-      this.searchTo = new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(Date.now())
+      this.searchFrom = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(new Date(year, month, day - 6));
+      this.searchTo = new Intl.DateTimeFormat("fr-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(Date.now());
       this.setDateInfo(this.searchFrom);
       this.setDateInfo(this.searchTo);
-      console.log(this.searchFrom +" ~ "+ this.searchTo);
-    },
-
-    //팩스번호 포맷화
-    setFormatting(fax_no) {
-      let data = fax_no.replace(/^(\d{3})(\d{4})(\d)/, `$1-$2-$3`);
-      return data;
+      console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
     // 조회
@@ -199,11 +195,6 @@ export default {
           console.log("전송 성공");
           this.receivelist = data;
           this.detailOpen = false;
-
-          //발신자 팩스번호 포맷지정
-          for(let i in data){
-             this.receivelist[i].sender_NO = this.setFormatting(data[i].sender_NO);
-          }
         } else {
           console.log("전송 실패");
         }
@@ -233,11 +224,6 @@ export default {
         if (data != null) {
           // 전송 성공
           this.receivelistDetail = data;
-
-          //발신자 팩스번호 포맷지정
-          this.receivelistDetail.sender_NO = this.setFormatting(data.sender_NO);
-          this.receivelistDetail.fax_NO = this.setFormatting(data.fax_NO);
-
           this.detailOpen = true;
 
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
