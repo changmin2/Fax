@@ -8,7 +8,21 @@
 
       <div class="noApproval-detail">
         <div class="left-content col-4">
-          <span class="mt-3">> 결재요청정보</span>
+          <div>
+            <span class="mt-3" style="display: inline; float: left"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 결재요청정보</span
+            >
+            <div class="mt-3" style="display: inline; float: right; font-size: small">
+              ※ 개인정보 포함 :
+
+              <badge v-if="noApprDetail.개인정보보호 == 'Y'" class="m-0" type="success" rounded
+                >Y</badge
+              >
+              <badge v-if="noApprDetail.개인정보보호 == 'N'" class="m-0" type="warning" rounded
+                >N</badge
+              >
+            </div>
+          </div>
 
           <table class="fax-table fax-table-detail" style="width: 100%">
             <thead>
@@ -27,7 +41,7 @@
             </tbody>
           </table>
 
-          <span class="mt-3">> 수신자정보</span>
+          <span class="mt-3"><i class="fa fa-caret-right" aria-hidden="true"></i> 수신자정보</span>
           <table class="fax-table fax-table-detail">
             <thead>
               <tr>
@@ -45,7 +59,9 @@
 
           <!-- <span class="mt-3">> 개인정보검출내용</span> -->
           <div v-if="!isComplete">
-            <span class="mt-3">> 결재 승인 및 반송</span>
+            <span class="mt-3"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 결재 승인 및 반송</span
+            >
             <table class="fax-table fax-table-detail">
               <thead>
                 <tr>

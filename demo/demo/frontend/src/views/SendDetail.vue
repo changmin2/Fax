@@ -4,7 +4,21 @@
 
     <div class="send-detail-container">
       <div class="left-content col">
-        <span class="mt-3">> 팩스 발신 정보</span>
+        <div>
+          <span class="mt-3" style="display: inline; float: left"
+            ><i class="fa fa-caret-right" aria-hidden="true"></i> 팩스 발신 정보</span
+          >
+          <div class="mt-3" style="display: inline; float: right; font-size: small">
+            ※ 개인정보 포함 :
+
+            <badge v-if="sendDetail.개인정보보호 == 'Y'" class="m-0" type="success" rounded
+              >Y</badge
+            >
+            <badge v-if="sendDetail.개인정보보호 == 'N'" class="m-0" type="warning" rounded
+              >N</badge
+            >
+          </div>
+        </div>
         <table class="fax-table fax-table-detail" style="width: 100%">
           <thead>
             <tr>
@@ -23,9 +37,13 @@
         </table>
 
         <div>
-          <span class="mt-3" style="display: inline; width: 30%; float: left">> 수신자정보</span>
-          <div class="mt-3" style="display: inline; width: 60%; float: right"
-          v-if="status == '전송완료' || status == '전송실패'"
+          <span class="mt-3" style="display: inline; width: 30%; float: left"
+            ><i class="fa fa-caret-right" aria-hidden="true"></i> 수신자정보</span
+          >
+          <div
+            class="mt-3"
+            style="display: inline; float: right; font-size: small"
+            v-if="status == '전송완료' || status == '전송실패'"
           >
             ※ 전체 : {{ sendDetail.받는사람정보.length }}건, 상태 : (<span class="status_s"
               >성공</span
@@ -46,12 +64,12 @@
               <td>{{ sendDetail.이름 }} &#40; {{ sendDetail.상호 }} &#41;</td>
               <td>{{ sendDetail.팩스번호 }}</td>
 
-              <td v-if="status == '전송완료' || status == '전송실패' ">
+              <td v-if="status == '전송완료' || status == '전송실패'">
                 <div v-if="detail.Recives">
                   <span
                     :class="{
                       status_s: detail.Recives[index].Status == '성공',
-                      status_f: detail.Recives[index].Status == '실패'
+                      status_f: detail.Recives[index].Status == '실패',
                     }"
                   >
                     {{ detail.Recives[index].Status }}
@@ -66,7 +84,7 @@
           </tbody>
         </table>
 
-        <span class="mt-3">> 결재요청정보</span>
+        <span class="mt-3"><i class="fa fa-caret-right" aria-hidden="true"></i> 결재요청정보</span>
         <table class="fax-table fax-table-detail">
           <thead>
             <tr>
@@ -198,7 +216,6 @@ export default {
 
     /* 재사용 */
     async getReuse() {
-
       this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("userKey", this.sendDetail.발송번호);
