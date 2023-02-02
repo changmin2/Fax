@@ -362,7 +362,7 @@ public class SendService {
     }
 
     //발송 상세정보 api
-    private Map<String,Object> sendDetailApi(Send find) throws IOException {
+    public Map<String,Object> sendDetailApi(Send find) throws IOException {
         Map<String, String> headers = new HashMap<>();
         HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
         Map<String,Object> result = new HashMap<>();
@@ -378,11 +378,10 @@ public class SendService {
 
         // 응답 값
         String ResultJson = multipart.finish();
-        log.info("ReusltJson"+" "+ResultJson);
 
         ObjectMapper mapper = new ObjectMapper();
         SendDetailRes res = mapper.readValue( ResultJson, SendDetailRes.class);
-        log.info("팩스 발송 결과 : "+res.toString());
+
         List<ETC> list = res.getList();
         int success = 0;
         int fail = 0;
@@ -405,7 +404,27 @@ public class SendService {
             result.put("message","결과가 없습니다.");
         }
 
-        log.info(result.toString());
         return result;
+    }
+
+    @Transactional
+    public void isNullSendDUser(List<ETC> etcs,String JobNo) {
+        List<Send_detail> findSendD = sendDRepository.getSendD(JobNo);
+        for (Send_detail send_detail : findSendD) {
+            log.info(send_detail.toString());
+            for (ETC etc : etcs) {
+                if(etc.getName().equals(send_detail.getRECEIVE_NAME())){
+                    if(etc.getDone_Date().isEmpty()) {
+                        send_detail.setSTATUS_DETAIL("접수완료");
+                        send_detail.setSTATUS(etc.getStatus_Detail());
+                    }else{
+                        send_detail.setSTATUS_DETAIL(etc.getStatus_Detail());
+                        send_detail.setSTATUS(etc.getStatus());
+                        send_detail.setJOB_SEQ(etc.getNo());
+                        send_detail.setDONE_DATE(etc.getDone_Date());
+                    }
+                }
+            }
+        }
     }
 }

@@ -4,7 +4,6 @@ spring:
     username: admin
     password: gkfdkqjwl1
     driver-class-name: com.mysql.cj.jdbc.Driver
-    sql-script-encoding: UTF-8
   jpa:
     hibernate:
       naming:
