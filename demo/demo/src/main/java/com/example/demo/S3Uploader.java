@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Optional;
 
 @Component
@@ -112,4 +113,11 @@ public class S3Uploader {
 
     }
 
+    //파일 가져오기
+    public byte[] getFile(String fileName) throws IOException {
+        S3Object o = amazonS3Client.getObject(new GetObjectRequest(bucket, fileName));
+        S3ObjectInputStream objectInputStream = o.getObjectContent();
+        byte[] bytes = IOUtils.toByteArray(objectInputStream);
+        return bytes;
+    }
 }

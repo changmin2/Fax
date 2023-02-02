@@ -192,4 +192,8 @@ public class ReceiveService {
     public void titleSave(String title, String rFax_no_seq) {
         recieveRepository.findById(rFax_no_seq).get().setTITLE(title);
     }
+
+    public List<Recieve> findByFaxNo(String FaxNo){
+        return recieveRepository.findByFaxNo(FaxNo);
+    }
 }
