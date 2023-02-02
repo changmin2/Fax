@@ -158,7 +158,7 @@ public class PayService {
         List<HashMap<String,Object>> lists = new ArrayList<>();
         List<HashMap<String,Object>> lists2 = new ArrayList<>();
 
-        String[] arr = {"이름","상호","팩스번호"};
+        String[] arr = {"이름","상호","팩스번호","결과","상세결과","완료시각"};
         for (Object[] objArr : detail) {
             int idx =-1;
             HashMap<String,Object> map = new HashMap<>();

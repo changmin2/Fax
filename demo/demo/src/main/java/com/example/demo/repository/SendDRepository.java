@@ -18,8 +18,10 @@ public interface SendDRepository extends JpaRepository<Send_detail, Send_detailP
 
 
     @Query(value = "SELECT DISTINCT d.JOB_NO\n" +
-            "FROM TB_SEND_D d\n" +
-            "WHERE d.JOB_NO != '' AND d.DONE_DATE IS NULL",nativeQuery = true)
+            "   FROM TB_SEND_D d,TB_SEND s\n" +
+            " WHERE d.JOB_NO != '' AND d.DONE_DATE IS NULL\n" +
+            " AND d.USER_KEY = s.USER_KEY \n" +
+            " AND s.SEND_DATE < now()",nativeQuery = true)
     List<String> getJob_no();
 
     @Query(value = " select d.*\n" +

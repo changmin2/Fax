@@ -30,7 +30,6 @@ import java.util.Map;
 public class RecieveController {
 
     private final ReceiveService receiveService;
-    private final SessionManager sessionManager;
 
     //수신 목록함 가져오기
     @RequestMapping("/recieveList")

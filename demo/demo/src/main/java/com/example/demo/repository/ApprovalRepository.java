@@ -101,7 +101,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                @Param(value = "searchTo")String searchTo);
 
     //발송대기 상세 - 수신자 목록
-    @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO from TB_SEND_D d\n" +
+    @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO,d.STATUS,d.STATUS_DETAIL,d.DONE_DATE from TB_SEND_D d\n" +
             "where d.USER_KEY =:userKey ",nativeQuery = true)
     List<Object[]> detail2(@Param(value = "userKey")String userKey);
 
