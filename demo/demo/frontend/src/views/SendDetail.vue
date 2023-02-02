@@ -45,12 +45,13 @@
             <tr v-for="(sendDetail, index) in sendDetail.받는사람정보" :key="index">
               <td>{{ sendDetail.이름 }} &#40; {{ sendDetail.상호 }} &#41;</td>
               <td>{{ sendDetail.팩스번호 }}</td>
-              <td v-if="status == '전송완료' || status == '전송실패'">
-                <div>
+
+              <td v-if="status == '전송완료' || status == '전송실패' ">
+                <div v-if="detail.Recives">
                   <span
                     :class="{
                       status_s: detail.Recives[index].Status == '성공',
-                      status_f: detail.Recives[index].Status == '실패',
+                      status_f: detail.Recives[index].Status == '실패'
                     }"
                   >
                     {{ detail.Recives[index].Status }}

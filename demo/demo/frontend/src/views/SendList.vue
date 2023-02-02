@@ -100,7 +100,7 @@
     <!-- 컴포넌트 MyModal -->
     <modal :show.sync="modal" modal-classes="modal-big" v-if="detailOpen" @search="getSendList">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <send-detail :sendDetail="sendDetail" :sendStatusDetail="sendStatusDetail"></send-detail>
+      <send-detail :sendDetail="sendDetail" ></send-detail>
     </modal>
   </section>
 </template>
@@ -213,34 +213,6 @@ export default {
         } else {
           console.log("상세 조회 실패");
         }
-
-      } catch (error) {
-        // 전송 실패
-        console.log("오류메시지 - ", error);
-        alertify.error("상세 조회가 실패했습니다.", 1.5);
-      }
-
-      try {
-        let response2 = await http.post("/sendDetail", {
-          userKey: apprNo,
-          searchFrom: this.searchFrom,
-          searchTo: this.searchTo,
-
-        });
-         console.log("상태가져오기", response2);
-        let { data2 } = response2;
-        this.$store.commit("SET_LOADING_FALSE");
-
-        if (data2 != null) {
-          // 전송 성공
-          console.log(data2);
-          this.sendStatusDetail = data2[0];
-
-          alertify.success("상세 조회가 완료되었습니다.", 1.5);
-        } else {
-          console.log("상세 조회 실패");
-        }
-
       } catch (error) {
         // 전송 실패
         console.log("오류메시지 - ", error);
