@@ -59,6 +59,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
             "       s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') as INSERT_DATE,\n" +
             "       (SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME,s.PAGE_CNT \n" +
+            "       ,s.PRIVATE_INFO_YN  \n" +
             "from TB_APPROVAL a ,TB_SEND s\n" +
             "WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND s.USE_GBN = 'Y' \n" +
@@ -115,6 +116,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
             "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME,a.PAGE_CNT \n" +
+            "              ,a.PRIVATE_INFO_YN  \n" +
             "       from TB_SEND a      \n" +
             "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
             "   where a.USER_KEY = :userKey  AND a.USE_GBN = 'Y' ",nativeQuery = true)
