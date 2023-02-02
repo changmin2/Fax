@@ -1,23 +1,26 @@
 <template>
   <div id="app">
-    <!-- include a theme -->
-    <router-view name="header" :userInfo="userInfo"></router-view>
-    <router-view v-if="!isLogin"></router-view>
-    <div v-else class="row">
-      <div class="col-lg-2 col-md-2 col-sm-2">
-        <router-view name="navbar"></router-view>
+    <!-- grade가 관리자 등급이라면 다른 헤더/메인페이지 보이게 -->
+    <div>
+      <router-view name="header" :userInfo="userInfo"></router-view>
+      <router-view v-if="!isLogin"></router-view>
+      <router-view v-else-if="userInfo.grade == 0" name="admin"></router-view>
+      <div v-else class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2">
+          <router-view name="navbar"></router-view>
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-10 app-right-content">
+          <main>
+            <fade-transition origin="center" mode="out-in" :duration="250">
+              <router-view @login-success="loginSuccess"></router-view>
+            </fade-transition>
+          </main>
+        </div>
       </div>
-      <div class="col-lg-10 col-md-9 col-sm-10">
-        <main>
-          <fade-transition origin="center" mode="out-in" :duration="250">
-            <router-view @login-success="loginSuccess"></router-view>
-          </fade-transition>
-        </main>
-      </div>
+      <!-- <button @click="test">test</button> -->
+      <router-view name="footer"></router-view>
+      <router-view v-if="isLoading" name="spinner"></router-view>
     </div>
-    <!-- <button @click="test">test</button> -->
-    <router-view name="footer"></router-view>
-    <router-view v-if="isLoading" name="spinner"></router-view>
   </div>
 </template>
 
@@ -35,13 +38,12 @@ export default {
     ...mapGetters({
       isLoading: "getIsLoading",
       isLogin: "getIsLogin",
+      userInfo: "getUserInfo",
     }),
   },
   created() {},
   data() {
-    return {
-      userInfo: {},
-    };
+    return {};
   },
 
   methods: {
@@ -50,8 +52,10 @@ export default {
     },
     loginSuccess(userInfo) {
       console.log("userInfo:", userInfo);
-      this.isLogin = true;
-      this.userInfo = userInfo;
+      // this.isLogin = true;
+      // this.userInfo = userInfo;
+      this.$store.commit("SET_USER_LOGIN");
+      this.$store.commit("SET_USER_INFO");
     },
   },
 };
@@ -60,6 +64,12 @@ export default {
 <style>
 #app {
   cursor: default;
+  display: flex;
+  flex-direction: column;
+}
+.app-right-content {
+  width: 90vw;
+  /* background-color: #31708f; */
 }
 .main-container {
   margin-top: 6rem;
@@ -94,6 +104,7 @@ export default {
 
 .fax-table-detail {
   margin-top: 2px;
+  margin-bottom: 1rem;
 }
 .fax-table-detail th,
 .fax-table-detail td {
@@ -117,6 +128,24 @@ export default {
   color: #31708f;
   background-color: #d9edf7;
   border-color: #31708f;
+}
+
+.modal-container {
+  height: inherit;
+}
+
+.modal-container-detail {
+  display: flex;
+}
+.modal-big {
+  max-width: 1400px;
+}
+.right-content {
+  height: 30rem;
+}
+.left-content {
+  display: flex;
+  flex-direction: column;
 }
 
 /* @media all and (max-width: 768px) {
