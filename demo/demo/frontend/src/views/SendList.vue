@@ -100,7 +100,7 @@
     </div>
 
     <!-- 컴포넌트 MyModal -->
-    <modal :show.sync="modal" modal-classes="modal-big" v-if="detailOpen" @search="getSendList">
+    <modal :show.sync="isModalState" modal-classes="modal-big" @search="getSendList">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
       <send-detail :sendDetail="sendDetail" ></send-detail>
     </modal>
@@ -112,9 +112,10 @@ import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import alertify from "alertifyjs";
 import Modal from "@/components/Modal.vue";
-import SendDetail from "./SendDetail.vue";
+import SendDetail from "@/views/SendDetail.vue";
 
 export default {
+  name: "send-list",
   components: {
     Modal,
     SendDetail,
@@ -124,13 +125,21 @@ export default {
       isLogin: "getIsLogin",
       userKey: "getUserKey",
       userInfo: "getUserInfo",
+      isModalOpen: "getModalState",
     }),
+    isModalState: {
+      set: function () {
+        this.$store.commit("SET_MODAL_CLOSE");
+      },
+      get: function () {
+        return this.isModalOpen;
+      },
+    },
   },
   data() {
     return {
       sendList: [],
       sendDetail: [],
-      detailOpen: false,
       searchFrom: "",
       searchTo: "",
       modal: false,
@@ -181,7 +190,6 @@ export default {
           // 전송 성공
           console.log(data);
           this.sendList = data;
-          this.detailOpen = false;
         } else {
           console.log("전송 실패");
         }
@@ -209,7 +217,7 @@ export default {
           // 전송 성공
           console.log(data);
           this.sendDetail = data[0];
-          this.detailOpen = true;
+          this.$store.commit("SET_MODAL_OPEN");
 
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
         } else {

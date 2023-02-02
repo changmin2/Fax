@@ -357,6 +357,9 @@ export default {
         let reqUrl = this.getterUpdate?"/updateSend":"/Send"; //수정요청인지 아닌지
         let response = await http.post(reqUrl, sendData);
 
+        let msg = this.getterUpdate?"수정":"전송";
+        let msg2 = this.getterUpdate?"수정":"전송신청";
+
         let { data } = response;
         this.$store.commit("SET_LOADING_FALSE");
 
@@ -365,7 +368,7 @@ export default {
           console.log(data);
           console.log("전송 성공");
           this.$router.push("/send-list");
-          alertify.alert("팩스 전송신청이 완료되었습니다.", 1.5);
+          alertify.alert(msg,"팩스 "+msg2+"이 완료되었습니다.");
         } else {
           console.log("전송 실패");
         }
@@ -373,7 +376,7 @@ export default {
         // 전송 실패
         this.$store.commit("SET_LOADING_FALSE");
         console.log("오류메시지 - ", data.Message);
-        alertify.alert("팩스 전송 결재신청에 실패했습니다.", 1.5);
+        alertify.alert(msg,"팩스 전송 결재신청에 실패했습니다.");
       }
     },
     async getApprUsers() {
@@ -398,7 +401,7 @@ export default {
       if(this.getterUpdate){ //삭제시키는척만
         this.newFileName = "";
         this.fileFlag = true;
-        alertify.success("파일 재등록이 가능합니다.", 1.5);
+        alertify.success("파일 재등록이 가능합니다.", "");
         return;
       }
       //첨부파일 삭제

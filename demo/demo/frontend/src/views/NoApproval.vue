@@ -155,7 +155,7 @@ export default {
           this.noApprovalList = data;
           alertify.alert("성공", "결재 승인 완료되었습니다.", 1.5);
           // 승인 시 모달 닫고 리스트로 이동
-          this.$store.commit("SET_MODAL_CLOSE");
+          this.$parent.$parent.closeModal();
           this.$store.commit("SET_LOADING_FALSE");
         } else {
           console.log("결재 승인  실패");
@@ -186,7 +186,7 @@ export default {
 
           alertify.alert("성공", "결재 반려 완료되었습니다.", 1.5);
           // 반려 시 모달 닫고 리스트로 이동
-          this.$store.commit("SET_MODAL_CLOSE");
+          this.$parent.$parent.closeModal();
           this.$store.commit("SET_LOADING_FALSE");
         } else {
           console.log("결재 반려  실패");

@@ -43,7 +43,7 @@
           <div
             class="mt-3"
             style="display: inline; float: right; font-size: small"
-            v-if="status == '전송완료' || status == '전송실패'"
+            v-if="sendDetail.상태 == '전송완료' || sendDetail.상태 == '전송실패'"
           >
             ※ 전체 : {{ sendDetail.받는사람정보.length }}건, 상태 : (<span class="status_s"
               >성공</span
@@ -56,27 +56,27 @@
             <tr>
               <th scope="col">받는사람</th>
               <th scope="col">팩스번호</th>
-              <th scope="col" v-if="status == '전송완료' || status == '전송실패'">상태</th>
+              <th scope="col" v-if="sendDetail.상태 == '전송완료' || sendDetail.상태 == '전송실패'">상태</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(sendDetail, index) in sendDetail.받는사람정보" :key="index">
-              <td>{{ sendDetail.이름 }} &#40; {{ sendDetail.상호 }} &#41;</td>
-              <td>{{ sendDetail.팩스번호 }}</td>
+            <tr v-for="(sendDetailStatus, index) in sendDetail.받는사람정보" :key="index">
+              <td>{{ sendDetailStatus.이름 }} &#40; {{ sendDetailStatus.상호 }} &#41;</td>
+              <td>{{ sendDetailStatus.팩스번호 }}</td>
 
-              <td v-if="status == '전송완료' || status == '전송실패'">
-                <div v-if="detail.Recives">
+              <td v-if="sendDetail.상태 == '전송완료' || sendDetail.상태 == '전송실패'">
+                <div>
                   <span
                     :class="{
-                      status_s: detail.Recives[index].Status == '성공',
-                      status_f: detail.Recives[index].Status == '실패',
+                      status_s: sendDetailStatus.결과 == '성공',
+                      status_f: sendDetailStatus.결과 == '실패',
                     }"
                   >
-                    {{ detail.Recives[index].Status }}
+                    {{ sendDetailStatus.결과 }}
                   </span>
-                  <span v-if="detail.Recives[index].Status == '실패'">
+                  <span v-if="sendDetailStatus.결과 == '실패'">
                     <br />
-                    ({{ detail.Recives[index].Status_Detail }})
+                    ({{ sendDetailStatus.상세결과 }})
                   </span>
                 </div>
               </td>
@@ -112,7 +112,7 @@
             type="secondary"
             class="no-approval-btn"
             @click="resend"
-            v-if="status == '전송실패' || status == '전송완료'"
+            v-if="sendDetail.상태 == '전송실패' || sendDetail.상태 == '전송완료'"
           >
             <i class="fa fa-paper-plane" aria-hidden="true"></i>
             재전송
@@ -121,7 +121,7 @@
             type="secondary"
             class="no-approval-btn"
             @click="getUpdate"
-            v-if="status == '회수' || status == '반려'"
+            v-if="sendDetail.상태 == '회수' || sendDetail.상태 == '반려'"
           >
             <i class="fa fa-reply" aria-hidden="true"></i> 수정
           </base-button>
@@ -129,7 +129,7 @@
             type="secondary"
             class="no-approval-btn"
             @click="getBack"
-            v-if="status == '결재대기'"
+            v-if="sendDetail.상태 == '결재대기'"
           >
             <i class="fa fa-reply" aria-hidden="true"></i> 회수
           </base-button>
@@ -158,7 +158,6 @@ export default {
   data() {
     return {
       apprRemark: "",
-      status: "",
       detail: [],
     };
   },
@@ -169,50 +168,8 @@ export default {
     }),
   },
   mounted() {
-    console.log("updated");
-    this.status = this.sendDetail.상태;
-    console.log(this.status);
-    if (this.status == "전송실패" || this.status == "전송완료") {
-      this.getDetail();
-    }
-  },
-  updated() {
-    if (this.status == "") {
-      console.log("updated", this.status);
-      this.status = this.sendDetail.상태;
-      console.log(this.status);
-      if (this.status == "전송실패" || this.status == "전송완료") {
-        this.getDetail();
-      }
-    }
   },
   methods: {
-    /* 전송 상세정보 가져오기 */
-    async getDetail() {
-      this.$store.commit("SET_LOADING_TRUE");
-      let formData = new FormData();
-      formData.append("userKey", this.sendDetail.발송번호);
-
-      try {
-        let response = await http.post(`/sendDetail`, formData);
-        let { data } = response;
-
-        if (data != null) {
-          // 전송 성공
-          this.$store.commit("SET_LOADING_FALSE");
-          console.log("전송 상세정보 요청 성공", data);
-          this.detail = data;
-        } else {
-          this.$store.commit("SET_LOADING_FALSE");
-          console.log("전송 상세정보 가져오기 실패");
-        }
-      } catch (error) {
-        // 전송 실패
-        console.log("오류메시지 - ", error);
-        alertify.alert("전송 상세정보 가져오기에 실패했습니다.", 1.5);
-        this.$store.commit("SET_LOADING_FALSE");
-      }
-    },
 
     /* 재사용 */
     async getReuse() {
@@ -232,6 +189,7 @@ export default {
           // console.log("재사용 요청 성공", data.Info);
           // console.log("재사용 요청 성공", data.fileName);
           // alertify.alert("성공", "재사용 요청 완료되었습니다.", 1.5);
+          this.$parent.$parent.closeModal();
           this.$store.commit("SET_SEND_DETAIL", data);
           this.$router.push("/send");
         } else {
@@ -260,6 +218,7 @@ export default {
           // console.log("수정 요청 성공", data);
           // console.log("수정 요청 성공", data.Info);
           // console.log("수정 요청 성공", data.fileName);
+          this.$parent.$parent.closeModal();
           this.$store.commit("SET_SEND_UPDATE", data);
           // alertify.alert("성공", "수정 요청 완료되었습니다.", 1.5);
           this.$router.push("/send");
@@ -288,7 +247,19 @@ export default {
 
         if (data != null) {
           // 전송 성공
-          alertify.alert("성공", "회수 완료되었습니다.", 1.5);
+          this.$parent.$parent.closeModal();
+
+          let mine = this;
+
+          alertify.confirm("성공", "회수 완료되었습니다. <BR/>수정화면으로 이동하시겠습니까?", function() {
+            mine.getUpdate();
+            this.destroy();
+            }
+           ,function() {
+            this.destroy();
+           }
+          );
+
         } else {
           console.log("회수 요청 실패");
         }
@@ -319,10 +290,8 @@ export default {
           // console.log("재전송 요청 성공", data);
           // console.log("재전송 요청 성공", data.Info);
           // console.log("재전송 요청 성공", data.fileName);
-          alertify.alert("성공", "재전송 성공했습니다.", function () {
-            alertify.success("ok");
-            //확인 후 모달창 닫기
-          });
+          alertify.alert("성공", "재전송 성공했습니다.");
+          this.$parent.$parent.closeModal();
         } else {
           console.log("재전송 요청 실패");
         }

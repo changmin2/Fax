@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.GlobalVariables;
+import com.example.demo.service.DetectionService;
 import com.example.demo.service.ReceiveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,11 @@ public class HelloWorldCtrl {
 
     private final ReceiveService receiveService;
     private final GlobalVariables globalVariables;
+    private final DetectionService detectionService;
+
     @GetMapping("/hello")
-    public String helloWorld() {
-        log.info(globalVariables.getNow());
+    public String helloWorld() throws IOException {
+        detectionService.ResidentNumberDetection("https://bnksys.s3.ap-northeast-2.amazonaws.com/detect_test.pdf");
         return "hello!";
     }
 
