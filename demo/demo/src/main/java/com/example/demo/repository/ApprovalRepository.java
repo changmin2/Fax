@@ -19,7 +19,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
             "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
-            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
+            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,s.PAGE_CNT \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY                       \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
@@ -34,7 +34,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
             "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
-            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE \n" +
+            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,s.PAGE_CNT \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
@@ -58,7 +58,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
             "       s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') as INSERT_DATE,\n" +
-            "       (SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME \n" +
+            "       (SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME,s.PAGE_CNT \n" +
             "from TB_APPROVAL a ,TB_SEND s\n" +
             "WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND s.USE_GBN = 'Y' \n" +
@@ -72,7 +72,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
-            "              a.ERROR_MSG       \n" +
+            "              a.ERROR_MSG    ,a.PAGE_CNT   \n" +
             "            from TB_SEND a \n" +
             "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
             "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'                   \n" +
@@ -88,7 +88,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
-            "              a.ERROR_MSG       \n" +
+            "              a.ERROR_MSG  ,a.PAGE_CNT     \n" +
             "            from TB_SEND a \n" +
             "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
             "    where  a.STATUS = :status    \n" +
@@ -114,7 +114,7 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
-            "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME\n" +
+            "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME,a.PAGE_CNT \n" +
             "       from TB_SEND a      \n" +
             "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
             "   where a.USER_KEY = :userKey  AND a.USE_GBN = 'Y' ",nativeQuery = true)

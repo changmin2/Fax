@@ -38,7 +38,7 @@ public class PayService {
             test = approvalRepository.recieve(userId,status,searchFrom,searchTo);
         }
         List<HashMap<String,Object>> lists = new ArrayList<>();
-        String[] arr = { "결제고유번호","상태","보내는사람","결제일자","받는사람","제목","팩스번호","요청일자"};
+        String[] arr = { "결제고유번호","상태","보내는사람","결제일자","받는사람","제목","팩스번호","요청일자","페이지수"};
 
         for (Object[] objArr : test) {
             int idx =-1;
@@ -58,7 +58,7 @@ public class PayService {
         List<Object[]> detail = approvalRepository.detail(apprNo);
         List<Object[]> total = approvalRepository.totalDetail(apprNo);
         String[] arr2 =  {"결재고유번호","받는사람ID","보내는사람ID","상태","개인정보보호여부",
-                "발송고유번호","결재일자","사유","보내는사람","받는사람","제목","팩스번호","요청일자","파일명"};
+                "발송고유번호","결재일자","사유","보내는사람","받는사람","제목","팩스번호","요청일자","파일명","페이지수"};
         List<HashMap<String,Object>> lists = new ArrayList<>();
         List<HashMap<String,Object>> lists2 = new ArrayList<>();
 
@@ -132,7 +132,7 @@ public class PayService {
             objects = approvalRepository.sendRecieve(userId,status,searchFrom,searchTo);
         }
         List<HashMap<String,Object>> lists = new ArrayList<>();
-        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지"};
+        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지","페이지수"};
 
         for (Object[] objArr : objects) {
             int idx =-1;
@@ -153,7 +153,7 @@ public class PayService {
         //보내는 사람 정보
         List<Object[]> detail = approvalRepository.detail2(userKey);
         List<Object[]> total = approvalRepository.totalDetail2(userKey);
-        String[] arr2 =  {"발송번호","상태","전송일자","예약여부","개인정보보호여부","제목","등록일자","발송자","결재상태","결재자ID","사유","결재자이름","결재일자", "팩스번호","파일명"};
+        String[] arr2 =  {"발송번호","상태","전송일자","예약여부","개인정보보호여부","제목","등록일자","발송자","결재상태","결재자ID","사유","결재자이름","결재일자", "팩스번호","파일명","페이지수"};
         List<HashMap<String,Object>> lists = new ArrayList<>();
         List<HashMap<String,Object>> lists2 = new ArrayList<>();
 
