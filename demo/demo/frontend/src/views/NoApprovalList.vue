@@ -116,6 +116,7 @@
       body-classes="p-1"
       modal-classes="modal-dialog-centered modal-big"
       class="modal-class"
+      @search="noApproval"
     >
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
       <no-approval :noApprDetail="noApprDetail" :isComplete="false"></no-approval>

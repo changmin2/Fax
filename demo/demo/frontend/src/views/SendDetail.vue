@@ -16,7 +16,7 @@
           <tbody>
             <tr>
               <td>{{ sendDetail.등록일자 }}</td>
-              <td>{{ sendDetail.장수 }}</td>
+              <td>{{ sendDetail.페이지수 }}</td>
               <td>{{ sendDetail.상태 }}</td>
             </tr>
           </tbody>

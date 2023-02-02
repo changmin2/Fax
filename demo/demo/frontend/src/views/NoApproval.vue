@@ -50,7 +50,7 @@
               <thead>
                 <tr>
                   <th scope="col">결재상태</th>
-                  <th scope="col" style="height: 100px">사유</th>
+                  <th scope="col" style="height: 100px">반려 사유</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,6 +124,7 @@ export default {
 
     /* 승인 */
     async apprConfirm() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("apprNo", this.noApprDetail.결재고유번호);
       try {
@@ -139,6 +140,7 @@ export default {
           alertify.alert("성공", "결재 승인 완료되었습니다.", 1.5);
           // 승인 시 모달 닫고 리스트로 이동
           this.$store.commit("SET_MODAL_CLOSE");
+          this.$store.commit("SET_LOADING_FALSE");
         } else {
           console.log("결재 승인  실패");
         }
@@ -151,6 +153,7 @@ export default {
 
     /* 반송 */
     async apprBack() {
+      this.$store.commit("SET_LOADING_TRUE");
       let formData = new FormData();
       formData.append("apprNo", this.noApprDetail.결재고유번호);
       formData.append("apprRemark", this.apprRemark);
@@ -168,6 +171,7 @@ export default {
           alertify.alert("성공", "결재 반려 완료되었습니다.", 1.5);
           // 반려 시 모달 닫고 리스트로 이동
           this.$store.commit("SET_MODAL_CLOSE");
+          this.$store.commit("SET_LOADING_FALSE");
         } else {
           console.log("결재 반려  실패");
         }
