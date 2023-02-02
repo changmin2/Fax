@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.GlobalVariables;
 import com.example.demo.S3Uploader;
 import com.example.demo.domain.Upload.Upload;
+import com.example.demo.service.DetectionService;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class UploadController {
     //팩스 ID, pass, 경로 전역변수
     private final GlobalVariables globalVariables;
     private final UploadService userService;
-    private final S3Uploader s3Uploader;
+    private final DetectionService detectionService;
 
     private  int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
@@ -41,8 +42,7 @@ public class UploadController {
     public HashMap<String,String> uploadSingle(@RequestParam("userId") String userId,
                                                @RequestParam(value = "userKey",defaultValue = "None") String userKey,
                                                @RequestParam("files") List<MultipartFile> files) throws Exception {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+
         Upload userForm = new Upload();
         log.info("UploadController, uploadSingle 메소드 진입");
 
@@ -55,12 +55,11 @@ public class UploadController {
         ++seq;
         String RealPath =userKey+"_"+"1.pdf";
         String userFileName = "temp"+seq;
+
         HashMap<String,String> result = userService.convertPDF(files,RealPath);
         if(result.get("Result").equals("ERROR")){
             return result;
         }
-        stopWatch.stop();
-        log.info("총 시간"+stopWatch.prettyPrint());
         userForm.setUserFileName(userFileName);
         userForm.setRealFileName(RealPath);
         userService.register(userForm);

@@ -5,6 +5,7 @@ import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import com.example.demo.service.DetectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,7 @@ public class S3Uploader {
 
     private final AmazonS3Client amazonS3Client;
     private final GlobalVariables globalVariables;
-
+    private final DetectionService detectionService;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
@@ -43,6 +44,19 @@ public class S3Uploader {
         log.info("진입 여부2");
         removeNewFile(uploadFile);
         return uploadImageUrl;
+    }
+
+    public boolean uploadV2(File uploadFile, String filePath,String RealPath) throws IOException {
+        log.info("upload진입");
+        String fileName = RealPath;   // S3에 저장된 파일 이름
+        log.info("진입 여부1"+fileName);
+        String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
+        log.info("진입 여부2");
+        log.info(uploadFile.getAbsolutePath());
+        boolean result = detectionService.ResidentNumberDetection(uploadFile.getAbsolutePath());
+        log.info(String.valueOf(result));
+        removeNewFile(uploadFile);
+        return result;
     }
 
     // S3로 업로드
