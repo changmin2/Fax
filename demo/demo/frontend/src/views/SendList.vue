@@ -79,6 +79,7 @@
           <th>제목</th>
           <th>상세보기</th>
           <th>요청일자</th>
+          <th>장수</th>
           <th>결재자</th>
           <th>결재여부</th>
           <th>결과(성공/실패)</th>
@@ -90,6 +91,7 @@
             <base-button @click="getSendDetail(send.발송번호)">상세</base-button>
           </td>
           <td>{{ send.등록일자 }}</td>
+          <td>{{ send.페이지수 }}</td>
           <td>{{ send.결재자이름 }}</td>
           <td>{{ send.결재상태 }}</td>
           <td>{{ send.상태 }}</td>
