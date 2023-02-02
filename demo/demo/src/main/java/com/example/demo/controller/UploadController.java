@@ -48,7 +48,7 @@ public class UploadController {
 
         //처음 요청 시
         if(userKey.equals("None")){
-            userKey = createKey(userId);
+            userKey = globalVariables.createKey(userId);
         }
         userForm.setUserKey(userKey);
 
@@ -80,7 +80,7 @@ public class UploadController {
         String[] re = fileName.split("_");
         String[] re2 = re[1].split(".pdf");
         int newSeq = Integer.parseInt(re2[0])+1;
-        String newFileName = createKey(userId)+"_"+String.valueOf(newSeq)+".pdf";
+        String newFileName = globalVariables.createKey(userId)+"_"+String.valueOf(newSeq)+".pdf";
         log.info(newFileName);
 
         HashMap<String,String> result = userService.convertPDF(files,newFileName);
@@ -90,16 +90,5 @@ public class UploadController {
         return result;
     }
 
-    //유저 키 생성 함수
-    private String createKey(String userId) {
-        log.info("커밋테스트");
-        String userKey;
-        Calendar now = Calendar.getInstance();
-        now.setTime(new Date());
 
-        DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
-        String Date_End = df.format(now.getTime());
-        userKey = userId + Date_End;
-        return userKey;
-    }
 }

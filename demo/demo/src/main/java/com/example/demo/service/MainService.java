@@ -40,7 +40,7 @@ public class MainService {
         String RFax_No = userRepository.getFaxNo(userId);
         map.put("RFax_No", RFax_No);
         map.put("Date_Start", globalVariables.getBefore7Days());
-        map.put("Date_End", globalVariables.getNowDate());
+        map.put("Date_End", globalVariables.getNowDate("yyyy-MM-dd"));
 //        map.put()
         //api호출을 통해 얻은 전체 수신 목록
         List<RecieveForm> receive = receiveService.Receive(map);
