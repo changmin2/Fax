@@ -205,6 +205,13 @@ export default {
       console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
+    //팩스번호 포맷화
+    setFormatting(fax_no) {
+      let data = fax_no.replace(/^(\d{3})(\d{4})(\d)/, `$1-$2-$3`);
+      return data;
+    },
+
+
     // detail - noApproval 설정
     setNoApproval(apprNo) {
       this.apprNo = apprNo;
@@ -266,6 +273,12 @@ export default {
           console.log("결재함 상세 조회 성공");
           console.log(data);
           this.noApprDetail = data[0];
+
+          //발신자 팩스번호 포맷지정
+          for(let i in data[0].받는사람정보){
+             this.noApprDetail.받는사람정보[i].팩스번호 = this.setFormatting(data[0].받는사람정보[i].팩스번호);
+          }
+
 
           alertify.success("결재함 상세 조회가 완료되었습니다.", 1.5);
         } else {

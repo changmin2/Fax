@@ -176,6 +176,12 @@ export default {
       console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
+    //팩스번호 포맷화
+    setFormatting(fax_no) {
+      let data = fax_no.replace(/^(\d{3})(\d{4})(\d)/, `$1-$2-$3`);
+      return data;
+    },
+
     // 조회
     async apprsearch() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -195,6 +201,11 @@ export default {
           console.log("전송 성공");
           this.receivelist = data;
           this.detailOpen = false;
+
+          //발신자 팩스번호 포맷지정
+          for(let i in data){
+             this.receivelist[i].sender_NO = this.setFormatting(data[i].sender_NO);
+          }
         } else {
           console.log("전송 실패");
         }
@@ -224,6 +235,11 @@ export default {
         if (data != null) {
           // 전송 성공
           this.receivelistDetail = data;
+
+          //발신자 팩스번호 포맷지정
+          this.receivelistDetail.sender_NO = this.setFormatting(data.sender_NO);
+          this.receivelistDetail.fax_NO = this.setFormatting(data.fax_NO);
+
           this.detailOpen = true;
 
           alertify.success("상세 조회가 완료되었습니다.", 1.5);

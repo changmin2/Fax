@@ -182,6 +182,12 @@ export default {
       console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
+    //팩스번호 포맷화
+    setFormatting(fax_no) {
+      let data = fax_no.replace(/^(\d{3})(\d{4})(\d)/, `$1-$2-$3`);
+      return data;
+    },
+
     // 조회
     async getSendList() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -229,6 +235,12 @@ export default {
           // 전송 성공
           console.log(data);
           this.sendDetail = data[0];
+
+          //발신자 팩스번호 포맷지정
+          for(let i in data[0].받는사람정보){
+             this.sendDetail.받는사람정보[i].팩스번호 = this.setFormatting(data[0].받는사람정보[i].팩스번호);
+          }
+
           this.$store.commit("SET_MODAL_OPEN");
 
           alertify.success("상세 조회가 완료되었습니다.", 1.5);
