@@ -98,6 +98,7 @@ public class SendService {
         multipart.addFormField("Service", globalVariables.getService());
         multipart.addFormField("Type", "Send");
         multipart.addFormField("Send_Date","");
+        multipart.addFormField("Subject",send.getTITLE());
         if(send.getRESERVE_YN().equals("Y")){ //예약전송시 입력
             multipart.addFormField("Send_Date",send.getSEND_DATE());
         }

@@ -453,6 +453,12 @@ export default {
         alertify.error("수신처를 입력해주세요.", 1.5);
         return;
       }
+      const regexr = /([0-9]|[-])/g;
+      if(!regexr.test(this.receiveFax)){
+        //팩스번호 숫자랑 -만
+        alertify.error("팩스번호는 숫자와 -기호만 사용가능합니다", 1.5);
+        return;
+      }
       let temp = {
         company: this.receiveCompany,
         name: this.receiveName,
