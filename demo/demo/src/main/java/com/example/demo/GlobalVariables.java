@@ -22,5 +22,11 @@ public class GlobalVariables {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(now.getTime());
     }
+    public String getNowDate(){
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(now.getTime());
+    }
 }
 
