@@ -23,11 +23,14 @@ public interface UserRepository extends JpaRepository<User, String> {
             "       WHERE u.IS_ABSENCE != 'Y' OR u.SUBSTITUTE != ''                                                                                                                           "
             , nativeQuery = true)
     List<Object[]> getHigherApprUser(@Param(value = "apprId") String apprId);
-    @Query(value= "SELECT u.USER_ID,u.USER_NAME,c.COMM_NAME FROM TB_USER u                          \n" +
-            "JOIN (SELECT u.DEPT_CODE, u.GRADE_CODE FROM TB_USER u WHERE u.USER_ID = :userId ) u2   \n" +
-            "ON u.DEPT_CODE = u2.DEPT_CODE AND u.GRADE_CODE = u2.GRADE_CODE-1                       \n" +
-            "JOIN TB_COMM c ON u.GRADE_CODE = c.COMM_CODE                                            \n" +
-            "WHERE u.IS_ABSENCE != 'Y'                                                                 "
+    @Query(value= "SELECT u.USER_ID,u.USER_NAME,\n" +
+            "(SELECT COMM_NAME FROM TB_COMM WHERE COMM_CODE=u.GRADE_CODE) COMM_NAME \n" +
+            "FROM TB_USER u\n" +
+            "JOIN (SELECT u.DEPT_CODE, u.GRADE_CODE FROM TB_USER u WHERE u.USER_ID = :userId ) u2  \n" +
+            "ON u.DEPT_CODE = u2.DEPT_CODE                                        \n" +
+            "WHERE u.IS_ABSENCE != 'Y'    \n" +
+            "AND u.GRADE_CODE IN\n" +
+            "(SELECT tc.COMM_CODE FROM TB_COMM tc WHERE tc.LEVEL < u2.GRADE_CODE)     "
             , nativeQuery = true)
     List<Object[]> getSubstituteUser(@Param(value = "userId") String userId);
 
