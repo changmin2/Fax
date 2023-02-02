@@ -97,7 +97,7 @@
             <td>
               <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
             </td>
-            <td>{{ receive.fax_NO }}</td>
+            <td>{{ receive.sender_NO }}</td>
             <td>{{ receive.receive_DATE }}</td>
             <td>{{ receive.read_YN }}</td>
             <td>{{ receive.read_USER }}</td>
