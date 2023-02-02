@@ -28,5 +28,11 @@ public class GlobalVariables {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(now.getTime());
     }
+    public String getBefore7Days(){
+        Calendar c = Calendar.getInstance();
+        c.add(c.DATE, -7);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(c.getTime());
+    }
 }
 

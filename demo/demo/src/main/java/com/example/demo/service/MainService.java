@@ -26,8 +26,11 @@ public class MainService {
 
     @Autowired
     MainRepository mainRepository;
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     ReceiveService receiveService;
+    @Autowired
     GlobalVariables globalVariables;
     @Transactional(readOnly = true)
     public HashMap<String,Object> mainInfo(String userId) throws IOException, ParseException {
@@ -35,24 +38,21 @@ public class MainService {
 
         Map<String,String> map = new HashMap<>();
         String RFax_No = userRepository.getFaxNo(userId);
-        String nowDate = globalVariables.getNowDate();
-        User user = userRepository.findById(userId).get();
         map.put("RFax_No", RFax_No);
-        map.put("Date_Start", nowDate);
-        map.put("Date_End", nowDate);
+        map.put("Date_Start", globalVariables.getNowDate());
+        map.put("Date_End", globalVariables.getBefore7Days());
 //        map.put()
         //api호출을 통해 얻은 전체 수신 목록
         List<RecieveForm> receive = receiveService.Receive(map);
         //DB에 저장되어 있지 않은 수신 목록 업데이트
         receiveService.DBListUpdate(receive);
 
-
         HashMap<String,Object> result = new HashMap<>();
         result.put("NoticeInfo",mainRepository.selectNotice());
         result.put("NotApprList",mainRepository.selectNotAppr(userId));
         result.put("NotApprCount",mainRepository.selectNotApprCount(userId));
-        result.put("ReceiveLsit",mainRepository.selectReceiveNotRead(userId));
-        result.put("ReceiveCount",mainRepository.selectReceiveNotReadCount(userId));
+        result.put("ReceiveLsit",mainRepository.selectReceiveNotRead(RFax_No));
+        result.put("ReceiveCount",mainRepository.selectReceiveNotReadCount(RFax_No));
         return result;
     }
 

@@ -36,19 +36,15 @@ public interface MainRepository extends JpaRepository<Send_detail, Send_detailPK
     @Query(value = "SELECT DATE_FORMAT(r.RECEIVE_DATE , '%Y-%m-%d %H:%i:%s') RECEIVE_DATE,r.PAGE_CNT,r.SENDER_NO \n" +
             "FROM TB_RECEIVE r\n" +
             "WHERE r.READ_YN = 'N'\n" +
-            "AND r.FAX_NO = REPLACE((SELECT d.FAX_NO FROM TB_DEPT d \n" +
-            " WHERE d.DEPT_CODE = \n" +
-            "(SELECT u.DEPT_CODE FROM TB_USER u WHERE u.USER_ID = :userId)),'-','')\n" +
+            "AND r.FAX_NO = :faxNo \n" +
             "LIMIT 5;",nativeQuery = true)
-    List<Map<String,Object>> selectReceiveNotRead(@Param(value = "userId")String userId);
+    List<Map<String,Object>> selectReceiveNotRead(@Param(value = "faxNo")String faxNo);
 
     @Query(value = "SELECT COUNT(*) CNT\n" +
             "FROM TB_RECEIVE r\n" +
             "WHERE r.READ_YN = 'N'\n" +
-            "AND r.FAX_NO = REPLACE((SELECT d.FAX_NO FROM TB_DEPT d \n" +
-            "WHERE d.DEPT_CODE = \n" +
-            "(SELECT u.DEPT_CODE FROM TB_USER u WHERE u.USER_ID = :userId)),'-','') ",nativeQuery = true)
-    int selectReceiveNotReadCount(@Param(value = "userId")String userId);
+            "AND r.FAX_NO = :faxNo ",nativeQuery = true)
+    int selectReceiveNotReadCount(@Param(value = "faxNo")String faxNo);
 
 
 }

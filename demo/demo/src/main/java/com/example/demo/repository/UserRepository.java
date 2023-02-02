@@ -47,9 +47,9 @@ public interface UserRepository extends JpaRepository<User, String> {
             , nativeQuery = true)
     Map<String,Object> getUserInfo(@Param(value = "userId") String userId);
 
-    @Query(value= "SELECT REPLACE(d.FAX_NO),'-','') FROM TB_DEPT d \n" +
+    @Query(value= "SELECT REPLACE(d.FAX_NO,'-','') FAX_NO FROM TB_DEPT d \n" +
             " WHERE d.DEPT_CODE = \n" +
-            "(SELECT u.DEPT_CODE FROM TB_USER u WHERE u.USER_ID = :userId                                                           "
+            "(SELECT u.DEPT_CODE FROM TB_USER u WHERE u.USER_ID = :userId )"
             , nativeQuery = true)
     String getFaxNo(@Param(value = "userId") String userId);
 }
