@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.VO.SendRes;
 import com.example.demo.domain.User.User;
 import com.example.demo.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,5 +107,29 @@ public class UserService {
         resultMap.put("flag",flag);
         resultMap.put("msg","부재여부 설정이 완료되었습니다.");
         return resultMap;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getUserList(){
+        List<Map<String, Object>> users = userRepository.getUserList();
+        return users;
+    }
+    @Transactional(readOnly = true)
+    public Map<String, Object> getDeptList(){
+        Map<String, Object> result = new HashMap<>();
+        List<Map<String, Object>> deptInfo = userRepository.getDeptList();
+        List<Map<String, Object>> commInfo = userRepository.getCommList();
+        result.put("deptInfo",deptInfo);
+        result.put("commInfo",commInfo);
+        return result;
+    }
+
+
+    public String userUpdate(User user){
+        User originUser = userRepository.findById(user.getUSER_ID()).get();
+        user.setPASS_WORD(originUser.getPASS_WORD());
+        user.setCUSTOMER_CODE(originUser.getCUSTOMER_CODE());
+        userRepository.save(user);
+        return "사용자 정보 수정이 완료되었습니다.";
     }
 }

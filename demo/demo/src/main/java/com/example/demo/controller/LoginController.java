@@ -33,9 +33,6 @@ public class LoginController {
     @Autowired
     SessionManager sessionManager;
 
-    @Autowired
-    UserRepository userRepository;
-
     //로그인
     @PostMapping("/login")
     @ResponseBody
@@ -113,5 +110,24 @@ public class LoginController {
         HashMap<String, Object> result = userService.setAbsence(userId,substitute,isAbsence);
         return result;
     }
+    @PostMapping("/getUserList")
+    @ResponseBody
+    public List<Map<String, Object>> getUserList(){
+        List<Map<String, Object>> users = userService.getUserList();
+        return users;
+    }
 
+    @PostMapping("/getDeptList")
+    @ResponseBody
+    public Map<String, Object> getDeptList(){
+        Map<String, Object> users = userService.getDeptList();
+        return users;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/userUpdate")
+    @ResponseBody
+    public String userUpdate(@RequestBody User param){
+        String result = userService.userUpdate(param);
+        return result;
+    }
 }

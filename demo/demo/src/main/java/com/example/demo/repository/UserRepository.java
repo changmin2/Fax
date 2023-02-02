@@ -52,4 +52,19 @@ public interface UserRepository extends JpaRepository<User, String> {
             "(SELECT u.DEPT_CODE FROM TB_USER u WHERE u.USER_ID = :userId )"
             , nativeQuery = true)
     String getFaxNo(@Param(value = "userId") String userId);
+
+    @Query(value= "SELECT u.*,\n" +
+            "(SELECT DEPT_NAME FROM TB_DEPT WHERE DEPT_CODE=u.DEPT_CODE) DEPT_NAME,\n" +
+            "(SELECT COMM_NAME FROM TB_COMM WHERE COMM_CODE=u.GRADE_CODE) COMM_NAME\n" +
+            "FROM TB_USER u"
+            , nativeQuery = true)
+    List<Map<String,Object>> getUserList();
+
+    @Query(value= "SELECT DEPT_CODE,DEPT_NAME FROM TB_DEPT"
+            , nativeQuery = true)
+    List<Map<String,Object>> getDeptList();
+
+    @Query(value= "SELECT COMM_CODE,COMM_NAME FROM TB_COMM"
+            , nativeQuery = true)
+    List<Map<String,Object>> getCommList();
 }
