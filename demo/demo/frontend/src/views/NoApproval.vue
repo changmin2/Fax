@@ -23,7 +23,7 @@
           </div>
         </div>
 
-        <table class="fax-table fax-table-detail" style="width: 100%">
+        <table class="fax-table fax-table-detail">
           <thead>
             <tr>
               <th scope="col">결재요청자</th>
@@ -57,20 +57,15 @@
         </table>
 
         <!-- <span class="mt-3">> 개인정보검출내용</span> -->
-        <div v-if="!isComplete">
+        <div v-if="!isComplete" style="display: flex; flex-direction: column">
           <span class="mt-3"
             ><i class="fa fa-caret-right" aria-hidden="true"></i> 결재 승인 및 반송</span
           >
           <table class="fax-table fax-table-detail">
-            <colgroup>
-              <col style="width: 50%" />
-              <col style="width: 25%" />
-              <col style="width: 25%" />
-            </colgroup>
             <thead>
               <tr>
                 <th scope="col">결재상태</th>
-                <th scope="col" style="height: 100px">반려 사유</th>
+                <th scope="col">반려사유</th>
               </tr>
             </thead>
             <tbody>
@@ -207,16 +202,12 @@ export default {
 </script>
 
 <style scoped>
-.no-approval-td-textarea {
-  height: 80px;
-}
 .no-approval-textarea {
   max-height: 100%;
   height: inherit;
-  width: 12rem;
   resize: none;
   margin: 0px;
   border: none;
-  line-height: 10px;
+  /* line-height: 10px; */
 }
 </style>
