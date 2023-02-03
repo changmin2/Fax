@@ -134,6 +134,12 @@ export default {
       console.log(this.searchFrom + " ~ " + this.searchTo);
     },
 
+    //팩스번호 포맷화
+    setFormatting(fax_no) {
+      let data = fax_no.replace(/^(\d{3})(\d{4})(\d)/, `$1-$2-$3`);
+      return data;
+    },
+
     // mainInfo
     async getMainInfo() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -152,6 +158,11 @@ export default {
           console.log("공지사항정보", data.NoticeInfo);
           console.log("전송 성공");
           this.data = data;
+
+          //발신자 팩스번호 포맷지정
+          for(let i in data.ReceiveLsit){
+             this.data.ReceiveLsit[i].SENDER_NO = this.setFormatting(data.ReceiveLsit[i].SENDER_NO);
+          }
         } else {
           console.log("전송 실패");
         }
