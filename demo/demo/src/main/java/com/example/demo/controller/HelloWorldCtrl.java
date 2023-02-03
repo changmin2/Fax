@@ -1,12 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.DetectionServiceV2;
+import com.example.demo.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -15,10 +18,11 @@ import java.io.IOException;
 public class HelloWorldCtrl {
 
     private final DetectionServiceV2 detectionServiceV2;
-
-    @RequestMapping("/hello")
-    public void hello() throws IOException {
-        detectionServiceV2.pdfTopng("TEST01120230202050356_1.pdf");
-    }
+    private final SmsService smsService;
+//
+//    @RequestMapping("/hello")
+//    public void hello(@RequestBody Map<String,String> map) throws IOException {
+//        smsService.smsSend(map);
+//    }
 
 }

@@ -132,4 +132,13 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "where APPR_NO =:apprNo ",nativeQuery = true)
     void deleteApproNo(@Param(value = "apprNo") String apprNo);
 
+    //결제자 번호 추출
+    @Query(value = "select HP_NUMBER\n" +
+            "  from fax.TB_USER\n" +
+            " where USER_ID = (\n" +
+            "\tselect APPR_PERSON\n" +
+            "      from fax.TB_APPROVAL\n" +
+            "     where USER_KEY =:userKey\n" +
+            " )",nativeQuery = true)
+    String getPhoneNumber(@Param(value="userKey")String userKey);
 }
