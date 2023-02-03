@@ -1,12 +1,15 @@
 package com.example.demo.service;
 
 import com.example.demo.GlobalVariables;
+import com.example.demo.VO.AddressVO;
 import com.example.demo.domain.Address.Address;
 import com.example.demo.domain.Form.RecieveForm;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.MainRepository;
 import com.example.demo.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,7 @@ public class AddressService {
     @Autowired
     GlobalVariables globalVariables;
     @Transactional(readOnly = true)
-    public HashMap<String,Object> getAddessList(String userId) {
+    public HashMap<String,Object> getAddressList(String userId) {
 
         List<Address> addresses = addressRepository.getListByUserId(userId);
 
@@ -37,19 +40,30 @@ public class AddressService {
         return result;
     }
 
-    public HashMap<String,Object> setAddess(Address address) throws IOException, ParseException {
+    public void setAddress(AddressVO vo) {
+        System.out.println("setAddress 진입");
+        String userId = vo.getUserId();
+        List<Address> addressList = vo.getAddressList();
 
-        log.info(address.toString());
-        if(address.getSEQ()==0){
-            int MaxNo = addressRepository.getMaxSeq();
-            log.info("MAX SEQ : "+MaxNo);
-            address.setSEQ(MaxNo);
+        for (Address address: addressList) {
+            address.setUSER_ID(userId);
+            log.info(address.toString());
+            if(address.getSEQ()==0){
+                int MaxNo = addressRepository.getMaxSeq();
+                log.info("MAX SEQ : "+MaxNo);
+                address.setSEQ(MaxNo);
+            }
+            addressRepository.save(address);
         }
-        addressRepository.save(address);
 
-        HashMap<String,Object> result = new HashMap<>();
-        result.put("address",address);
-        return result;
     }
 
+    public void deleteAddress(AddressVO vo) {
+        System.out.println("setAddress 진입");
+        List<Integer> seqList = vo.getSeqList();
+
+        for (Integer integer: seqList) {
+            addressRepository.deleteById(integer);
+        }
+    }
 }

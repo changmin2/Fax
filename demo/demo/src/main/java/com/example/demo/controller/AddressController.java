@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.VO.AddressVO;
 import com.example.demo.domain.Address.Address;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AddressService;
@@ -29,19 +30,24 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-    @PostMapping("/getAddessList")
+    @PostMapping("/getAddressList")
     @ResponseBody
-    public HashMap<String, Object> getAddessList(@RequestBody Map<String, String> map) throws IOException, ParseException {
+    public HashMap<String, Object> getAddeessList(@RequestBody Map<String, String> map) throws IOException, ParseException {
         String userId = map.get("userId"); //유저아이디
-        HashMap<String, Object> result = addressService.getAddessList(userId);
+        HashMap<String, Object> result = addressService.getAddressList(userId);
         return result;
     }
-    @PostMapping("/setAddess")
+    @PostMapping("/setAddress")
     @ResponseBody
-    public String setAddess(@RequestBody Address address) throws IOException, ParseException {
-//        String userId = map.get("userId"); //유저아이디
-//        System.out.println("메인정보 불러오기"+userId);
-        HashMap<String, Object> result = addressService.setAddess(address);
+    public String setAddress(@RequestBody AddressVO vo) throws IOException, ParseException {
+        addressService.setAddress(vo);
+        return "OK";
+    }
+
+    @PostMapping("/deleteAddress")
+    @ResponseBody
+    public String deleteAddress(@RequestBody AddressVO vo) throws IOException, ParseException {
+        addressService.deleteAddress(vo);
         return "OK";
     }
 }

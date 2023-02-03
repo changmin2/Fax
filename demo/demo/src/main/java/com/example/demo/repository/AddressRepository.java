@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AddressRepository extends JpaRepository<Address, String> {
+public interface AddressRepository extends JpaRepository<Address, Integer> {
     @Query(value= "select IFNULL(max(t.SEQ),0)+1 from TB_ADDRESS t", nativeQuery = true)
     int getMaxSeq();
     @Query(value= "select t.* from TB_ADDRESS t where USER_ID = :userId", nativeQuery = true)
