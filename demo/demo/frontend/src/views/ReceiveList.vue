@@ -2,7 +2,9 @@
   <section class="section">
     <div class="main-container">
       <div class="receive-title display-4 mb-4 font-weight-800 text-default">
-        받은팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
+        <!-- <i class="fa fa-envelope-open" aria-hidden="true"></i> -->
+        받은팩스함 -
+        <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
       </div>
 
       <form id="master" role="form" style="width: 100%">
@@ -203,8 +205,8 @@ export default {
           this.detailOpen = false;
 
           //발신자 팩스번호 포맷지정
-          for(let i in data){
-             this.receivelist[i].sender_NO = this.setFormatting(data[i].sender_NO);
+          for (let i in data) {
+            this.receivelist[i].sender_NO = this.setFormatting(data[i].sender_NO);
           }
         } else {
           console.log("전송 실패");

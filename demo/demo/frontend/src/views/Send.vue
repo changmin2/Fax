@@ -3,14 +3,11 @@
     <div class="send-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
         팩스보내기
+        <i class="fa fa-print" aria-hidden="true"></i>
         <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
         <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
-        <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f"
-          >- 재사용</span
-        >
-        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f"
-          >- 수정</span
-        >
+        <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f">- 재사용</span>
+        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f">- 수정</span>
       </div>
 
       <div class="row">
@@ -95,7 +92,9 @@
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
                     <div v-else class="mt-2 d-lg-inline" style="width: 200px">
-                      <a v-bind:href="`${fileUrl}`" target="_new" download="">PDF변환파일.pdf  - {{pageCount}}장</a>
+                      <a v-bind:href="`${fileUrl}`" target="_new" download=""
+                        >PDF변환파일.pdf - {{ pageCount }}장</a
+                      >
                       <i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
                         @click="deleteFile"
@@ -231,7 +230,9 @@ export default {
       getterSendDetail: "getSendDetail",
       getterUpdate: "getSendUpdate",
     }),
-    fileUrl() { return  "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.newFileName; },
+    fileUrl() {
+      return "https://bnksys.s3.ap-northeast-2.amazonaws.com/" + this.newFileName;
+    },
   },
   created() {
     this.$store.commit("SET_USER_KEY_INIT");
@@ -287,33 +288,32 @@ export default {
         headers: { "Content-Type": "multipart/form-data" },
       };
 
-        try {
-          let reqUrl = this.getterUpdate?"/updateUpload":"/upload"; //수정요청인지 아닌지
+      try {
+        let reqUrl = this.getterUpdate ? "/updateUpload" : "/upload"; //수정요청인지 아닌지
 
-          let { data } = await http.post(reqUrl, formData, options);
-          this.$store.commit("SET_LOADING_FALSE");
-          // console.log(data);
-  
-          if (data.Result == "OK") {
-            alertify.success("업로드 성공", 1.5);
-            if (this.userKey == "None") {
-              this.$store.commit("SET_USER_KEY", data.userKey);
-            }
-            this.newFileName = data.newFileName;
-            this.fileFlag = false;
-            this.pageCount = data.pageCount;
-            this.privateInfo = data.detection;
-            console.log("업로드 성공",data.newFileName);
-          } else {
-            alertify.error("업로드 실패", 1.5);
-            this.newFileName = "";
-            this.fileFlag = true;
+        let { data } = await http.post(reqUrl, formData, options);
+        this.$store.commit("SET_LOADING_FALSE");
+        // console.log(data);
+
+        if (data.Result == "OK") {
+          alertify.success("업로드 성공", 1.5);
+          if (this.userKey == "None") {
+            this.$store.commit("SET_USER_KEY", data.userKey);
           }
-        } catch (error) {
-          this.$store.commit("SET_LOADING_FALSE");
-          console.log(error);
+          this.newFileName = data.newFileName;
+          this.fileFlag = false;
+          this.pageCount = data.pageCount;
+          this.privateInfo = data.detection;
+          console.log("업로드 성공", data.newFileName);
+        } else {
+          alertify.error("업로드 실패", 1.5);
+          this.newFileName = "";
+          this.fileFlag = true;
         }
-     
+      } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
+        console.log(error);
+      }
     },
 
     // 팩스보내기
@@ -354,11 +354,11 @@ export default {
       };
 
       try {
-        let reqUrl = this.getterUpdate?"/updateSend":"/Send"; //수정요청인지 아닌지
+        let reqUrl = this.getterUpdate ? "/updateSend" : "/Send"; //수정요청인지 아닌지
         let response = await http.post(reqUrl, sendData);
 
-        let msg = this.getterUpdate?"수정":"전송";
-        let msg2 = this.getterUpdate?"수정":"전송신청";
+        let msg = this.getterUpdate ? "수정" : "전송";
+        let msg2 = this.getterUpdate ? "수정" : "전송신청";
 
         let { data } = response;
         this.$store.commit("SET_LOADING_FALSE");
@@ -368,7 +368,7 @@ export default {
           console.log(data);
           console.log("전송 성공");
           this.$router.push("/send-list");
-          alertify.alert(msg,"팩스 "+msg2+"이 완료되었습니다.");
+          alertify.alert(msg, "팩스 " + msg2 + "이 완료되었습니다.");
         } else {
           console.log("전송 실패");
         }
@@ -376,7 +376,7 @@ export default {
         // 전송 실패
         this.$store.commit("SET_LOADING_FALSE");
         console.log("오류메시지 - ", data.Message);
-        alertify.alert(msg,"팩스 전송 결재신청에 실패했습니다.");
+        alertify.alert(msg, "팩스 전송 결재신청에 실패했습니다.");
       }
     },
     async getApprUsers() {
@@ -398,7 +398,8 @@ export default {
       }
     },
     async deleteFile() {
-      if(this.getterUpdate){ //삭제시키는척만
+      if (this.getterUpdate) {
+        //삭제시키는척만
         this.newFileName = "";
         this.fileFlag = true;
         alertify.success("파일 재등록이 가능합니다.", "");
@@ -458,7 +459,7 @@ export default {
         return;
       }
       const regexr = /([0-9]|[-])/g;
-      if(!regexr.test(this.receiveFax)){
+      if (!regexr.test(this.receiveFax)) {
         //팩스번호 숫자랑 -만
         alertify.error("팩스번호는 숫자와 -기호만 사용가능합니다", 1.5);
         return;
@@ -520,35 +521,39 @@ export default {
       this.grade = userInfo.grade;
       this.getApprUsers();
       let originData;
-      if(this.getterUpdate||this.getterSendDetail){
+      if (this.getterUpdate || this.getterSendDetail) {
         if (this.getterUpdate) {
           originData = this.getterUpdate;
           this.$store.commit("SET_USER_KEY", originData.Info.user_KEY);
-        }else if(this.getterSendDetail) {
+        } else if (this.getterSendDetail) {
           originData = this.getterSendDetail;
           this.$store.commit("SET_USER_KEY", originData.userKey);
         }
         this.title = originData.Info.title;
         this.apprUserNo = originData.Info.appr_USER_NO;
         let tempArr = originData.details;
-        tempArr.forEach((value, index, array)=>{
-          let tempJson = {company:value.RECEIVE_COMPANY, name:value.RECEIVE_NAME, fax:value.RECEIVE_FAX_NO};
+        tempArr.forEach((value, index, array) => {
+          let tempJson = {
+            company: value.RECEIVE_COMPANY,
+            name: value.RECEIVE_NAME,
+            fax: value.RECEIVE_FAX_NO,
+          };
           this.receiveJSON.push(tempJson);
           this.showJSON +=
-              "상호 : " +
-              tempJson.company +
-              ", 이름 : " +
-              tempJson.name +
-              ", 팩스번호 : " +
-              tempJson.fax +
-              "\n";
+            "상호 : " +
+            tempJson.company +
+            ", 이름 : " +
+            tempJson.name +
+            ", 팩스번호 : " +
+            tempJson.fax +
+            "\n";
         });
         this.fileFlag = false;
-        this.pageCount = originData.Info.page_CNT||0;
-        this.privateInfo = (originData.Info.private_INFO_YN=='Y');
-        this.reserve = (originData.Info.reserve_YN=='Y')?'reserve':'';
+        this.pageCount = originData.Info.page_CNT || 0;
+        this.privateInfo = originData.Info.private_INFO_YN == "Y";
+        this.reserve = originData.Info.reserve_YN == "Y" ? "reserve" : "";
         // this.sendDate = originData.Info.send_DATE;
-        if(originData.Info.send_DATE!=''){
+        if (originData.Info.send_DATE != "") {
           var date = new Date(originData.Info.send_DATE);
           this.sendDate = date.toISOString();
         }
