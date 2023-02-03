@@ -72,20 +72,20 @@
               <tr>
                 <td>{{ noApprDetail.상태 }}</td>
                 <td style="height: 100px">
-                  <!-- <textarea
-                      class="no-approval-textarea"
-                      v-model="apprRemark"
-                      @change="setRemark"
-                      cols="30"
-                      rows="5"
-                    ></textarea> -->
                   <textarea
+                    class="no-approval-textarea"
+                    v-model="apprRemark"
+                    @change="setRemark"
+                    cols="30"
+                    rows="5"
+                  ></textarea>
+                  <!-- <textarea
                     name="opinion"
                     class="no-approval-textarea"
                     cols="30"
                     rows="5"
-                  ></textarea
-                  ><br />
+                  ></textarea> -->
+                  <br />
                 </td>
               </tr>
             </tbody>
@@ -188,6 +188,9 @@ export default {
           this.noApproval(); // 결재 리스트 업데이트
           this.$parent.$parent.closeModal();
           this.$store.commit("SET_LOADING_FALSE");
+
+          // 반려 사유 초기화
+          this.apprRemark = "";
         } else {
           console.log("결재 반려  실패");
         }
@@ -202,6 +205,10 @@ export default {
 </script>
 
 <style scoped>
+.no-approval-btn-group {
+  display: flex;
+  justify-content: center;
+}
 .no-approval-textarea {
   max-height: 100%;
   height: inherit;
