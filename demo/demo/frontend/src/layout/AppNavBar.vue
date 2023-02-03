@@ -59,6 +59,13 @@
         <a href="#" @click="navbarToggle4" :class="{ 'navbar-click': toggleValue4 === true }"
           >주소록</a
         >
+        <ul class="navbar-sub">
+          <li :class="{ 'li-a': toggleValue4 === false }">
+            <a href="/#/addressBook"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 주소록</a
+            >
+          </li>
+        </ul>
       </li>
 
       <!-- <li>
@@ -96,7 +103,7 @@
 
             <div class="nav-link-inner--text d-lg-none font-weight-600">MyProfile</div>
           </a>
-          <router-link to="/send" class="dropdown-item">주소록...</router-link>
+          <router-link to="/addressBook" class="dropdown-item">주소록...</router-link>
         </base-dropdown>
       </li> -->
     </ul>
