@@ -30,23 +30,23 @@ public class AddressController {
     @Autowired
     AddressService addressService;
 
-    @PostMapping("/getAddessList")
+    @PostMapping("/getAddressList")
     @ResponseBody
-    public HashMap<String, Object> getAddessList(@RequestBody Map<String, String> map) throws IOException, ParseException {
+    public HashMap<String, Object> getAddeessList(@RequestBody Map<String, String> map) throws IOException, ParseException {
         String userId = map.get("userId"); //유저아이디
-        HashMap<String, Object> result = addressService.getAddessList(userId);
+        HashMap<String, Object> result = addressService.getAddressList(userId);
         return result;
     }
-    @PostMapping("/setAddess")
+    @PostMapping("/setAddress")
     @ResponseBody
-    public String setAddess(@RequestBody AddressVO vo) throws IOException, ParseException {
-        addressService.setAddess(vo);
+    public String setAddress(@RequestBody AddressVO vo) throws IOException, ParseException {
+        addressService.setAddress(vo);
         return "OK";
     }
 
-    @PostMapping("/deleteAddess")
+    @PostMapping("/deleteAddress")
     @ResponseBody
-    public String deleteAddess(@RequestBody AddressVO vo) throws IOException, ParseException {
+    public String deleteAddress(@RequestBody AddressVO vo) throws IOException, ParseException {
         addressService.deleteAddress(vo);
         return "OK";
     }

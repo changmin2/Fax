@@ -18,6 +18,8 @@ import MyPage from "../views/MyPage.vue";
 import SendWait from "../views/SendWait.vue";
 import LoadingSpinner from "../views/LoadingSpinner.vue";
 import AdminUserList from "../views/AdminUserList.vue";
+import AddressBook from "../views/AddressBook.vue";
+
 
 Vue.use(Router);
 const requireAuth = () => (from, to, next) => {
@@ -155,6 +157,18 @@ export default new Router({
         header: AppHeader,
         navbar: AppNavbar,
         default: MyPage,
+        // footer: AppFooter
+        spinner: LoadingSpinner,
+      },
+      beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
+    },
+    {
+      path: "/addressBook",
+      name: "addressBook",
+      components: {
+        header: AppHeader,
+        navbar: AppNavbar,
+        default: AddressBook,
         // footer: AppFooter
         spinner: LoadingSpinner,
       },

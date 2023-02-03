@@ -110,13 +110,13 @@
       </table>
     </div>
     <!-- modal 모달창 -->
-    <modal
-      :show.sync="isModalState"
-      modal-classes="modal-dialog-centered modal-big"
-      @search="noApproval"
-    >
+    <modal :show.sync="isModalState" modal-classes="modal-dialog-centered modal-big">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <no-approval :noApprDetail="noApprDetail" :isComplete="false"></no-approval>
+      <no-approval
+        :noApprDetail="noApprDetail"
+        :isComplete="false"
+        :noApproval="noApproval"
+      ></no-approval>
     </modal>
   </section>
 </template>
@@ -211,7 +211,6 @@ export default {
       return data;
     },
 
-
     // detail - noApproval 설정
     setNoApproval(apprNo) {
       this.apprNo = apprNo;
@@ -275,10 +274,11 @@ export default {
           this.noApprDetail = data[0];
 
           //발신자 팩스번호 포맷지정
-          for(let i in data[0].받는사람정보){
-             this.noApprDetail.받는사람정보[i].팩스번호 = this.setFormatting(data[0].받는사람정보[i].팩스번호);
+          for (let i in data[0].받는사람정보) {
+            this.noApprDetail.받는사람정보[i].팩스번호 = this.setFormatting(
+              data[0].받는사람정보[i].팩스번호
+            );
           }
-
 
           alertify.success("결재함 상세 조회가 완료되었습니다.", 1.5);
         } else {
