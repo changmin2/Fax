@@ -100,13 +100,9 @@
     </div>
 
     <!-- 컴포넌트 MyModal -->
-    <modal
-      :show.sync="isModalState"
-      modal-classes="modal-dialog-centered modal-big"
-      @search="getSendList"
-    >
+    <modal :show.sync="isModalState" modal-classes="modal-dialog-centered modal-big">
       <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
-      <send-detail :sendDetail="sendDetail"></send-detail>
+      <send-detail :sendDetail="sendDetail" :getSendList="getSendList"></send-detail>
     </modal>
   </section>
 </template>
@@ -237,8 +233,10 @@ export default {
           this.sendDetail = data[0];
 
           //발신자 팩스번호 포맷지정
-          for(let i in data[0].받는사람정보){
-             this.sendDetail.받는사람정보[i].팩스번호 = this.setFormatting(data[0].받는사람정보[i].팩스번호);
+          for (let i in data[0].받는사람정보) {
+            this.sendDetail.받는사람정보[i].팩스번호 = this.setFormatting(
+              data[0].받는사람정보[i].팩스번호
+            );
           }
 
           this.$store.commit("SET_MODAL_OPEN");

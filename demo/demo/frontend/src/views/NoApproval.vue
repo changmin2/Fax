@@ -126,7 +126,7 @@ import Modal from "@/components/Modal.vue";
 
 export default {
   name: "no-approval",
-  props: ["noApprDetail", "isComplete"],
+  props: ["noApprDetail", "isComplete", "noApproval"],
   components: {
     Modal,
   },
@@ -158,6 +158,7 @@ export default {
           this.noApprovalList = data;
           alertify.alert("성공", "결재 승인 완료되었습니다.", 1.5);
           // 승인 시 모달 닫고 리스트로 이동
+          this.noApproval(); // 결재 리스트 업데이트
           this.$parent.$parent.closeModal();
           this.$store.commit("SET_LOADING_FALSE");
         } else {
@@ -189,6 +190,7 @@ export default {
 
           alertify.alert("성공", "결재 반려 완료되었습니다.", 1.5);
           // 반려 시 모달 닫고 리스트로 이동
+          this.noApproval(); // 결재 리스트 업데이트
           this.$parent.$parent.closeModal();
           this.$store.commit("SET_LOADING_FALSE");
         } else {

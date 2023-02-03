@@ -154,7 +154,7 @@ import alertify from "alertifyjs";
 
 export default {
   name: "send-detail",
-  props: ["sendDetail"],
+  props: ["sendDetail", "getSendList"],
 
   data() {
     return {
@@ -261,6 +261,7 @@ export default {
               this.destroy();
             }
           );
+          this.getSendList();
         } else {
           console.log("회수 요청 실패");
         }
