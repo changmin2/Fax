@@ -21,11 +21,9 @@ import java.util.Map;
 public class SmsService {
 
     private final GlobalVariables globalVariables;
-    private final ApprovalRepository approvalRepository;
-    private final UserRepository userRepository;
 
     //결제 보낼때(결제를 받는사람), 승인 되어 받는사람에게 문자 전송
-    public void smsSend(String userKey) throws IOException {
+    public void smsSend(String text,String phoneN) throws IOException {
         Map<String, String> headers = new HashMap<>();
         HttpPostMultipart multipart = new HttpPostMultipart("https://balsong.com/Linkage/API/", "utf-8", headers);
         Map<String,Object> result = new HashMap<>();
@@ -39,18 +37,21 @@ public class SmsService {
         multipart.addFormField("List_EA", "10");
         multipart.addFormField("Subject", "BNK E-FAX 발송");
 
-        String userName = userRepository.getUserName(userKey);
-        multipart.addFormField("Main_Text", "BNK E-FAX\n"+userName+"님이 보낸 "+"결제 요청이 왔습니다.");
+//        String userName = userRepository.getUserName(userKey);
+//        multipart.addFormField("Main_Text", "BNK E-FAX\n"+userName+"님이 보낸 "+"결제 요청이 왔습니다.");
+        multipart.addFormField("Main_Text", "[BNK i-FAX]\n"+text);
 
-        String phoneN = approvalRepository.getPhoneNumber(userKey);
+//        String phoneN = approvalRepository.getPhoneNumber(userKey);
         JSONArray arr = new JSONArray();
         JSONObject d = new JSONObject();
         d.put("Phone",phoneN);
         arr.add(d);
         multipart.addFormField("Destination", arr.toString());
 
+
         // 응답 값
         String ResultJson = multipart.finish();
         log.info(ResultJson);
     }
 }
+

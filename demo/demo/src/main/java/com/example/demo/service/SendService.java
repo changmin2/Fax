@@ -43,10 +43,12 @@ public class SendService {
     private final ApprovalRepository approvalRepository;
     private final UploadRepository uploadRepository;
     private final UserRepository userRepository;
+    private final SmsService smsService;
     private final S3Uploader s3Uploader;
     @Transactional
     public String sendInsert(SendReq req) throws ParseException, IOException {
         String Date_End = globalVariables.getNow();
+        String userKey = req.getUserKey();
         if(req.getReserve_yn().equals("Y")){ //예약전송일때
             String sendDate = req.getSend_Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
@@ -78,7 +80,13 @@ public class SendService {
             //발송정보 저장
             send.setAPPR_NO(approval.getAPPR_NO());
             sendRepository.save(send);
+
+            //SMS 보내기
+            String userName = userRepository.getUserName(userKey);
+            String phoneN = approvalRepository.getPhoneNumber(userKey);
+            smsService.smsSend(req.getTitle()+" 건으로\n"+userName+"님의 결제 요청이 왔습니다.",phoneN);
             return "결재 신청 완료";
+
         }else{ //전결일때
             sendRepository.save(send);
             return apprUpOrSend(req.getUserKey(),req.getUserID());
@@ -312,13 +320,18 @@ public class SendService {
             send.setAPPR_NO(approval.getAPPR_NO());
             send.setAPPR_USER_NO(approval.getAPPR_PERSON());
 
+            //SMS 보내기
+            String userName = userRepository.getUserName(userKey);
+            String phoneN = approvalRepository.getPhoneNumber(userKey);
+            smsService.smsSend(send.getTITLE()+" 개인정보 포함 건으로\n"+userName+"님의 결제 요청이 왔습니다.",phoneN);
+
             return  "개인정보 포함 문서로, "+apprUSER_NAME+"("+apprCOMM_NAME+")에게 결재요청되었습니다.";
         }
 
         //아니면 팩스전송
         //SEND 테이블  update
         send.setSTATUS("결재완료");
-        sendRepository.save(send);
+//        sendRepository.save(send);
         //발송시작
         return sendApi(send);
     }
