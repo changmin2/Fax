@@ -49,10 +49,8 @@ public class SmsService {
         arr.add(d);
         multipart.addFormField("Destination", arr.toString());
 
-
         // 응답 값
         String ResultJson = multipart.finish();
         log.info(ResultJson);
     }
 }
-

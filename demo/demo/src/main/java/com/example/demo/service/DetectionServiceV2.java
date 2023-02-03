@@ -112,5 +112,4 @@ public class DetectionServiceV2 {
         }
         return false;
     }
-
 }
