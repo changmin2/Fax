@@ -94,7 +94,7 @@
                       id="inputFileUploadInsert"
                       accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
                     />
-                    <div v-else class="mt-2 d-inline-flex" style="width: 200px">
+                    <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                       <a v-bind:href="`${fileUrl}`" target="_new" download="">PDF변환파일.pdf  - {{pageCount}}장</a>
                       <i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
@@ -102,8 +102,7 @@
                         style="cursor: pointer"
                       ></i>
                     </div>
-
-                    <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo" onClick="return false;"
+                    <base-checkbox class="mt-2 d-inline-flex ml-4" v-model="privateInfo" disabled
                       >개인정보 포함여부</base-checkbox
                     >
                   </td>
@@ -263,13 +262,13 @@ export default {
       let formData = new FormData();
       formData.append("userId", this.userId);
       formData.append("userKey", this.userKey);
-      console.log("userKey: ", this.userKey);
+      // console.log("userKey: ", this.userKey);
       this.fileList = [];
       const fileArray = Array.from(fileEvent.target.files);
       fileArray.forEach((file) => {
         this.fileList.push(URL.createObjectURL(file));
       });
-      console.log("fileArray", fileArray);
+      // console.log("fileArray", fileArray);
 
       // file upload
       let attachFiles = document.querySelector("#inputFileUploadInsert").files;
@@ -293,7 +292,7 @@ export default {
 
           let { data } = await http.post(reqUrl, formData, options);
           this.$store.commit("SET_LOADING_FALSE");
-          console.log(data);
+          // console.log(data);
   
           if (data.Result == "OK") {
             alertify.success("업로드 성공", 1.5);
@@ -303,6 +302,7 @@ export default {
             this.newFileName = data.newFileName;
             this.fileFlag = false;
             this.pageCount = data.pageCount;
+            this.privateInfo = data.detection;
             console.log("업로드 성공",data.newFileName);
           } else {
             alertify.error("업로드 실패", 1.5);
@@ -416,6 +416,7 @@ export default {
         if (data) {
           this.newFileName = "";
           this.fileFlag = true;
+          this.privateInfo = false;
           alertify.success("파일삭제 성공", 1.5);
         } else {
           this.fileFlag = false;
