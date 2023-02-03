@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.VO.AddressVO;
 import com.example.demo.domain.Address.Address;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AddressService;
@@ -38,10 +39,15 @@ public class AddressController {
     }
     @PostMapping("/setAddess")
     @ResponseBody
-    public String setAddess(@RequestBody Address address) throws IOException, ParseException {
-//        String userId = map.get("userId"); //유저아이디
-//        System.out.println("메인정보 불러오기"+userId);
-        HashMap<String, Object> result = addressService.setAddess(address);
+    public String setAddess(@RequestBody AddressVO vo) throws IOException, ParseException {
+        addressService.setAddess(vo);
+        return "OK";
+    }
+
+    @PostMapping("/deleteAddess")
+    @ResponseBody
+    public String deleteAddess(@RequestBody AddressVO vo) throws IOException, ParseException {
+        addressService.deleteAddress(vo);
         return "OK";
     }
 }

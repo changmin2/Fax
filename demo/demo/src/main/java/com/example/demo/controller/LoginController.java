@@ -98,16 +98,19 @@ public class LoginController {
         String userId = map.get("userId"); //유저아이디
         System.out.println("대체자 불러오기"+userId);
         HashMap<String, Object> result = userService.getSubstituteUser(userId);
+
         return result;
     }
 
     @PostMapping("/setAbsence")
     @ResponseBody
-    public HashMap<String, Object> setAbsence(@RequestBody Map<String,String> map){
+    public HashMap<String, Object> setAbsence(@RequestBody Map<String,String> map, HttpServletRequest request, HttpServletResponse response){
         String userId = map.get("userId"); //유저아이디
         String substitute = map.get("substitute"); //부재여부 Y일경우, 대체자 아이디 / N이면 ""
         String isAbsence = map.get("isAbsence"); //부재여부 (Y/N)
         HashMap<String, Object> result = userService.setAbsence(userId,substitute,isAbsence);
+        sessionManager.expire(request);
+        sessionManager.createSession(result.get("user"),response);
         return result;
     }
     @PostMapping("/getUserList")

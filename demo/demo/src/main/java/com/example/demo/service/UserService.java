@@ -107,9 +107,7 @@ public class UserService {
         user.setIS_ABSENCE(isAbsence);
         user.setSUBSTITUTE(isAbsence.equals("Y")?substitute:"");
 
-//        sessionManager.createSession(userRepository.getUserInfo(userId),
-//                response);
-//        resultMap.put("user",user);
+        resultMap.put("user",userRepository.getUserInfo(userId));
         resultMap.put("flag",flag);
         resultMap.put("msg","부재여부 설정이 완료되었습니다.");
 
