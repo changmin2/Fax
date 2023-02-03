@@ -108,6 +108,7 @@ public class ReceiveService {
         if(recieve.getREAD_USER().equals("")){
             recieve.setREAD_USER(userId);
             recieve.setREAD_YN("Y");
+
             recieve.setREAD_DATE(globalVariables.getNow());
         }
         result.put("receive_DATE",recieve.getRECEIVE_DATE());
