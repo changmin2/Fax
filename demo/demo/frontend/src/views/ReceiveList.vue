@@ -81,7 +81,7 @@
             <!--<th>
                     <input type="checkbox">
                   </th> -->
-            <th>확인</th>
+            <th>제목</th>
             <th>상세보기</th>
             <th>발신자팩스번호</th>
             <th>받은날짜</th>
@@ -93,7 +93,7 @@
 
           <tr v-for="(receive, index) in receivelist" :key="index">
             <!--<td></td>-->
-            <td>{{ receive.receive_No_SEQ }}</td>
+            <td>{{ receive.title }}</td>
             <td>
               <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
             </td>
