@@ -39,7 +39,7 @@ public class UploadController {
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
     @PostMapping("/upload")
     @ResponseBody
-    public HashMap<String,String> uploadSingle(@RequestParam("userId") String userId,
+    public HashMap<String,Object> uploadSingle(@RequestParam("userId") String userId,
                                                @RequestParam(value = "userKey",defaultValue = "None") String userKey,
                                                @RequestParam("files") List<MultipartFile> files) throws Exception {
 
@@ -56,7 +56,7 @@ public class UploadController {
         String RealPath =userKey+"_"+"1.pdf";
         String userFileName = "temp"+seq;
 
-        HashMap<String,String> result = userService.convertPDF(files,RealPath);
+        HashMap<String,Object> result = userService.convertPDF(files,RealPath);
         if(result.get("Result").equals("ERROR")){
             return result;
         }
@@ -72,7 +72,7 @@ public class UploadController {
     //회수 -> 수정 -> 파일첨부
     @PostMapping("/updateUpload")
     @ResponseBody
-    public HashMap<String, String> updateUpload(@RequestParam("userId") String userId,
+    public HashMap<String, Object> updateUpload(@RequestParam("userId") String userId,
                                                 @RequestParam(value = "userKey",defaultValue = "None") String userKey,
                                                 @RequestParam("files") List<MultipartFile> files) throws IOException, ParseException {
         String fileName = userService.getFileName(userKey);
@@ -82,7 +82,7 @@ public class UploadController {
         String newFileName = globalVariables.createKey(userId)+"_"+String.valueOf(newSeq)+".pdf";
         log.info(newFileName);
 
-        HashMap<String,String> result = userService.convertPDF(files,newFileName);
+        HashMap<String,Object> result = userService.convertPDF(files,newFileName);
 
         result.put("newFileName",newFileName);
 

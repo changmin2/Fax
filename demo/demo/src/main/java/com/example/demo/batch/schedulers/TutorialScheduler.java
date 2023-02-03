@@ -17,7 +17,7 @@ public class TutorialScheduler {
     private final Job job;  // tutorialJob
     private final JobLauncher jobLauncher;
 
-    // 5초마다 실행
+    // 30초마다 실행
     @Scheduled(fixedDelay = 30 * 1000L)
     public void executeJob () {
         try {

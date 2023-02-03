@@ -31,8 +31,10 @@ dependencies {
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'
 	implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.24'
+	implementation group: 'org.apache.pdfbox', name: 'pdfbox-tools', version: '2.0.13'
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	implementation 'com.google.cloud:google-cloud-vision:2.0.17'
 }
 
 tasks.named('test') {

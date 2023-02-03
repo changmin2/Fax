@@ -13,8 +13,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -34,6 +32,7 @@ public class UploadService {
     private  final UploadRepository uploadRepository;
     private  final GlobalVariables globalVariables;
     private final S3Uploader s3Uploader;
+    private final DetectionServiceV2 detectionServiceV2;
 
     @Transactional
     public void register(Upload user){
@@ -54,9 +53,9 @@ public class UploadService {
         };
     }
 
-    public  HashMap<String,String>  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
+    public  HashMap<String,Object>  convertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
         log.info("converPDF진입");
-        HashMap<String,String> result = new HashMap<>();
+        HashMap<String,Object> result = new HashMap<>();
         ////////////////////////////////////////////
         //[팩스 - 변환 요청]
         ////////////////////////////////////////////
@@ -92,6 +91,7 @@ public class UploadService {
         JSONParser jsonParse = new JSONParser();
         JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
         String Result = (String) ObjToJson.get("Result");
+        boolean detectionResult =false;
 //        data:application/pdf;base64,
         Result = Result.replace("|","");
         if(Result.equals("OK")){
@@ -115,11 +115,14 @@ public class UploadService {
             result.put("pageCount",pageCount+"");
             pdfDoc.close();
             s3Uploader.upload(n, "static",RealPath);
+            detectionResult = detectionServiceV2.pdfTopng(RealPath);
+            log.info(String.valueOf(detectionResult));
         }else{
             String Message = (String) ObjToJson.get("Message");
             result.put("Message",Message);
         }
         result.put("Result",Result);
+        result.put("detection",detectionResult);
         return result;
     }
 }

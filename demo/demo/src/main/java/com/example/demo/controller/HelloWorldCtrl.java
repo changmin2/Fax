@@ -1,13 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.GlobalVariables;
-import com.example.demo.service.DetectionService;
-import com.example.demo.service.ReceiveService;
+import com.example.demo.service.DetectionServiceV2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
-import org.springframework.aop.framework.adapter.GlobalAdvisorAdapterRegistry;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,14 +14,11 @@ import java.io.IOException;
 @Slf4j
 public class HelloWorldCtrl {
 
-    private final ReceiveService receiveService;
-    private final GlobalVariables globalVariables;
-    private final DetectionService detectionService;
+    private final DetectionServiceV2 detectionServiceV2;
 
-    @GetMapping("/hello")
-    public String helloWorld() throws IOException {
-        detectionService.ResidentNumberDetection("https://bnksys.s3.ap-northeast-2.amazonaws.com/detect_test.pdf");
-        return "hello!";
+    @RequestMapping("/hello")
+    public void hello() throws IOException {
+        detectionServiceV2.pdfTopng("TEST01120230202050356_1.pdf");
     }
 
 }
