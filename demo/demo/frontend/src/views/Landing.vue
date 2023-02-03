@@ -143,9 +143,9 @@ export default {
       return data;
     },
 
-    //팩스번호 포맷화
+    //공지사항 dialog
     openModal(notice) {
-      alertify.alert(notice.TITLE, notice.CONTENT).set('transitionOff',true);
+      alertify.alert(notice.TITLE, notice.CONTENT).set({transition:'fade', resizable:true}); 
     },
 
     // mainInfo
