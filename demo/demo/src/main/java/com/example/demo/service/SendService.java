@@ -304,6 +304,7 @@ public class SendService {
             approval.setUSER_KEY(send.getUSER_KEY());
             approval.setPRIVATE_INFO_YN(send.getPRIVATE_INFO_YN());
             approval.setUSER_NO(send.getUSER_NO());
+            approval.setUSE_GBN("Y");
             approval.setSTATUS("대기");
             approvalRepository.save(approval);
 

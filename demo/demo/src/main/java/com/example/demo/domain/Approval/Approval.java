@@ -35,6 +35,7 @@ public class Approval {
         this.USER_NO = req.getUserID();
         this.APPR_PERSON = req.getAppr_person();
         this.APPR_NO = req.getUserKey()+i;
+        this.USE_GBN = "Y";
     }
 
 }

@@ -215,6 +215,8 @@ public class PayService {
     @Transactional
     public void updateUseGbn(String userKey) {
         sendRepository.findById(userKey).get().setUSE_GBN("N");
-        approvalRepository.findAppr(userKey).setUSE_GBN("N");
+        Approval approval =  approvalRepository.findAppr(userKey);
+        approval.setUSE_GBN("N");
+        approvalRepository.save(approval);
     }
 }
