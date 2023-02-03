@@ -23,16 +23,19 @@
             </div>
             <div class="table-container">
               <hr />
-              <table class="fax-table content-group-notice">
+              <table class="fax-table content-group-notice table-hover">
+                 <tbody>
+                <tr v-for="(notice, index) in data.NoticeInfo" :key="index" @click="openModal(notice)" role="button">
+                  <td scope="row" class="text-left pl-2">
+                    {{ notice.TITLE }}</td>
+
+                  <td style="width: 8rem" class="text-right pr-2">{{ notice.DATE }}</td>
+                </tr>
+                 </tbody>
                 <!-- <tr class="ApprArea-header">
                   <th>내용</th>
                   <th>제목</th>
                 </tr> -->
-                <tr v-for="(notice, index) in data.NoticeInfo" :key="index">
-                  <td>{{ notice.CONTENT }}</td>
-
-                  <td style="width: 8rem">{{ notice.DATE }}</td>
-                </tr>
               </table>
             </div>
           </div>
@@ -48,7 +51,7 @@
                   <th>페이지수</th>
                   <th>수신일시</th>
                 </tr>
-                <tr v-for="(receive, index) in data.ReceiveLsit" :key="index">
+                <tr v-for="(receive, index) in data.ReceiveList" :key="index">
                   <td>{{ receive.SENDER_NO }}</td>
                   <td>{{ receive.PAGE_CNT }}</td>
                   <td>{{ receive.RECEIVE_DATE }}</td>
@@ -140,6 +143,11 @@ export default {
       return data;
     },
 
+    //팩스번호 포맷화
+    openModal(notice) {
+      alertify.alert(notice.TITLE, notice.CONTENT).set('transitionOff',true);
+    },
+
     // mainInfo
     async getMainInfo() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -160,8 +168,8 @@ export default {
           this.data = data;
 
           //발신자 팩스번호 포맷지정
-          for(let i in data.ReceiveLsit){
-             this.data.ReceiveLsit[i].SENDER_NO = this.setFormatting(data.ReceiveLsit[i].SENDER_NO);
+          for(let i in data.ReceiveList){
+             this.data.ReceiveList[i].SENDER_NO = this.setFormatting(data.ReceiveLsit[i].SENDER_NO);
           }
         } else {
           console.log("전송 실패");

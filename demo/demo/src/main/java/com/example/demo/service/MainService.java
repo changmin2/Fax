@@ -51,7 +51,7 @@ public class MainService {
         result.put("NoticeInfo",mainRepository.selectNotice());
         result.put("NotApprList",mainRepository.selectNotAppr(userId));
         result.put("NotApprCount",mainRepository.selectNotApprCount(userId));
-        result.put("ReceiveLsit",mainRepository.selectReceiveNotRead(RFax_No));
+        result.put("ReceiveList",mainRepository.selectReceiveNotRead(RFax_No));
         result.put("ReceiveCount",mainRepository.selectReceiveNotReadCount(RFax_No));
         return result;
     }

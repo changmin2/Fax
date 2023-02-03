@@ -178,7 +178,7 @@ export default {
       return this.$store.state.headerDarkMode ? "default" : "secondary";
     },
     logoImage() {
-      return this.$store.state.headerDarkMode ? "img/brand/logo4.png" : "img/brand/logo4.png";
+      return this.$store.state.headerDarkMode ? "img/brand/logo6.png" : "img/brand/logo6.png";
     },
 
     isLogin() {
