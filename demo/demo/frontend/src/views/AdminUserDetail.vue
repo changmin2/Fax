@@ -221,6 +221,8 @@ export default {
           // 전송 성공
           console.log(data);
           console.log("전송 성공");
+          alertify.alert("성공", "사용자 정보 수정이 완료되었습니다.");
+
           this.getUserList();
         } else {
           console.log("전송 실패");
