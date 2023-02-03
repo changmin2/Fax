@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.SessionManager;
 import com.example.demo.VO.SendRes;
 import com.example.demo.domain.User.User;
 import com.example.demo.repository.UserRepository;
@@ -21,6 +22,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    SessionManager sessionManager;
+
     @Transactional(readOnly = true)
     public Map<String,Object> login(String userId,String userPassword){
 
@@ -61,7 +65,7 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         if(user.getGRADE_CODE()==1){
             flag = false;
-            msg = "계원은 대체자를 지정할 수 없습니다.";
+            msg = "파트너는 대체자를 지정할 수 없습니다.";
             resultMap.put("flag",flag);
             resultMap.put("msg",msg);
             return resultMap;
@@ -95,7 +99,7 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         if(user.getGRADE_CODE()==1){
             flag = false;
-            msg = "계원은 부재여부를 지정할 수 없습니다.";
+            msg = "파트너는 부재여부를 지정할 수 없습니다.";
             resultMap.put("flag",flag);
             resultMap.put("msg",msg);
             return resultMap;
@@ -103,9 +107,13 @@ public class UserService {
         user.setIS_ABSENCE(isAbsence);
         user.setSUBSTITUTE(isAbsence.equals("Y")?substitute:"");
 
+//        sessionManager.createSession(userRepository.getUserInfo(userId),
+//                response);
 //        resultMap.put("user",user);
         resultMap.put("flag",flag);
         resultMap.put("msg","부재여부 설정이 완료되었습니다.");
+
+        //로그인 성공시 세션 생성
         return resultMap;
     }
 
