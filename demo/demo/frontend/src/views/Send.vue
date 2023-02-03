@@ -103,7 +103,7 @@
                       ></i>
                     </div>
 
-                    <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo"
+                    <base-checkbox class="mt-2 d-inline-flex" v-model="privateInfo" onClick="return false;"
                       >개인정보 포함여부</base-checkbox
                     >
                   </td>
@@ -290,10 +290,10 @@ export default {
 
         try {
           let reqUrl = this.getterUpdate?"/updateUpload":"/upload"; //수정요청인지 아닌지
-          console.log(reqUrl);
 
           let { data } = await http.post(reqUrl, formData, options);
           this.$store.commit("SET_LOADING_FALSE");
+          console.log(data);
   
           if (data.Result == "OK") {
             alertify.success("업로드 성공", 1.5);

@@ -29,7 +29,7 @@ public class AddressService {
     @Autowired
     GlobalVariables globalVariables;
     @Transactional(readOnly = true)
-    public HashMap<String,Object> getAddessList(String userId) {
+    public HashMap<String,Object> getAddressList(String userId) {
 
         List<Address> addresses = addressRepository.getListByUserId(userId);
 
@@ -40,7 +40,7 @@ public class AddressService {
         return result;
     }
 
-    public void setAddess(AddressVO vo) {
+    public void setAddress(AddressVO vo) {
         System.out.println("setAddress 진입");
         String userId = vo.getUserId();
         List<Address> addressList = vo.getAddressList();

@@ -14,7 +14,8 @@ public interface MainRepository extends JpaRepository<Send_detail, Send_detailPK
     @Query(value = "SELECT n.TITLE,n.CONTENT,n.`DATE`,n.END_DATE,\n" +
             "(SELECT u.USER_NAME FROM TB_USER u WHERE USER_ID = n.WRITER) AS \"WRITER_NAME\"\n" +
             "FROM TB_NOTICE n\n" +
-            "WHERE n.END_DATE >= DATE_FORMAT(NOW(), '%Y-%m-%d')",nativeQuery = true)
+            "WHERE n.END_DATE >= DATE_FORMAT(NOW(), '%Y-%m-%d')" +
+            "ORDER BY n.`DATE` ",nativeQuery = true)
     List<Map<String,Object>> selectNotice();
 
     @Query(value = "SELECT (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.USER_NO) NAME,\n" +
