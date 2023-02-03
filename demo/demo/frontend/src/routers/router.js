@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue, { computed } from "vue";
 import Router from "vue-router";
 import AppHeader from "../layout/AppHeader";
 import AppFooter from "../layout/AppFooter";
@@ -17,6 +17,7 @@ import ApprovalCompleteList from "../views/ApprovalCompleteList.vue";
 import MyPage from "../views/MyPage.vue";
 import SendWait from "../views/SendWait.vue";
 import LoadingSpinner from "../views/LoadingSpinner.vue";
+import AdminUserList from "../views/AdminUserList.vue";
 
 Vue.use(Router);
 const requireAuth = () => (from, to, next) => {
@@ -38,7 +39,9 @@ export default new Router({
         header: AppHeader,
         navbar: AppNavbar,
         default: Landing,
-        footer: AppFooter,
+        // footer: AppFooter,
+        spinner: LoadingSpinner,
+        admin: AdminUserList, // admin으로 로그인 시 보이는 페이지
       },
       beforeEnter: requireAuth(),
     },
@@ -157,6 +160,17 @@ export default new Router({
       },
       beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
     },
+    /* 관리자 페이지 test */
+    // {
+    //   path: "/admin",
+    //   name: "admin",
+    //   components: {
+    //     header: AppHeaderAdmin,
+    //     admin: LandingAdmin,
+    //   },
+    //   beforeEnter: requireAuth(), // 로그인 해야 볼 수 있는 페이지
+    // },
+
     {
       path: "*",
       components: {

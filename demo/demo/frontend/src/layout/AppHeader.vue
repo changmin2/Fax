@@ -1,6 +1,13 @@
 <template>
   <header class="header-global">
-    <base-nav class="navbar-main mt-lg-0 mt-sm-3" transparent type="" effect="dark" expand>
+    <base-nav
+      v-if="userInfo.grade != 0"
+      class="navbar-main mt-lg-0 mt-sm-3"
+      transparent
+      type=""
+      effect="dark"
+      expand
+    >
       <router-link slot="brand" class="navbar-brand" to="/">
         <img :src="logoImage" alt="logo" />
       </router-link>
@@ -80,10 +87,66 @@
         </div>
       </ul>
     </base-nav>
+
+    <!-- 관리자용 헤더 -->
+    <base-nav v-else class="navbar-main mt-lg-0 mt-sm-3" transparent type="" effect="dark" expand>
+      <router-link slot="brand" class="navbar-brand" to="/">
+        <img :src="logoImage" alt="logo" />
+      </router-link>
+
+      <div class="row" slot="content-header">
+        <div class="col-6 collapse-brand">
+          <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
+            <img src="img/brand/logo3.png" />
+          </a>
+        </div>
+      </div>
+
+      <!-- 왼쪽 -->
+      <!-- <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+        <li class="nav-item" menu-classes="dropdown-menu-xl ">
+          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+            <i class="ni ni-ui-01 d-lg-none"></i>
+            <router-link
+              to="/user-list"
+              :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
+            >
+              <i class="fa fa-user mr-1 mr-0 d-lg-inline d-sm-none text-default"></i>
+              사용자 관리
+            </router-link>
+          </a>
+        </li>
+      </ul> -->
+
+      <!-- 오른쪽 -->
+      <ul v-if="isLogin" class="navbar-nav align-items-lg-center ml-lg-auto">
+        <badge class="m-0" style="width: 80px; font-size: small" type="yellow" rounded>
+          관리자
+        </badge>
+
+        <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+          <i class="fa fa-sign-out mr-0 d-lg-inline d-sm-none text-default"></i>
+          <span
+            @click="logout"
+            :class="'nav-link-inner--text font-weight-600 text-' + textColor"
+            style="cursor: pointer"
+            >로그아웃</span
+          >
+        </a>
+      </ul>
+      <ul v-else class="navbar-nav align-items-lg-center ml-lg-auto">
+        <div class="text-center nav-item">
+          <router-link to="/login">
+            <base-button type="danger" :class="'my-3 col-12 text-binary'"> 로그인 </base-button>
+          </router-link>
+        </div>
+      </ul>
+    </base-nav>
   </header>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import BaseNav from "@/components/BaseNav";
 import BaseDropdown from "@/components/BaseDropdown";
@@ -96,16 +159,14 @@ export default {
     BaseDropdown,
   },
 
-  // props: ["textColor"],
-
   data() {
-    return {
-      // 파일 실제 경로
-      // fileRealPath: require("../../../BackEnd/src/main/resources/static/img/noProfile.png"),
-    };
+    return {};
   },
 
   computed: {
+    ...mapGetters({
+      userInfo: "getUserInfo",
+    }),
     /* 다크모드 색 반전 */
     textColor() {
       return this.$store.state.headerDarkMode ? "yellow" : "default";

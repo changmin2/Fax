@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-menu">
+  <div v-show="userInfo.grade != 0" class="navbar-menu">
     <ul class="navbar">
       <span class="navbar-user-tool">사용자 도구</span>
       <li :class="{ 'navbar-click': toggleValue1 === true }">
@@ -12,13 +12,15 @@
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue1 === false }">
-            <a href="/#/send">> 팩스보내기</a>
+            <a href="/#/send"><i class="fa fa-caret-right" aria-hidden="true"></i> 팩스보내기</a>
           </li>
           <!-- <li :class="{ 'li-a': toggleValue1 === false }">
             <a href="/#/send-wait">> 발신대기함</a>
           </li> -->
           <li :class="{ 'li-a': toggleValue1 === false }">
-            <a href="/#/send-list">> 발신팩스함</a>
+            <a href="/#/send-list"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 발신팩스함</a
+            >
           </li>
         </ul>
       </li>
@@ -28,7 +30,9 @@
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue2 === false }">
-            <a href="/#/receive-list">> 부서팩스함</a>
+            <a href="/#/receive-list"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 부서팩스함</a
+            >
           </li>
         </ul>
       </li>
@@ -39,10 +43,14 @@
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue3 === false }">
-            <a href="/#/no-approval-list">> 미결재</a>
+            <a href="/#/no-approval-list"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 미결재</a
+            >
           </li>
           <li :class="{ 'li-a': toggleValue3 === false }">
-            <a href="/#/approval-complete-list">> 결재함</a>
+            <a href="/#/approval-complete-list"
+              ><i class="fa fa-caret-right" aria-hidden="true"></i> 결재함</a
+            >
           </li>
         </ul>
       </li>
@@ -96,12 +104,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
 import BaseNav from "@/components/BaseNav";
 import BaseDropdown from "@/components/BaseDropdown";
 import CloseButton from "@/components/CloseButton";
-
-import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -113,8 +120,10 @@ export default {
   computed: {
     ...mapGetters({
       isLogin: "getIsLogin",
+      userInfo: "getUserInfo",
     }),
   },
+
   data() {
     return {
       // fileRealPath: require("/Users/sk/Downloads/Cat03.jpg"),
