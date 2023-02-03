@@ -92,6 +92,7 @@
               <th scope="col">결재자</th>
               <th scope="col">결재시간</th>
               <th scope="col">결재상태</th>
+              <th scope="col" v-if="sendDetail.상태 == '반려'">반려사유</th>
             </tr>
           </thead>
           <tbody>
@@ -99,6 +100,7 @@
               <td>{{ sendDetail.결재자이름 }}</td>
               <td>{{ sendDetail.결재일자 }}</td>
               <td>{{ sendDetail.결재상태 }}</td>
+              <td v-if="sendDetail.상태 == '반려'">{{ sendDetail.사유 }}</td>
             </tr>
           </tbody>
         </table>
