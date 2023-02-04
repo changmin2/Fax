@@ -36,7 +36,7 @@
         </table>
 
         <div>
-          <span class="mt-3" style="display: inline; width: 30%; float: left"
+          <span class="mt-3" style="display: inline; float: left"
             ><i class="fa fa-caret-right" aria-hidden="true"></i> 수신자정보</span
           >
           <div
@@ -105,10 +105,9 @@
           </tbody>
         </table>
 
-        <div class="no-approval-btn-group mt-3">
+        <div class="no-approval-btn-group">
           <base-button type="secondary" class="no-approval-btn" @click="getReuse">
             <i class="fa fa-refresh" aria-hidden="true"></i>
-
             재사용
           </base-button>
           <base-button
@@ -311,7 +310,8 @@ export default {
 
 <style scoped>
 .no-approval-btn {
-  padding: 5px;
+  padding: 10px;
+
   /* border: 0.0625rem solid #bcbcbc; */
 }
 .no-approval-td-textarea {
@@ -326,5 +326,10 @@ export default {
 .status_f {
   font-weight: bold;
   color: red;
+}
+.no-approval-btn-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
 }
 </style>

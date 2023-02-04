@@ -98,6 +98,8 @@
             승인
           </base-button>
           <base-button type="secondary" class="no-approval-btn" @click="apprBack">
+            <i class="fa fa-reply" aria-hidden="true"></i>
+
             반려
           </base-button>
         </div>

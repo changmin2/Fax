@@ -2,6 +2,7 @@
   <section class="section">
     <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
+        <!-- <i class="fa fa-check-square" aria-hidden="true"></i> -->
         결재함 - <span style="color: #d7191f; display: inline">결재완료</span>
       </div>
 
@@ -43,10 +44,8 @@
                 name="searchGubun"
                 class="fax-form-input"
                 id="searchGubun"
-                style="height: 30px"
+                style="height: 30px; width: 6rem"
               >
-                <!-- <option value="" selected>받는사람/팩스번호</option>
-                  <option value="1">받는사람</option> -->
                 <option value="2">팩스번호</option>
               </select>
               <input
@@ -69,7 +68,11 @@
 
             <th>결재구분</th>
             <td>
-              <select v-model="apprStatus" class="fax-table-input ml-2" style="height: 30px">
+              <select
+                v-model="apprStatus"
+                class="fax-table-input"
+                style="height: 30px; width: 15rem"
+              >
                 <option value="전체" selected>전체</option>
                 <option value="완료">완료</option>
                 <option value="회수">회수</option>
@@ -260,8 +263,10 @@ export default {
           console.log(data);
           this.noApprDetail = data[0];
           //발신자 팩스번호 포맷지정
-          for(let i in data[0].받는사람정보){
-             this.noApprDetail.받는사람정보[i].팩스번호 = this.setFormatting(data[0].받는사람정보[i].팩스번호);
+          for (let i in data[0].받는사람정보) {
+            this.noApprDetail.받는사람정보[i].팩스번호 = this.setFormatting(
+              data[0].받는사람정보[i].팩스번호
+            );
           }
 
           alertify.success("결재함 상세 조회가 완료되었습니다.", 1.5);
@@ -278,4 +283,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fax-table-input {
+  width: 16rem;
+}
+</style>

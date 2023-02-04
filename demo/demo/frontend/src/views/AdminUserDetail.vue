@@ -125,7 +125,7 @@ import Modal from "@/components/Modal.vue";
 
 export default {
   name: "admin",
-  props: ["userDetail", "subUsers", "deptList", "getUserList"],
+  props: ["userDetail", "subUsers", "deptList", "getUserList", "modals"],
   components: {
     Modal,
   },
@@ -221,9 +221,10 @@ export default {
           // 전송 성공
           console.log(data);
           console.log("전송 성공");
-          alertify.alert("성공", "사용자 정보 수정이 완료되었습니다.");
-
           this.getUserList();
+          // 모달 창 끄기
+          this.modals.modal3 = false;
+          alertify.alert("성공", "사용자 정보 수정이 완료되었습니다.");
         } else {
           console.log("전송 실패");
         }

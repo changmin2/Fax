@@ -1,10 +1,13 @@
 <template>
   <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="container-fluid mt-5">
+    <div class="main-container mt-5">
       <div class="row">
         <div class="col left-content">
           <div class="content-group">
-            <div class="send-title font-weight-700 text-default">총건수</div>
+            <div class="send-title font-weight-700 text-default">
+              <i class="ni ni-chart-pie-35"></i>
+              총건수
+            </div>
             <hr />
             <div class="landing-total">
               <div class="row landing-total-group" style="width: 5rem">
@@ -19,19 +22,26 @@
           </div>
           <div class="content-group">
             <div class="send-title font-weight-700 text-default">
-              <i class="fa fa-volume-down" aria-hidden="true"></i> 공지사항
+              <i class="ni ni-notification-70"></i>
+              공지사항
             </div>
             <div class="table-container">
               <hr />
               <table class="fax-table content-group-notice table-hover">
-                 <tbody>
-                <tr v-for="(notice, index) in data.NoticeInfo" :key="index" @click="openModal(notice)" role="button">
-                  <td scope="row" class="text-left pl-2">
-                    {{ notice.TITLE }}</td>
+                <tbody>
+                  <tr
+                    v-for="(notice, index) in data.NoticeInfo"
+                    :key="index"
+                    @click="openModal(notice)"
+                    role="button"
+                  >
+                    <td scope="row" class="text-left pl-2">
+                      {{ notice.TITLE }}
+                    </td>
 
-                  <td style="width: 8rem" class="text-right pr-2">{{ notice.DATE }}</td>
-                </tr>
-                 </tbody>
+                    <td style="width: 8rem" class="text-right pr-2">{{ notice.DATE }}</td>
+                  </tr>
+                </tbody>
                 <!-- <tr class="ApprArea-header">
                   <th>내용</th>
                   <th>제목</th>
@@ -42,7 +52,10 @@
         </div>
         <div class="col right-content">
           <div class="content-group">
-            <div class="send-title font-weight-700 text-default">미확인</div>
+            <div class="send-title font-weight-700 text-default">
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+              미확인
+            </div>
             <div class="table-container">
               <hr />
               <table class="fax-table">
@@ -87,6 +100,16 @@
   </section>
 </template>
 
+<script
+  src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+  integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+  integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+  crossorigin="anonymous"
+></script>
 <script>
 import { mapGetters } from "vuex";
 import http from "@/common/axios.js";
@@ -145,7 +168,7 @@ export default {
 
     //공지사항 dialog
     openModal(notice) {
-      alertify.alert(notice.TITLE, notice.CONTENT).set({transition:'fade', resizable:true}); 
+      alertify.alert(notice.TITLE, notice.CONTENT).set({ transition: "fade", resizable: true });
     },
 
     // mainInfo
@@ -168,8 +191,8 @@ export default {
           this.data = data;
 
           //발신자 팩스번호 포맷지정
-          for(let i in data.ReceiveList){
-             this.data.ReceiveList[i].SENDER_NO = this.setFormatting(data.ReceiveLsit[i].SENDER_NO);
+          for (let i in data.ReceiveList) {
+            this.data.ReceiveList[i].SENDER_NO = this.setFormatting(data.ReceiveList[i].SENDER_NO);
           }
         } else {
           console.log("전송 실패");
@@ -186,7 +209,7 @@ export default {
 <style scoped>
 .landing-total {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-content: center;
   margin-top: 2rem;
   /* width: 100%; */
@@ -207,15 +230,15 @@ export default {
 }
 .left-content {
   /* background-color: pink; */
-  margin-left: 10px;
+  margin-left: 4rem;
 }
 .right-content {
   /* background-color: aquamarine; */
-  margin-right: 10px;
+  margin-right: 4rem;
 }
 .content-group {
   width: 30rem;
-  height: 20rem;
+  height: 23rem;
 }
 .send-title {
   font-size: large;
@@ -282,5 +305,15 @@ hr {
 
 .admin-container {
   /* margin-right: 14rem; */
+}
+
+@media screen and (max-width: 991px) {
+  .main-container {
+    display: flex;
+    justify-content: center;
+  }
+  .right-content {
+    margin-left: 4rem;
+  }
 }
 </style>

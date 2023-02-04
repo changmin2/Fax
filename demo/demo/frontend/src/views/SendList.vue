@@ -1,7 +1,10 @@
 <template>
   <section class="section">
     <div class="main-container">
-      <div class="send-title display-4 mb-4 font-weight-800 text-default">발신팩스함</div>
+      <div class="send-title display-4 mb-4 font-weight-800 text-default">
+        <!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
+        발신팩스함
+      </div>
 
       <table class="fax-table fax-table-input" style="width: 100%">
         <colgroup>
@@ -36,9 +39,12 @@
           </td>
           <th>조건</th>
           <td>
-            <select name="searchGubun" class="fax-form-input" style="height: 30px" id="searchGubun">
-              <!-- <option value="" selected>받는사람/팩스번호</option>
-                  <option value="1">받는사람</option> -->
+            <select
+              name="searchGubun"
+              class="fax-form-input"
+              style="height: 30px; width: 6rem"
+              id="searchGubun"
+            >
               <option value="2">팩스번호</option>
             </select>
             <input
@@ -274,5 +280,8 @@ export default {
   opacity: 1;
   display: block;
   visibility: visible;
+}
+.fax-table-input {
+  width: 16rem;
 }
 </style>

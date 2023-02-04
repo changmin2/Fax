@@ -1,26 +1,24 @@
 <template>
   <div id="app">
-    <!-- grade가 관리자 등급이라면 다른 헤더/메인페이지 보이게 -->
-    <div>
-      <router-view name="header" :userInfo="userInfo"></router-view>
-      <router-view v-if="!isLogin"></router-view>
-      <router-view v-else-if="userInfo.grade == 0" name="admin"></router-view>
-      <div v-else class="row">
-        <div class="col-lg-2 col-md-2 col-sm-2">
-          <router-view name="navbar"></router-view>
-        </div>
-        <div class="col-lg-10 col-md-9 col-sm-10 app-right-content">
-          <main>
-            <fade-transition origin="center" mode="out-in" :duration="250">
-              <router-view @login-success="loginSuccess"></router-view>
-            </fade-transition>
-          </main>
-        </div>
+    <i class="menu-icon fa fa-bars" aria-hidden="true" style="display: none"></i>
+    <router-view name="header" :userInfo="userInfo"></router-view>
+    <router-view v-if="!isLogin"></router-view>
+    <router-view v-else-if="userInfo.grade == 0" name="admin"></router-view>
+    <div v-else style="display: flex">
+      <div class="main-left">
+        <router-view name="navbar"></router-view>
       </div>
-      <!-- <button @click="test">test</button> -->
-      <router-view name="footer"></router-view>
-      <router-view v-if="isLoading" name="spinner"></router-view>
+      <div class="main-right">
+        <main>
+          <fade-transition origin="center" mode="out-in" :duration="250">
+            <router-view @login-success="loginSuccess"></router-view>
+          </fade-transition>
+        </main>
+      </div>
     </div>
+    <!-- <button @click="test">test</button> -->
+    <router-view name="footer"></router-view>
+    <router-view v-if="isLoading" name="spinner"></router-view>
   </div>
 </template>
 
@@ -73,11 +71,17 @@ export default {
 }
 .main-container {
   margin-top: 6rem;
-  margin-left: 3vw;
+  margin-left: 1vw;
   margin-right: 3vw;
 }
+.main-left {
+  width: 200px;
+}
+.main-right {
+  width: 100%;
+  margin-left: 1.5rem;
+}
 /* table css */
-
 .fax-table {
   font-size: small;
   margin-top: 20px;
@@ -116,12 +120,15 @@ export default {
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
   padding: 0.2rem;
+  text-align: center;
+  color: #525f7f;
 }
 
 /* 테이블 위 input */
 .fax-table-input {
   border-top: 1px solid #cad1d7;
   border-radius: 0.25rem;
+  text-align: center;
 }
 
 .ajs-message .ajs-custom {
@@ -194,4 +201,15 @@ export default {
     border-bottom: 1px solid #e5e5e5;
   }
 } */
+
+@media screen and (max-width: 991px) {
+  .main-left {
+    display: none;
+  }
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 </style>

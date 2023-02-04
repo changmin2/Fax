@@ -2,6 +2,7 @@
   <section class="section">
     <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
+        <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
         결재함 - <span style="color: #d7191f; display: inline">미결재</span>
       </div>
 
@@ -43,10 +44,8 @@
                 name="searchGubun"
                 class="fax-form-input"
                 id="searchGubun"
-                style="height: 30px"
+                style="height: 30px; width: 6rem"
               >
-                <!-- <option value="" selected>받는사람/팩스번호</option>
-                  <option value="1">받는사람</option> -->
                 <option value="2">팩스번호</option>
               </select>
               <input
@@ -294,4 +293,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fax-table-input {
+  width: 16rem;
+}
+</style>

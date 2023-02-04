@@ -2,68 +2,64 @@
   <section class="section">
     <div class="main-container">
       <div class="receive-title display-4 mb-4 font-weight-800 text-default">
-        <!-- <i class="fa fa-envelope-open" aria-hidden="true"></i> -->
-        받은팩스함 -
-        <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
+        받은팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
       </div>
 
-      <form id="master" role="form" style="width: 100%">
-        <table class="fax-table fax-table-input">
-          <colgroup>
-            <col style="width: 9%" />
-            <col style="width: 37%" />
-            <col style="width: 9%" />
-            <col style="width: 37%" />
-            <col />
-          </colgroup>
-          <tr>
-            <th>조회기간</th>
-            <td>
-              <form>
-                <input
-                  type="date"
-                  id="searchFrom"
-                  value="today"
-                  class="fax-form-input"
-                  v-model="searchFrom"
-                  @change="setDateInfo(searchFrom)"
-                />
-                ~
-                <input
-                  type="date"
-                  id="searchTo"
-                  value="today"
-                  class="fax-form-input"
-                  v-model="searchTo"
-                  @change="setDateInfo(searchTo)"
-                />
-              </form>
-            </td>
-            <th>조건</th>
-            <td>
-              <select
-                name="searchGubun"
-                id="searchGubun"
-                class="fax-form-input ml-1"
-                style="width: 6rem"
-              >
-                <option selected>받는사람</option>
-              </select>
+      <table class="fax-table fax-table-input" style="width: 100%">
+        <colgroup>
+          <col style="width: 9%" />
+          <col style="width: 37%" />
+          <col style="width: 9%" />
+          <col style="width: 37%" />
+          <col />
+        </colgroup>
+        <tr>
+          <th>조회기간</th>
+          <td>
+            <form>
               <input
-                type="text"
-                id="searchGubunData"
-                name="searchGubunData"
-                class="fax-form-input ml-2"
+                type="date"
+                id="searchFrom"
+                value="today"
+                class="fax-form-input"
+                v-model="searchFrom"
+                @change="setDateInfo(searchFrom)"
               />
-            </td>
-            <td>
-              <div class="text-center" style="float: right">
-                <base-button type="danger" @click="apprsearch">조회</base-button>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </form>
+              ~
+              <input
+                type="date"
+                id="searchTo"
+                value="today"
+                class="fax-form-input"
+                v-model="searchTo"
+                @change="setDateInfo(searchTo)"
+              />
+            </form>
+          </td>
+          <th>조건</th>
+          <td>
+            <select
+              name="searchGubun"
+              id="searchGubun"
+              class="fax-form-input ml-1"
+              style="width: 6rem"
+            >
+              <option selected>받는사람</option>
+            </select>
+            <input
+              type="text"
+              id="searchGubunData"
+              name="searchGubunData"
+              class="fax-form-input ml-2"
+            />
+          </td>
+          <td>
+            <div class="text-center" style="float: right">
+              <base-button type="danger" @click="apprsearch">조회</base-button>
+            </div>
+          </td>
+        </tr>
+      </table>
 
       <div class="body-content ApprArea" style="width: 100%">
         <table class="fax-table" style="width: 100%">

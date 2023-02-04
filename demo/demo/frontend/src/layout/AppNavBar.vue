@@ -1,6 +1,6 @@
 <template>
   <div v-show="userInfo.grade != 0" class="navbar-menu">
-    <ul class="navbar">
+    <ul class="navbar fade-in">
       <span class="navbar-user-tool">사용자 도구</span>
       <li :class="{ 'navbar-click': toggleValue1 === true }">
         <a
@@ -61,51 +61,10 @@
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue4 === false }">
-            <a href="/#/addressBook"
-              ><i class="fa fa-caret-right" aria-hidden="true"></i> 주소록</a
-            >
+            <a href="/#/addressBook"><i class="fa fa-caret-right" aria-hidden="true"></i> 주소록</a>
           </li>
         </ul>
       </li>
-
-      <!-- <li>
-        <base-dropdown tag="li" class="nav-item ml-5" position="right">
-          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
-            <div class="card-profile-image d-lg-block d-none">
-              <a href="#"> 팩스수신함 </a>
-            </div>
-
-            <div class="nav-link-inner--text d-lg-none font-weight-600">MyProfile</div>
-          </a>
-          <router-link to="/send" class="dropdown-item">부서팩스함</router-link>
-        </base-dropdown>
-      </li>
-      <li>
-        <base-dropdown tag="li" class="nav-item ml-5" position="right">
-          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
-            <div class="card-profile-image d-lg-block d-none">
-              <a href="#"> 팩스발신함 </a>
-            </div>
-
-            <div class="nav-link-inner--text d-lg-none font-weight-600">MyProfile</div>
-          </a>
-          <router-link to="/send" class="dropdown-item">결재함</router-link>
-          <router-link to="/send-wait" class="dropdown-item">미결재</router-link>
-          <router-link to="/send-list" class="dropdown-item">결재완료</router-link>
-        </base-dropdown>
-      </li>
-      <li>
-        <base-dropdown tag="li" class="nav-item ml-5" position="right">
-          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
-            <div class="card-profile-image d-lg-block d-none">
-              <a href="#"> 주소록 </a>
-            </div>
-
-            <div class="nav-link-inner--text d-lg-none font-weight-600">MyProfile</div>
-          </a>
-          <router-link to="/addressBook" class="dropdown-item">주소록...</router-link>
-        </base-dropdown>
-      </li> -->
     </ul>
   </div>
 </template>
@@ -123,7 +82,9 @@ export default {
     CloseButton,
     BaseDropdown,
   },
-
+  created() {
+    this.getData();
+  },
   computed: {
     ...mapGetters({
       isLogin: "getIsLogin",
@@ -138,20 +99,46 @@ export default {
       toggleValue2: false,
       toggleValue3: false,
       toggleValue4: false,
+
+      posts: [],
     };
   },
   methods: {
+    async getData() {
+      const response = await http.get("https://my-json-server.typicode.com/typicode/demo/posts");
+      this.posts = response.data;
+    },
     navbarToggle1() {
       this.toggleValue1 = !this.toggleValue1;
+      if (this.toggleValue1 == true) {
+        this.toggleValue2 = false;
+        this.toggleValue3 = false;
+        this.toggleValue4 = false;
+      }
     },
     navbarToggle2() {
       this.toggleValue2 = !this.toggleValue2;
+      if (this.toggleValue2 == true) {
+        this.toggleValue1 = false;
+        this.toggleValue3 = false;
+        this.toggleValue4 = false;
+      }
     },
     navbarToggle3() {
       this.toggleValue3 = !this.toggleValue3;
+      if (this.toggleValue3 == true) {
+        this.toggleValue1 = false;
+        this.toggleValue2 = false;
+        this.toggleValue4 = false;
+      }
     },
     navbarToggle4() {
       this.toggleValue4 = !this.toggleValue4;
+      if (this.toggleValue4 == true) {
+        this.toggleValue1 = false;
+        this.toggleValue2 = false;
+        this.toggleValue3 = false;
+      }
     },
   },
 };
@@ -161,20 +148,22 @@ export default {
 .navbar-menu {
   margin-top: 160px;
   margin-left: 30px;
-  width: 100%;
+  /* width: 100%; */
 }
+
 .navbar-user-tool {
   padding: 16px 0px 16px 0px;
   font-size: large;
-  background-color: rgb(155, 155, 155);
+  /* background-color: #545443; */
+  background-color: rgb(224, 224, 224);
   width: 100%;
   text-align: center;
-  color: white;
+  color: #172b4d;
 }
 ul {
   list-style: none;
   text-align: left;
-  background-color: #f2f2f2;
+  /* background-color: #f2f2f2; */
 }
 .navbar {
   display: flex;
@@ -183,16 +172,23 @@ ul {
   padding: 0px;
   margin: 0;
   overflow: auto;
-  width: 100%;
+  /* width: 100%; */
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
 }
 .navbar-click {
   background-color: #d7191f;
   color: white;
+  transition: all 300ms ease-out;
+  width: 100%;
 }
+
 .navbar > li {
-  padding: 5px 0px 0px 0px;
+  width: 100%;
+  border-bottom: 1px solid #cad1d7;
+  transition: color 0.15s ease-in-out background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+  /* background-color: transparent; */
 }
 
 /* .navbar > li:active {
@@ -203,14 +199,15 @@ ul {
 } */
 .navbar-sub {
   padding: 0px;
+  transition: all 300ms ease-out;
 }
 .navbar-sub li {
   background-color: white;
+  transition: all 300ms ease-out;
 }
-
-.navbar > li {
-  width: 100%;
-  border-bottom: 1px solid #cad1d7;
+.navbar-sub li a {
+  padding: 8px 12px 8px 12px;
+  transition: all 300ms ease-out;
 }
 li:last-child {
   border: none;
@@ -219,12 +216,18 @@ li a {
   text-decoration: none;
   display: block;
   color: #000;
-  padding: 8px 8px 8px 8px;
-
+  padding: 12px 12px 12px 12px;
   margin-left: 10px;
   font-size: 1rem;
+  /* background-color: transparent; */
+  width: inherit;
+  height: inherit;
+  margin: 0px;
+  transition: all 300ms ease-out;
+  color: #172b4d;
 }
 .li-a {
   display: none;
+  transition: all 300ms ease-out;
 }
 </style>

@@ -4,18 +4,6 @@
       <div class="receive-title display-4 mb-4 font-weight-800 text-default">사용자 관리</div>
       <div class="body-content ApprArea" style="width: 100%">
         <table class="fax-table" style="width: 100%">
-          <!-- <tr>
-                  <td colspan = "7">
-                      <div class="text-center" style="float:left;">
-                        <base-button type="secondary" class="no-approval-btn btn float-left" @click="apprdelete">
-                          삭제
-                        </base-button>
-                        <base-button type="secondary" class="no-approval-btn btn float-left"@click="restore">
-                          확인복원
-                        </base-button>
-                      </div>
-                  </td>
-                </tr> -->
           <tr class="ApprArea-header">
             <th>이름</th>
             <th>아이디</th>
@@ -51,6 +39,7 @@
         :subUsers="subUsers"
         :deptList="deptList"
         :getUserList="getUserList"
+        :modals="modals"
       ></admin-user-detail>
     </modal>
   </div>
@@ -97,7 +86,7 @@ export default {
     async getUserList() {
       this.$store.commit("SET_LOADING_TRUE");
       try {
-        let response = await http.post("/getUserList", {});
+        let response = await http.post("/getUserList");
 
         let { data } = response;
         this.$store.commit("SET_LOADING_FALSE");

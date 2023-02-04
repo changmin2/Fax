@@ -55,24 +55,52 @@
             </router-link>
           </a>
         </li>
+
+        <span class="mobile-nav">
+          <li class="nav-item" menu-classes="dropdown-menu-xl">
+            <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+              <i class="ni ni-ui-01 d-lg-none"></i>
+              <router-link
+                to="/approval-complete-list"
+                :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
+              >
+                결재함
+              </router-link>
+            </a>
+          </li>
+
+          <li class="nav-item" menu-classes="dropdown-menu-xl ">
+            <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+              <i class="ni ni-ui-01 d-lg-none"></i>
+              <router-link
+                to="/no-approval-list"
+                :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
+              >
+                미결재
+              </router-link>
+            </a>
+          </li>
+        </span>
       </ul>
 
       <!-- 오른쪽 -->
       <ul v-if="isLogin" class="navbar-nav align-items-lg-center ml-lg-auto">
-        <span v-text="user_info"></span
-        >님 반갑습니다.
+        <span class="mobile-userInfo">
+          <span v-text="user_info"></span>
+          님 반갑습니다.
+        </span>
         <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
           <i class="fa fa-sign-out mr-0 d-lg-inline d-sm-none text-default"></i>
           <span
             @click="logout"
-            :class="'nav-link-inner--text font-weight-600 text-' + textColor"
+            :class="'mobile-log-btn nav-link-inner--text font-weight-600 text-' + textColor"
             style="cursor: pointer"
             >로그아웃</span
           >
           <i class="fa fa-user ml-3 mr-0 d-lg-inline d-sm-none text-default"></i>
           <router-link to="/mypage">
             <span
-              :class="'nav-link-inner--text font-weight-600 text-' + textColor"
+              :class="'mobile-log-btn nav-link-inner--text font-weight-600 text-' + textColor"
               style="cursor: pointer"
               >마이페이지</span
             >
@@ -223,5 +251,21 @@ export default {
 .navbar-brand {
   left: 0px;
   margin-right: 30px;
+}
+.mobile-nav {
+  display: none;
+}
+@media screen and (max-width: 991px) {
+  .mobile-nav {
+    display: block;
+  }
+  .mobile-userInfo {
+    display: none;
+  }
+  .mobile-log-btn {
+    color: grey !important;
+    margin-top: 8px;
+    margin-right: 12px;
+  }
 }
 </style>
