@@ -103,14 +103,13 @@
                     />
                     <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                       <a v-bind:href="`${fileUrl}`" target="_new" download=""
-                        >PDF변환파일.pdf - {{ pageCount }}장</a
-                      >
+                        >PDF변환파일.pdf - {{ pageCount }}장</a>
                       <i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
                         @click="deleteFile"
                         style="cursor: pointer"
                       ></i>
-                      <div class="mt-1" style="display: inline; float: right;">
+                      <div class="mt-1 ml-5" style="display: inline;">
                         ※ 개인정보 포함 : 
   
                         <badge v-if="privateInfo" class="m-0" type="success" rounded
