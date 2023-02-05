@@ -32,8 +32,8 @@
     </div>
 
     <!-- 컴포넌트 MyModal -->
-    <modal :show.sync="modals.modal3" modal-classes="modal-dialog-centered modal-lg">
-      <h6 slot="header" class="modal-title" id="modal-title-default"></h6>
+    <modal :show.sync="modals.modal3" modal-classes="modal-dialog-centered modal-sm"  body-classes="p-0">
+      <h6 slot="header" class="modal-title" id="modal-title-default">사용자 정보 관리</h6>
       <admin-user-detail
         :userDetail="userDetail"
         :subUsers="subUsers"

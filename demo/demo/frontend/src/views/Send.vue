@@ -56,13 +56,13 @@
                       />
                       <div class="flex-fill d-flex flex-row align-items-center align-self-stretch">
                         <base-button
-                          icon="fa fa-plus fa-lgr"
-                          class="px-3 py-2.5"
+                          icon="fa fa-plus fa-lg"
+                          :iconOnly = "true"
                           @click="setReceiveJSON"
                         ></base-button>
                         <base-button
                           icon="fa fa-address-book fa-lg"
-                          class="px-3 py-2.5"
+                          :iconOnly = "true"
                           title="주소록에서 불러오기"
                           @click="callAddress"
                         ></base-button>
@@ -82,8 +82,8 @@
                       ></textarea>
                       <base-button
                         icon="fa fa-minus fa-lg"
+                        :iconOnly = "true"
                         type="light"
-                        class="px-3 py-2.5"
                         @click="setDeleteJSON"
                       />
                     </div>

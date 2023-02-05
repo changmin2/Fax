@@ -56,7 +56,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value= "SELECT u.*,\n" +
             "(SELECT DEPT_NAME FROM TB_DEPT WHERE DEPT_CODE=u.DEPT_CODE) DEPT_NAME,\n" +
             "(SELECT COMM_NAME FROM TB_COMM WHERE COMM_CODE=u.GRADE_CODE) COMM_NAME\n" +
-            "FROM TB_USER u WHERE u.GRADE_CODE != 10"
+            "FROM TB_USER u WHERE u.GRADE_CODE != 10 \n" +
+            "ORDER BY u.DEPT_CODE,u.GRADE_CODE DESC"
             , nativeQuery = true)
     List<Map<String,Object>> getUserList();
 

@@ -1,22 +1,20 @@
 <template>
-  <div class="modal-container">
+  <!-- <div class="modal-container">
     <div class="send-title display-4 mb-4 font-weight-800 text-default">사용자 정보 관리</div>
     <div class="row">
-      <div class="col-lg-5">
-        <card type="secondary" body-classes="px-lg-5 py-lg-5" class="user-detail-card border-0">
+      <div class="col-lg-5"> -->
+        <card type="secondary" body-classes="px-lg-4 py-lg-4" class="user-detail-card border-0">
           <table style="width: 100%">
-            <!-- <colgroup>
-              <col class="col-1" />
-              <col class="col-3" />
-              <col class="col-1" />
-              <col class="col-3" />
-            </colgroup> -->
+            <colgroup>
+              <col class="col-30" />
+              <col class="col-70" />
+            </colgroup>
             <tr>
               <th class="pb-3">이름</th>
               <td>
                 <base-input
                   v-model="userDetail.USER_NAME"
-                  style="width: 20rem; height: 40px; font-size: 0.875rem; color: #525f7f"
+                  style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
                 >
                 </base-input>
               </td>
@@ -26,7 +24,7 @@
               <td>
                 <base-input
                   v-model="userDetail.USER_ID"
-                  style="width: 20rem; height: 40px; font-size: 0.875rem; color: #525f7f"
+                  style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
                 ></base-input>
               </td>
             </tr>
@@ -36,7 +34,7 @@
               <td>
                 <base-input
                   v-model="userDetail.DEPT_NAME"
-                  style="width: 20rem; height: 40px; font-size: 0.875rem; color: #525f7f"
+                  style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
                 >
                 </base-input>
               </td>
@@ -46,13 +44,13 @@
               <td>
                 <!-- <base-input
                   v-model="userDetail.COMM_NAME"
-                  style="width: 20rem; height: 40px; font-size: 0.875rem; color: #525f7f"
+                  style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
                 >
                 </base-input> -->
-                <div style="height: 50px">
+                <div>
                   <select
-                    v-model="userDetail.GRADE_CODE"
-                    style="width: 20rem; height: 40px; font-size: 0.875rem; color: #525f7f"
+                    v-model="userDetail.GRADE_CODE" class="px-2"
+                    style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f; margin-bottom: 1rem;"
                   >
                     <!-- <option selected :value="userDetail.GRADE_CODE">
                       {{ userDetail.COMM_NAME }}
@@ -69,12 +67,12 @@
               </td>
             </tr>
             <tr>
-              <th>부서</th>
+              <th class="pb-3">부서</th>
               <td>
-                <div style="height: 50px">
+                <div>
                   <select
-                    v-model="userDetail.DEPT_CODE"
-                    style="width: 20rem; height: 40px; font-size: 0.875rem; color: #525f7f"
+                    v-model="userDetail.DEPT_CODE" class="px-2"
+                    style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f; margin-bottom: 1rem;"
                   >
                     <!-- <option selected :value="userDetail.DEPT_NAME">
                       {{ userDetail.DEPT_NAME }}
@@ -109,12 +107,12 @@
             </tr>
           </table>
           <div class="d-flex justify-content-center mt-4">
-            <base-button type="danger" @click="setUserUpdate">수정</base-button>
+            <base-button type="danger" @click="setUserUpdate"  icon="fa fa-check">수정</base-button>
           </div>
         </card>
-      </div>
+      <!-- </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -243,11 +241,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
 }
 .main-container {
 }
-.user-detail-card {
-  width: 35rem;
-}
+/* .user-detail-card {
+  width: 23rem;
+} */
 </style>
