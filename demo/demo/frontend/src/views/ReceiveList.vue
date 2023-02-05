@@ -62,7 +62,7 @@
       </table>
 
       <div class="body-content ApprArea" style="width: 100%">
-        <table class="fax-table" style="width: 100%">
+        <table class="fax-table table-hover" style="width: 100%">
           <!-- <tr>
                   <td colspan = "7">
                       <div class="text-center" style="float:left;">
@@ -75,33 +75,35 @@
                       </div>
                   </td>
                 </tr> -->
-          <tr class="ApprArea-header">
-            <!--<th>
+          <tbody>
+            <tr class="ApprArea-header">
+              <!--<th>
                     <input type="checkbox">
                   </th> -->
-            <th>제목</th>
-            <th>상세보기</th>
-            <th>발신자팩스번호</th>
-            <th>받은날짜</th>
-            <th>확인여부</th>
-            <th>최초확인자</th>
-            <th>최초확인날짜</th>
-            <!--<th>주소록</th>-->
-          </tr>
+              <th>제목</th>
+              <th>상세보기</th>
+              <th>발신자팩스번호</th>
+              <th>받은날짜</th>
+              <th>확인여부</th>
+              <th>최초확인자</th>
+              <th>최초확인날짜</th>
+              <!--<th>주소록</th>-->
+            </tr>
 
-          <tr v-for="(receive, index) in receivelist" :key="index">
-            <!--<td></td>-->
-            <td  class="text-left pl-2">{{ receive.title }}</td>
-            <td>
-              <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
-            </td>
-            <td>{{ receive.sender_NO }}</td>
-            <td>{{ receive.receive_DATE }}</td>
-            <td>{{ receive.read_YN }}</td>
-            <td>{{ receive.read_USER }}</td>
-            <td>{{ receive.read_DATE }}</td>
-            <!--<td></td>-->
-          </tr>
+            <tr v-for="(receive, index) in receivelist" :key="index">
+              <!--<td></td>-->
+              <td class="text-left pl-2">{{ receive.title }}</td>
+              <td>
+                <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
+              </td>
+              <td>{{ receive.sender_NO }}</td>
+              <td>{{ receive.receive_DATE }}</td>
+              <td>{{ receive.read_YN }}</td>
+              <td>{{ receive.read_USER }}</td>
+              <td>{{ receive.read_DATE }}</td>
+              <!--<td></td>-->
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

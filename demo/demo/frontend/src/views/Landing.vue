@@ -265,9 +265,6 @@ export default {
   width: 100%;
   /* height: 100px; */
 }
-.fax-table td {
-  height: 2rem;
-}
 
 hr {
   width: 100%;

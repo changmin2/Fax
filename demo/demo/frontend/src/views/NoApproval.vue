@@ -95,11 +95,11 @@
         <!-- 승인 반송은 완료에서는 보이지 않게 -->
         <div v-if="!isComplete" class="no-approval-btn-group">
           <base-button type="secondary" class="no-approval-btn" @click="apprConfirm">
+            <i class="fa fa-check" aria-hidden="true"></i>
             승인
           </base-button>
           <base-button type="secondary" class="no-approval-btn" @click="apprBack">
             <i class="fa fa-reply" aria-hidden="true"></i>
-
             반려
           </base-button>
         </div>
@@ -218,5 +218,8 @@ export default {
   margin: 0px;
   border: none;
   /* line-height: 10px; */
+}
+.right-content {
+  min-height: 60vh;
 }
 </style>

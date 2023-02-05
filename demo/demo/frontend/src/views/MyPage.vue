@@ -12,70 +12,62 @@
       <div class="row">
         <div class="col-lg-5">
           <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
-              <table style="width: 100%">
-                <colgroup>
-                  <col class="col-1">
-                  <col class="col-3">
-                  <col class="col-1">
-                  <col class="col-3">
-                </colgroup>
-                <tr>
-                  <th class="pb-3">아이디</th>
-                  <td><base-input v-model="USER_ID" class="mr-3" readonly></base-input></td>
-                  <th class="pl-4 pb-3">이름</th>
-                  <td><base-input v-model="USER_NAME" readonly> </base-input></td>
-                </tr>
-                <tr>
-                  <th class="pb-3">부서</th>
-                   <td><base-input v-model="DEPT_NAME" class="mr-3" readonly> </base-input></td>
-                    <th class="pl-4 pb-3">직급</th>
-                   <td><base-input v-model="COMM_NAME" readonly> </base-input></td>
-                </tr>
-                <tr>
-                  <th class="pb-3">팩스번호</th>
-                   <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
-                   <td colspan="2"></td>
-                </tr>
-                <tr v-if="GRADE_CODE>1">
-                  <th>부재여부</th>
-                    <td colspan="2" v-if="GRADE_CODE>1">
-                    <div class="d-flex flex-row justify-content-start" style="height:50px">
+            <table style="width: 100%">
+              <colgroup>
+                <col class="col-1" />
+                <col class="col-3" />
+                <col class="col-1" />
+                <col class="col-3" />
+              </colgroup>
+              <tr>
+                <th class="pb-3">아이디</th>
+                <td><base-input v-model="USER_ID" class="mr-3" readonly></base-input></td>
+                <th class="pl-4 pb-3">이름</th>
+                <td><base-input v-model="USER_NAME" readonly> </base-input></td>
+              </tr>
+              <tr>
+                <th class="pb-3">부서</th>
+                <td><base-input v-model="DEPT_NAME" class="mr-3" readonly> </base-input></td>
+                <th class="pl-4 pb-3">직급</th>
+                <td><base-input v-model="COMM_NAME" readonly> </base-input></td>
+              </tr>
+              <tr>
+                <th class="pb-3">팩스번호</th>
+                <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
+                <td colspan="2"></td>
+              </tr>
+              <tr v-if="GRADE_CODE > 1">
+                <th>부재여부</th>
+                <td colspan="2" v-if="GRADE_CODE > 1">
+                  <div class="d-flex flex-row justify-content-start" style="height: 50px">
                     <div class="align-self-center mt-1">
                       <label class="ml-1">
-                        <input
-                          type="radio"
-                          class="ml-1"
-                          v-model="IS_ABSENCE"
-                          value="Y"
-                        />
+                        <input type="radio" class="ml-1" v-model="IS_ABSENCE" value="Y" />
                         Y</label
                       >
                       <label class="ml-1">
-                        <input
-                          type="radio"
-                          class="ml-3"
-                          v-model="IS_ABSENCE"
-                          value="N"
-                        />
+                        <input type="radio" class="ml-3" v-model="IS_ABSENCE" value="N" />
                         N</label
                       >
                     </div>
-                      <div v-if="IS_ABSENCE=='Y'" class="ml-3 d-flex flex-row flex-fill align-self-center">
-                        <span class="mt-1 ml-3">대체자</span>
-                          <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
-                          <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
-                            {{ item.name }}
-                          </option>
-                        </select>
-                      </div>
+                    <div
+                      v-if="IS_ABSENCE == 'Y'"
+                      class="ml-3 d-flex flex-row flex-fill align-self-center"
+                    >
+                      <span class="mt-1 ml-3">대체자</span>
+                      <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
+                        <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
+                          {{ item.name }}
+                        </option>
+                      </select>
                     </div>
-                  </td>
-                  <td class="d-flex justify-content-end">
-                   <base-button type="danger"  @click="setAbsence">저장</base-button>
-                  </td>
-                </tr>
-              </table>
-              
+                  </div>
+                </td>
+                <td class="d-flex justify-content-end">
+                  <base-button type="danger" @click="setAbsence">저장</base-button>
+                </td>
+              </tr>
+            </table>
           </card>
         </div>
       </div>
@@ -105,37 +97,35 @@ export default {
   },
   methods: {
     async getUserInfo() {
-       try {
-          let response = await http.post("/getUserInfo", {
-          });
-          let { data } = response;
-  
-          if (data.flag == true) {
-          
-            let userInfo = data.userInfo;
-              console.log(userInfo);
-            this.USER_ID = userInfo.USER_ID;
-            this.FAX_NO = userInfo.FAX_NO;
-            this.IS_ABSENCE = userInfo.IS_ABSENCE;
-            console.log(userInfo.IS_ABSENCE);
-            this.USER_NAME = userInfo.USER_NAME;
-            this.SUBSTITUTE = userInfo.SUBSTITUTE;
-            this.DEPT_NAME = userInfo.DEPT_NAME;
-            this.COMM_NAME = userInfo.COMM_NAME;
-            this.GRADE_CODE = userInfo.GRADE_CODE;
-            this.getSubstituteUser();
-          } else {
-            // 세션값 없음
-            // console.log(data.message);
-            localStorage.setItem("isLogin",false);
-             alertify.error("로그인 만료되었습니다.<br>다시 로그인해주세요.", 1.5);
-            router.push("/login");
-          }
-        } catch (error) {
-          console.log(error);
-          localStorage.setItem("isLogin",false);
+      try {
+        let response = await http.post("/getUserInfo", {});
+        let { data } = response;
+
+        if (data.flag == true) {
+          let userInfo = data.userInfo;
+          console.log(userInfo);
+          this.USER_ID = userInfo.USER_ID;
+          this.FAX_NO = userInfo.FAX_NO;
+          this.IS_ABSENCE = userInfo.IS_ABSENCE;
+          console.log(userInfo.IS_ABSENCE);
+          this.USER_NAME = userInfo.USER_NAME;
+          this.SUBSTITUTE = userInfo.SUBSTITUTE;
+          this.DEPT_NAME = userInfo.DEPT_NAME;
+          this.COMM_NAME = userInfo.COMM_NAME;
+          this.GRADE_CODE = userInfo.GRADE_CODE;
+          this.getSubstituteUser();
+        } else {
+          // 세션값 없음
+          // console.log(data.message);
+          localStorage.setItem("isLogin", false);
+          alertify.error("로그인 만료되었습니다.<br>다시 로그인해주세요.", 1.5);
           router.push("/login");
         }
+      } catch (error) {
+        console.log(error);
+        localStorage.setItem("isLogin", false);
+        router.push("/login");
+      }
     },
     async getSubstituteUser() {
       //결재자 가져오기
@@ -144,7 +134,7 @@ export default {
           userId: this.USER_ID,
         });
         let { data } = response;
-        if(data.flag){
+        if (data.flag) {
           this.subUsers = data.users;
         }
       } catch (error) {
@@ -183,7 +173,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .send-main {
   width: 100vh;
 }
@@ -201,13 +191,7 @@ export default {
 .send-form-select {
   width: 100px;
 }
-select {
-  border: 1px solid #cad1d7;
-  border-radius: 0.25rem;
-  height: 35px;
-  width: 150px;
-  color: #525f7f;
-}
+
 th,
 td {
   height: 50px;

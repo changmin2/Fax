@@ -88,36 +88,38 @@
         </table>
       </form>
 
-      <table class="fax-table" style="width: 100%">
-        <tr class="ApprArea-header">
-          <th>구분</th>
-          <th>요청일자</th>
-          <th>보내는사람</th>
-          <th>받는사람</th>
-          <th>팩스번호</th>
-          <th>제목</th>
-          <th>상세보기</th>
-          <th>장수</th>
-          <th>결재상태</th>
-          <th>결재구분</th>
-          <th>결재일시<br />(요청/완료)</th>
-        </tr>
+      <table class="fax-table table-hover" style="width: 100%">
+        <tbody>
+          <tr class="ApprArea-header">
+            <th>구분</th>
+            <th>요청일자</th>
+            <th>보내는사람</th>
+            <th>받는사람</th>
+            <th>팩스번호</th>
+            <th>제목</th>
+            <th>상세보기</th>
+            <th>장수</th>
+            <th>결재상태</th>
+            <th>결재구분</th>
+            <th>결재일시<br />(요청/완료)</th>
+          </tr>
 
-        <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-          <td>{{ noApproval.상태 }}</td>
-          <td>{{ noApproval.요청일자 }}</td>
-          <td>{{ noApproval.보내는사람 }}</td>
-          <td>{{ noApproval.받는사람 }}</td>
-          <td>{{ noApproval.팩스번호 }}</td>
-          <td  class="text-left pl-2">{{ noApproval.제목 }}</td>
-          <td>
-            <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
-          </td>
-          <td>{{ noApproval.받는사람 }}</td>
-          <td>{{ noApproval.상태 }}</td>
-          <td>{{ noApproval.결제고유번호 }}</td>
-          <td>{{ noApproval.결제일자 }}</td>
-        </tr>
+          <tr v-for="(noApproval, index) in noApprovalList" :key="index">
+            <td>{{ noApproval.상태 }}</td>
+            <td>{{ noApproval.요청일자 }}</td>
+            <td>{{ noApproval.보내는사람 }}</td>
+            <td>{{ noApproval.받는사람 }}</td>
+            <td>{{ noApproval.팩스번호 }}</td>
+            <td class="text-left pl-2">{{ noApproval.제목 }}</td>
+            <td>
+              <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
+            </td>
+            <td>{{ noApproval.받는사람 }}</td>
+            <td>{{ noApproval.상태 }}</td>
+            <td>{{ noApproval.결제고유번호 }}</td>
+            <td>{{ noApproval.결제일자 }}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <!-- modal 모달창 -->

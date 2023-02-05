@@ -72,7 +72,7 @@ export default {
 }
 .main-container {
   margin-top: 6rem;
-  margin-left: 1vw;
+  margin-left: 2vw;
   margin-right: 3vw;
 }
 .main-left {
@@ -86,10 +86,12 @@ export default {
   font-size: small;
   margin-top: 20px;
 }
+
 .fax-table th,
 .fax-table td {
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  height: 2rem;
   /* height: 35px; */
   /* line-height: 13px; */
 }
@@ -97,13 +99,14 @@ export default {
   background-color: rgb(224, 224, 224);
   font-weight: 600;
   border-bottom: none;
+  height: 3rem;
+  border: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .fax-table td {
   /* width: 250px; */
   /* border: 0.0625rem solid #dee2e6; */
-}
-.fax-table th {
-  border: none;
 }
 
 .fax-table-detail {
@@ -129,6 +132,13 @@ export default {
   border-top: 1px solid #cad1d7;
   border-radius: 0.25rem;
   text-align: center;
+}
+select {
+  border: 1px solid #cad1d7;
+  border-radius: 0.25rem;
+  height: 35px;
+  width: 150px;
+  color: #525f7f;
 }
 
 .ajs-message .ajs-custom {

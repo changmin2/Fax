@@ -13,11 +13,11 @@
       <div class="row">
         <div class="col-lg-5">
           <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
-            <form role="form">
-              <table class="w-100">
+            <form role="form" style="width: 100%">
+              <table>
                 <colgroup>
-                <col style="width:15%">
-                <col style="width:85%">
+                  <!-- <col style="width: 15%" /> -->
+                  <!-- <col style="width: 85%" /> -->
                 </colgroup>
                 <tr>
                   <th>제목</th>
@@ -56,13 +56,13 @@
                       />
                       <div class="flex-fill d-flex flex-row align-items-center align-self-stretch">
                         <base-button
-                          icon="fa fa-plus fa-lg"
-                          :iconOnly = "true"
+                          icon="fa fa-plus fa-lgr"
+                          class="px-3 py-2.5"
                           @click="setReceiveJSON"
                         ></base-button>
                         <base-button
                           icon="fa fa-address-book fa-lg"
-                          :iconOnly = "true"
+                          class="px-3 py-2.5"
                           title="주소록에서 불러오기"
                           @click="callAddress"
                         ></base-button>
@@ -82,8 +82,8 @@
                       ></textarea>
                       <base-button
                         icon="fa fa-minus fa-lg"
-                        :iconOnly = "true"
                         type="light"
+                        class="px-3 py-2.5"
                         @click="setDeleteJSON"
                       />
                     </div>
@@ -103,21 +103,18 @@
                     />
                     <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                       <a v-bind:href="`${fileUrl}`" target="_new" download=""
-                        >PDF변환파일.pdf - {{ pageCount }}장</a>
+                        >PDF변환파일.pdf - {{ pageCount }}장</a
+                      >
                       <i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
                         @click="deleteFile"
                         style="cursor: pointer"
                       ></i>
-                      <div class="mt-1 ml-5" style="display: inline;">
-                        ※ 개인정보 포함 : 
-  
-                        <badge v-if="privateInfo" class="m-0" type="success" rounded
-                          >Y</badge
-                        >
-                        <badge v-if="!privateInfo" class="m-0" type="warning" rounded
-                          >N</badge
-                        >
+                      <div class="mt-1 ml-5" style="display: inline">
+                        ※ 개인정보 포함 :
+
+                        <badge v-if="privateInfo" class="m-0" type="success" rounded>Y</badge>
+                        <badge v-if="!privateInfo" class="m-0" type="warning" rounded>N</badge>
                       </div>
                       <!-- <base-checkbox class="mt-2 d-inline-flex ml-4" v-model="privateInfo" disabled
                         >개인정보 포함여부</base-checkbox
@@ -201,37 +198,37 @@
       </modal>
     </div>
     <modal :show.sync="modal2">
-        <h6 slot="header" class="modal-title" id="modal-title-default">주소록</h6>
-        <div style="width: 100%;">
-          <table class="fax-table table-hover" style="width: 100%">
-            <colgroup>
+      <h6 slot="header" class="modal-title" id="modal-title-default">주소록</h6>
+      <div style="width: 100%">
+        <table class="fax-table table-hover" style="width: 100%">
+          <colgroup>
             <col style="width: 15%" />
             <col style="width: 30%" />
             <col style="width: 25%" />
             <col style="width: 30%" />
             <col />
           </colgroup>
-            <tr class="ApprArea-header">
-              <th>선택</th>
-              <th>회사명</th>
-              <th>이름</th>
-              <th>팩스번호</th>
+          <tr class="ApprArea-header">
+            <th>선택</th>
+            <th>회사명</th>
+            <th>이름</th>
+            <th>팩스번호</th>
+          </tr>
+          <tbody>
+            <tr v-for="(address, index) in addressList" :key="index">
+              <td><input type="checkbox" v-model="checkedAddress" :value="index" /></td>
+              <td>{{ address.company }}</td>
+              <td>{{ address.name }}</td>
+              <td>{{ address.fax }}</td>
             </tr>
-            <tbody>
-              <tr v-for="(address, index) in addressList" :key="index">
-                <td> <input type="checkbox" v-model="checkedAddress" :value="index"> </td>
-                <td>{{ address.company }}</td>
-                <td>{{ address.name }} </td>
-                <td>{{ address.fax }} </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <template slot="footer">
-          <base-button type="danger" @click="addAddress">수신처에 추가</base-button>
-          <base-button type="link" class="ml-auto" @click="modal2 = false">닫기 </base-button>
-        </template>
-     </modal>
+          </tbody>
+        </table>
+      </div>
+      <template slot="footer">
+        <base-button type="danger" @click="addAddress">수신처에 추가</base-button>
+        <base-button type="link" class="ml-auto" @click="modal2 = false">닫기 </base-button>
+      </template>
+    </modal>
   </section>
 </template>
 
@@ -567,15 +564,18 @@ export default {
       this.modal = false;
     },
     addAddress() {
-      if ( this.checkedAddress.length > 0 ) {
+      if (this.checkedAddress.length > 0) {
         let temp = this.checkedAddress;
-        let arr = this.addressList.filter(function(_, index) { // filter 안에 인자로 함수를 받고, index 만 필요하니 명시해주자
-            return temp.includes(index)     // 배열을 돌며 인덱스1 이 아닌 나머지만 다시 소집한다
+        let arr = this.addressList.filter(function (_, index) {
+          // filter 안에 인자로 함수를 받고, index 만 필요하니 명시해주자
+          return temp.includes(index); // 배열을 돌며 인덱스1 이 아닌 나머지만 다시 소집한다
         });
-        arr.forEach(element => {
-          this.receiveJSON.push({ company: element.company,
-          name: element.name,
-          fax: element.fax.replaceAll("-", "")});
+        arr.forEach((element) => {
+          this.receiveJSON.push({
+            company: element.company,
+            name: element.name,
+            fax: element.fax.replaceAll("-", ""),
+          });
           this.showJSON +=
             "상호 : " +
             element.company +
@@ -587,7 +587,7 @@ export default {
         });
         this.checkedAddress = [];
         this.modal2 = false;
-      }else{
+      } else {
         alertify.error("수신처에 추가할<br>주소록을 선택해주세요.", 1.5);
       }
     },
@@ -616,25 +616,22 @@ export default {
         alertify.error("실패했습니다.", 1.5);
       }
     },
-    getMask2( faxNumber ) {
-    if(!faxNumber) return ''
-    faxNumber = faxNumber.replace(/[^0-9]/g, '')
+    getMask2(faxNumber) {
+      if (!faxNumber) return "";
+      faxNumber = faxNumber.replace(/[^0-9]/g, "");
 
-    let res = ''
-    if(faxNumber.length < 4) {
-        res = faxNumber
-    }
-    else {
-        if(faxNumber.length < 8) {
-            res = faxNumber.substr(0, 4) + '-' + faxNumber.substr(4)
+      let res = "";
+      if (faxNumber.length < 4) {
+        res = faxNumber;
+      } else {
+        if (faxNumber.length < 8) {
+          res = faxNumber.substr(0, 4) + "-" + faxNumber.substr(4);
+        } else {
+          res = faxNumber.substr(0, 4) + "-" + faxNumber.substr(4, 3) + "-" + faxNumber.substr(7);
         }
-        else
-        {
-            res = faxNumber.substr(0, 4) + '-' + faxNumber.substr(4, 3) + '-' + faxNumber.substr(7)
-        }
-    }
-    this.receiveFax = res
-    }
+      }
+      this.receiveFax = res;
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -662,7 +659,12 @@ export default {
             fax: value.RECEIVE_FAX_NO,
           };
           this.receiveJSON.push(tempJson);
-          let tempFaxNo = tempJson.fax.substr(0, 4) + '-' + tempJson.fax.substr(4, 3) + '-' + tempJson.fax.substr(7)
+          let tempFaxNo =
+            tempJson.fax.substr(0, 4) +
+            "-" +
+            tempJson.fax.substr(4, 3) +
+            "-" +
+            tempJson.fax.substr(7);
           this.showJSON +=
             "상호 : " +
             tempJson.company +
@@ -689,8 +691,6 @@ export default {
     this.$store.commit("INIT_SEND_DETAIL");
     this.$store.commit("INIT_SEND_UPDATE");
   },
-
-
 };
 </script>
 
@@ -701,7 +701,9 @@ export default {
   margin-right: 3vw;
 }
 .send-main {
-  width: 85vh;
+  width: 100%;
+  min-width: 50vw;
+  /* max-width: 100vw; */
 }
 .input-content {
   display: inline;
@@ -716,6 +718,9 @@ export default {
 }
 .send-form-select {
   width: 100px;
+}
+.fax-table {
+  width: 100%;
 }
 select {
   border: 1px solid #cad1d7;
@@ -762,5 +767,22 @@ input[type="file"]::file-selector-button {
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
   cursor: pointer;
+}
+@media screen and (max-width: 991px) {
+  .send-container {
+    margin-right: 8rem;
+  }
+  .send-main {
+    width: 100%;
+  }
+
+  .input-group-alternative {
+    width: 100%;
+    max-width: 50vw;
+  }
+  /* .input-group-alternative >>> input {
+    width: 100%;
+    max-width: 20vw;
+  } */
 }
 </style>
