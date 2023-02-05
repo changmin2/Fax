@@ -57,6 +57,11 @@
                         class="px-3 py-2.5"
                         @click="setReceiveJSON"
                       ></base-button>
+                      <base-button
+                        icon="fa fa-address-book-o fa-lg"
+                        class="px-3 py-2.5"
+                        @click="addressModal"
+                      >주소록</base-button>
                     </div>
                   </td>
                 </tr>
@@ -94,8 +99,7 @@
                     <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                       <a v-bind:href="`${fileUrl}`" target="_new" download=""
                         >PDF변환파일.pdf - {{ pageCount }}장</a
-                      >
-                      <i
+                      ><i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
                         @click="deleteFile"
                         style="cursor: pointer"
@@ -170,6 +174,7 @@
       </div>
     </div>
     <div>
+      <!--미리보기-->
       <modal :show.sync="modal">
         <h6 slot="header" class="modal-title" id="modal-title-default">팩스 미리보기</h6>
         <div style="width: 100%; height: 650px">
@@ -178,6 +183,34 @@
         <template slot="footer">
           <base-button type="danger" @click="send">전송</base-button>
           <base-button type="link" class="ml-auto" @click="modal = false">Close </base-button>
+        </template>
+      </modal>
+
+      <!--주소록-->
+      <modal :show.sync="addressOpen">
+        <h6 slot="header" class="modal-title" id="modal-title-default">주소록</h6>
+        <div style="width: 100%; height: 650px">
+          <table class="address-table" style="width: 100%">
+            <tr class="ApprArea-header">
+              <th>선택</th>
+              <th>회사명</th>
+              <th>이름</th>
+              <th>팩스번호</th>
+              <th>전화번호</th>
+            </tr>
+
+            <tr v-for="(address, index) in addressList.list" :key="index">
+              <td> <input type="checkbox" v-model="checkedValues" :value="index"> </td>
+              <td>{{ address.company }}</td>
+              <td>{{ address.name }}</td>
+              <td>{{ address.fax }}</td>
+              <td>{{ address.hp_NUMBER }}</td>
+            </tr>
+          </table>
+        </div>
+        <template slot="footer">
+          <base-button type="danger" @click="addressinsert">적용</base-button>
+          <base-button type="link" class="ml-auto" @click="addressOpen = false">Close </base-button>
         </template>
       </modal>
     </div>
@@ -214,10 +247,13 @@ export default {
       receiveJSON: [],
       showJSON: "",
       modal: false,
-      detailOpen: false,
       fileFlag: true,
       pageCount: 0,
       grade: 0,
+      //주소록
+      addressOpen: false,
+      addressList: [],
+      checkedValues: [],
     };
   },
   computed: {
@@ -491,6 +527,7 @@ export default {
           "상호 : " + temp.company + ", 이름 : " + temp.name + ", 팩스번호 : " + temp.fax + "\n";
       }
     },
+    //미리보기후 전송
     openModal() {
       if (this.fileFlag) {
         alertify.error("파일을 등록해주세요.", 1.5);
@@ -511,6 +548,89 @@ export default {
     //모달 닫기
     closeModal() {
       this.modal = false;
+    },
+
+    //주소록 적용
+    addressModal() {
+      this.addressOpen = true;
+      this.getAddressList();
+    },
+    //모달 닫기
+    closeModal2() {
+      this.addressOpen = false;
+    },
+
+    //주소록 가져오기
+    async getAddressList() {
+      this.$store.commit("SET_LOADING_TRUE");
+
+      this.modal = true;
+      try {
+        let response = await http.post("/getAddressList", {
+          userId: this.userInfo.userId,
+        });
+        // console.log(response);
+        let { data } = response;
+        this.$store.commit("SET_LOADING_FALSE");
+
+        if (data != null) {
+          // 전송 성공
+          console.log(data);
+          this.addressList = data;
+
+          this.$store.commit("SET_MODAL_OPEN");
+
+          alertify.success("주소록 불러오기가 완료되었습니다.", 1.5);
+        } else {
+          console.log("주소록 불러오기 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.error("주소록 불러오기가 실패했습니다.", 1.5);
+      }
+    },
+
+    //주소록 적용버튼
+    addressinsert(){
+        //체크박스 선택된 행을 적용한다.
+        this.$store.commit("SET_LOADING_TRUE");
+
+        //선택된 것이 있으면 수신처Area에 추가
+        if ( this.checkedValues.length > 0 ) {
+            for( let i in this.checkedValues){
+                var selectedIndex = this.checkedValues[i];
+                if (this.addressList.list[selectedIndex].seq != "" && this.addressList.list[selectedIndex].seq != undefined){
+                    //선택된 항목 리스트에 추가
+                    let temp = {
+                      company: this.addressList.list[selectedIndex].company,
+                      name: this.addressList.list[selectedIndex].name,
+                      fax: this.addressList.list[selectedIndex].fax.replaceAll("-", ""),
+                    };
+                    this.receiveJSON.push(temp);
+                    this.showJSON +=
+                      "상호 : " +
+                      temp.company +
+                      ", 이름 : " +
+                      temp.name +
+                      ", 팩스번호 : " +
+                      this.addressList.list[selectedIndex].fax +
+                      "\n";
+                }
+
+                //console.log(arr);
+            }
+            //적용후 초기화
+            this.checkedValues = [];
+            this.closeModal2();
+
+            this.$store.commit("SET_LOADING_FALSE");
+        }else{
+            this.$store.commit("SET_LOADING_FALSE");
+            alertify.error("선택된 주소록이 없습니다.", 1.5);
+        }
+
+
     },
   },
   mounted() {
