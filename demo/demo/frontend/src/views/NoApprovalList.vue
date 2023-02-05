@@ -97,7 +97,7 @@
           <td>{{ noApproval.보내는사람 }}</td>
           <td>{{ noApproval.받는사람 }}</td>
           <td>{{ noApproval.팩스번호 }}</td>
-          <td>{{ noApproval.제목 }}</td>
+          <td  class="text-left pl-2">{{ noApproval.제목 }}</td>
           <td>
             <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
           </td>

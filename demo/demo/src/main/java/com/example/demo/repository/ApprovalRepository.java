@@ -73,10 +73,18 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
-            "              a.ERROR_MSG    ,a.PAGE_CNT   \n" +
+            "              a.ERROR_MSG    ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
             "            from TB_SEND a \n" +
             "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
-            "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'                   \n" +
+            "   JOIN (SELECT SUM(SUCCESS) SUCCESS, SUM(FAIL) FAIL, SUM(WAIT) WAIT           \n" +
+            "   , COUNT(USER_KEY) TOTAL ,USER_KEY                                     \n" +
+            "   FROM (                                                                \n" +
+            "   SELECT CASE WHEN STATUS = '성공' THEN 1 ELSE 0 END SUCCESS,             \n" +
+            "   CASE WHEN STATUS = '실패' THEN 1 ELSE 0 END FAIL,                       \n" +
+            "   CASE WHEN STATUS IS NULL THEN 1 ELSE 0 END WAIT, USER_KEY, JOB_NO     \n" +
+            "   FROM TB_SEND_D ) D                                                    \n" +
+            "   GROUP BY USER_KEY) d ON a.USER_KEY  = d.USER_KEY                     \n" +
+            "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'                     \n" +
             "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +
             "    ORDER BY a.USER_KEY DESC",nativeQuery = true)
     List<Object[]> sendRecieveAll(@Param(value = "userId")String userId,
@@ -90,9 +98,17 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
-            "              a.ERROR_MSG  ,a.PAGE_CNT     \n" +
+            "              a.ERROR_MSG  ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
             "            from TB_SEND a \n" +
             "   LEFT OUTER JOIN TB_APPROVAL t ON a.APPR_NO  = t.APPR_NO   \n" +
+            "   JOIN (SELECT SUM(SUCCESS) SUCCESS, SUM(FAIL) FAIL, SUM(WAIT) WAIT           \n" +
+            "   , COUNT(USER_KEY) TOTAL ,USER_KEY                                     \n" +
+            "   FROM (                                                                \n" +
+            "   SELECT CASE WHEN STATUS = '성공' THEN 1 ELSE 0 END SUCCESS,             \n" +
+            "   CASE WHEN STATUS = '실패' THEN 1 ELSE 0 END FAIL,                       \n" +
+            "   CASE WHEN STATUS IS NULL THEN 1 ELSE 0 END WAIT, USER_KEY, JOB_NO     \n" +
+            "   FROM TB_SEND_D ) D                                                    \n" +
+            "   GROUP BY USER_KEY) d ON a.USER_KEY  = d.USER_KEY                     \n" +
             "    where  a.STATUS = :status    \n" +
             "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                  \n" +
            "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +

@@ -14,7 +14,11 @@
         <div class="col-lg-5">
           <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
             <form role="form">
-              <table>
+              <table class="w-100">
+                <colgroup>
+                <col style="width:15%">
+                <col style="width:85%">
+                </colgroup>
                 <tr>
                   <th>제목</th>
                   <td>
@@ -30,38 +34,39 @@
                 <tr>
                   <th>수신처</th>
                   <td>
-                    <div style="float: left">
+                    <div class="w-100 d-flex flex-row align-items-start">
                       <base-input
                         alternative
                         v-model="receiveCompany"
-                        class="d-inline-flex my-1"
-                        style="width: 30%; font-size: 2em"
+                        class="my-1 flex-fill"
                         placeholder="상호"
                       />
                       <base-input
                         alternative
                         v-model="receiveName"
-                        class="d-inline-flex my-1"
-                        style="width: 30%"
+                        class="my-1 flex-fill"
                         placeholder="이름"
                       />
                       <base-input
                         alternative
                         v-model="receiveFax"
-                        class="d-inline-flex my-1"
-                        style="width: 30%"
+                        class="my-1 flex-fill"
+                        @keyup="getMask2(receiveFax)"
                         placeholder="팩스번호"
                       />
-                      <base-button
-                        icon="fa fa-plus fa-lg"
-                        class="px-3 py-2.5"
-                        @click="setReceiveJSON"
-                      ></base-button>
-                      <base-button
-                        icon="fa fa-address-book-o fa-lg"
-                        class="px-3 py-2.5"
-                        @click="addressModal"
-                      >주소록</base-button>
+                      <div class="flex-fill d-flex flex-row align-items-center align-self-stretch">
+                        <base-button
+                          icon="fa fa-plus fa-lgr"
+                          class="px-3 py-2.5"
+                          @click="setReceiveJSON"
+                        ></base-button>
+                        <base-button
+                          icon="fa fa-address-book fa-lg"
+                          class="px-3 py-2.5"
+                          title="주소록에서 불러오기"
+                          @click="callAddress"
+                        ></base-button>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -73,7 +78,7 @@
                         class="send-textarea p-3 shadow-none"
                         readonly
                         v-model="showJSON"
-                        style="width: 90%; font-size: 0.9em"
+                        style="width: 84%; font-size: 0.9em"
                       ></textarea>
                       <base-button
                         icon="fa fa-minus fa-lg"
@@ -99,15 +104,26 @@
                     <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                       <a v-bind:href="`${fileUrl}`" target="_new" download=""
                         >PDF변환파일.pdf - {{ pageCount }}장</a
-                      ><i
+                      >
+                      <i
                         class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
                         @click="deleteFile"
                         style="cursor: pointer"
                       ></i>
+                      <div class="mt-1" style="display: inline; float: right;">
+                        ※ 개인정보 포함 : 
+  
+                        <badge v-if="privateInfo" class="m-0" type="success" rounded
+                          >Y</badge
+                        >
+                        <badge v-if="!privateInfo" class="m-0" type="warning" rounded
+                          >N</badge
+                        >
+                      </div>
+                      <!-- <base-checkbox class="mt-2 d-inline-flex ml-4" v-model="privateInfo" disabled
+                        >개인정보 포함여부</base-checkbox
+                      > -->
                     </div>
-                    <base-checkbox class="mt-2 d-inline-flex ml-4" v-model="privateInfo" disabled
-                      >개인정보 포함여부</base-checkbox
-                    >
                   </td>
                 </tr>
                 <tr v-if="grade < 3">
@@ -174,7 +190,6 @@
       </div>
     </div>
     <div>
-      <!--미리보기-->
       <modal :show.sync="modal">
         <h6 slot="header" class="modal-title" id="modal-title-default">팩스 미리보기</h6>
         <div style="width: 100%; height: 650px">
@@ -182,38 +197,42 @@
         </div>
         <template slot="footer">
           <base-button type="danger" @click="send">전송</base-button>
-          <base-button type="link" class="ml-auto" @click="modal = false">Close </base-button>
+          <base-button type="link" class="ml-auto" @click="modal2 = false">닫기 </base-button>
         </template>
       </modal>
-
-      <!--주소록-->
-      <modal :show.sync="addressOpen">
+    </div>
+    <modal :show.sync="modal2">
         <h6 slot="header" class="modal-title" id="modal-title-default">주소록</h6>
-        <div style="width: 100%; height: 650px">
-          <table class="address-table" style="width: 100%">
+        <div style="width: 100%;">
+          <table class="fax-table table-hover" style="width: 100%">
+            <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 30%" />
+            <col style="width: 25%" />
+            <col style="width: 30%" />
+            <col />
+          </colgroup>
             <tr class="ApprArea-header">
               <th>선택</th>
               <th>회사명</th>
               <th>이름</th>
               <th>팩스번호</th>
-              <th>전화번호</th>
             </tr>
-
-            <tr v-for="(address, index) in addressList.list" :key="index">
-              <td> <input type="checkbox" v-model="checkedValues" :value="index"> </td>
-              <td>{{ address.company }}</td>
-              <td>{{ address.name }}</td>
-              <td>{{ address.fax }}</td>
-              <td>{{ address.hp_NUMBER }}</td>
-            </tr>
+            <tbody>
+              <tr v-for="(address, index) in addressList" :key="index">
+                <td> <input type="checkbox" v-model="checkedAddress" :value="index"> </td>
+                <td>{{ address.company }}</td>
+                <td>{{ address.name }} </td>
+                <td>{{ address.fax }} </td>
+              </tr>
+            </tbody>
           </table>
         </div>
         <template slot="footer">
-          <base-button type="danger" @click="addressinsert">적용</base-button>
-          <base-button type="link" class="ml-auto" @click="addressOpen = false">Close </base-button>
+          <base-button type="danger" @click="addAddress">수신처에 추가</base-button>
+          <base-button type="link" class="ml-auto" @click="modal2 = false">닫기 </base-button>
         </template>
-      </modal>
-    </div>
+     </modal>
   </section>
 </template>
 
@@ -245,15 +264,15 @@ export default {
       files: [],
       apprUsers: [],
       receiveJSON: [],
+      addressList: [],
+      checkedAddress: [],
       showJSON: "",
       modal: false,
+      modal2: false,
+      detailOpen: false,
       fileFlag: true,
       pageCount: 0,
       grade: 0,
-      //주소록
-      addressOpen: false,
-      addressList: [],
-      checkedValues: [],
     };
   },
   computed: {
@@ -362,7 +381,7 @@ export default {
         return;
       }
       if (this.receiveJSON.length == 0) {
-        //수신처 필수조건
+        //수신처 필수조건private_info_yn
         alertify.error("수신처를 등록해주세요.", 1.5);
         return;
       }
@@ -527,7 +546,6 @@ export default {
           "상호 : " + temp.company + ", 이름 : " + temp.name + ", 팩스번호 : " + temp.fax + "\n";
       }
     },
-    //미리보기후 전송
     openModal() {
       if (this.fileFlag) {
         alertify.error("파일을 등록해주세요.", 1.5);
@@ -549,89 +567,75 @@ export default {
     closeModal() {
       this.modal = false;
     },
-
-    //주소록 적용
-    addressModal() {
-      this.addressOpen = true;
-      this.getAddressList();
+    addAddress() {
+      if ( this.checkedAddress.length > 0 ) {
+        let temp = this.checkedAddress;
+        let arr = this.addressList.filter(function(_, index) { // filter 안에 인자로 함수를 받고, index 만 필요하니 명시해주자
+            return temp.includes(index)     // 배열을 돌며 인덱스1 이 아닌 나머지만 다시 소집한다
+        });
+        arr.forEach(element => {
+          this.receiveJSON.push({ company: element.company,
+          name: element.name,
+          fax: element.fax.replaceAll("-", "")});
+          this.showJSON +=
+            "상호 : " +
+            element.company +
+            ", 이름 : " +
+            element.name +
+            ", 팩스번호 : " +
+            element.fax +
+            "\n";
+        });
+        this.checkedAddress = [];
+        this.modal2 = false;
+      }else{
+        alertify.error("수신처에 추가할<br>주소록을 선택해주세요.", 1.5);
+      }
     },
-    //모달 닫기
-    closeModal2() {
-      this.addressOpen = false;
-    },
-
-    //주소록 가져오기
-    async getAddressList() {
+    // 주소록 가져오기
+    async callAddress() {
       this.$store.commit("SET_LOADING_TRUE");
-
-      this.modal = true;
       try {
         let response = await http.post("/getAddressList", {
-          userId: this.userInfo.userId,
+          userId: this.userId,
         });
-        // console.log(response);
+
         let { data } = response;
         this.$store.commit("SET_LOADING_FALSE");
 
         if (data != null) {
           // 전송 성공
-          console.log(data);
-          this.addressList = data;
-
-          this.$store.commit("SET_MODAL_OPEN");
-
-          alertify.success("주소록 불러오기가 완료되었습니다.", 1.5);
+          console.log("조회 성공");
+          this.addressList = data.list;
+          this.modal2 = true;
         } else {
-          console.log("주소록 불러오기 실패");
+          console.log("조회 실패");
         }
       } catch (error) {
         // 전송 실패
-        console.log("오류메시지 - ", error);
-        alertify.error("주소록 불러오기가 실패했습니다.", 1.5);
+        console.log("오류메시지 - ", data.Message);
+        alertify.error("실패했습니다.", 1.5);
       }
     },
+    getMask2( faxNumber ) {
+    if(!faxNumber) return ''
+    faxNumber = faxNumber.replace(/[^0-9]/g, '')
 
-    //주소록 적용버튼
-    addressinsert(){
-        //체크박스 선택된 행을 적용한다.
-        this.$store.commit("SET_LOADING_TRUE");
-
-        //선택된 것이 있으면 수신처Area에 추가
-        if ( this.checkedValues.length > 0 ) {
-            for( let i in this.checkedValues){
-                var selectedIndex = this.checkedValues[i];
-                if (this.addressList.list[selectedIndex].seq != "" && this.addressList.list[selectedIndex].seq != undefined){
-                    //선택된 항목 리스트에 추가
-                    let temp = {
-                      company: this.addressList.list[selectedIndex].company,
-                      name: this.addressList.list[selectedIndex].name,
-                      fax: this.addressList.list[selectedIndex].fax.replaceAll("-", ""),
-                    };
-                    this.receiveJSON.push(temp);
-                    this.showJSON +=
-                      "상호 : " +
-                      temp.company +
-                      ", 이름 : " +
-                      temp.name +
-                      ", 팩스번호 : " +
-                      this.addressList.list[selectedIndex].fax +
-                      "\n";
-                }
-
-                //console.log(arr);
-            }
-            //적용후 초기화
-            this.checkedValues = [];
-            this.closeModal2();
-
-            this.$store.commit("SET_LOADING_FALSE");
-        }else{
-            this.$store.commit("SET_LOADING_FALSE");
-            alertify.error("선택된 주소록이 없습니다.", 1.5);
+    let res = ''
+    if(faxNumber.length < 4) {
+        res = faxNumber
+    }
+    else {
+        if(faxNumber.length < 8) {
+            res = faxNumber.substr(0, 4) + '-' + faxNumber.substr(4)
         }
-
-
-    },
+        else
+        {
+            res = faxNumber.substr(0, 4) + '-' + faxNumber.substr(4, 3) + '-' + faxNumber.substr(7)
+        }
+    }
+    this.receiveFax = res
+    }
   },
   mounted() {
     setTimeout(() => {
@@ -659,13 +663,14 @@ export default {
             fax: value.RECEIVE_FAX_NO,
           };
           this.receiveJSON.push(tempJson);
+          let tempFaxNo = tempJson.fax.substr(0, 4) + '-' + tempJson.fax.substr(4, 3) + '-' + tempJson.fax.substr(7)
           this.showJSON +=
             "상호 : " +
             tempJson.company +
             ", 이름 : " +
             tempJson.name +
             ", 팩스번호 : " +
-            tempJson.fax +
+            tempFaxNo +
             "\n";
         });
         this.fileFlag = false;
@@ -685,17 +690,19 @@ export default {
     this.$store.commit("INIT_SEND_DETAIL");
     this.$store.commit("INIT_SEND_UPDATE");
   },
+
+
 };
 </script>
 
 <style scoped>
 .send-container {
   margin-top: 6rem;
-  margin-left: 10vw;
+  margin-left: 15vw;
   margin-right: 3vw;
 }
 .send-main {
-  width: 100vh;
+  width: 85vh;
 }
 .input-content {
   display: inline;

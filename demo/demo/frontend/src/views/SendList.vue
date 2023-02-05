@@ -80,7 +80,7 @@
         </tr>
       </table>
 
-      <table class="fax-table" style="width: 100%">
+      <table class="fax-table table-hover" style="width: 100%">
         <tr class="ApprArea-header">
           <th>제목</th>
           <th>상세보기</th>
@@ -89,19 +89,22 @@
           <th>결재자</th>
           <th>결재여부</th>
           <th>결과(성공/실패)</th>
+          <th>대기/실패/성공/전체</th>
         </tr>
-
-        <tr v-for="(send, index) in sendList" :key="index">
-          <td>{{ send.제목 }}</td>
-          <td>
-            <base-button @click="getSendDetail(send.발송번호)">상세</base-button>
-          </td>
-          <td>{{ send.등록일자 }}</td>
-          <td>{{ send.페이지수 }}</td>
-          <td>{{ send.결재자이름 }}</td>
-          <td>{{ send.결재상태 }}</td>
-          <td>{{ send.상태 }}</td>
-        </tr>
+        <tbody>
+          <tr v-for="(send, index) in sendList" :key="index">
+            <td class="text-left pl-2">{{ send.제목 }}</td>
+            <td>
+              <base-button @click="getSendDetail(send.발송번호)">상세</base-button>
+            </td>
+            <td>{{ send.등록일자 }} </td>
+            <td>{{ send.페이지수 }}</td>
+            <td>{{ send.결재자이름 }}</td>
+            <td>{{ send.결재상태 }}</td>
+            <td>{{ send.상태 }}</td>
+            <td>{{ send.대기}} / {{send.실패}} / {{send.성공}} / {{send.전체}}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -284,4 +287,8 @@ export default {
 .fax-table-input {
   width: 16rem;
 }
+
+/* .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #D1D119;
+} */
 </style>

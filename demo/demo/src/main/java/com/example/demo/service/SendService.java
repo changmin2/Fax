@@ -320,7 +320,7 @@ public class SendService {
             send.setAPPR_NO(approval.getAPPR_NO());
             send.setAPPR_USER_NO(approval.getAPPR_PERSON());
 
-            //SMS 보내기
+            //SMS(문자) 보내기
             String userName = userRepository.getUserName(userKey);
             String phoneN = approvalRepository.getPhoneNumber(userKey);
             smsService.smsSend(send.getTITLE()+" 개인정보 포함 건으로\n"+userName+"님의 결제 요청이 왔습니다.",phoneN);

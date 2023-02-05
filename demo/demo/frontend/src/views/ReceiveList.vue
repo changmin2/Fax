@@ -91,7 +91,7 @@
 
           <tr v-for="(receive, index) in receivelist" :key="index">
             <!--<td></td>-->
-            <td>{{ receive.title }}</td>
+            <td  class="text-left pl-2">{{ receive.title }}</td>
             <td>
               <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
             </td>
