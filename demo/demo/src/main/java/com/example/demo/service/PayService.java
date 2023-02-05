@@ -132,7 +132,7 @@ public class PayService {
             objects = approvalRepository.sendRecieve(userId,status,searchFrom,searchTo);
         }
         List<HashMap<String,Object>> lists = new ArrayList<>();
-        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지","페이지수"};
+        String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지","페이지수","성공","실패","대기","전체"};
 
         for (Object[] objArr : objects) {
             int idx =-1;
