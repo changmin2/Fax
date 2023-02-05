@@ -64,6 +64,7 @@ export default {
   cursor: default;
   display: flex;
   flex-direction: column;
+  /* height: 200vh; */
 }
 .app-right-content {
   width: 90vw;
@@ -79,7 +80,6 @@ export default {
 }
 .main-right {
   width: 100%;
-  margin-left: 1.5rem;
 }
 /* table css */
 .fax-table {
@@ -147,60 +147,11 @@ export default {
 .modal-big {
   max-width: 1400px;
 }
-.right-content {
-  height: 30rem;
-}
+
 .left-content {
   display: flex;
   flex-direction: column;
 }
-
-/* @media all and (max-width: 768px) {
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
-
-  th {
-    text-align: right;
-  }
-
-  table {
-    position: relative;
-    padding-bottom: 0;
-    border: none;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  }
-
-  thead {
-    float: left;
-    white-space: nowrap;
-  }
-
-  tbody {
-    overflow-x: auto;
-    overflow-y: hidden;
-    position: relative;
-    white-space: nowrap;
-  }
-
-  tr {
-    display: inline-block;
-    vertical-align: top;
-  }
-
-  th {
-    border-bottom: 1px solid #a39485;
-  }
-
-  td {
-    border-bottom: 1px solid #e5e5e5;
-  }
-} */
 
 @media screen and (max-width: 991px) {
   .main-left {
@@ -210,6 +161,9 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+  .main-right {
+    width: 100%;
   }
 }
 </style>

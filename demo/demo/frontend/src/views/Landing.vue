@@ -1,98 +1,92 @@
 <template>
   <section class="section section-shaped section-hero login-section section-lg my-0">
     <div class="main-container mt-5">
-      <div class="row">
-        <div class="col left-content">
-          <div class="content-group">
-            <div class="send-title font-weight-700 text-default">
-              <i class="ni ni-chart-pie-35"></i>
-              총건수
-            </div>
-            <hr />
-            <div class="landing-total">
-              <div class="row landing-total-group" style="width: 5rem">
-                <span style="text-align: center">미확인</span>
-                <span class="landing-total-num" type="secondary">{{ data.ReceiveCount }}건</span>
-              </div>
-              <div class="row landing-total-group" style="width: 5rem">
-                <span style="text-align: center">미결재</span>
-                <span class="landing-total-num" type="secondary">{{ data.NotApprCount }}건</span>
-              </div>
-            </div>
+      <div class="left-content">
+        <div class="content-group">
+          <div class="send-title font-weight-700 text-default">
+            <i class="ni ni-chart-pie-35"></i>
+            총건수
           </div>
-          <div class="content-group">
-            <div class="send-title font-weight-700 text-default">
-              <i class="ni ni-notification-70"></i>
-              공지사항
+          <hr />
+          <div class="landing-total">
+            <div class="row landing-total-group" style="width: 5rem">
+              <span style="text-align: center">미확인</span>
+              <span class="landing-total-num" type="secondary">{{ data.ReceiveCount }}건</span>
             </div>
-            <div class="table-container">
-              <hr />
-              <table class="fax-table content-group-notice table-hover">
-                <tbody>
-                  <tr
-                    v-for="(notice, index) in data.NoticeInfo"
-                    :key="index"
-                    @click="openModal(notice)"
-                    role="button"
-                  >
-                    <td scope="row" class="text-left pl-2">
-                      {{ notice.TITLE }}
-                    </td>
-
-                    <td style="width: 8rem" class="text-right pr-2">{{ notice.DATE }}</td>
-                  </tr>
-                </tbody>
-                <!-- <tr class="ApprArea-header">
-                  <th>내용</th>
-                  <th>제목</th>
-                </tr> -->
-              </table>
+            <div class="row landing-total-group" style="width: 5rem">
+              <span style="text-align: center">미결재</span>
+              <span class="landing-total-num" type="secondary">{{ data.NotApprCount }}건</span>
             </div>
           </div>
         </div>
-        <div class="col right-content">
-          <div class="content-group">
-            <div class="send-title font-weight-700 text-default">
-              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-              미확인
-            </div>
-            <div class="table-container">
-              <hr />
-              <table class="fax-table">
-                <tr class="ApprArea-header">
-                  <th>발신자팩스번호</th>
-                  <th>페이지수</th>
-                  <th>수신일시</th>
-                </tr>
-                <tr v-for="(receive, index) in data.ReceiveList" :key="index">
-                  <td>{{ receive.SENDER_NO }}</td>
-                  <td>{{ receive.PAGE_CNT }}</td>
-                  <td>{{ receive.RECEIVE_DATE }}</td>
-                </tr>
-              </table>
-            </div>
+        <div class="content-group">
+          <div class="send-title font-weight-700 text-default">
+            <i class="ni ni-notification-70"></i>
+            공지사항
           </div>
-          <div class="content-group">
-            <div class="send-title font-weight-700 text-default">
-              <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 미결재
-            </div>
+          <div class="table-container">
+            <hr />
+            <table class="fax-table content-group-notice table-hover">
+              <tbody>
+                <tr
+                  v-for="(notice, index) in data.NoticeInfo"
+                  :key="index"
+                  @click="openModal(notice)"
+                  role="button"
+                >
+                  <td scope="row" class="text-left pl-2">
+                    {{ notice.TITLE }}
+                  </td>
 
-            <div class="table-container">
-              <hr />
-              <table class="fax-table">
-                <tr class="ApprArea-header">
-                  <th>제목</th>
-                  <th>기안자</th>
-                  <th>등록일</th>
+                  <td style="width: 8rem" class="text-right pr-2">{{ notice.DATE }}</td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="right-content">
+        <div class="content-group">
+          <div class="send-title font-weight-700 text-default">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+            미확인
+          </div>
+          <div class="table-container">
+            <hr />
+            <table class="fax-table">
+              <tr class="ApprArea-header">
+                <th>발신자팩스번호</th>
+                <th>페이지수</th>
+                <th>수신일시</th>
+              </tr>
+              <tr v-for="(receive, index) in data.ReceiveList" :key="index">
+                <td>{{ receive.SENDER_NO }}</td>
+                <td>{{ receive.PAGE_CNT }}</td>
+                <td>{{ receive.RECEIVE_DATE }}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="content-group">
+          <div class="send-title font-weight-700 text-default">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 미결재
+          </div>
 
-                <tr v-for="(noApproval, index) in data.NotApprList" :key="index">
-                  <td>{{ noApproval.TITLE }}</td>
-                  <td>{{ noApproval.NAME }}</td>
-                  <td>{{ noApproval.INSERT_DATE }}</td>
-                </tr>
-              </table>
-            </div>
+          <div class="table-container">
+            <hr />
+            <table class="fax-table">
+              <tr class="ApprArea-header">
+                <th>제목</th>
+                <th>기안자</th>
+                <th>등록일</th>
+              </tr>
+
+              <tr v-for="(noApproval, index) in data.NotApprList" :key="index">
+                <td>{{ noApproval.TITLE }}</td>
+                <td>{{ noApproval.NAME }}</td>
+                <td>{{ noApproval.INSERT_DATE }}</td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
@@ -120,7 +114,14 @@ export default {
   components: {},
   data() {
     return {
-      receivelist: [],
+      // test용
+      receiveList: [
+        {
+          SENDER_NO: "123234345",
+          PAGE_CNT: "2",
+          RECEIVE_DATE: "2022-02-23",
+        },
+      ],
       sendList: [],
       noApprovalList: [],
 
@@ -168,7 +169,9 @@ export default {
 
     //공지사항 dialog
     openModal(notice) {
-      alertify.alert(notice.TITLE, notice.CONTENT).set({ transition: "fade", resizable: true });
+      alertify
+        .alert(notice.TITLE, "<br />" + notice.CONTENT)
+        .set({ transition: "fade", resizable: true });
     },
 
     // mainInfo
@@ -207,12 +210,16 @@ export default {
 };
 </script>
 <style scoped>
+.main-container {
+  display: flex;
+  justify-content: center;
+}
 .landing-total {
   display: flex;
   justify-content: space-evenly;
   align-content: center;
   margin-top: 2rem;
-  /* width: 100%; */
+  width: 100%;
 }
 .landing-total-group {
   width: 30rem;
@@ -235,16 +242,19 @@ export default {
 .right-content {
   /* background-color: aquamarine; */
   margin-right: 4rem;
+  margin-left: 4rem;
 }
 .content-group {
-  width: 30rem;
-  height: 23rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 18rem;
+  width: 100%;
 }
 .send-title {
   font-size: large;
 }
 .table-container {
-  width: 300px;
+  width: 100%;
   margin-bottom: 10px;
 }
 .body-content {
@@ -252,49 +262,15 @@ export default {
 }
 .fax-table {
   table-layout: fixed;
-  width: 32rem;
+  width: 100%;
   /* height: 100px; */
 }
 .fax-table td {
-  height: 2.3rem;
-}
-.fax-table-landing {
-  width: 12rem;
-  text-align: center;
-}
-
-.fax-table-landing {
-}
-.fax-table-landing th {
-  background-color: white;
-}
-.fax-table-landing td {
-  background-color: gainsboro;
-}
-/* .ApprArea-header th {
-  background-color: rgb(224, 224, 224);
-  border: 1px solid;
-  font-weight: bold;
-}
-.no-approval-table {
-}
-.no-approval-table th,
-.no-approval-table td {
-  height: 30px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 120px;
-  padding: 0px 8px 0px 8px;
-} */
-
-.form-select {
-  width: 180px;
-  border: 0.0625rem solid rgb(169, 169, 169);
+  height: 2rem;
 }
 
 hr {
-  width: 32rem;
+  width: 100%;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -310,10 +286,21 @@ hr {
 @media screen and (max-width: 991px) {
   .main-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+  }
+  .left-content {
+    margin-right: 4rem;
   }
   .right-content {
     margin-left: 4rem;
+  }
+  .content-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    width: 100%;
+    align-items: center;
   }
 }
 </style>
