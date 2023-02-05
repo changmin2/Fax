@@ -13,6 +13,6 @@ public interface RecieveRepository extends JpaRepository<Recieve, String> {
     @Query(value = "select d.*\n" +
             "  from TB_RECEIVE d\n" +
             " where d.FAX_NO =:faxNo" +
-            "ORDER BY d.RECEIVE_DATE",nativeQuery = true)
+            "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
     List<Recieve> findByFaxNo(@Param(value = "faxNo") String faxNo);
 }

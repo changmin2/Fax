@@ -181,12 +181,17 @@
   .modal-content {
     @include box-shadow($modal-content-box-shadow-sm-up);
 
-    min-height: 700px !important;
+    // min-height: 700px !important;
   }
 
+  .modal-big > .modal-content{
+    min-height: 700px !important;
+  }
   .modal-sm {
     max-width: $modal-sm;
+    max-height: 100px !important;
   }
+
 }
 
 @include media-breakpoint-up(lg) {
