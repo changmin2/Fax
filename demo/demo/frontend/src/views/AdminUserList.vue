@@ -1,7 +1,9 @@
 <template>
   <div class="landing-section">
     <div class="main-container">
-      <div class="receive-title display-4 mb-4 font-weight-800 text-default">사용자 관리</div>
+      <div class="receive-title display-4 mb-4 font-weight-800 text-default">사용자 관리
+        <i class="fa fa-gear" aria-hidden="true"></i>
+      </div>
       <div class="body-content ApprArea" style="width: 100%">
         <table class="fax-table" style="width: 100%">
           <tr class="ApprArea-header">
