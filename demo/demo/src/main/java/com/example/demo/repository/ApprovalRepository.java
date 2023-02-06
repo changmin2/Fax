@@ -84,7 +84,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "   CASE WHEN STATUS IS NULL THEN 1 ELSE 0 END WAIT, USER_KEY, JOB_NO     \n" +
             "   FROM TB_SEND_D ) D                                                    \n" +
             "   GROUP BY USER_KEY) d ON a.USER_KEY  = d.USER_KEY                     \n" +
-            "    where a.USER_NO = :userId AND a.USE_GBN = 'Y'                     \n" +
+            "    where a.USER_NO  IN ( SELECT USER_ID\n" +
+            "   FROM TB_USER\n" +
+            "   WHERE DEPT_CODE = (SELECT DEPT_CODE FROM TB_USER WHERE USER_ID=:userId)) AND a.USE_GBN = 'Y'                     \n" +
             "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +
             "    ORDER BY a.USER_KEY DESC",nativeQuery = true)
     List<Object[]> sendRecieveAll(@Param(value = "userId")String userId,
@@ -110,7 +112,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "   FROM TB_SEND_D ) D                                                    \n" +
             "   GROUP BY USER_KEY) d ON a.USER_KEY  = d.USER_KEY                     \n" +
             "    where  a.STATUS = :status    \n" +
-            "    and a.USER_NO = :userId AND a.USE_GBN = 'Y'                  \n" +
+            "    and a.USER_NO   IN ( SELECT USER_ID     +\n" +
+            "       FROM TB_USER        +\n" +
+            "      WHERE DEPT_CODE = (SELECT DEPT_CODE FROM TB_USER WHERE USER_ID=:userId)) AND a.USE_GBN = 'Y'                  \n" +
            "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +
             "    ORDER BY a.USER_KEY DESC",nativeQuery = true)
     List<Object[]> sendRecieve(@Param(value = "userId")String userId,

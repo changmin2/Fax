@@ -37,8 +37,10 @@ public class RecieveController {
         //api호출을 통해 얻은 전체 수신 목록
         List<RecieveForm> receive = receiveService.Receive(map);
         //DB에 저장되어 있지 않은 수신 목록 업데이트
-        return receiveService.DBListUpdate(receive);
+        receiveService.DBListUpdate(receive);
+        return receiveService.findByFaxNo2(map);
     }
+
 
     //수신 목록 상세 보기
     @RequestMapping("/recieveDetail")
