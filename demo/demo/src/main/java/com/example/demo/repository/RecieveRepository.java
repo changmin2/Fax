@@ -20,18 +20,16 @@ public interface RecieveRepository extends JpaRepository<Recieve, String> {
     @Query(value = "select d.*\n" +
             "  from TB_RECEIVE d\n" +
             " where d.FAX_NO =:faxNo" +
-            " AND STR_TO_DATE(d.RECEIVE_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo" +
+            " AND (DATE_FORMAT(d.RECEIVE_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo)" +
             "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
-    List<Recieve> findByFaxNo2(@Param(value = "faxNo") String faxNo
-            ,@Param(value = "searchFrom") String searchFrom,@Param(value = "searchTo") String searchTo);
+    List<Recieve> findByFaxNo2(@Param(value = "faxNo") String faxNo,@Param(value = "searchFrom") String searchFrom,@Param(value = "searchTo") String searchTo);
 
     @Query(value = "select d.*\n" +
             "  from TB_RECEIVE d\n" +
             " where d.FAX_NO =:faxNo \n"  +
-            " AND STR_TO_DATE(d.RECEIVE_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo" +
-            " AND d.SENDER_NO like CONCAT('%', :no, '%') \n" +
+            " AND (DATE_FORMAT(d.RECEIVE_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo)" +
+            " AND d.SENDER_NO like CONCAT('%', :senderNo, '%') \n" +
             "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
-    List<Recieve> findByFaxNoWhere(@Param(value = "faxNo") String faxNo,@Param(value = "senderNo") String senderNo
-            ,@Param(value = "searchFrom") String searchFrom,@Param(value = "searchTo") String searchTo);
+    List<Recieve> findByFaxNoWhere(@Param(value = "faxNo") String faxNo,@Param(value = "senderNo") String senderNo ,@Param(value = "searchFrom") String searchFrom,@Param(value = "searchTo") String searchTo);
 
 }
