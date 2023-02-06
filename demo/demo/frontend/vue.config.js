@@ -1,7 +1,6 @@
 const webpack = require("webpack");
 
 module.exports = {
-  assetsDir: "static",
   lintOnSave: false,
   outputDir: "../src/main/resources/static",  // 빌드 타겟 디렉토리
   indexPath:"../static/index.html",
@@ -14,11 +13,6 @@ module.exports = {
         disableHostCheck: true
       }
     }
-  chainWebpack: config=> {
-      const svgRule = config.module.rule("svg");
-      svgRule.uses.clear();
-      svgRule.use("vue-svg-loader").loader("vue-svg-loader")
-    } // vue3 cli 로더 설정
   },
 
 
