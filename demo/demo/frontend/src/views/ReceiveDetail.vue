@@ -163,4 +163,34 @@ export default {
   width: fit-content;
   height: fit-content;
 }
+@media screen and (max-width: 991px) {
+  .modal-container {
+  }
+  .text-default {
+    text-align: center;
+  }
+  .modal-container-detail {
+    display: flex;
+    flex-direction: column;
+  }
+  .left-content {
+    margin-top: 1rem;
+    flex-basis: auto;
+    order: 1;
+  }
+  .right-content {
+    max-width: fit-content;
+    max-height: 100vh;
+    order: 0;
+  }
+  .receive-detail-btn-group {
+    display: flex;
+  }
+  .fax-form-input {
+    width: 12rem !important;
+  }
+  .receive-detail-btn {
+    padding: 10px;
+  }
+}
 </style>

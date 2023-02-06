@@ -72,11 +72,11 @@ export default {
 }
 .main-container {
   margin-top: 6rem;
-  margin-left: 2vw;
-  margin-right: 3vw;
+  margin-left: 4vw;
+  margin-right: 4vw;
 }
 .main-left {
-  width: 200px;
+  width: 175px;
 }
 .main-right {
   width: 100%;
@@ -91,7 +91,7 @@ export default {
 .fax-table td {
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  height: 2rem;
+  height: 2.5rem;
   /* height: 35px; */
   /* line-height: 13px; */
 }
@@ -173,6 +173,14 @@ select {
     justify-content: center;
   }
   .main-right {
+    width: 100%;
+  }
+
+  .fax-table-display-none {
+    display: none;
+    /* width: 100%; */
+  }
+  .fax-table-display {
     width: 100%;
   }
 }

@@ -222,4 +222,31 @@ export default {
 .right-content {
   min-height: 60vh;
 }
+@media screen and (max-width: 991px) {
+  .modal-container {
+  }
+  .text-default {
+    text-align: center;
+  }
+  .modal-container-detail {
+    display: flex;
+    flex-direction: column;
+  }
+  .left-content {
+    margin-top: 1rem;
+    flex-basis: auto;
+    order: 1;
+  }
+  .right-content {
+    max-width: fit-content;
+    min-height: 0px;
+    order: 0;
+  }
+  .fax-table-detail {
+    margin-bottom: 0px;
+  }
+  .no-approval-btn-group {
+    margin-top: 1rem;
+  }
+}
 </style>

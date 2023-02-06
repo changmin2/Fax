@@ -1,69 +1,59 @@
 <template>
-  <div class="main-container pt-lg-md">
+  <div class="send-container pt-lg-md">
     <div class="send-title display-4 mb-4 font-weight-800 text-default">마이페이지</div>
 
-    <div class="row">
-      <div class="col-lg-5">
-        <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
-          <table style="width: 100%">
-            <colgroup>
-              <col class="col-1" />
-              <col class="col-3" />
-              <col class="col-1" />
-              <col class="col-3" />
-            </colgroup>
-            <tr>
-              <th class="pb-3">아이디</th>
-              <td><base-input v-model="USER_ID" class="mr-3" readonly></base-input></td>
-              <th class="pl-4 pb-3">이름</th>
-              <td><base-input v-model="USER_NAME" readonly> </base-input></td>
-            </tr>
-            <tr>
-              <th class="pb-3">부서</th>
-              <td><base-input v-model="DEPT_NAME" class="mr-3" readonly> </base-input></td>
-              <th class="pl-4 pb-3">직급</th>
-              <td><base-input v-model="COMM_NAME" readonly> </base-input></td>
-            </tr>
-            <tr>
-              <th class="pb-3">팩스번호</th>
-              <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
-              <td colspan="2"></td>
-            </tr>
-            <tr v-if="GRADE_CODE > 1">
-              <th>부재여부</th>
-              <td colspan="2" v-if="GRADE_CODE > 1">
-                <div class="d-flex flex-row justify-content-start" style="height: 50px">
-                  <div class="align-self-center mt-1">
-                    <label class="ml-1">
-                      <input type="radio" class="ml-1" v-model="IS_ABSENCE" value="Y" />
-                      Y</label
-                    >
-                    <label class="ml-1">
-                      <input type="radio" class="ml-3" v-model="IS_ABSENCE" value="N" />
-                      N</label
-                    >
-                  </div>
-                  <div
-                    v-if="IS_ABSENCE == 'Y'"
-                    class="ml-3 d-flex flex-row flex-fill align-self-center"
-                  >
-                    <span class="mt-1 ml-3">대체자</span>
-                    <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
-                      <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
-                        {{ item.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </td>
-              <td class="d-flex justify-content-end">
-                <base-button type="danger" @click="setAbsence">저장</base-button>
-              </td>
-            </tr>
-          </table>
-        </card>
-      </div>
-    </div>
+    <card type="secondary">
+      <table style="width: 100%" class="send-table">
+        <tr>
+          <th>아이디</th>
+          <td><base-input v-model="USER_ID" class="mr-3" readonly></base-input></td>
+          <th>이름</th>
+          <td><base-input v-model="USER_NAME" readonly> </base-input></td>
+        </tr>
+        <tr>
+          <th class="pb-3">부서</th>
+          <td><base-input v-model="DEPT_NAME" class="mr-3" readonly> </base-input></td>
+          <th class="pl-4 pb-3">직급</th>
+          <td><base-input v-model="COMM_NAME" readonly> </base-input></td>
+        </tr>
+        <tr>
+          <th class="pb-3">팩스번호</th>
+          <td><base-input v-model="FAX_NO" class="mr-3" readonly></base-input></td>
+          <td colspan="2"></td>
+        </tr>
+        <tr v-if="GRADE_CODE > 1">
+          <th>부재여부</th>
+          <td colspan="2" v-if="GRADE_CODE > 1">
+            <div class="d-flex flex-row justify-content-start" style="height: 50px">
+              <div class="align-self-center mt-1">
+                <label class="ml-1">
+                  <input type="radio" class="ml-1" v-model="IS_ABSENCE" value="Y" />
+                  Y</label
+                >
+                <label class="ml-1">
+                  <input type="radio" class="ml-3" v-model="IS_ABSENCE" value="N" />
+                  N</label
+                >
+              </div>
+              <div
+                v-if="IS_ABSENCE == 'Y'"
+                class="ml-3 d-flex flex-row flex-fill align-self-center"
+              >
+                <span class="mt-1 ml-3">대체자</span>
+                <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
+                  <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </td>
+          <td class="d-flex justify-content-end">
+            <base-button type="danger" @click="setAbsence">저장</base-button>
+          </td>
+        </tr>
+      </table>
+    </card>
   </div>
 </template>
 
@@ -219,14 +209,87 @@ input[type="file"]::file-selector-button {
   border-radius: 0.25rem;
   cursor: pointer;
 }
-@media screen and (max-width: 991px) {
-  .main-container {
-    margin-top: 10rem;
-  }
+.send-receiver-input-group-1 {
+  display: flex;
+}
 
+@media screen and (max-width: 991px) {
+  .send-container {
+    margin: 2rem;
+    margin-top: 5rem;
+    font-size: small;
+  }
+  .send-main {
+    width: 100%;
+  }
   .input-group-alternative {
     width: 100%;
-    max-width: 50vw;
+    /* max-width: 50vw; */
   }
+  .input-group-alternative >>> input {
+    font-size: 10px;
+    /* max-width: 50vw; */
+  }
+  .send-table {
+    display: flex;
+    flex-direction: column;
+  }
+  .send-table tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: rem;
+  }
+  .send-table th {
+    width: 30%;
+    height: 100%;
+  }
+  .send-table td {
+    width: 100%;
+  }
+  .send-receiver {
+    /* width: 100%; */
+    height: 70px;
+  }
+  .send-receiver-input-group {
+    /* display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; */
+  }
+  .send-receiver-input-group-1 {
+    /* display: flex; */
+  }
+  .send-receiver-input {
+    width: 60px;
+  }
+  .send-receiver-tr {
+    margin-bottom: 0px !important;
+  }
+  .send-button {
+    padding: 10px !important;
+    margin: 2px !important;
+  }
+
+  .send-main-form {
+    /* margin-left: 2rem;
+    margin-right: 2rem; */
+  }
+
+  .send-textarea {
+    height: 100%;
+  }
+  .send-text {
+    color: #8898aa;
+  }
+  .send-button-minus {
+    height: 4rem;
+  }
+  td {
+    height: inherit;
+  }
+
+  /* .input-group-alternative >>> input {
+    width: 100%;
+    max-width: 20vw;
+  } */
 }
 </style>

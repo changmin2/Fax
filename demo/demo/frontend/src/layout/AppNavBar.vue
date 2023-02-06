@@ -208,6 +208,7 @@ ul {
 .navbar-sub li a {
   padding: 8px 12px 8px 12px;
   transition: all 300ms ease-out;
+  font-size: 15px;
 }
 li:last-child {
   border: none;

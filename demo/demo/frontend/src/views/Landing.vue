@@ -7,16 +7,21 @@
             <i class="ni ni-chart-pie-35"></i>
             총건수
           </div>
+
           <hr />
           <div class="landing-total">
-            <div class="row landing-total-group" style="width: 5rem">
-              <span style="text-align: center">미확인</span>
-              <span class="landing-total-num" type="secondary">{{ data.ReceiveCount }}건</span>
-            </div>
-            <div class="row landing-total-group" style="width: 5rem">
-              <span style="text-align: center">미결재</span>
-              <span class="landing-total-num" type="secondary">{{ data.NotApprCount }}건</span>
-            </div>
+            <router-link to="/receive-list">
+              <div class="row landing-total-group">
+                <span style="text-align: center">미확인</span>
+                <span class="landing-total-num" type="secondary">{{ data.ReceiveCount }}건</span>
+              </div>
+            </router-link>
+            <router-link to="/no-approval-list">
+              <div class="row landing-total-group">
+                <span style="text-align: center">미결재</span>
+                <span class="landing-total-num" type="secondary">{{ data.NotApprCount }}건</span>
+              </div>
+            </router-link>
           </div>
         </div>
         <div class="content-group">
@@ -47,10 +52,12 @@
       </div>
       <div class="right-content">
         <div class="content-group">
-          <div class="send-title font-weight-700 text-default">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-            미확인
-          </div>
+          <router-link to="/receive-list">
+            <div class="send-title font-weight-700 text-default">
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+              미확인
+            </div>
+          </router-link>
           <div class="table-container">
             <hr />
             <table class="fax-table">
@@ -68,10 +75,11 @@
           </div>
         </div>
         <div class="content-group">
-          <div class="send-title font-weight-700 text-default">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 미결재
-          </div>
-
+          <router-link to="/no-approval-list">
+            <div class="send-title font-weight-700 text-default">
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 미결재
+            </div>
+          </router-link>
           <div class="table-container">
             <hr />
             <table class="fax-table">
@@ -218,21 +226,25 @@ export default {
   display: flex;
   justify-content: space-evenly;
   align-content: center;
-  margin-top: 2rem;
   width: 100%;
+  height: 100%;
 }
 .landing-total-group {
-  width: 30rem;
+  display: flex;
+  width: inherit;
+  height: 10rem;
   margin: 1rem;
 }
 .landing-total-num {
   background-color: rgb(239, 239, 239);
   border: 1px solid rgb(200, 200, 200);
-  border-radius: 1rem;
-  width: 15rem;
-  height: 3rem;
-  text-align: center;
-  font-size: x-large;
+  border-radius: 5rem;
+
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
   line-height: 3rem;
 }
 .left-content {
@@ -298,6 +310,16 @@ hr {
     margin-bottom: 2rem;
     width: 100%;
     align-items: center;
+  }
+  .landing-total {
+    display: flex;
+    /* flex-wrap: wrap; */
+  }
+
+  .landing-total-num {
+    width: 100%;
+    height: 60%;
+    font-size: 10vw;
   }
 }
 </style>

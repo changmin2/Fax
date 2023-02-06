@@ -14,7 +14,7 @@
               type="date"
               id="searchFrom"
               value="today"
-              class="fax-form-input"
+              class="fax-form-input fax-form-input-date"
               v-model="searchFrom"
               @change="setDateInfo(searchFrom)"
             />
@@ -23,30 +23,27 @@
               type="date"
               id="searchTo"
               value="today"
-              class="fax-form-input"
+              class="fax-form-input fax-form-input-date"
               v-model="searchTo"
               @change="setDateInfo(searchTo)"
             />
           </div>
         </div>
         <div class="fax-input-row">
-          <div class="fax-input-box">받는사람 </div>
+          <div class="fax-input-box">받는사람</div>
           <div class="fax-input-content">
-            
             <input
               type="text"
               id="searchGubunData"
               name="searchGubunData"
-              class="fax-form-input fax-form-input-receiver ml-2"
+              class="fax-form-input fax-form-input-receiver"
               v-model="senderNo"
             />
-           
           </div>
-          
+
           <div class="text-center">
-              <base-button type="danger" @click="apprsearch">조회</base-button>
-            </div>
-          
+            <base-button type="danger" @click="apprsearch" class="mobile-btn">조회</base-button>
+          </div>
         </div>
       </div>
 
@@ -106,8 +103,8 @@
               <base-button type="danger" @click="apprsearch">조회</base-button>
             </div>
           </td>
-        </tr> -->
-      </table>
+        </tr> 
+      </table>-->
 
       <div class="body-content ApprArea" style="width: 100%">
         <table class="fax-table table-hover" style="width: 100%">
@@ -131,7 +128,6 @@
               <th class="fax-table-display-none">확인여부</th>
               <th class="fax-table-display-none">최초확인자</th>
               <th class="fax-table-display-none">최초확인날짜</th>
-              <!--<th>주소록</th>-->
             </tr>
 
             <tr
@@ -140,14 +136,12 @@
               @click="receiveDetail(receive.receive_No_SEQ)"
               class="fax-table-tr"
             >
-              <!--<td></td>-->
               <td class="fax-table-display">{{ receive.title }}</td>
               <td class="fax-table-display">{{ receive.sender_NO }}</td>
               <td class="fax-table-display">{{ receive.receive_DATE }}</td>
               <td class="fax-table-display-none">{{ receive.read_YN }}</td>
               <td class="fax-table-display-none">{{ receive.read_USER }}</td>
               <td class="fax-table-display-none">{{ receive.read_DATE }}</td>
-              <!--<td></td>-->
             </tr>
           </tbody>
         </table>
@@ -234,7 +228,7 @@ export default {
       this.$store.commit("SET_LOADING_TRUE");
       try {
         let response = await http.post("/recieveList", {
-          RFax_No: this.userInfo.faxNo,
+          RFax_No: this.userInfo.faxNo.replaceAll("-", ""),
           Date_Start: this.searchFrom,
           Date_End: this.searchTo,
           senderNo: this.senderNo,
@@ -317,6 +311,10 @@ export default {
 </script>
 
 <style scoped>
+.fax-table-input {
+  width: 16rem;
+}
+
 .fax-form-input {
   height: 30px;
   font-size: small;
@@ -325,7 +323,8 @@ export default {
 .fax-input {
   display: flex;
   /* justify-content: space-around; */
-  border: 1px solid rgb(224, 224, 224);
+  border-top: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgb(224, 224, 224);
 }
 .fax-input-row {
   display: flex;
@@ -336,7 +335,7 @@ export default {
   background-color: rgb(224, 224, 224);
   font-size: small;
   font-weight: 600;
-  width: 140px;
+  width: 80px;
   height: 100%;
   line-height: 50px;
   text-align: center;
@@ -345,7 +344,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  /* width: 100%; */
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 991px) {
@@ -356,13 +356,7 @@ export default {
     margin-right: 1rem;
     width: 100vw;
   }
-  .fax-table-display-none {
-    display: none;
-    /* width: 100%; */
-  }
-  .fax-table-display {
-    width: 100%;
-  }
+
   .fax-table-tr {
     display: flex;
     height: 100%;
@@ -373,39 +367,54 @@ export default {
     padding-bottom: 0.5rem;
     width: 100%;
   }
-  .fax-table-input td {
-    display: flex;
-    justify-content: center;
-  }
 
-  .fax-table-input-tr tbody {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* height: inherit; */
-    /* width: 100vw; */
-  }
-  .fax-input{
+  .fax-input {
     display: flex;
     flex-direction: column;
   }
-  .fax-input-mobile{
+  .fax-input-mobile {
     display: none;
   }
+
   .fax-form-input {
-    width:100%;
+    /* width: 105px; */
   }
   .fax-form-input-receiver {
-    width:180px;
-    margin-right: 2px;
+    /* width: 8rem; */
   }
 
   .fax-input-box {
-    width:100%;
   }
   .fax-input-content {
     display: flex;
-    justify-content: right;
+    margin-right: 10px;
+    margin-left: 20px;
+
+    /* max-width: 350px; */
+    /* width:inherit; */
+    /* justify-content: right; */
   }
-  
+  .fax-table-input {
+    /* width: 10rem; */
+  }
+  .mobile-btn {
+    padding: 5px 20px 5px 20px;
+  }
+  .fax-form-input-date {
+    width: 105px;
+  }
+  th {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 4px;
+    padding-right: 4px;
+    height: 2.5rem;
+    line-height: 2.5rem;
+  }
 }
 </style>
