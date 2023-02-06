@@ -84,7 +84,7 @@ public class SendService {
             //SMS 보내기
             String userName = userRepository.getUserName(userKey);
             String phoneN = approvalRepository.getPhoneNumber(userKey);
-            smsService.smsSend(req.getTitle()+" 건으로\n"+userName+"님의 결제 요청이 왔습니다.",phoneN);
+            smsService.smsSend(req.getTitle()+" 건으로\n"+userName+"님의 결재 요청이 왔습니다.",phoneN);
             return "결재 신청 완료";
 
         }else{ //전결일때
@@ -323,7 +323,7 @@ public class SendService {
             //SMS(문자) 보내기
             String userName = userRepository.getUserName(userKey);
             String phoneN = approvalRepository.getPhoneNumber(userKey);
-            smsService.smsSend(send.getTITLE()+" 개인정보 포함 건으로\n"+userName+"님의 결제 요청이 왔습니다.",phoneN);
+            smsService.smsSend(send.getTITLE()+" 개인정보 포함 건으로\n"+userName+"님의 결재 요청이 왔습니다.",phoneN);
 
             return  "개인정보 포함 문서로, "+apprUSER_NAME+"("+apprCOMM_NAME+")에게 결재요청되었습니다.";
         }
@@ -336,7 +336,7 @@ public class SendService {
         return sendApi(send);
     }
 
-    //발송 상세 -> 결제 완료일 때 상세정보
+    //발송 상세 -> 결재 완료일 때 상세정보
     public Map<String,Object> sendDetail(String userKey) throws IOException {
         if(!sendRepository.existsById(userKey)){
             Map<String,Object> result = new HashMap<>();

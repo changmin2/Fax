@@ -37,7 +37,8 @@
               id="searchGubunData"
               name="searchGubunData"
               class="fax-form-input fax-form-input-receiver"
-              v-model="senderNo"
+              v-model="receiver"
+              placeholder="이름 또는 팩스번호"
             />
           </div>
         </div>
@@ -55,6 +56,21 @@
               <option value="회수">회수</option>
             </select>
           </div>
+        </div>
+        <div class="fax-input-row">
+        <div class="fax-input-box">작성자</div>
+        <div class="fax-input-content">
+          <select v-model="senderId" class="fax-table-input" style="height: 30px">
+            <option value="All" selected>전체</option>
+            <option
+                    v-for="(item, index) in deptUsers"
+                    :key="index"
+                    :value="item.USER_ID"
+                  >
+                    {{ item.USER_NAME }}
+            </option>
+          </select>
+        </div>
           <div class="text-center">
             <base-button type="danger" class="mobile-btn" @click="getSendList">조회</base-button>
           </div>
@@ -141,6 +157,7 @@
         <tr class="ApprArea-header">
           <th class="fax-table-display">제목</th>
           <th class="fax-table-display">요청일자</th>
+          <th class="fax-table-display">작성자</th>
           <th class="fax-table-display-none">장수</th>
           <th class="fax-table-display">결재자</th>
           <th class="fax-table-display">결재여부</th>
@@ -151,6 +168,7 @@
           <tr v-for="(send, index) in sendList" :key="index" @click="getSendDetail(send.발송번호)">
             <td class="fax-table-display">{{ send.제목 }}</td>
             <td class="fax-table-display">{{ send.등록일자 }}</td>
+            <td class="fax-table-display">{{ send.발송자 }}</td>
             <td class="fax-table-display-none">{{ send.페이지수 }}</td>
             <td class="fax-table-display">{{ send.결재자이름 }}</td>
             <td class="fax-table-display">{{ send.결재상태 }}</td>
@@ -210,7 +228,9 @@ export default {
       sendStatus: "전체",
       /*전송결과 상세*/
       sendStatusDetail: [],
-      senderNo: "",
+      deptUsers: [],
+      receiver: "",
+      senderId: "All",
     };
   },
   methods: {
@@ -260,6 +280,8 @@ export default {
           searchFrom: this.searchFrom,
           searchTo: this.searchTo,
           status: this.sendStatus,
+          senderId: this.senderId,
+          receiver: this.receiver,
         });
 
         let { data } = response;
@@ -316,6 +338,28 @@ export default {
         alertify.error("상세 조회가 실패했습니다.", 1.5);
       }
     },
+    async getDeptUsers() { //부서 내 작성자 가져오기
+      this.modal = true;
+      try {
+        let response = await http.post("/getDeptUsers", {
+          userId: this.userInfo.userId,
+        });
+
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          // console.log(data);
+          this.deptUsers = data;
+        } else {
+          console.log("상세 조회 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.error("상세 조회가 실패했습니다.", 1.5);
+      }
+    },
 
     //모달 닫기
     closeModal() {
@@ -325,6 +369,7 @@ export default {
   mounted() {
     this.getNow();
     this.getSendList();
+    this.getDeptUsers();
   },
 };
 </script>

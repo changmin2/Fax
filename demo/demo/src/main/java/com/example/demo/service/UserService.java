@@ -56,6 +56,13 @@ public class UserService {
         }
         return list;
     }
+    @Transactional(readOnly = true)
+    public List<Map<String,Object>> getDeptUsers(String userId){
+
+        List<Map<String,Object>> users = userRepository.getDeptUsers(userId);
+
+        return users;
+    }
 
     @Transactional(readOnly = true)
     public HashMap<String, Object> getSubstituteUser(String userId){

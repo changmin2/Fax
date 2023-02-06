@@ -133,4 +133,13 @@ public class LoginController {
         String result = userService.userUpdate(param);
         return result;
     }
+
+    @PostMapping("/getDeptUsers")
+    @ResponseBody
+    public List<Map<String,Object>> getDeptUsers(@RequestBody Map<String,String> map){
+        String userId = map.get("userId"); //유저아이디
+        if(userId==null){return null;}
+        List<Map<String,Object>> users = userService.getDeptUsers(userId);
+        return users;
+    }
 }
