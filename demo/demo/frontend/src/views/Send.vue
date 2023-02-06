@@ -130,7 +130,7 @@
                         {{ item.name }}
                       </option>
                     </select>
-                    <span v-if="grade == 2">책임자는 전결처리됩니다.</span>
+                    <span v-if="grade == 2">책임자는 전결처리됩니다.(개인정보 검출시 지점장급 결재)</span>
                   </td>
                 </tr>
                 <tr>
@@ -784,5 +784,15 @@ input[type="file"]::file-selector-button {
     width: 100%;
     max-width: 20vw;
   } */
+}
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 5px;
 }
 </style>

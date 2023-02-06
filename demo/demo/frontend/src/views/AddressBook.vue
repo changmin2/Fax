@@ -22,12 +22,12 @@
           </tr>
 
           <tr v-for="(address, index) in addressList.list" :key="index">
-            <td> <input type="checkbox" v-model="checkedValues" :value="index"> </td>
+            <td> <input type="checkbox" class="fax-form-input" v-model="checkedValues" :value="index"> </td>
 
-            <td><input type="text" v-model="address.company"></td>
-            <td><input type="text" v-model="address.name"></td>
-            <td><input type="text" v-model="address.fax" @keyup="getNumMask(address.fax,index,'fax')"></td>
-            <td><input type="text" v-model="address.hp_NUMBER" @keyup="getNumMask(address.hp_NUMBER,index,'phone')"></td>
+            <td><input type="text" class="fax-form-input" v-model="address.company"></td>
+            <td><input type="text" class="fax-form-input" v-model="address.name"></td>
+            <td><input type="text" class="fax-form-input" v-model="address.fax" @keyup="getNumMask(address.fax,index,'fax')"></td>
+            <td><input type="text" class="fax-form-input" v-model="address.hp_NUMBER" @keyup="getNumMask(address.hp_NUMBER,index,'phone')"></td>
           </tr>
         </table>
       </div>
@@ -274,4 +274,15 @@ export default {
 .fax-form-input {
   height: 30px;
 }
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 5px;
+}
+
 </style>
