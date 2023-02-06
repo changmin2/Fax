@@ -12,14 +12,20 @@
           <div class="landing-total">
             <router-link to="/receive-list">
               <div class="row landing-total-group">
-                <span style="text-align: center">미확인</span>
-                <span class="landing-total-num" type="secondary">{{ data.ReceiveCount }}건</span>
+                <span style="text-align: center; font-weight: 600; font-size: larger">미확인</span>
+                <!-- <span class="landing-total-num" type="secondary">{{ data.ReceiveCount }}건</span> -->
+                <button class="w-btn-outline w-btn-gray-outline landing-total-num" type="button">
+                  {{ data.ReceiveCount }}건
+                </button>
               </div>
             </router-link>
             <router-link to="/no-approval-list">
               <div class="row landing-total-group">
-                <span style="text-align: center">미결재</span>
-                <span class="landing-total-num" type="secondary">{{ data.NotApprCount }}건</span>
+                <span style="text-align: center; font-weight: 600; font-size: larger">미결재</span>
+                <!-- <span class="landing-total-num" type="secondary">{{ data.NotApprCount }}건</span> -->
+                <button class="w-btn-outline w-btn-gray-outline landing-total-num" type="button">
+                  {{ data.NotApprCount }}건
+                </button>
               </div>
             </router-link>
           </div>
@@ -238,7 +244,7 @@ export default {
 .landing-total-num {
   background-color: rgb(239, 239, 239);
   border: 1px solid rgb(200, 200, 200);
-  border-radius: 5rem;
+  border-radius: 2rem;
 
   height: 10rem;
   display: flex;
@@ -292,6 +298,48 @@ hr {
   /* margin-right: 14rem; */
 }
 
+.w-btn-outline {
+  position: relative;
+  /* padding: 15px 30px; */
+  /* border-radius: 15px; */
+  /* font-family: "paybooc-Light", sans-serif; */
+  /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.w-btn-gray-outline {
+  border: 3px solid white;
+  color: #172b4d;
+}
+.w-btn-gray-outline:hover {
+  background-color: #a3a1a1;
+  color: white;
+}
+
+.w-btn:active {
+  transform: scale(1.5);
+}
+
+.w-btn-outline:active {
+  transform: scale(1.5);
+}
+.w-btn-gra-anim {
+  background-size: 400% 400%;
+  animation: gradient1 5s ease infinite;
+}
+@keyframes gradient1 {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 @media screen and (max-width: 991px) {
   .main-container {
     display: flex;

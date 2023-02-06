@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <div class="login-logo">
+    <div class="login-logo" style="display: flex; justify-content: center">
       <img src="img/brand/logo6.png" />
     </div>
     <card
@@ -124,34 +124,41 @@ export default {
   right: 0px;
   bottom: 0px;
 }
+.main-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  /* max-width: 100vw; */
+  /* width: 100%; */
+  /* margin-top: 8rem; */
+}
 .login-logo {
-  width: 25rem;
+  width: 20rem;
   margin-bottom: 1rem;
 }
 .login-logo img {
   width: 100%;
 }
 .login-card {
-  width: 400px;
-}
-.main-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: 100vw;
-  width: 100%;
+  width: 30vw;
 }
 
 @media screen and (max-width: 991px) {
   .main-container {
-    width: 100%;
+    /* width: 100%; */
+    /* margin-left: 0px; */
+
+    margin-top: 8rem;
   }
   .login-card {
-    width: 40%;
+    /* width: 40%; */
+    width: 80vw;
+    margin: 0px;
+    /* margin-right: 0.5rem; */
   }
   .login-logo {
-    width: 40%;
+    width: 50%;
   }
 }
 </style>

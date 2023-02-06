@@ -120,6 +120,12 @@
               </div>
             </td>
           </tr>
+          <tr>
+            <th>스캔</th>
+            <td>
+              <base-button class="px-3 py-2.5 send-button"> 스캔</base-button>
+            </td>
+          </tr>
           <tr v-if="grade < 3">
             <th>결재자</th>
             <td>
@@ -702,8 +708,7 @@ export default {
 }
 .send-main {
   width: 100%;
-  min-width: 50vw;
-  /* max-width: 100vw; */
+  max-width: 60vw;
 }
 .input-content {
   display: inline;
@@ -789,6 +794,7 @@ input[type="checkbox"] {
   }
   .send-main {
     width: 100%;
+    max-width: none;
   }
   .input-group-alternative {
     width: 100%;
