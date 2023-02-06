@@ -17,4 +17,19 @@ public interface RecieveRepository extends JpaRepository<Recieve, String> {
             "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
     List<Recieve> findByFaxNo(@Param(value = "faxNo") String faxNo);
 
+    @Query(value = "select d.*\n" +
+            "  from TB_RECEIVE d\n" +
+            " where d.FAX_NO =:faxNo" +
+            " AND (DATE_FORMAT(d.RECEIVE_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo)" +
+            "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
+    List<Recieve> findByFaxNo2(@Param(value = "faxNo") String faxNo,@Param(value = "searchFrom") String searchFrom,@Param(value = "searchTo") String searchTo);
+
+    @Query(value = "select d.*\n" +
+            "  from TB_RECEIVE d\n" +
+            " where d.FAX_NO =:faxNo \n"  +
+            " AND (DATE_FORMAT(d.RECEIVE_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo)" +
+            " AND d.SENDER_NO like CONCAT('%', :senderNo, '%') \n" +
+            "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
+    List<Recieve> findByFaxNoWhere(@Param(value = "faxNo") String faxNo,@Param(value = "senderNo") String senderNo ,@Param(value = "searchFrom") String searchFrom,@Param(value = "searchTo") String searchTo);
+
 }

@@ -5,7 +5,51 @@
         받은팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
       </div>
 
-      <table class="fax-table fax-table-input" style="width: 100%">
+      <!---->
+      <div class="fax-input">
+        <div class="fax-input-row">
+          <div class="fax-input-box">조회기간</div>
+          <div class="fax-input-content">
+            <input
+              type="date"
+              id="searchFrom"
+              value="today"
+              class="fax-form-input fax-form-input-date"
+              v-model="searchFrom"
+              @change="setDateInfo(searchFrom)"
+            />
+            ~
+            <input
+              type="date"
+              id="searchTo"
+              value="today"
+              class="fax-form-input fax-form-input-date"
+              v-model="searchTo"
+              @change="setDateInfo(searchTo)"
+            />
+          </div>
+        </div>
+        <div class="fax-input-row">
+          <div class="fax-input-box">받는사람</div>
+          <div class="fax-input-content">
+            <input
+              type="text"
+              id="searchGubunData"
+              name="searchGubunData"
+              class="fax-form-input fax-form-input-receiver"
+              v-model="senderNo"
+            />
+          </div>
+
+          <div class="text-center">
+            <base-button type="danger" @click="apprsearch" class="mobile-btn">조회</base-button>
+          </div>
+        </div>
+      </div>
+
+      <!---->
+
+      <!-- <table class="fax-table fax-table-input" style="width: 100%">
         <colgroup>
           <col style="width: 9%" />
           <col style="width: 37%" />
@@ -13,7 +57,7 @@
           <col style="width: 37%" />
           <col />
         </colgroup>
-        <tr>
+        <tr class="fax-table-input-tr">
           <th>조회기간</th>
           <td>
             <form>
@@ -36,6 +80,7 @@
               />
             </form>
           </td>
+
           <th>조건</th>
           <td>
             <select
@@ -58,8 +103,8 @@
               <base-button type="danger" @click="apprsearch">조회</base-button>
             </div>
           </td>
-        </tr>
-      </table>
+        </tr> 
+      </table>-->
 
       <div class="body-content ApprArea" style="width: 100%">
         <table class="fax-table table-hover" style="width: 100%">
@@ -76,32 +121,27 @@
                   </td>
                 </tr> -->
           <tbody>
-            <tr class="ApprArea-header">
-              <!--<th>
-                    <input type="checkbox">
-                  </th> -->
-              <th>제목</th>
-              <th>상세보기</th>
-              <th>발신자팩스번호</th>
-              <th>받은날짜</th>
-              <th>확인여부</th>
-              <th>최초확인자</th>
-              <th>최초확인날짜</th>
-              <!--<th>주소록</th>-->
+            <tr class="ApprArea-header fax-table-tr">
+              <th class="fax-table-display">제목</th>
+              <th class="fax-table-display">발신자팩스번호</th>
+              <th class="fax-table-display">받은날짜</th>
+              <th class="fax-table-display-none">확인여부</th>
+              <th class="fax-table-display-none">최초확인자</th>
+              <th class="fax-table-display-none">최초확인날짜</th>
             </tr>
 
-            <tr v-for="(receive, index) in receivelist" :key="index">
-              <!--<td></td>-->
-              <td class="text-left pl-2">{{ receive.title }}</td>
-              <td>
-                <base-button @click="receiveDetail(receive.receive_No_SEQ)">상세</base-button>
-              </td>
-              <td>{{ receive.sender_NO }}</td>
-              <td>{{ receive.receive_DATE }}</td>
-              <td>{{ receive.read_YN }}</td>
-              <td>{{ receive.read_USER }}</td>
-              <td>{{ receive.read_DATE }}</td>
-              <!--<td></td>-->
+            <tr
+              v-for="(receive, index) in receivelist"
+              :key="index"
+              @click="receiveDetail(receive.receive_No_SEQ)"
+              class="fax-table-tr"
+            >
+              <td class="fax-table-display">{{ receive.title }}</td>
+              <td class="fax-table-display">{{ receive.sender_NO }}</td>
+              <td class="fax-table-display">{{ receive.receive_DATE }}</td>
+              <td class="fax-table-display-none">{{ receive.read_YN }}</td>
+              <td class="fax-table-display-none">{{ receive.read_USER }}</td>
+              <td class="fax-table-display-none">{{ receive.read_DATE }}</td>
             </tr>
           </tbody>
         </table>
@@ -144,6 +184,7 @@ export default {
       searchTo: "",
       modal: false,
       apprNo: "",
+      senderNo: "",
     };
   },
   methods: {
@@ -187,9 +228,10 @@ export default {
       this.$store.commit("SET_LOADING_TRUE");
       try {
         let response = await http.post("/recieveList", {
-          RFax_No: this.userInfo.faxNo,
+          RFax_No: this.userInfo.faxNo.replaceAll("-", ""),
           Date_Start: this.searchFrom,
           Date_End: this.searchTo,
+          senderNo: this.senderNo,
         });
 
         let { data } = response;
@@ -269,7 +311,110 @@ export default {
 </script>
 
 <style scoped>
+.fax-table-input {
+  width: 16rem;
+}
+
 .fax-form-input {
   height: 30px;
+  font-size: small;
+  margin: 2px;
+}
+.fax-input {
+  display: flex;
+  /* justify-content: space-around; */
+  border-top: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
+.fax-input-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.fax-input-box {
+  background-color: rgb(224, 224, 224);
+  font-size: small;
+  font-weight: 600;
+  width: 80px;
+  height: 100%;
+  line-height: 50px;
+  text-align: center;
+}
+.fax-input-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100%; */
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 991px) {
+  section {
+    padding: 0px;
+  }
+  .fax-table {
+    margin-right: 1rem;
+    width: 100vw;
+  }
+
+  .fax-table-tr {
+    display: flex;
+    height: 100%;
+  }
+  .fax-table th {
+    height: inherit;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+  }
+
+  .fax-input {
+    display: flex;
+    flex-direction: column;
+  }
+  .fax-input-mobile {
+    display: none;
+  }
+
+  .fax-form-input {
+    /* width: 105px; */
+  }
+  .fax-form-input-receiver {
+    /* width: 8rem; */
+  }
+
+  .fax-input-box {
+  }
+  .fax-input-content {
+    display: flex;
+    margin-right: 10px;
+    margin-left: 20px;
+
+    /* max-width: 350px; */
+    /* width:inherit; */
+    /* justify-content: right; */
+  }
+  .fax-table-input {
+    /* width: 10rem; */
+  }
+  .mobile-btn {
+    padding: 5px 20px 5px 20px;
+  }
+  .fax-form-input-date {
+    width: 105px;
+  }
+  th {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 4px;
+    padding-right: 4px;
+    height: 2.5rem;
+    line-height: 2.5rem;
+  }
 }
 </style>

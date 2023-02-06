@@ -1,190 +1,193 @@
 <template>
-  <section class="section">
-    <div class="send-container">
-      <div class="send-title display-4 mb-4 font-weight-800 text-default">
-        팩스보내기
-        <i class="fa fa-print" aria-hidden="true"></i>
-        <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
-        <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
-        <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f">- 재사용</span>
-        <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f">- 수정</span>
-      </div>
+  <div class="send-container">
+    <div class="send-title display-4 mb-4 font-weight-800 text-default">
+      팩스보내기
+      <i class="fa fa-print" aria-hidden="true"></i>
+      <!-- getterSendDetail 데이터가 있으면 재사용 버튼 클릭했을 경우 -->
+      <!-- getterUpdate 데이터가 있으면 수정 버튼 클릭했을 경우 -->
+      <span v-if="getterSendDetail" class="d-inline-flex" style="color: #d7191f">- 재사용</span>
+      <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f">- 수정</span>
+    </div>
 
-      <div class="row">
-        <div class="col-lg-5">
-          <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
-            <form role="form" style="width: 100%">
-              <table>
-                <colgroup>
-                  <!-- <col style="width: 15%" /> -->
-                  <!-- <col style="width: 85%" /> -->
-                </colgroup>
-                <tr>
-                  <th>제목</th>
-                  <td>
-                    <base-input alternative v-model="title" class="my-1"> </base-input>
-                  </td>
-                </tr>
-                <tr>
-                  <th>발신 팩스번호</th>
-                  <td>
-                    <base-input alternative v-model="faxNo" readonly class="my-1"> </base-input>
-                  </td>
-                </tr>
-                <tr>
-                  <th>수신처</th>
-                  <td>
-                    <div class="w-100 d-flex flex-row align-items-start">
-                      <base-input
-                        alternative
-                        v-model="receiveCompany"
-                        class="my-1 flex-fill"
-                        placeholder="상호"
-                      />
-                      <base-input
-                        alternative
-                        v-model="receiveName"
-                        class="my-1 flex-fill"
-                        placeholder="이름"
-                      />
-                      <base-input
-                        alternative
-                        v-model="receiveFax"
-                        class="my-1 flex-fill"
-                        @keyup="getMask2(receiveFax)"
-                        placeholder="팩스번호"
-                      />
-                      <div class="flex-fill d-flex flex-row align-items-center align-self-stretch">
-                        <base-button
-                          icon="fa fa-plus fa-lgr"
-                          class="px-3 py-2.5"
-                          @click="setReceiveJSON"
-                        ></base-button>
-                        <base-button
-                          icon="fa fa-address-book fa-lg"
-                          class="px-3 py-2.5"
-                          title="주소록에서 불러오기"
-                          @click="callAddress"
-                        ></base-button>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th></th>
-                  <td style="height: 100px">
-                    <div class="d-flex align-items-start">
-                      <textarea
-                        class="send-textarea p-3 shadow-none"
-                        readonly
-                        v-model="showJSON"
-                        style="width: 84%; font-size: 0.9em"
-                      ></textarea>
-                      <base-button
-                        icon="fa fa-minus fa-lg"
-                        type="light"
-                        class="px-3 py-2.5"
-                        @click="setDeleteJSON"
-                      />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <th>첨부파일</th>
-                  <td>
-                    <input
-                      v-if="fileFlag"
-                      type="file"
-                      multiple
-                      value="fileData"
-                      @change="changeFile"
-                      id="inputFileUploadInsert"
-                      accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
-                    />
-                    <div v-else class="mt-2 d-lg-inline" style="width: 200px">
-                      <a v-bind:href="`${fileUrl}`" target="_new" download=""
-                        >PDF변환파일.pdf - {{ pageCount }}장</a
-                      >
-                      <i
-                        class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
-                        @click="deleteFile"
-                        style="cursor: pointer"
-                      ></i>
-                      <div class="mt-1 ml-5" style="display: inline">
-                        ※ 개인정보 포함 :
+    <card type="secondary" body-classes="px-lg-5 py-lg-5" class="send-main border-0">
+      <form role="form" style="width: 100%" class="send-main-form">
+        <table class="send-table">
+          <colgroup>
+            <!-- <col style="width: 15%" /> -->
+            <!-- <col style="width: 85%" /> -->
+          </colgroup>
+          <tr class="send-table-tr">
+            <th>제목</th>
+            <td>
+              <base-input alternative v-model="title" class="my-1"> </base-input>
+            </td>
+          </tr>
+          <tr>
+            <th>발신 팩스번호</th>
+            <td>
+              <base-input alternative v-model="faxNo" readonly class="my-1"> </base-input>
+            </td>
+          </tr>
+          <tr class="send-receiver-tr">
+            <th>수신처</th>
+            <td>
+              <div class="w-100 d-flex flex-row align-items-start send-receiver-input-group">
+                <base-input
+                  alternative
+                  v-model="receiveCompany"
+                  class="my-1 flex-fill send-receiver-input send-receiver-input-1"
+                  placeholder="상호"
+                />
+                <base-input
+                  alternative
+                  v-model="receiveName"
+                  class="my-1 flex-fill send-receiver-input send-receiver-input-1"
+                  placeholder="이름"
+                />
 
-                        <badge v-if="privateInfo" class="m-0" type="success" rounded>Y</badge>
-                        <badge v-if="!privateInfo" class="m-0" type="warning" rounded>N</badge>
-                      </div>
-                      <!-- <base-checkbox class="mt-2 d-inline-flex ml-4" v-model="privateInfo" disabled
+                <base-input
+                  alternative
+                  v-model="receiveFax"
+                  class="my-1 flex-fill send-receiver-input"
+                  @keyup="getMask2(receiveFax)"
+                  placeholder="팩스번호"
+                />
+                <div class="flex-fill d-flex flex-row align-items-center align-self-stretch">
+                  <base-button
+                    icon="fa fa-plus fa-lgr"
+                    class="px-3 py-2.5 send-button"
+                    @click="setReceiveJSON"
+                  ></base-button>
+                  <base-button
+                    icon="fa fa-address-book fa-lg"
+                    class="px-3 py-2.5 send-button"
+                    title="주소록에서 불러오기"
+                    @click="callAddress"
+                  ></base-button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th style="height: 5px"></th>
+            <td class="send-receiver">
+              <div class="d-flex align-items-start">
+                <textarea
+                  class="send-textarea p-3 shadow-none"
+                  readonly
+                  v-model="showJSON"
+                  style="width: 84%; font-size: 0.9em"
+                ></textarea>
+                <base-button
+                  icon="fa fa-minus fa-lg"
+                  type="light"
+                  class="px-3 py-2.5 send-button send-button-minus"
+                  @click="setDeleteJSON"
+                />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>첨부파일</th>
+            <td>
+              <input
+                v-if="fileFlag"
+                type="file"
+                multiple
+                value="fileData"
+                @change="changeFile"
+                id="inputFileUploadInsert"
+                accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
+              />
+              <div v-else class="mt-2 d-lg-inline" style="width: 200px">
+                <a v-bind:href="`${fileUrl}`" target="_new" download=""
+                  >PDF변환파일.pdf - {{ pageCount }}장</a
+                >
+                <i
+                  class="fa fa-trash-o ml-3 mt-1 d-lg-inline d-sm-none text-default"
+                  @click="deleteFile"
+                  style="cursor: pointer"
+                ></i>
+                <div class="mt-1 ml-5" style="display: inline">
+                  ※ 개인정보 포함 :
+
+                  <badge v-if="privateInfo" class="m-0" type="success" rounded>Y</badge>
+                  <badge v-if="!privateInfo" class="m-0" type="warning" rounded>N</badge>
+                </div>
+                <!-- <base-checkbox class="mt-2 d-inline-flex ml-4" v-model="privateInfo" disabled
                         >개인정보 포함여부</base-checkbox
                       > -->
-                    </div>
-                  </td>
-                </tr>
-                <tr v-if="grade < 3">
-                  <th>결재자</th>
-                  <td>
-                    <select v-model="apprUserNo" style="width: 40%" v-if="grade == 1">
-                      <option v-for="(item, index) in apprUsers" :key="index" :value="item.id">
-                        {{ item.name }}
-                      </option>
-                    </select>
-                    <span v-if="grade == 2">책임자는 전결처리됩니다.(개인정보 검출시 지점장급 결재)</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th>예약설정</th>
-                  <td>
-                    <div class="ml-1">
-                      <label class="ml-1">
-                        <input
-                          type="radio"
-                          class="ml-1"
-                          v-model="reserve"
-                          value=""
-                          style="position: relative; top: 2px"
-                        />
-                        즉시</label
-                      >
-                      <label class="ml-1 mr-3">
-                        <input
-                          type="radio"
-                          class="ml-3"
-                          v-model="reserve"
-                          value="reserve"
-                          @click="getNow"
-                          style="position: relative; top: 2px"
-                        />
-                        예약</label
-                      >
-                      <div v-if="reserve" class="ml-5 d-inline-flex">
-                        <soan class="mr-4 mt-1">예약일시</soan>
-                        <datetime
-                          type="datetime"
-                          :week-start="7"
-                          v-model="sendDate"
-                          use12-hour
-                        ></datetime>
-                        <!-- <span class="ml-3">예약 value: {{ sendDate }}</span> -->
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <div class="text-center mt-3">
-                <base-button type="danger" @click="send">전송</base-button>
-                <base-button type="danger" @click="openModal">미리보기 후 전송</base-button>
-                <base-button v-if="getterUpdate" type="light" @click="deleteSend">삭제</base-button>
-                <!-- <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f"
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>스캔</th>
+            <td>
+              <base-button class="px-3 py-2.5 send-button"> 스캔</base-button>
+            </td>
+          </tr>
+          <tr v-if="grade < 3">
+            <th>결재자</th>
+            <td>
+              <select v-model="apprUserNo" v-if="grade == 1">
+                <option v-for="(item, index) in apprUsers" :key="index" :value="item.id">
+                  {{ item.name }}
+                </option>
+              </select>
+              <span class="send-text" v-if="grade == 2"
+                >책임자는 전결처리됩니다. (개인정보 검출시 지점장급 결재)</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <th>예약설정</th>
+            <td>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    v-model="reserve"
+                    value=""
+                    style="position: relative; top: 2px"
+                  />
+                  즉시</label
+                >
+                <label class="mr-3">
+                  <input
+                    type="radio"
+                    class="ml-3"
+                    v-model="reserve"
+                    value="reserve"
+                    @click="getNow"
+                    style="position: relative; top: 2px"
+                  />
+                  예약</label
+                >
+                <div v-if="reserve" class="ml-5 d-inline-flex">
+                  <soan class="mr-4 mt-1">예약일시</soan>
+                  <datetime
+                    type="datetime"
+                    :week-start="7"
+                    v-model="sendDate"
+                    use12-hour
+                  ></datetime>
+                  <!-- <span class="ml-3">예약 value: {{ sendDate }}</span> -->
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <div class="text-center mt-3">
+          <base-button type="danger" @click="send">전송</base-button>
+          <base-button type="danger" @click="openModal">미리보기 후 전송</base-button>
+          <base-button v-if="getterUpdate" type="light" @click="deleteSend">삭제</base-button>
+          <!-- <span v-if="getterUpdate" class="d-inline-flex" style="color: #d7191f"
                     >- 수정</span
                   > -->
-              </div>
-            </form>
-          </card>
         </div>
-      </div>
-    </div>
+      </form>
+    </card>
+
     <div>
       <modal :show.sync="modal">
         <h6 slot="header" class="modal-title" id="modal-title-default">팩스 미리보기</h6>
@@ -229,7 +232,7 @@
         <base-button type="link" class="ml-auto" @click="modal2 = false">닫기 </base-button>
       </template>
     </modal>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -696,14 +699,16 @@ export default {
 
 <style scoped>
 .send-container {
-  margin-top: 6rem;
-  margin-left: 15vw;
-  margin-right: 3vw;
+  margin-top: 10rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .send-main {
   width: 100%;
-  min-width: 50vw;
-  /* max-width: 100vw; */
+  max-width: 60vw;
 }
 .input-content {
   display: inline;
@@ -768,31 +773,97 @@ input[type="file"]::file-selector-button {
   border-radius: 0.25rem;
   cursor: pointer;
 }
-@media screen and (max-width: 991px) {
-  .send-container {
-    margin-right: 8rem;
-  }
-  .send-main {
-    width: 100%;
-  }
 
-  .input-group-alternative {
-    width: 100%;
-    max-width: 50vw;
-  }
-  /* .input-group-alternative >>> input {
-    width: 100%;
-    max-width: 20vw;
-  } */
-}
-
-input[type=checkbox]
-{
+input[type="checkbox"] {
   /* Double-sized Checkboxes */
   -ms-transform: scale(1.5); /* IE */
   -moz-transform: scale(1.5); /* FF */
   -webkit-transform: scale(1.5); /* Safari and Chrome */
   -o-transform: scale(1.5); /* Opera */
   padding: 5px;
+}
+.send-receiver-input-group-1 {
+  display: flex;
+}
+
+@media screen and (max-width: 991px) {
+  .send-container {
+    margin: 2rem;
+    margin-top: 5rem;
+    font-size: small;
+  }
+  .send-main {
+    width: 100%;
+    max-width: none;
+  }
+  .input-group-alternative {
+    width: 100%;
+    /* max-width: 50vw; */
+  }
+  .input-group-alternative >>> input {
+    font-size: 10px;
+    /* max-width: 50vw; */
+  }
+  .send-table {
+    display: flex;
+    flex-direction: column;
+  }
+  .send-table tr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  .send-table th {
+    width: 30%;
+    height: 100%;
+  }
+  .send-table td {
+    width: 100%;
+  }
+  .send-receiver {
+    /* width: 100%; */
+    height: 70px;
+  }
+  .send-receiver-input-group {
+    /* display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; */
+  }
+  .send-receiver-input-group-1 {
+    /* display: flex; */
+  }
+  .send-receiver-input {
+    width: 60px;
+  }
+  .send-receiver-tr {
+    margin-bottom: 0px !important;
+  }
+  .send-button {
+    padding: 10px !important;
+    margin: 2px !important;
+  }
+
+  .send-main-form {
+    /* margin-left: 2rem;
+    margin-right: 2rem; */
+  }
+
+  .send-textarea {
+    height: 100%;
+  }
+  .send-text {
+    color: #8898aa;
+  }
+  .send-button-minus {
+    height: 4rem;
+  }
+  td {
+    height: inherit;
+  }
+
+  /* .input-group-alternative >>> input {
+    width: 100%;
+    max-width: 20vw;
+  } */
 }
 </style>

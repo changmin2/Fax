@@ -1,45 +1,42 @@
 <template>
-  <section class="section section-shaped section-hero login-section section-lg my-0">
-    <div class="container pt-lg-md">
-      <div class="row justify-content-center">
-        <div class="col-lg-5">
-          <card
-            type="secondary"
-            shadow
-            header-classes="bg-white pb-5"
-            body-classes="px-lg-5 py-lg-5"
-            class="border-0"
-          >
-            <div class="display-4 text-left mb-4 font-weight-800 text-default">로그인</div>
-
-            <form role="form">
-              <base-input
-                alternative
-                class="mb-3"
-                placeholder="사번"
-                addon-left-icon="ni ni-email-83"
-                v-model="userId"
-              >
-              </base-input>
-              <base-input
-                alternative
-                type="password"
-                placeholder="비밀번호"
-                addon-left-icon="ni ni-lock-circle-open"
-                v-model="userPassword"
-                @keyup.enter="login"
-              >
-              </base-input>
-
-              <div class="text-center">
-                <base-button type="danger" class="my-4 col-12" @click="login">로그인</base-button>
-              </div>
-            </form>
-          </card>
-        </div>
-      </div>
+  <div class="main-container">
+    <div class="login-logo" style="display: flex; justify-content: center">
+      <img src="img/brand/logo6.png" />
     </div>
-  </section>
+    <card
+      type="secondary"
+      shadow
+      header-classes="bg-white pb-5"
+      body-classes="px-lg-5 py-lg-5"
+      class="border-0 login-card"
+    >
+      <div class="display-4 text-left mb-4 font-weight-800 text-default">로그인</div>
+
+      <form role="form">
+        <base-input
+          alternative
+          class="mb-3"
+          placeholder="사번"
+          addon-left-icon="ni ni-email-83"
+          v-model="userId"
+        >
+        </base-input>
+        <base-input
+          alternative
+          type="password"
+          placeholder="비밀번호"
+          addon-left-icon="ni ni-lock-circle-open"
+          v-model="userPassword"
+          @keyup.enter="login"
+        >
+        </base-input>
+
+        <div class="text-center">
+          <base-button type="danger" class="my-4 col-12" @click="login">로그인</base-button>
+        </div>
+      </form>
+    </card>
+  </div>
 </template>
 
 <script>
@@ -126,5 +123,42 @@ export default {
   left: 0px;
   right: 0px;
   bottom: 0px;
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  /* max-width: 100vw; */
+  /* width: 100%; */
+  /* margin-top: 8rem; */
+}
+.login-logo {
+  width: 20rem;
+  margin-bottom: 1rem;
+}
+.login-logo img {
+  width: 100%;
+}
+.login-card {
+  width: 30vw;
+}
+
+@media screen and (max-width: 991px) {
+  .main-container {
+    /* width: 100%; */
+    /* margin-left: 0px; */
+
+    margin-top: 8rem;
+  }
+  .login-card {
+    /* width: 40%; */
+    width: 80vw;
+    margin: 0px;
+    /* margin-right: 0.5rem; */
+  }
+  .login-logo {
+    width: 50%;
+  }
 }
 </style>

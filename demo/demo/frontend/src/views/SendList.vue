@@ -6,7 +6,80 @@
         발신팩스함
       </div>
 
-      <table class="fax-table fax-table-input" style="width: 100%">
+      <div class="fax-input">
+        <div class="fax-input-row">
+          <div class="fax-input-box">조회기간</div>
+          <div class="fax-input-content">
+            <input
+              type="date"
+              id="searchFrom"
+              value="today"
+              class="fax-form-input fax-form-input-date"
+              v-model="searchFrom"
+              @change="setDateInfo(searchFrom)"
+            />
+            ~
+            <input
+              type="date"
+              id="searchTo"
+              value="today"
+              class="fax-form-input fax-form-input-date"
+              v-model="searchTo"
+              @change="setDateInfo(searchTo)"
+            />
+          </div>
+        </div>
+        <div class="fax-input-row">
+          <div class="fax-input-box">받는사람</div>
+          <div class="fax-input-content">
+            <input
+              type="text"
+              id="searchGubunData"
+              name="searchGubunData"
+              class="fax-form-input fax-form-input-receiver"
+              v-model="receiver"
+              placeholder="이름 또는 팩스번호"
+            />
+          </div>
+        </div>
+
+        <div class="fax-input-row">
+          <div class="fax-input-box">결재구분</div>
+          <div class="fax-input-content">
+            <select v-model="sendStatus" class="fax-table-input" style="height: 30px">
+              <option value="전체" selected>전체</option>
+              <option value="결재완료">결재완료</option>
+              <option value="결재대기">결재대기</option>
+              <option value="전송완료">전송완료</option>
+              <option value="전송실패">전송실패</option>
+              <option value="반려">반려</option>
+              <option value="회수">회수</option>
+            </select>
+          </div>
+        </div>
+        <div class="fax-input-row">
+        <div class="fax-input-box">작성자</div>
+        <div class="fax-input-content">
+          <select v-model="senderId" class="fax-table-input" style="height: 30px">
+            <option value="All" selected>전체</option>
+            <option
+                    v-for="(item, index) in deptUsers"
+                    :key="index"
+                    :value="item.USER_ID"
+                  >
+                    {{ item.USER_NAME }}
+            </option>
+          </select>
+        </div>
+          <div class="text-center">
+            <base-button type="danger" class="mobile-btn" @click="getSendList">조회</base-button>
+          </div>
+        </div>
+      </div>
+
+      <!---->
+
+      <!-- <table class="fax-table fax-table-input" style="width: 100%">
         <colgroup>
           <col style="width: 9%" />
           <col style="width: 38%" />
@@ -78,31 +151,31 @@
             </div>
           </td>
         </tr>
-      </table>
+      </table> -->
 
       <table class="fax-table table-hover" style="width: 100%">
         <tr class="ApprArea-header">
-          <th>제목</th>
-          <th>상세보기</th>
-          <th>요청일자</th>
-          <th>장수</th>
-          <th>결재자</th>
-          <th>결재여부</th>
-          <th>결과(성공/실패)</th>
-          <th>대기/실패/성공/전체</th>
+          <th class="fax-table-display">제목</th>
+          <th class="fax-table-display">요청일자</th>
+          <th class="fax-table-display">작성자</th>
+          <th class="fax-table-display-none">장수</th>
+          <th class="fax-table-display">결재자</th>
+          <th class="fax-table-display">결재여부</th>
+          <th class="fax-table-display">결과</th>
+          <th class="fax-table-display-none">대기/실패/성공/전체</th>
         </tr>
         <tbody>
-          <tr v-for="(send, index) in sendList" :key="index">
-            <td class="text-left pl-2">{{ send.제목 }}</td>
-            <td>
-              <base-button @click="getSendDetail(send.발송번호)">상세</base-button>
+          <tr v-for="(send, index) in sendList" :key="index" @click="getSendDetail(send.발송번호)">
+            <td class="fax-table-display">{{ send.제목 }}</td>
+            <td class="fax-table-display">{{ send.등록일자 }}</td>
+            <td class="fax-table-display">{{ send.발송자 }}</td>
+            <td class="fax-table-display-none">{{ send.페이지수 }}</td>
+            <td class="fax-table-display">{{ send.결재자이름 }}</td>
+            <td class="fax-table-display">{{ send.결재상태 }}</td>
+            <td class="fax-table-display">{{ send.상태 }}</td>
+            <td class="fax-table-display-none">
+              {{ send.대기 }} / {{ send.실패 }} / {{ send.성공 }} / {{ send.전체 }}
             </td>
-            <td>{{ send.등록일자 }} </td>
-            <td>{{ send.페이지수 }}</td>
-            <td>{{ send.결재자이름 }}</td>
-            <td>{{ send.결재상태 }}</td>
-            <td>{{ send.상태 }}</td>
-            <td>{{ send.대기}} / {{send.실패}} / {{send.성공}} / {{send.전체}}</td>
           </tr>
         </tbody>
       </table>
@@ -155,6 +228,9 @@ export default {
       sendStatus: "전체",
       /*전송결과 상세*/
       sendStatusDetail: [],
+      deptUsers: [],
+      receiver: "",
+      senderId: "All",
     };
   },
   methods: {
@@ -204,6 +280,8 @@ export default {
           searchFrom: this.searchFrom,
           searchTo: this.searchTo,
           status: this.sendStatus,
+          senderId: this.senderId,
+          receiver: this.receiver,
         });
 
         let { data } = response;
@@ -260,6 +338,28 @@ export default {
         alertify.error("상세 조회가 실패했습니다.", 1.5);
       }
     },
+    async getDeptUsers() { //부서 내 작성자 가져오기
+      this.modal = true;
+      try {
+        let response = await http.post("/getDeptUsers", {
+          userId: this.userInfo.userId,
+        });
+
+        let { data } = response;
+
+        if (data != null) {
+          // 전송 성공
+          // console.log(data);
+          this.deptUsers = data;
+        } else {
+          console.log("상세 조회 실패");
+        }
+      } catch (error) {
+        // 전송 실패
+        console.log("오류메시지 - ", error);
+        alertify.error("상세 조회가 실패했습니다.", 1.5);
+      }
+    },
 
     //모달 닫기
     closeModal() {
@@ -269,6 +369,7 @@ export default {
   mounted() {
     this.getNow();
     this.getSendList();
+    this.getDeptUsers();
   },
 };
 </script>
@@ -285,10 +386,109 @@ export default {
   visibility: visible;
 }
 .fax-table-input {
-  width: 16rem;
+  /* width: 10rem; */
 }
 
-/* .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color: #D1D119;
-} */
+.fax-form-input {
+  height: 30px;
+  font-size: small;
+  margin: 2px;
+}
+.fax-input {
+  display: flex;
+  /* justify-content: space-around; */
+  border-top: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
+.fax-input-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+.fax-input-box {
+  background-color: rgb(224, 224, 224);
+  font-size: small;
+  font-weight: 600;
+  width: 80px;
+  height: 100%;
+  line-height: 50px;
+  text-align: center;
+}
+.fax-input-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100%; */
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 991px) {
+  section {
+    padding: 0px;
+  }
+  .fax-table {
+    margin-right: 1rem;
+    width: 100vw;
+  }
+
+  .fax-table-tr {
+    display: flex;
+    height: 100%;
+  }
+  .fax-table th {
+    height: inherit;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+  }
+
+  .fax-input {
+    display: flex;
+    flex-direction: column;
+  }
+  .fax-input-mobile {
+    display: none;
+  }
+
+  .fax-form-input {
+    /* width: 105px; */
+  }
+  .fax-form-input-receiver {
+    width: 14rem;
+  }
+
+  .fax-input-box {
+  }
+  .fax-input-content {
+    display: flex;
+    margin-right: 10px;
+    margin-left: 20px;
+
+    /* max-width: 350px; */
+    /* width:inherit; */
+    /* justify-content: right; */
+  }
+  .fax-table-input {
+    /* width: 10rem; */
+  }
+  .mobile-btn {
+    padding: 5px 20px 5px 20px;
+  }
+  .fax-form-input-date {
+    width: 105px;
+  }
+  th {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 5rem;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
 </style>

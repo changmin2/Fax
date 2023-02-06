@@ -76,4 +76,17 @@ public interface UserRepository extends JpaRepository<User, String> {
             " from TB_APPROVAL\n" +
             " where USER_KEY =:userKey)",nativeQuery = true)
     String getUserName(@Param(value = "userKey")String userKey);
+
+    @Query(value = " select CONCAT(u.USER_NAME,'(',(SELECT\n" +
+            "            COMM_NAME \n" +
+            "        FROM\n" +
+            "            TB_COMM \n" +
+            "        WHERE\n" +
+            "            COMM_CODE = u.GRADE_CODE),')') USER_NAME,u.USER_ID\n" +
+            "   from TB_USER u \n" +
+            "where DEPT_CODE = (\n" +
+            " select DEPT_CODE \n" +
+            " from TB_USER \n" +
+            " where USER_ID =:userId)",nativeQuery = true)
+    List<Map<String,Object>> getDeptUsers(@Param(value = "userId")String userId);
 }

@@ -125,7 +125,7 @@ public class ReceiveService {
 
     //DB에 저장되어 있지 않은 수신 목록 업데이트
     @Transactional
-    public List<Recieve> DBListUpdate(List<RecieveForm> recieves){
+    public void DBListUpdate(List<RecieveForm> recieves){
 
         for (RecieveForm recieve : recieves) {
             if(!recieveRepository.existsById(recieve.getRECEIVE_No_SEQ())){
@@ -143,7 +143,6 @@ public class ReceiveService {
             }
 
         }
-        return recieveRepository.findAll();
     }
 
     //수신상세
@@ -196,5 +195,19 @@ public class ReceiveService {
 
     public List<Recieve> findByFaxNo(String FaxNo){
         return recieveRepository.findByFaxNo(FaxNo);
+    }
+
+    public List<Recieve> findByFaxNo2(Map<String, String> map){
+        List<Recieve> result = new ArrayList<>();
+        String FaxNo = map.get("RFax_No");
+        String searchFrom = map.get("Date_Start");
+        String searchTo = map.get("Date_End");
+        String senderNo = map.get("senderNo");
+        if(senderNo.equals("")){
+            result = recieveRepository.findByFaxNo2(FaxNo,searchFrom,searchTo);
+        }else{
+            result = recieveRepository.findByFaxNoWhere(FaxNo,senderNo,searchFrom,searchTo);
+        }
+        return result;
     }
 }

@@ -6,7 +6,64 @@
         결재함 - <span style="color: #d7191f; display: inline">결재완료</span>
       </div>
 
-      <form id="master" role="form" style="width: 100%">
+      <div class="fax-input">
+        <div class="fax-input-row">
+          <div class="fax-input-box">조회기간</div>
+          <div class="fax-input-content">
+            <input
+              type="date"
+              id="searchFrom"
+              value="today"
+              class="fax-form-input fax-form-input-date"
+              v-model="searchFrom"
+              @change="setDateInfo(searchFrom)"
+            />
+            ~
+            <input
+              type="date"
+              id="searchTo"
+              value="today"
+              class="fax-form-input fax-form-input-date"
+              v-model="searchTo"
+              @change="setDateInfo(searchTo)"
+            />
+          </div>
+        </div>
+        <div class="fax-input-row">
+          <div class="fax-input-box">받는사람</div>
+          <div class="fax-input-content">
+            <input
+              type="text"
+              id="searchGubunData"
+              name="searchGubunData"
+              class="fax-form-input fax-form-input-receiver"
+              v-model="senderNo"
+            />
+          </div>
+        </div>
+
+        <div class="fax-input-row">
+          <div class="fax-input-box">결재구분</div>
+          <div class="fax-input-content">
+            <select v-model="apprStatus" class="fax-table-input" style="height: 30px">
+              <option value="전체" selected>전체</option>
+              <option value="결재완료">결재완료</option>
+              <option value="결재대기">결재대기</option>
+              <option value="전송완료">전송완료</option>
+              <option value="전송실패">전송실패</option>
+              <option value="반려">반려</option>
+              <option value="회수">회수</option>
+            </select>
+          </div>
+          <div class="text-center">
+            <base-button type="danger" class="mobile-btn" @click="noApproval">조회</base-button>
+          </div>
+        </div>
+      </div>
+
+      <!---->
+
+      <!-- <form id="master" role="form" style="width: 100%">
         <table class="fax-table fax-table-input" style="width: 100%">
           <colgroup>
             <col style="width: 9%" />
@@ -86,38 +143,37 @@
             </td>
           </tr>
         </table>
-      </form>
+      </form> -->
 
       <table class="fax-table table-hover" style="width: 100%">
         <tbody>
           <tr class="ApprArea-header">
-            <th>구분</th>
-            <th>요청일자</th>
-            <th>보내는사람</th>
-            <th>받는사람</th>
-            <th>팩스번호</th>
-            <th>제목</th>
-            <th>상세보기</th>
-            <th>장수</th>
-            <th>결재상태</th>
-            <th>결재구분</th>
-            <th>결재일시<br />(요청/완료)</th>
+            <th class="fax-table-display">제목</th>
+            <th class="fax-table-display">요청일자</th>
+            <th class="fax-table-display">보내는사람</th>
+            <th class="fax-table-display">결재자</th>
+            <th class="fax-table-display">팩스번호</th>
+
+            <th class="fax-table-display-none">장수</th>
+            <th class="fax-table-display">결재상태</th>
+            <th class="fax-table-display-none">결재구분</th>
+            <th class="fax-table-display-none">결재일시</th>
           </tr>
 
-          <tr v-for="(noApproval, index) in noApprovalList" :key="index">
-            <td>{{ noApproval.상태 }}</td>
-            <td>{{ noApproval.요청일자 }}</td>
-            <td>{{ noApproval.보내는사람 }}</td>
-            <td>{{ noApproval.받는사람 }}</td>
-            <td>{{ noApproval.팩스번호 }}</td>
-            <td class="text-left pl-2">{{ noApproval.제목 }}</td>
-            <td>
-              <base-button @click="setNoApproval(noApproval.결제고유번호)">상세</base-button>
-            </td>
-            <td>{{ noApproval.받는사람 }}</td>
-            <td>{{ noApproval.상태 }}</td>
-            <td>{{ noApproval.결제고유번호 }}</td>
-            <td>{{ noApproval.결제일자 }}</td>
+          <tr
+            v-for="(noApproval, index) in noApprovalList"
+            :key="index"
+            @click="setNoApproval(noApproval.결제고유번호)"
+          >
+            <td class="fax-table-display">{{ noApproval.제목 }}</td>
+            <td class="fax-table-display">{{ noApproval.요청일자 }}</td>
+            <td class="fax-table-display">{{ noApproval.보내는사람 }}</td>
+            <td class="fax-table-display">{{ noApproval.받는사람 }}</td>
+            <td class="fax-table-display">{{ noApproval.팩스번호 }}</td>
+            <td class="fax-table-display-none">{{ noApproval.페이지수 }}</td>
+            <td class="fax-table-display">{{ noApproval.상태 }}</td>
+            <td class="fax-table-display-none">{{ noApproval.결제고유번호 }}</td>
+            <td class="fax-table-display-none">{{ noApproval.결제일자 }}</td>
           </tr>
         </tbody>
       </table>
@@ -156,6 +212,7 @@ export default {
       searchFrom: "",
       searchTo: "",
       apprStatus: "전체",
+      senderNo: "",
     };
   },
   computed: {
@@ -286,7 +343,104 @@ export default {
 </script>
 
 <style scoped>
-.fax-table-input {
-  width: 16rem;
+.fax-form-input {
+  height: 30px;
+  font-size: small;
+  margin: 2px;
+}
+.fax-input {
+  display: flex;
+  /* justify-content: space-around; */
+  border-top: 1px solid rgb(224, 224, 224);
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
+.fax-input-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+.fax-input-box {
+  background-color: rgb(224, 224, 224);
+  font-size: small;
+  font-weight: 600;
+  width: 80px;
+  height: 100%;
+  line-height: 50px;
+  text-align: center;
+}
+.fax-input-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100%; */
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 991px) {
+  section {
+    padding: 0px;
+  }
+  .fax-table {
+    margin-right: 1rem;
+    width: 100vw;
+  }
+
+  .fax-table-tr {
+    display: flex;
+    height: 100%;
+  }
+  .fax-table th {
+    height: inherit;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+  }
+
+  .fax-input {
+    display: flex;
+    flex-direction: column;
+  }
+  .fax-input-mobile {
+    display: none;
+  }
+
+  .fax-form-input {
+    /* width: 105px; */
+  }
+  .fax-form-input-receiver {
+    width: 14rem;
+  }
+
+  .fax-input-content {
+    display: flex;
+    margin-right: 10px;
+    margin-left: 20px;
+
+    /* max-width: 350px; */
+    /* width:inherit; */
+    /* justify-content: right; */
+  }
+  .fax-table-input {
+    /* width: 10rem; */
+  }
+  .mobile-btn {
+    padding: 5px 20px 5px 20px;
+  }
+  .fax-form-input-date {
+    width: 105px;
+  }
+  th {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 3.8rem;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
 }
 </style>

@@ -125,11 +125,34 @@ public class PayService {
         String status= Rmap.get("status"); //상태 ( 미결재함 : "대기" , 결재함(전체) : "전체" , 결재함(결재완료) : "완료", 결재함(회수) : "회수", 결재함(반려) : "반려" )
         String searchFrom= Rmap.get("searchFrom"); //조회기간
         String searchTo= Rmap.get("searchTo"); //조회기간
+        String senderId= Rmap.get("senderId"); //발송자
+        String receiver= Rmap.get("receiver"); //받는사람 팩스번호 OR 이름
+        System.out.println("senderId : "+senderId+" receiver : "+receiver);
         List<Object[]> objects = new ArrayList<>();
-        if(status.equals("전체")){ //결재함-전체
-            objects = approvalRepository.sendRecieveAll(userId,searchFrom,searchTo);
-        }else {
-            objects = approvalRepository.sendRecieve(userId,status,searchFrom,searchTo);
+        if(senderId.equals("All")&&receiver.equals("")){
+            if(status.equals("전체")){ //결재함-전체
+                objects = approvalRepository.sendRecieveAll(userId,searchFrom,searchTo);
+            }else {
+                objects = approvalRepository.sendRecieve(userId,status,searchFrom,searchTo);
+            }
+        }else if(!senderId.equals("All")&&receiver.equals("")){
+            if(status.equals("전체")){ //결재함-전체
+                objects = approvalRepository.sendRecieveAll2(searchFrom,searchTo,senderId);
+            }else {
+                objects = approvalRepository.sendRecieve2(status,searchFrom,searchTo,senderId);
+            }
+        }else if(senderId.equals("All")&&!receiver.equals("")){
+            if(status.equals("전체")){ //결재함-전체
+                objects = approvalRepository.sendRecieveAll(userId,searchFrom,searchTo,receiver);
+            }else {
+                objects = approvalRepository.sendRecieve(userId,status,searchFrom,searchTo,receiver);
+            }
+        }else{ //모든조건이 다 있을때
+            if(status.equals("전체")){ //결재함-전체
+                objects = approvalRepository.sendRecieveAll2(searchFrom,searchTo,senderId,receiver);
+            }else {
+                objects = approvalRepository.sendRecieve2(status,searchFrom,searchTo,senderId,receiver);
+            }
         }
         List<HashMap<String,Object>> lists = new ArrayList<>();
         String[] arr = {"발송번호","상태","전송일자","제목","팩스번호","발송자","등록일자","결재상태","결재자ID","사유","결재자이름","실패메세지","페이지수","성공","실패","대기","전체"};

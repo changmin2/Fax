@@ -2,15 +2,26 @@ const webpack = require("webpack");
 
 module.exports = {
   lintOnSave: false,
+<<<<<<< HEAD
   outputDir: "C:\\Users\\dlckd\\Downloads\\dist",  // 빌드 타겟 디렉토리
 
+=======
+  outputDir: "../src/main/resources/static",  // 빌드 타겟 디렉토리
+  indexPath:"../static/index.html",
+>>>>>>> 1191b2296da26953b84bf6851ff8da2c3b3d0c13
   devServer: {
     disableHostCheck : true,
     proxy: {
       '/api': {
         // '/api' 로 들어오면 포트 8080(스프링 서버)로 보낸다
+<<<<<<< HEAD
         target: 'http://ec2-43-201-31-246.ap-northeast-2.compute.amazonaws.com:8080',
         changeOrigin: true // cross origin 허용
+=======
+        target: 'http://localhost:8080',
+        changeOrigin: true, // cross origin 허용
+        disableHostCheck: true
+>>>>>>> 1191b2296da26953b84bf6851ff8da2c3b3d0c13
       }
     }
   },
