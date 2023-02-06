@@ -5,6 +5,7 @@ import com.example.demo.domain.Recieve.Recieve;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface RecieveRepository extends JpaRepository<Recieve, String> {
             " where d.FAX_NO =:faxNo" +
             "ORDER BY d.RECEIVE_DATE DESC",nativeQuery = true)
     List<Recieve> findByFaxNo(@Param(value = "faxNo") String faxNo);
+
 }

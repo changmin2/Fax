@@ -1,5 +1,7 @@
 package com.example.demo.batch.tasklets;
 
+import com.example.demo.domain.Recieve.Recieve;
+import com.example.demo.repository.RecieveRepository;
 import com.example.demo.service.BatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +16,8 @@ public class TutorialTasklet implements Tasklet {
 
     @Autowired
     BatchService batchService;
-
+    @Autowired
+    RecieveRepository repository;
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         batchService.batchProgram();
