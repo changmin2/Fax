@@ -1,17 +1,24 @@
 const webpack = require("webpack");
 
 module.exports = {
+  assetsDir: "static",
   lintOnSave: false,
   outputDir: "../src/main/resources/static",  // 빌드 타겟 디렉토리
-
+  indexPath:"../static/index.html",
   devServer: {
     proxy: {
       '/api': {
         // '/api' 로 들어오면 포트 8080(스프링 서버)로 보낸다
         target: 'http://localhost:8080',
-        changeOrigin: true // cross origin 허용
+        changeOrigin: true, // cross origin 허용
+        disableHostCheck: true
       }
     }
+  chainWebpack: config=> {
+      const svgRule = config.module.rule("svg");
+      svgRule.uses.clear();
+      svgRule.use("vue-svg-loader").loader("vue-svg-loader")
+    } // vue3 cli 로더 설정
   },
 
 
