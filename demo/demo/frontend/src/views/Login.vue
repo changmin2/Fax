@@ -74,8 +74,8 @@ export default {
       this.$store.commit("SET_LOADING_TRUE");
       try {
         let response = await http.post("/login", {
-          userId: this.userId,
-          userPassword: this.userPassword,
+          userId: this.userId.toUpperCase(),
+          userPassword: this.userPassword.toUpperCase(),
         });
 
         let { data } = response;
