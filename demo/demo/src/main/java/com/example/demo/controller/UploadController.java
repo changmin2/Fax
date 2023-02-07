@@ -1,25 +1,31 @@
 package com.example.demo.controller;
 
 import com.example.demo.GlobalVariables;
-import com.example.demo.S3Uploader;
 import com.example.demo.domain.Upload.Upload;
 import com.example.demo.service.DetectionService;
 import com.example.demo.service.UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StopWatch;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
-        origins = "http://ec2-43-201-31-246.ap-northeast-2.compute.amazonaws.com:80", // allowCredentials = "true" 일 경우, orogins="*" 는 X
+        origins = "https://localhost:5500", // allowCredentials = "true" 일 경우, orogins="*" 는 X
         allowCredentials = "true",
         allowedHeaders = "*",
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.HEAD,RequestMethod.OPTIONS}
@@ -37,6 +43,32 @@ public class UploadController {
 
     private  int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
+
+
+//    @PostMapping("/upload")
+//    @ResponseBody
+//    public HashMap<String,Object> uploadSingle(@RequestParam("userId") String userId,
+//                                               @RequestParam(value = "userKey",defaultValue = "None") String userKey,
+//                                               @RequestParam("files") List<MultipartFile> files) throws Exception {
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        String url = "http://192.168.0.118:8080/api/upload";
+//
+//        // parameter 세팅
+//        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+//        map.add("userId", userId);
+//        map.add("userKey",userKey);
+//        for (MultipartFile file : files) {
+//            map.add("files",file);
+//        }
+//        HttpEntity<MultiValueMap<String, Object>> requestEntity
+//                = new HttpEntity<>(map, headers);
+//        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
+//        log.info(response.getBody());
+//        return null;
+//    }
     @PostMapping("/upload")
     @ResponseBody
     public HashMap<String,Object> uploadSingle(@RequestParam("userId") String userId,

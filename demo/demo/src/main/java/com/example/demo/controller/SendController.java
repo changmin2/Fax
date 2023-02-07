@@ -15,7 +15,7 @@ import java.util.Map;
 
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
-        origins = "http://ec2-43-201-31-246.ap-northeast-2.compute.amazonaws.com:80", // allowCredentials = "true" 일 경우, orogins="*" 는 X
+        origins = "https://localhost:5500", // allowCredentials = "true" 일 경우, orogins="*" 는 X
         allowCredentials = "true",
         allowedHeaders = "*",
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.HEAD,RequestMethod.OPTIONS}

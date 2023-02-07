@@ -82,18 +82,20 @@ public class DetectionServiceV2 {
 
                         System.out.println("Text : ");
                         String result = res.getTextAnnotationsList().get(0).getDescription();
+                        result = result.replaceAll(" ","");
+                        result = result.replaceAll("\n","");
+                        log.info("전 "+result);
                         result = result.trim().replace(" ", "");
-
+                        log.info("후 "+result);
                         // 주민등록번호 추출
                         Set<String> residentNumber = new HashSet<>();
 
                         // 주민등록번호 정규식
-                        String rexResidentNumber = "\\d{2}([0]\\d|[1][0-2])([0][1-9]|[1-2]\\d|[3][0-1])[-]*[1-4]\\d{6}";
+                        String rexResidentNumber = "\\d{6}\\-[1-4]\\d{6}";
 
                         //주민등록번호 추출
                         Pattern pattern = Pattern.compile(rexResidentNumber);
                         Matcher matcher = pattern.matcher(result);
-
                         // 추출한 텍스트에서 정규식에 의한 특정 문자 추출(주민등록번호)
                         while (matcher.find()) {
                             residentNumber.add(matcher.group());
