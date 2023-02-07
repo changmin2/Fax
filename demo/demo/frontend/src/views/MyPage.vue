@@ -223,7 +223,7 @@ export default {
   margin-top: 10rem;
   margin-left: 10rem;
   margin-right: 10rem;
-
+  margin-bottom: 10rem;
   /* margin-top: 2rem; */
 }
 

@@ -395,6 +395,7 @@ export default {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     /* width: 100%; */
+    width: 20px;
   }
 
   .fax-input {
@@ -411,8 +412,8 @@ export default {
   .fax-form-input-receiver {
     /* width: 8rem; */
   }
-
   .fax-input-box {
+    line-height: 45px;
   }
   .fax-input-content {
     display: flex;

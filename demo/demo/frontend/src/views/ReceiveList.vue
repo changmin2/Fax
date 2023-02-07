@@ -385,6 +385,7 @@ export default {
   }
 
   .fax-input-box {
+    line-height: 45px;
   }
   .fax-input-content {
     display: flex;
@@ -413,7 +414,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    /* max-width: 4rem; */
+    max-width: 6rem;
     padding-left: 4px;
     padding-right: 4px;
   }
