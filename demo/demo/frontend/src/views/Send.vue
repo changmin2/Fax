@@ -636,13 +636,35 @@ export default {
       this.receiveFax = res;
     },
     scanFinish() {
-      const fs = require('fs');
+      var objFSO;
+      var wshshell=new ActiveXObject("wscript.shell"); 
+      var path=wshshell.ExpandEnvironmentStrings("C:\BNK_IFAX");
+      // 사용자 어플리케이션 디렉토리의 test 디렉토리
+      // 환경변수를 이용해 다양하게 경로를 지정한다
+      // %UserName% : 유저 티렉토리
 
-      //비동기 방식으로 디렉토리 삭제
-      fs.rmdir("c:\\BNK_IFAX\\SCAN.tiff",{ recursive: true }, err => {
-          console.log("err : ", err);
-      })
-      
+      objFSO = new ActiveXObject("Scripting.FileSystemObject");
+
+      // Delete the directory.
+      // if ( objFSO.FolderExists (path) ) objFSO.DeleteFolder(path ,true);
+      // 디렉토리가 존재하면 삭제한다
+
+      // var objCreatedFile, objOpenedFile;
+      // objCreatedFile = objFSO.CreateTextFile("c:\\test.txt", true);
+      // 파일생성
+
+
+      // var ForReading = 1, ForWriting = 2, ForAppending = 8;
+      // objOpenedFile = objFSO.OpenTextFile("c:\\test.txt", ForWriting, true);
+      // 파일오픈
+
+
+      // objCreatedFile.Close();
+      // objOpenedFile.Close();
+
+
+      // Delete the files.
+      objFSO.DeleteFile("c:\\test.txt\\SCAN.tiff");
       alertify.error("삭제완료.", 1.5);
     },
   },
