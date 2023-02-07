@@ -103,7 +103,7 @@
 
               <base-button class="px-2 py-2 send-button" type="secondary" @click="location.href='bnk://test'"> 스캔시작</base-button>
               <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button>
-              <a href="bnk://test">test</a>
+              <!-- <a href="bnk://test">test</a> -->
               </div>
               <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                 <a v-bind:href="`${fileUrl}`" target="_new" download=""
@@ -272,6 +272,7 @@ export default {
       fileFlag: true,
       pageCount: 0,
       grade: 0,
+      isScan: false,
     };
   },
   computed: {
@@ -635,37 +636,26 @@ export default {
       }
       this.receiveFax = res;
     },
-    scanFinish() {
-      var objFSO;
-      var wshshell=new ActiveXObject("wscript.shell"); 
-      var path=wshshell.ExpandEnvironmentStrings("C:\BNK_IFAX");
-      // 사용자 어플리케이션 디렉토리의 test 디렉토리
-      // 환경변수를 이용해 다양하게 경로를 지정한다
-      // %UserName% : 유저 티렉토리
+    async scanFinish() { //스캔완료 후 삭제=
 
-      objFSO = new ActiveXObject("Scripting.FileSystemObject");
+     var xhr = new XMLHttpRequest();
+      xhr.onload = async function() {
+          console.log(xhr.response);
+          var myfile = new File([xhr.response], "SCAN_FILE", {lastModified: 1534584790000});
+          // console.log(myfile);
 
-      // Delete the directory.
-      // if ( objFSO.FolderExists (path) ) objFSO.DeleteFolder(path ,true);
-      // 디렉토리가 존재하면 삭제한다
-
-      // var objCreatedFile, objOpenedFile;
-      // objCreatedFile = objFSO.CreateTextFile("c:\\test.txt", true);
-      // 파일생성
-
-
-      // var ForReading = 1, ForWriting = 2, ForAppending = 8;
-      // objOpenedFile = objFSO.OpenTextFile("c:\\test.txt", ForWriting, true);
-      // 파일오픈
-
-
-      // objCreatedFile.Close();
-      // objOpenedFile.Close();
-
-
-      // Delete the files.
-      objFSO.DeleteFile("c:\\test.txt\\SCAN.tiff");
-      alertify.error("삭제완료.", 1.5);
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(myfile);
+          inputFileUploadInsert.files = dataTransfer.files;
+          var event = new Event('change', { bubbles: true });
+          inputFileUploadInsert.dispatchEvent(event);
+      };
+      xhr.open('GET', "file:///C:/BNK_IFAX/SCAN.tiff");
+      xhr.responseType = 'blob';
+      xhr.send();
+    
+      // this.isScan = true;
+      // inputFileUploadInsert.dispatchEvent(event);
     },
   },
   mounted() {
