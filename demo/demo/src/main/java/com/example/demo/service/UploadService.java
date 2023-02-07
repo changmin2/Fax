@@ -8,6 +8,10 @@ import com.example.demo.repository.UploadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -15,13 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -72,16 +77,11 @@ public class UploadService {
 
         for (int i = 0; i < files.size(); i++) {
             MultipartFile multipartFile = files.get(i);
+            System.out.println(multipartFile);
             File convFile = new File(System.getProperty("user.dir") + "/" +multipartFile.getOriginalFilename());
             multipartFile.transferTo(convFile);
-//            File convFile = new File(multipartFile.getOriginalFilename());
-//            convFile.createNewFile();
-//            FileOutputStream fos = new FileOutputStream(convFile);
-//            fos.write(multipartFile.getBytes());
-//            fos.close();
             multipart.addFilePart("Doc_File"+(i+1), convFile);
             s3Uploader.removeNewFile(convFile); //파일삭제
-
         }
 
         // 응답 값
@@ -90,9 +90,12 @@ public class UploadService {
         // Json parse (json.simple 라이브러리)
         JSONParser jsonParse = new JSONParser();
         JSONObject ObjToJson = (JSONObject) jsonParse.parse(ResultJson);
+        System.out.println("변환결과 : "+ObjToJson);
         String Result = (String) ObjToJson.get("Result");
         boolean detectionResult =false;
 //        data:application/pdf;base64,
+
+
         Result = Result.replace("|","");
         if(Result.equals("OK")){
             String PDF = (String) ObjToJson.get("PDF");
@@ -123,6 +126,73 @@ public class UploadService {
         }
         result.put("Result",Result);
         result.put("detection",detectionResult);
+        return result;
+    }
+
+    public  HashMap<String,Object>  getSCAN(String RealPath) throws IOException {
+        HashMap<String,Object> result = new HashMap<>();
+        boolean detectionResult =false;
+        File file = new File("C:\\BNK_IFAX\\SCAN.tiff");
+        if(file.isFile()){
+            //tiff=>PDF 변환
+            PDDocument document=new PDDocument();
+            ImageInputStream isb = ImageIO.createImageInputStream(file);
+
+            Iterator<ImageReader> iterator = ImageIO.getImageReaders(isb);
+            if (iterator == null || !iterator.hasNext())
+            {
+                throw new IOException("Image file format not supported by ImageIO: ");
+            }
+
+            ImageReader reader = (ImageReader) iterator.next();
+            iterator = null;
+            reader.setInput(isb);
+
+            int nbPages = reader.getNumImages(true);
+
+            System.out.println(nbPages);
+
+            for(int p=0;p<nbPages;p++)
+            {
+                BufferedImage bufferedImage = reader.read(p);
+
+                PDPage page = new PDPage();
+                document.addPage(page);
+
+                PDImageXObject i = LosslessFactory.createFromImage(document, bufferedImage);
+
+                PDPageContentStream content =new PDPageContentStream(document, page);
+                content.drawImage(i, 0,0 ,page.getMediaBox().getWidth(),page.getMediaBox().getHeight());
+
+                content.close();
+            }
+            document.save(System.getProperty("user.dir") + "/" +"temp.pdf"); //Enter path to save your file with .pdf extension
+            document.close();
+            //변환 끝
+            isb.close();
+            s3Uploader.removeNewFile(file); //tiff 파일삭제
+
+            File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
+
+            //            페이지 가져오기
+            PDDocument pdfDoc;
+            pdfDoc = PDDocument.load(n);
+            int pageCount = pdfDoc.getNumberOfPages();
+//            log.error("페이지 수 읽어오기 : "+pageCount);
+            result.put("pageCount",pageCount+"");
+            pdfDoc.close();
+            s3Uploader.upload(n, "static",RealPath);
+            detectionResult = detectionServiceV2.pdfTopng(RealPath);
+            log.info(String.valueOf(detectionResult));
+
+            result.put("Result","OK");
+            result.put("detection",detectionResult);
+        }else{
+            result.put("Result","ERROR");
+            System.out.println("경로에 파일 없음");
+            return result;
+        }
+
         return result;
     }
 }

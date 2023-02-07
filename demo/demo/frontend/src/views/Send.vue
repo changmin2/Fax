@@ -363,7 +363,6 @@ export default {
         } else {
           alertify.error("업로드 실패", 1.5);
           this.newFileName = "";
-          this.fileFlag = true;
         }
       } catch (error) {
         this.$store.commit("SET_LOADING_FALSE");
@@ -457,6 +456,7 @@ export default {
         //삭제시키는척만
         this.newFileName = "";
         this.fileFlag = true;
+        this.isScan = false;
         alertify.success("파일 재등록이 가능합니다.", "");
         return;
       }
@@ -472,6 +472,7 @@ export default {
         if (data) {
           this.newFileName = "";
           this.fileFlag = true;
+          this.isScan = false;
           this.privateInfo = false;
           alertify.success("파일삭제 성공", 1.5);
         } else {
@@ -637,25 +638,40 @@ export default {
       this.receiveFax = res;
     },
     async scanFinish() { //스캔완료 후 삭제=
+      this.$store.commit("SET_LOADING_TRUE");
 
-     var xhr = new XMLHttpRequest();
-      xhr.onload = async function() {
-          console.log(xhr.response);
-          var myfile = new File([xhr.response], "SCAN_FILE", {lastModified: 1534584790000});
-          // console.log(myfile);
+      let formData = new FormData();
+      formData.append("userId", this.userId);
+      formData.append("userKey", this.userKey);
 
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(myfile);
-          inputFileUploadInsert.files = dataTransfer.files;
-          var event = new Event('change', { bubbles: true });
-          inputFileUploadInsert.dispatchEvent(event);
+      let options = {
+        headers: { "Content-Type": "multipart/form-data" },
       };
-      xhr.open('GET', "file:///C:/BNK_IFAX/SCAN.tiff");
-      xhr.responseType = 'blob';
-      xhr.send();
-    
-      // this.isScan = true;
-      // inputFileUploadInsert.dispatchEvent(event);
+
+      try {
+        let reqUrl = this.getterUpdate ? "/updateUploadScan" : "/uploadScan"; //수정요청인지 아닌지
+
+        let { data } = await http.post(reqUrl, formData, options);
+        this.$store.commit("SET_LOADING_FALSE");
+
+        if (data.Result == "OK") {
+          alertify.success("스캔 업로드 성공", 1.5);
+          if (this.userKey == "None") {
+            this.$store.commit("SET_USER_KEY", data.userKey);
+          }
+          this.newFileName = data.newFileName;
+          this.fileFlag = false;
+          this.pageCount = data.pageCount;
+          this.privateInfo = data.detection;
+          console.log("스캔 업로드 성공", data.newFileName);
+        } else {
+          alertify.error("스캔 업로드 실패", 1.5);
+          this.newFileName = "";
+        }
+      } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
+        console.log(error);
+      }
     },
   },
   mounted() {
