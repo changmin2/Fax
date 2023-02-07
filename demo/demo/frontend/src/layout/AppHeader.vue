@@ -7,6 +7,7 @@
       type=""
       effect="dark"
       expand
+      ref="closeMenu"
     >
       <router-link slot="brand" class="navbar-brand" to="/">
         <img :src="logoImage" alt="logo" />
@@ -14,7 +15,7 @@
 
       <div class="row" slot="content-header">
         <div class="col-6 collapse-brand">
-          <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
+          <a href="/home">
             <img src="img/brand/logo3.png" />
           </a>
         </div>
@@ -23,7 +24,13 @@
       <!-- 왼쪽 -->
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
         <li class="nav-item" menu-classes="dropdown-menu-xl ">
-          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+          <a
+            slot="title"
+            class="nav-link"
+            data-toggle="dropdown"
+            role="button"
+            @click="setNavToggle"
+          >
             <i class="ni ni-ui-01 d-lg-none"></i>
             <router-link
               to="/send-list"
@@ -33,8 +40,15 @@
             </router-link>
           </a>
         </li>
+
         <li class="nav-item" menu-classes="dropdown-menu-xl ">
-          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+          <a
+            slot="title"
+            class="nav-link"
+            data-toggle="dropdown"
+            role="button"
+            @click="setNavToggle"
+          >
             <i class="ni ni-ui-01 d-lg-none"></i>
             <router-link
               to="/receive-list"
@@ -45,7 +59,13 @@
           </a>
         </li>
         <li class="nav-item" menu-classes="dropdown-menu-xl ">
-          <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+          <a
+            slot="title"
+            class="nav-link"
+            data-toggle="dropdown"
+            role="button"
+            @click="setNavToggle"
+          >
             <i class="ni ni-ui-01 d-lg-none"></i>
             <router-link
               to="/send"
@@ -58,7 +78,13 @@
 
         <span class="mobile-nav">
           <li class="nav-item" menu-classes="dropdown-menu-xl">
-            <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+            <a
+              slot="title"
+              class="nav-link"
+              data-toggle="dropdown"
+              role="button"
+              @click="setNavToggle"
+            >
               <i class="ni ni-ui-01 d-lg-none"></i>
               <router-link
                 to="/approval-complete-list"
@@ -70,7 +96,13 @@
           </li>
 
           <li class="nav-item" menu-classes="dropdown-menu-xl ">
-            <a slot="title" class="nav-link" data-toggle="dropdown" role="button">
+            <a
+              slot="title"
+              class="nav-link"
+              data-toggle="dropdown"
+              role="button"
+              @click="setNavToggle"
+            >
               <i class="ni ni-ui-01 d-lg-none"></i>
               <router-link
                 to="/no-approval-list"
@@ -102,6 +134,7 @@
             <span
               :class="'mobile-log-btn nav-link-inner--text font-weight-600 text-' + textColor"
               style="cursor: pointer"
+              @click="setNavToggle"
               >마이페이지</span
             >
           </router-link>
@@ -188,7 +221,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      navToggleValue: "",
+    };
   },
 
   computed: {
@@ -242,6 +277,14 @@ export default {
       this.$store.commit("SET_USER_LOGOUT");
       localStorage.setItem("isLogin", false);
       this.$router.push("/login");
+    },
+
+    setNavToggle() {
+      // this.BaseNav.NavcloseMenu();
+      console.log("BaseNav...");
+      this.$refs.closeMenu.closeMenu();
+      // this.BaseNav;
+      // this.$children.$children[9].closeMenu();
     },
   },
 };

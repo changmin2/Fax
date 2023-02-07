@@ -64,7 +64,6 @@ export default {
   cursor: default;
   display: flex;
   flex-direction: column;
-  /* height: 200vh; */
 }
 .app-right-content {
   width: 90vw;
@@ -105,8 +104,6 @@ export default {
   padding-right: 1rem;
 }
 .fax-table td {
-  /* width: 250px; */
-  /* border: 0.0625rem solid #dee2e6; */
 }
 
 .fax-table-detail {
@@ -178,7 +175,6 @@ select {
 
   .fax-table-display-none {
     display: none;
-    /* width: 100%; */
   }
   .fax-table-display {
     width: 100%;

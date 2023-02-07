@@ -119,11 +119,12 @@
       <table class="fax-table table-hover" style="width: 100%">
         <tbody>
           <tr class="ApprArea-header">
+            <th class="fax-table-display">요청일자</th>
             <th>제목</th>
-            <th class="fax-table-display-none">요청일자</th>
+
             <th>보내는사람</th>
             <th>결재자</th>
-            <th>팩스번호</th>
+            <th class="fax-table-display-none">팩스번호</th>
 
             <th class="fax-table-display-none">장수</th>
             <th>결재상태</th>
@@ -137,11 +138,11 @@
             :key="index"
             @click="setNoApproval(noApproval.결제고유번호)"
           >
+            <td class="fax-table-display">{{ noApproval.요청일자 }}</td>
             <td>{{ noApproval.제목 }}</td>
-            <td class="fax-table-display-none">{{ noApproval.요청일자 }}</td>
             <td>{{ noApproval.보내는사람 }}</td>
             <td>{{ noApproval.받는사람 }}</td>
-            <td>{{ noApproval.팩스번호 }}</td>
+            <td class="fax-table-display-none">{{ noApproval.팩스번호 }}</td>
 
             <td class="fax-table-display-none">{{ noApproval.페이지수 }}</td>
             <td>{{ noApproval.상태 }}</td>
@@ -362,6 +363,7 @@ export default {
   background-color: rgb(224, 224, 224);
   font-size: small;
   font-weight: 600;
+  min-width: 80px;
   width: 80px;
   height: 100%;
   line-height: 50px;
@@ -392,7 +394,7 @@ export default {
     height: inherit;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    width: 100%;
+    /* width: 100%; */
   }
 
   .fax-input {

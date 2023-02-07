@@ -345,12 +345,17 @@ hr {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0px;
   }
   .left-content {
-    margin-right: 4rem;
+    /* margin-right: 4rem; */
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
   .right-content {
-    margin-left: 4rem;
+    /* margin-left: 2rem; */
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
   .content-group {
     display: flex;

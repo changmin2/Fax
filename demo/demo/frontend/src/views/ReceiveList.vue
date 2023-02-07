@@ -9,7 +9,7 @@
       <div class="fax-input">
         <div class="fax-input-row">
           <div class="fax-input-box">조회기간</div>
-          <div class="fax-input-content">
+          <div class="fax-input-content fax-input-content-date">
             <input
               type="date"
               id="searchFrom"
@@ -31,7 +31,7 @@
         </div>
         <div class="fax-input-row">
           <div class="fax-input-box">받는사람</div>
-          <div class="fax-input-content">
+          <div class="fax-input-content fax-input-content-receiver">
             <input
               type="text"
               id="searchGubunData"
@@ -40,7 +40,6 @@
               v-model="senderNo"
             />
           </div>
-
           <div class="text-center">
             <base-button type="danger" @click="apprsearch" class="mobile-btn">조회</base-button>
           </div>
@@ -122,9 +121,10 @@
                 </tr> -->
           <tbody>
             <tr class="ApprArea-header fax-table-tr">
+              <th class="fax-table-display">받은날짜</th>
               <th class="fax-table-display">제목</th>
               <th class="fax-table-display">발신자팩스번호</th>
-              <th class="fax-table-display">받은날짜</th>
+
               <th class="fax-table-display-none">확인여부</th>
               <th class="fax-table-display-none">최초확인자</th>
               <th class="fax-table-display-none">최초확인날짜</th>
@@ -136,9 +136,10 @@
               @click="receiveDetail(receive.receive_No_SEQ)"
               class="fax-table-tr"
             >
+              <td class="fax-table-display">{{ receive.receive_DATE }}</td>
               <td class="fax-table-display">{{ receive.title }}</td>
               <td class="fax-table-display">{{ receive.sender_NO }}</td>
-              <td class="fax-table-display">{{ receive.receive_DATE }}</td>
+
               <td class="fax-table-display-none">{{ receive.read_YN }}</td>
               <td class="fax-table-display-none">{{ receive.read_USER }}</td>
               <td class="fax-table-display-none">{{ receive.read_DATE }}</td>
@@ -335,6 +336,7 @@ export default {
   background-color: rgb(224, 224, 224);
   font-size: small;
   font-weight: 600;
+  min-width: 80px;
   width: 80px;
   height: 100%;
   line-height: 50px;
@@ -358,7 +360,6 @@ export default {
   }
 
   .fax-table-tr {
-    display: flex;
     height: 100%;
   }
   .fax-table th {
@@ -406,15 +407,15 @@ export default {
   th {
     padding-left: 4px;
     padding-right: 4px;
+    min-width: 3rem;
   }
   td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    /* max-width: 4rem; */
     padding-left: 4px;
     padding-right: 4px;
-    height: 2.5rem;
-    line-height: 2.5rem;
   }
 }
 </style>

@@ -78,7 +78,7 @@ public class UploadController {
         String RealPath =userKey+"_"+"1.pdf";
         String userFileName = "temp"+seq;
 
-        HashMap<String,Object> result = userService.convertPDF(files,RealPath);
+        HashMap<String,Object> result = userService.convertPDF(files, RealPath);
         if(result.get("Result").equals("ERROR")){
             return result;
         }
@@ -103,13 +103,59 @@ public class UploadController {
         int newSeq = Integer.parseInt(re2[0])+1;
         String newFileName = globalVariables.createKey(userId)+"_"+String.valueOf(newSeq)+".pdf";
         log.info(newFileName);
-
         HashMap<String,Object> result = userService.convertPDF(files,newFileName);
-
         result.put("newFileName",newFileName);
 
         return result;
     }
 
+    //팩스전송 - 스캔
+    @PostMapping("/uploadScan")
+    @ResponseBody
+    public HashMap<String,Object> uploadScan(@RequestParam("userId") String userId,
+                                               @RequestParam(value = "userKey",defaultValue = "None") String userKey) throws Exception {
 
+        Upload userForm = new Upload();
+        log.info("UploadController, uploadScan 메소드 진입");
+
+        //처음 요청 시
+        if(userKey.equals("None")){
+            userKey = globalVariables.createKey(userId);
+        }
+        userForm.setUserKey(userKey);
+
+        ++seq;
+        String RealPath =userKey+"_"+"1.pdf";
+        String userFileName = "temp"+seq;
+
+        //스캔
+        HashMap<String,Object> result = userService.getSCAN(RealPath);
+        if(result.get("Result").equals("ERROR")){
+            return result;
+        }
+        userForm.setUserFileName(userFileName);
+        userForm.setRealFileName(RealPath);
+        userService.register(userForm);
+        result.put("newFileName",RealPath);
+        result.put("userKey",userKey);
+
+        return result;
+    }
+
+    //회수 -> 수정 -> 파일첨부  스캔
+    @PostMapping("/updateUploadScan")
+    @ResponseBody
+    public HashMap<String, Object> updateUploadScan(@RequestParam("userId") String userId,
+                                                @RequestParam(value = "userKey",defaultValue = "None") String userKey) throws IOException, ParseException {
+        String fileName = userService.getFileName(userKey);
+        String[] re = fileName.split("_");
+        String[] re2 = re[1].split(".pdf");
+        int newSeq = Integer.parseInt(re2[0])+1;
+        String newFileName = globalVariables.createKey(userId)+"_"+String.valueOf(newSeq)+".pdf";
+        log.info(newFileName);
+        HashMap<String,Object> result = userService.getSCAN(newFileName);
+        result.put("newFileName",newFileName);
+
+        return result;
+    }
 }

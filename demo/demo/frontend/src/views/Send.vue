@@ -103,7 +103,7 @@
 
               <base-button class="px-2 py-2 send-button" type="secondary" @click="location.href='bnk://test'"> 스캔시작</base-button>
               <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button>
-              <a href="bnk://test">test</a>
+              <!-- <a href="bnk://test">test</a> -->
               </div>
               <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                 <a v-bind:href="`${fileUrl}`" target="_new" download=""
@@ -272,6 +272,7 @@ export default {
       fileFlag: true,
       pageCount: 0,
       grade: 0,
+      isScan: false,
     };
   },
   computed: {
@@ -362,7 +363,6 @@ export default {
         } else {
           alertify.error("업로드 실패", 1.5);
           this.newFileName = "";
-          this.fileFlag = true;
         }
       } catch (error) {
         this.$store.commit("SET_LOADING_FALSE");
@@ -456,6 +456,7 @@ export default {
         //삭제시키는척만
         this.newFileName = "";
         this.fileFlag = true;
+        this.isScan = false;
         alertify.success("파일 재등록이 가능합니다.", "");
         return;
       }
@@ -471,6 +472,7 @@ export default {
         if (data) {
           this.newFileName = "";
           this.fileFlag = true;
+          this.isScan = false;
           this.privateInfo = false;
           alertify.success("파일삭제 성공", 1.5);
         } else {
@@ -635,37 +637,41 @@ export default {
       }
       this.receiveFax = res;
     },
-    scanFinish() {
-      var objFSO;
-      var wshshell=new ActiveXObject("wscript.shell"); 
-      var path=wshshell.ExpandEnvironmentStrings("C:\BNK_IFAX");
-      // 사용자 어플리케이션 디렉토리의 test 디렉토리
-      // 환경변수를 이용해 다양하게 경로를 지정한다
-      // %UserName% : 유저 티렉토리
+    async scanFinish() { //스캔완료 후 삭제=
+      this.$store.commit("SET_LOADING_TRUE");
 
-      objFSO = new ActiveXObject("Scripting.FileSystemObject");
+      let formData = new FormData();
+      formData.append("userId", this.userId);
+      formData.append("userKey", this.userKey);
 
-      // Delete the directory.
-      // if ( objFSO.FolderExists (path) ) objFSO.DeleteFolder(path ,true);
-      // 디렉토리가 존재하면 삭제한다
+      let options = {
+        headers: { "Content-Type": "multipart/form-data" },
+      };
 
-      // var objCreatedFile, objOpenedFile;
-      // objCreatedFile = objFSO.CreateTextFile("c:\\test.txt", true);
-      // 파일생성
+      try {
+        let reqUrl = this.getterUpdate ? "/updateUploadScan" : "/uploadScan"; //수정요청인지 아닌지
 
+        let { data } = await http.post(reqUrl, formData, options);
+        this.$store.commit("SET_LOADING_FALSE");
 
-      // var ForReading = 1, ForWriting = 2, ForAppending = 8;
-      // objOpenedFile = objFSO.OpenTextFile("c:\\test.txt", ForWriting, true);
-      // 파일오픈
-
-
-      // objCreatedFile.Close();
-      // objOpenedFile.Close();
-
-
-      // Delete the files.
-      objFSO.DeleteFile("c:\\test.txt\\SCAN.tiff");
-      alertify.error("삭제완료.", 1.5);
+        if (data.Result == "OK") {
+          alertify.success("스캔 업로드 성공", 1.5);
+          if (this.userKey == "None") {
+            this.$store.commit("SET_USER_KEY", data.userKey);
+          }
+          this.newFileName = data.newFileName;
+          this.fileFlag = false;
+          this.pageCount = data.pageCount;
+          this.privateInfo = data.detection;
+          console.log("스캔 업로드 성공", data.newFileName);
+        } else {
+          alertify.error("스캔 업로드 실패", 1.5);
+          this.newFileName = "";
+        }
+      } catch (error) {
+        this.$store.commit("SET_LOADING_FALSE");
+        console.log(error);
+      }
     },
   },
   mounted() {

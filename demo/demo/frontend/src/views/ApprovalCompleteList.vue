@@ -148,12 +148,11 @@
       <table class="fax-table table-hover" style="width: 100%">
         <tbody>
           <tr class="ApprArea-header">
-            <th class="fax-table-display">제목</th>
             <th class="fax-table-display">요청일자</th>
+            <th class="fax-table-display">제목</th>
             <th class="fax-table-display">보내는사람</th>
             <th class="fax-table-display">결재자</th>
-            <th class="fax-table-display">팩스번호</th>
-
+            <th class="fax-table-display-none">팩스번호</th>
             <th class="fax-table-display-none">장수</th>
             <th class="fax-table-display">결재상태</th>
             <th class="fax-table-display-none">결재구분</th>
@@ -165,11 +164,11 @@
             :key="index"
             @click="setNoApproval(noApproval.결제고유번호)"
           >
-            <td class="fax-table-display">{{ noApproval.제목 }}</td>
             <td class="fax-table-display">{{ noApproval.요청일자 }}</td>
+            <td class="fax-table-display">{{ noApproval.제목 }}</td>
             <td class="fax-table-display">{{ noApproval.보내는사람 }}</td>
             <td class="fax-table-display">{{ noApproval.받는사람 }}</td>
-            <td class="fax-table-display">{{ noApproval.팩스번호 }}</td>
+            <td class="fax-table-display-none">{{ noApproval.팩스번호 }}</td>
             <td class="fax-table-display-none">{{ noApproval.페이지수 }}</td>
             <td class="fax-table-display">{{ noApproval.상태 }}</td>
             <td class="fax-table-display-none">{{ noApproval.결제고유번호 }}</td>
@@ -365,6 +364,7 @@ export default {
   font-size: small;
   font-weight: 600;
   width: 80px;
+  min-width: 80px;
   height: 100%;
   line-height: 50px;
   text-align: center;
