@@ -31,9 +31,12 @@
         :id="contentId"
         v-click-outside="closeMenu"
       >
-        <div class="navbar-collapse-header">
+        <div class="navbar-collapse-header mobile-header">
           <slot name="content-header" :close-menu="closeMenu"></slot>
+          <navbar-toggle-button :toggled="toggled" @click.native.stop="toggled = !toggled">
+          </navbar-toggle-button>
         </div>
+
         <slot :close-menu="closeMenu"></slot>
       </div>
     </div>
@@ -101,4 +104,14 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+@media screen and (max-width: 991px) {
+  .mobile-header {
+    display: flex !important;
+    justify-content: space-between;
+  }
+  .mobile-header >>> .navbar-toggler {
+    color: gainsboro;
+  }
+}
+</style>

@@ -3,7 +3,7 @@
     <div class="main-container">
       <div class="send-title display-4 mb-4 font-weight-800 text-default">
         <!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
-        발신팩스함
+        발신팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
       </div>
 
       <div class="fax-input">
@@ -58,19 +58,15 @@
           </div>
         </div>
         <div class="fax-input-row">
-        <div class="fax-input-box">작성자</div>
-        <div class="fax-input-content">
-          <select v-model="senderId" class="fax-table-input" style="height: 30px">
-            <option value="All" selected>전체</option>
-            <option
-                    v-for="(item, index) in deptUsers"
-                    :key="index"
-                    :value="item.USER_ID"
-                  >
-                    {{ item.USER_NAME }}
-            </option>
-          </select>
-        </div>
+          <div class="fax-input-box">작성자</div>
+          <div class="fax-input-content">
+            <select v-model="senderId" class="fax-table-input" style="height: 30px">
+              <option value="All" selected>전체</option>
+              <option v-for="(item, index) in deptUsers" :key="index" :value="item.USER_ID">
+                {{ item.USER_NAME }}
+              </option>
+            </select>
+          </div>
           <div class="text-center">
             <base-button type="danger" class="mobile-btn" @click="getSendList">조회</base-button>
           </div>
@@ -155,23 +151,23 @@
 
       <table class="fax-table table-hover" style="width: 100%">
         <tr class="ApprArea-header">
-          <th class="fax-table-display">제목</th>
           <th class="fax-table-display">요청일자</th>
+          <th class="fax-table-display">제목</th>
           <th class="fax-table-display">작성자</th>
           <th class="fax-table-display-none">장수</th>
-          <th class="fax-table-display">결재자</th>
+          <th class="fax-table-display-none">결재자</th>
           <th class="fax-table-display">결재여부</th>
-          <th class="fax-table-display">결과</th>
+          <th class="fax-table-display-none">결과</th>
           <th class="fax-table-display-none">대기/실패/성공/전체</th>
         </tr>
         <tbody>
           <tr v-for="(send, index) in sendList" :key="index" @click="getSendDetail(send.발송번호)">
-            <td class="fax-table-display">{{ send.제목 }}</td>
             <td class="fax-table-display">{{ send.등록일자 }}</td>
+            <td class="fax-table-display">{{ send.제목 }}</td>
             <td class="fax-table-display">{{ send.발송자 }}</td>
             <td class="fax-table-display-none">{{ send.페이지수 }}</td>
-            <td class="fax-table-display">{{ send.결재자이름 }}</td>
-            <td class="fax-table-display">{{ send.결재상태 }}</td>
+            <td class="fax-table-display-none">{{ send.결재자이름 }}</td>
+            <td class="fax-table-display-none">{{ send.결재상태 }}</td>
             <td class="fax-table-display">{{ send.상태 }}</td>
             <td class="fax-table-display-none">
               {{ send.대기 }} / {{ send.실패 }} / {{ send.성공 }} / {{ send.전체 }}
@@ -338,7 +334,8 @@ export default {
         alertify.error("상세 조회가 실패했습니다.", 1.5);
       }
     },
-    async getDeptUsers() { //부서 내 작성자 가져오기
+    async getDeptUsers() {
+      //부서 내 작성자 가져오기
       this.modal = true;
       try {
         let response = await http.post("/getDeptUsers", {
@@ -386,7 +383,9 @@ export default {
   visibility: visible;
 }
 .fax-table-input {
-  /* width: 10rem; */
+  font-size: small;
+  max-width: 6rem;
+  width: 6rem;
 }
 
 .fax-form-input {
@@ -411,6 +410,7 @@ export default {
   font-size: small;
   font-weight: 600;
   width: 80px;
+  min-width: 80px;
   height: 100%;
   line-height: 50px;
   text-align: center;
@@ -486,7 +486,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 5rem;
+    max-width: 4rem;
     padding-left: 4px;
     padding-right: 4px;
   }

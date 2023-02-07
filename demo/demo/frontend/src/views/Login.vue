@@ -149,7 +149,7 @@ export default {
     /* width: 100%; */
     /* margin-left: 0px; */
 
-    margin-top: 8rem;
+    /* margin-top: 8rem; */
   }
   .login-card {
     /* width: 40%; */

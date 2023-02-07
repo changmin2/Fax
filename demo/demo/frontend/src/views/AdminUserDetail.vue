@@ -3,33 +3,33 @@
     <div class="send-title display-4 mb-4 font-weight-800 text-default">사용자 정보 관리</div>
     <div class="row">
       <div class="col-lg-5"> -->
-        <card type="secondary" body-classes="px-lg-4 py-lg-4" class="user-detail-card border-0">
-          <table style="width: 100%">
-            <colgroup>
-              <col class="col-30" />
-              <col class="col-70" />
-            </colgroup>
-            <tr>
-              <th class="pb-3">이름</th>
-              <td>
-                <base-input
-                  v-model="userDetail.USER_NAME"
-                  style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
-                >
-                </base-input>
-              </td>
-            </tr>
-            <tr>
-              <th class="pb-3">아이디</th>
-              <td>
-                <base-input
-                  v-model="userDetail.USER_ID"
-                  style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
-                ></base-input>
-              </td>
-            </tr>
+  <card type="secondary" body-classes="px-lg-4 py-lg-4" class="user-detail-card border-0">
+    <table style="width: 100%">
+      <colgroup>
+        <col class="col-30" />
+        <col class="col-70" />
+      </colgroup>
+      <tr>
+        <th class="pb-3">이름</th>
+        <td>
+          <base-input
+            v-model="userDetail.USER_NAME"
+            style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
+          >
+          </base-input>
+        </td>
+      </tr>
+      <tr>
+        <th class="pb-3">아이디</th>
+        <td>
+          <base-input
+            v-model="userDetail.USER_ID"
+            style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
+          ></base-input>
+        </td>
+      </tr>
 
-            <!-- <tr>
+      <!-- <tr>
               <th class="pb-3">부서</th>
               <td>
                 <base-input
@@ -39,78 +39,92 @@
                 </base-input>
               </td>
             </tr> -->
-            <tr>
-              <th class="pb-3">직급</th>
-              <td>
-                <!-- <base-input
+      <tr>
+        <th class="pb-3">직급</th>
+        <td>
+          <!-- <base-input
                   v-model="userDetail.COMM_NAME"
                   style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f"
                 >
                 </base-input> -->
-                <div>
-                  <select
-                    v-model="userDetail.GRADE_CODE" class="px-2"
-                    style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f; margin-bottom: 1rem;"
-                  >
-                    <!-- <option selected :value="userDetail.GRADE_CODE">
+          <div>
+            <select
+              v-model="userDetail.GRADE_CODE"
+              class="px-2"
+              style="
+                width: 15rem;
+                height: 46px;
+                font-size: 0.875rem;
+                color: #525f7f;
+                margin-bottom: 1rem;
+              "
+            >
+              <!-- <option selected :value="userDetail.GRADE_CODE">
                       {{ userDetail.COMM_NAME }}
                     </option> -->
-                    <option
-                      v-for="(item, index) in deptList.commInfo"
-                      :key="index"
-                      :value="item.COMM_CODE"
-                    >
-                      {{ item.COMM_NAME }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th class="pb-3">부서</th>
-              <td>
-                <div>
-                  <select
-                    v-model="userDetail.DEPT_CODE" class="px-2"
-                    style="width: 15rem; height: 46px; font-size: 0.875rem; color: #525f7f; margin-bottom: 1rem;"
-                  >
-                    <!-- <option selected :value="userDetail.DEPT_NAME">
+              <option
+                v-for="(item, index) in deptList.commInfo"
+                :key="index"
+                :value="item.COMM_CODE"
+              >
+                {{ item.COMM_NAME }}
+              </option>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="pb-3">부서</th>
+        <td>
+          <div>
+            <select
+              v-model="userDetail.DEPT_CODE"
+              class="px-2"
+              style="
+                width: 15rem;
+                height: 46px;
+                font-size: 0.875rem;
+                color: #525f7f;
+                margin-bottom: 1rem;
+              "
+            >
+              <!-- <option selected :value="userDetail.DEPT_NAME">
                       {{ userDetail.DEPT_NAME }}
                     </option> -->
-                    <option
-                      v-for="(item, index) in deptList.deptInfo"
-                      :key="index"
-                      :value="item.DEPT_CODE"
-                    >
-                      {{ item.DEPT_NAME }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-            </tr>
-            <tr v-if="userDetail.GRADE_CODE > 1">
-              <th>부재여부</th>
-              <td colspan="2" v-if="userDetail.GRADE_CODE > 1">
-                <div class="d-flex flex-row justify-content-start" style="height: 50px">
-                  <div class="align-self-center mt-1">
-                    <label class="ml-1">
-                      <input type="radio" class="ml-1" v-model="userDetail.IS_ABSENCE" value="Y" />
-                      Y</label
-                    >
-                    <label class="ml-1">
-                      <input type="radio" class="ml-3" v-model="userDetail.IS_ABSENCE" value="N" />
-                      N</label
-                    >
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </table>
-          <div class="d-flex justify-content-center mt-4">
-            <base-button type="danger" @click="setUserUpdate"  icon="fa fa-check">수정</base-button>
+              <option
+                v-for="(item, index) in deptList.deptInfo"
+                :key="index"
+                :value="item.DEPT_CODE"
+              >
+                {{ item.DEPT_NAME }}
+              </option>
+            </select>
           </div>
-        </card>
-      <!-- </div>
+        </td>
+      </tr>
+      <tr v-if="userDetail.GRADE_CODE > 1">
+        <th>부재여부</th>
+        <td colspan="2" v-if="userDetail.GRADE_CODE > 1">
+          <div class="d-flex flex-row justify-content-start" style="height: 50px">
+            <div class="align-self-center mt-1">
+              <label class="ml-1">
+                <input type="radio" class="ml-1" v-model="userDetail.IS_ABSENCE" value="Y" />
+                Y</label
+              >
+              <label class="ml-1">
+                <input type="radio" class="ml-3" v-model="userDetail.IS_ABSENCE" value="N" />
+                N</label
+              >
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div class="d-flex justify-content-center mt-4">
+      <base-button type="danger" @click="setUserUpdate" icon="fa fa-check">수정</base-button>
+    </div>
+  </card>
+  <!-- </div>
     </div>
   </div> -->
 </template>
@@ -241,11 +255,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* margin-top: 2rem; */
 }
 .main-container {
 }
-/* .user-detail-card {
-  width: 23rem;
-} */
 </style>
