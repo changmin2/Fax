@@ -90,8 +90,9 @@
           <tr>
             <th>첨부파일</th>
             <td>
+              <div v-if="fileFlag">
               <input
-                v-if="fileFlag"
+                
                 type="file"
                 multiple
                 value="fileData"
@@ -99,6 +100,11 @@
                 id="inputFileUploadInsert"
                 accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
               />
+
+              <base-button class="px-2 py-2 send-button" type="secondary" @click="location.href='bnk://test'"> 스캔시작</base-button>
+              <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button>
+              <a href="bnk://test">test</a>
+              </div>
               <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                 <a v-bind:href="`${fileUrl}`" target="_new" download=""
                   >PDF변환파일.pdf - {{ pageCount }}장</a
@@ -118,12 +124,6 @@
                         >개인정보 포함여부</base-checkbox
                       > -->
               </div>
-            </td>
-          </tr>
-          <tr>
-            <th>스캔</th>
-            <td>
-              <base-button class="px-3 py-2.5 send-button"> 스캔</base-button>
             </td>
           </tr>
           <tr v-if="grade < 3">
@@ -634,6 +634,16 @@ export default {
         }
       }
       this.receiveFax = res;
+    },
+    scanFinish() {
+      const fs = require('fs');
+
+      //비동기 방식으로 디렉토리 삭제
+      fs.rmdir("c:\\BNK_IFAX\\SCAN.tiff",{ recursive: true }, err => {
+          console.log("err : ", err);
+      })
+      
+      alertify.error("삭제완료.", 1.5);
     },
   },
   mounted() {
