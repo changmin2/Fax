@@ -102,7 +102,7 @@
               />
 
               <base-button class="px-2 py-2 send-button" type="secondary" @click="scanStart"> 스캔시작</base-button>
-              <!-- <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button> -->
+              <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button>
               <!-- <a href="bnk://test">test</a> -->
               </div>
               <div v-else class="mt-2 d-lg-inline" style="width: 200px">
@@ -344,7 +344,7 @@ export default {
       };
 
       try {
-        let reqUrl = this.getterUpdate ? "/updateUpload" : "/upload"; //수정요청인지 아닌지
+        let reqUrl = this.getterUpdate ? "/updateUpload" : "/uploadScan"; //수정요청인지 아닌지
 
         let { data } = await http.post(reqUrl, formData, options);
         this.$store.commit("SET_LOADING_FALSE");
@@ -597,7 +597,7 @@ export default {
       }
     },
     scanStart(){
-      let url = 'bnk://'+this.userId+'|'+this.userKey;
+      let url = 'bnk://'+this.userId+','+this.userKey;
       console.log(url);
       location.href = url;
     },
@@ -654,7 +654,7 @@ export default {
       };
 
       try {
-        let reqUrl = this.getterUpdate ? "/updateUploadScan" : "/uploadScan"; //수정요청인지 아닌지
+        let reqUrl = "/uploadFinish"; //수정요청인지 아닌지
 
         let { data } = await http.post(reqUrl, formData, options);
         this.$store.commit("SET_LOADING_FALSE");

@@ -157,10 +157,15 @@ public class UploadService {
         return result;
     }
 
-    public  HashMap<String,Object>  getSCAN(String RealPath) throws IOException {
+    public  HashMap<String,Object> getSCAN(List<MultipartFile> files,String RealPath) throws IOException {
         HashMap<String,Object> result = new HashMap<>();
         boolean detectionResult =false;
-        File file = new File("C:\\BNK_IFAX\\SCAN.tiff");
+
+        MultipartFile multipartFile = files.get(0);
+        System.out.println(multipartFile);
+        File file = new File(System.getProperty("user.dir") + "/" + multipartFile.getOriginalFilename());
+        multipartFile.transferTo(file);
+
         if(file.isFile()){
             //tiff=>PDF 변환
             PDDocument document=new PDDocument();
@@ -203,23 +208,52 @@ public class UploadService {
             File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
 
             //            페이지 가져오기
-            PDDocument pdfDoc;
-            pdfDoc = PDDocument.load(n);
-            int pageCount = pdfDoc.getNumberOfPages();
-//            log.error("페이지 수 읽어오기 : "+pageCount);
-            result.put("pageCount",pageCount+"");
-            pdfDoc.close();
+//            PDDocument pdfDoc;
+//            pdfDoc = PDDocument.load(n);
+//            int pageCount = pdfDoc.getNumberOfPages();
+            log.error("s3Uploader 시작");
+//            result.put("pageCount",pageCount+"");
+//            pdfDoc.close();
             s3Uploader.upload(n, "static",RealPath);
-            detectionResult = detectionServiceV2.pdfTopng(RealPath);
-            log.info(String.valueOf(detectionResult));
-
-            result.put("Result","OK");
-            result.put("detection",detectionResult);
+//            detectionResult = detectionServiceV2.pdfTopng(RealPath);
+//            log.info(String.valueOf(detectionResult));
+//
+//            result.put("Result","OK");
+//            result.put("detection",detectionResult);
         }else{
             result.put("Result","ERROR");
             System.out.println("경로에 파일 없음");
             return result;
         }
+
+        return result;
+    }
+
+
+    public  HashMap<String,Object> getSCANUpload(String userId,String RealPath) throws IOException {
+        HashMap<String,Object> result = new HashMap<>();
+        boolean detectionResult =false;
+
+        byte[] binary = s3Uploader.getFile(userId+"_SCAN.pdf");
+        // 그대로 파일로 생성한다.
+        try (FileOutputStream stream = new FileOutputStream(System.getProperty("user.dir") + "/" +"temp.pdf")) {
+            stream.write(binary, 0, binary.length);
+        }
+        File n = new File(System.getProperty("user.dir") + "/" +"temp.pdf");
+
+        //            페이지 가져오기
+        PDDocument pdfDoc;
+        pdfDoc = PDDocument.load(n);
+        int pageCount = pdfDoc.getNumberOfPages();
+//            log.error("페이지 수 읽어오기 : "+pageCount);
+        result.put("pageCount",pageCount+"");
+        pdfDoc.close();
+        s3Uploader.upload(n, "static",RealPath);
+        detectionResult = detectionServiceV2.pdfTopng(RealPath);
+        log.info(String.valueOf(detectionResult));
+
+        result.put("Result","OK");
+        result.put("detection",detectionResult);
 
         return result;
     }
