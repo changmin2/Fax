@@ -129,6 +129,34 @@ public class UploadService {
         return result;
     }
 
+
+    public  HashMap<String,Object>  notConvertPDF(List<MultipartFile> files,String RealPath) throws IOException, ParseException {
+        log.info("converPDF진입");
+        HashMap<String,Object> result = new HashMap<>();
+        boolean detectionResult =false;
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile multipartFile = files.get(i);
+            System.out.println(multipartFile);
+            File convFile = new File(System.getProperty("user.dir") + "/" +multipartFile.getOriginalFilename());
+            multipartFile.transferTo(convFile);
+
+//            페이지 가져오기
+            PDDocument pdfDoc;
+            pdfDoc = PDDocument.load(convFile);
+
+            int pageCount = pdfDoc.getNumberOfPages();
+//            log.error("페이지 수 읽어오기 : "+pageCount);
+            result.put("pageCount",pageCount+"");
+            pdfDoc.close();
+            s3Uploader.upload(convFile, "static",RealPath);
+            detectionResult = detectionServiceV2.pdfTopng(RealPath);
+            log.info(String.valueOf(detectionResult));
+        }
+        result.put("Result","OK");
+        result.put("detection",detectionResult);
+        return result;
+    }
+
     public  HashMap<String,Object>  getSCAN(String RealPath) throws IOException {
         HashMap<String,Object> result = new HashMap<>();
         boolean detectionResult =false;

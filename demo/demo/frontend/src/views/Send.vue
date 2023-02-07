@@ -101,8 +101,8 @@
                 accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
               />
 
-              <base-button class="px-2 py-2 send-button" type="secondary" @click="location.href='bnk://test'"> 스캔시작</base-button>
-              <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button>
+              <base-button class="px-2 py-2 send-button" type="secondary" @click="scanStart"> 스캔시작</base-button>
+              <!-- <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button> -->
               <!-- <a href="bnk://test">test</a> -->
               </div>
               <div v-else class="mt-2 d-lg-inline" style="width: 200px">
@@ -595,6 +595,11 @@ export default {
       } else {
         alertify.error("수신처에 추가할<br>주소록을 선택해주세요.", 1.5);
       }
+    },
+    scanStart(){
+      let url = 'bnk://'+this.userId+'|'+this.userKey;
+      console.log(url);
+      location.href = url;
     },
     // 주소록 가져오기
     async callAddress() {

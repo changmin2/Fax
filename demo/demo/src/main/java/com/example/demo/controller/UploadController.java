@@ -39,36 +39,10 @@ public class UploadController {
     //팩스 ID, pass, 경로 전역변수
     private final GlobalVariables globalVariables;
     private final UploadService userService;
-    private final DetectionService detectionService;
 
     private  int seq =0;
     // 유저아이디 , 키, 파일 -> 키 없으면 최초 (키 생성) 리턴 -> 다음부턴 키 받고 오게 유저아이디/시분초
 
-
-//    @PostMapping("/upload")
-//    @ResponseBody
-//    public HashMap<String,Object> uploadSingle(@RequestParam("userId") String userId,
-//                                               @RequestParam(value = "userKey",defaultValue = "None") String userKey,
-//                                               @RequestParam("files") List<MultipartFile> files) throws Exception {
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        String url = "http://192.168.0.118:8080/api/upload";
-//
-//        // parameter 세팅
-//        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-//        map.add("userId", userId);
-//        map.add("userKey",userKey);
-//        for (MultipartFile file : files) {
-//            map.add("files",file);
-//        }
-//        HttpEntity<MultiValueMap<String, Object>> requestEntity
-//                = new HttpEntity<>(map, headers);
-//        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(url, requestEntity, String.class);
-//        log.info(response.getBody());
-//        return null;
-//    }
     @PostMapping("/upload")
     @ResponseBody
     public HashMap<String,Object> uploadSingle(@RequestParam("userId") String userId,
@@ -89,6 +63,7 @@ public class UploadController {
         String userFileName = "temp"+seq;
 
         HashMap<String,Object> result = userService.convertPDF(files, RealPath);
+//        HashMap<String,Object> result = userService.notConvertPDF(files, RealPath);
         if(result.get("Result").equals("ERROR")){
             return result;
         }
