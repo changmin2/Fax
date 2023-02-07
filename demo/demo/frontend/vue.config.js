@@ -8,7 +8,7 @@ module.exports = {
         proxy: {
             '/api': {
                 // '/api' 로 들어오면 포트 8080(스프링 서버)로 보낸다
-                target: 'https://69a7-175-215-98-68.jp.ngrok.io',
+                target: 'http://158.247.194.215:8080',
                 changeOrigin: true, // cross origin 허용
                 disableHostCheck: true
             }

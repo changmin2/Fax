@@ -44,10 +44,10 @@ public class DetectionServiceV2 {
             String imgFileName = resultImgPath + "/" + i + ".png";
 
             //DPI 설정
-            BufferedImage bim = pdfRenderer.renderImageWithDPI(i, 300, ImageType.RGB);
+            BufferedImage bim = pdfRenderer.renderImageWithDPI(i, 200, ImageType.BINARY);
 
             // 이미지로 만든다.
-            ImageIOUtil.writeImage(bim, imgFileName , 300);
+            ImageIOUtil.writeImage(bim, imgFileName , 200);
 
         }
         pdfDoc.close(); //모두 사용한 PDF 문서는 닫는다.
