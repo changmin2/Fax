@@ -38,6 +38,7 @@
               name="searchGubunData"
               class="fax-form-input fax-form-input-receiver"
               v-model="senderNo"
+              placeholder="이름 또는 팩스번호"
             />
           </div>
           <div class="text-center">
@@ -385,6 +386,7 @@ export default {
   }
 
   .fax-input-box {
+    line-height: 45px;
   }
   .fax-input-content {
     display: flex;
@@ -413,7 +415,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    /* max-width: 4rem; */
+    max-width: 6rem;
     padding-left: 4px;
     padding-right: 4px;
   }

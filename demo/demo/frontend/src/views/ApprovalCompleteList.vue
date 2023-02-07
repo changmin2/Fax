@@ -38,6 +38,7 @@
               name="searchGubunData"
               class="fax-form-input fax-form-input-receiver"
               v-model="senderNo"
+              placeholder="이름 또는 팩스번호"
             />
           </div>
         </div>
@@ -148,7 +149,7 @@
       <table class="fax-table table-hover" style="width: 100%">
         <tbody>
           <tr class="ApprArea-header">
-            <th class="fax-table-display">요청일자</th>
+            <th class="fax-table-display th-date">요청일자</th>
             <th class="fax-table-display">제목</th>
             <th class="fax-table-display">보내는사람</th>
             <th class="fax-table-display">결재자</th>
@@ -164,7 +165,7 @@
             :key="index"
             @click="setNoApproval(noApproval.결제고유번호)"
           >
-            <td class="fax-table-display">{{ noApproval.요청일자 }}</td>
+            <td class="fax-table-display th-date">{{ noApproval.요청일자 }}</td>
             <td class="fax-table-display">{{ noApproval.제목 }}</td>
             <td class="fax-table-display">{{ noApproval.보내는사람 }}</td>
             <td class="fax-table-display">{{ noApproval.받는사람 }}</td>
@@ -376,7 +377,10 @@ export default {
   /* width: 100%; */
   margin: 0 auto;
 }
-
+.fax-table-input {
+  /* width: 10rem; */
+  font-size: small;
+}
 @media screen and (max-width: 991px) {
   section {
     padding: 0px;
@@ -394,12 +398,16 @@ export default {
     height: inherit;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    width: 100%;
+    /* width: 100%; */
+    width: 20px;
   }
 
   .fax-input {
     display: flex;
     flex-direction: column;
+  }
+  .fax-input-box {
+    line-height: 40px;
   }
   .fax-input-mobile {
     display: none;
@@ -421,9 +429,7 @@ export default {
     /* width:inherit; */
     /* justify-content: right; */
   }
-  .fax-table-input {
-    /* width: 10rem; */
-  }
+
   .mobile-btn {
     padding: 5px 20px 5px 20px;
   }
@@ -441,6 +447,9 @@ export default {
     max-width: 3.8rem;
     padding-left: 4px;
     padding-right: 4px;
+  }
+  .th-date {
+    max-width: 30px !important;
   }
 }
 </style>

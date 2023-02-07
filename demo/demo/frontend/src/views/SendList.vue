@@ -151,7 +151,7 @@
 
       <table class="fax-table table-hover" style="width: 100%">
         <tr class="ApprArea-header">
-          <th class="fax-table-display">요청일자</th>
+          <th class="fax-table-display th-date">요청일자</th>
           <th class="fax-table-display">제목</th>
           <th class="fax-table-display">작성자</th>
           <th class="fax-table-display-none">장수</th>
@@ -385,7 +385,7 @@ export default {
 .fax-table-input {
   font-size: small;
   max-width: 6rem;
-  width: 6rem;
+  width: 7rem;
 }
 
 .fax-form-input {
@@ -459,6 +459,7 @@ export default {
   }
 
   .fax-input-box {
+    line-height: 40px;
   }
   .fax-input-content {
     display: flex;

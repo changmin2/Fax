@@ -91,19 +91,30 @@
             <th>첨부파일</th>
             <td>
               <div v-if="fileFlag">
-              <input
-                
-                type="file"
-                multiple
-                value="fileData"
-                @change="changeFile"
-                id="inputFileUploadInsert"
-                accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
-              />
+                <input
+                  type="file"
+                  multiple
+                  value="fileData"
+                  @change="changeFile"
+                  id="inputFileUploadInsert"
+                  accept=".hwp, .hwpml, .doc, .rtf, .xls, .ppt, .pdf, .txt, .docx, .xlsx, .pptx, .tif, .htm, .html, .jpg, .gif, .png , .bmp, .gul"
+                />
 
-              <base-button class="px-2 py-2 send-button" type="secondary" @click="location.href='bnk://test'"> 스캔시작</base-button>
-              <base-button class="px-2 py-2 send-button" type="secondary" @click="scanFinish"> 스캔완료</base-button>
-              <!-- <a href="bnk://test">test</a> -->
+                <button
+                  class="px-2 py-2 scan-button scan-button-mobile"
+                  type="secondary"
+                  @click="scanStart"
+                >
+                  스캔시작
+                </button>
+                <button
+                  class="px-2 py-2 scan-button scan-button-mobile"
+                  type="secondary"
+                  @click="scanFinish"
+                >
+                  스캔완료
+                </button>
+                <!-- <a href="bnk://test">test</a> -->
               </div>
               <div v-else class="mt-2 d-lg-inline" style="width: 200px">
                 <a v-bind:href="`${fileUrl}`" target="_new" download=""
@@ -344,7 +355,7 @@ export default {
       };
 
       try {
-        let reqUrl = this.getterUpdate ? "/updateUpload" : "/upload"; //수정요청인지 아닌지
+        let reqUrl = this.getterUpdate ? "/updateUpload" : "/uploadScan"; //수정요청인지 아닌지
 
         let { data } = await http.post(reqUrl, formData, options);
         this.$store.commit("SET_LOADING_FALSE");
@@ -596,6 +607,11 @@ export default {
         alertify.error("수신처에 추가할<br>주소록을 선택해주세요.", 1.5);
       }
     },
+    scanStart() {
+      let url = "bnk://" + this.userId + "," + this.userKey;
+      console.log(url);
+      location.href = url;
+    },
     // 주소록 가져오기
     async callAddress() {
       this.$store.commit("SET_LOADING_TRUE");
@@ -637,7 +653,8 @@ export default {
       }
       this.receiveFax = res;
     },
-    async scanFinish() { //스캔완료 후 삭제=
+    async scanFinish() {
+      //스캔완료 후 삭제=
       this.$store.commit("SET_LOADING_TRUE");
 
       let formData = new FormData();
@@ -649,7 +666,7 @@ export default {
       };
 
       try {
-        let reqUrl = this.getterUpdate ? "/updateUploadScan" : "/uploadScan"; //수정요청인지 아닌지
+        let reqUrl = "/uploadFinish"; //수정요청인지 아닌지
 
         let { data } = await http.post(reqUrl, formData, options);
         this.$store.commit("SET_LOADING_FALSE");
@@ -823,6 +840,12 @@ input[type="checkbox"] {
 .send-receiver-input-group-1 {
   display: flex;
 }
+.scan-button {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  margin: 2px;
+  padding: 10px;
+}
 
 @media screen and (max-width: 991px) {
   .send-container {
@@ -898,7 +921,9 @@ input[type="checkbox"] {
   td {
     height: inherit;
   }
-
+  .scan-button-mobile {
+    display: none;
+  }
   /* .input-group-alternative >>> input {
     width: 100%;
     max-width: 20vw;
