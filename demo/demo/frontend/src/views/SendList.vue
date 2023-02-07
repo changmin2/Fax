@@ -385,7 +385,7 @@ export default {
 .fax-table-input {
   font-size: small;
   max-width: 6rem;
-  width: 6rem;
+  width: 7rem;
 }
 
 .fax-form-input {

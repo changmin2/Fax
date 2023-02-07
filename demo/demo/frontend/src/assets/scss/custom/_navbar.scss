@@ -1,4 +1,6 @@
 .navbar-nav {
+  text-align: center;
+
   .nav-link {
     font-size: $navbar-nav-link-font-size;
     font-family: $navbar-nav-link-font-family;
@@ -251,8 +253,8 @@
     opacity: 0;
 
     .navbar-toggler {
-      width: 20px;
-      height: 20px;
+      // width: 20px;
+      // height: 20px;
       position: relative;
       cursor: pointer;
       display: inline-block;
@@ -267,6 +269,7 @@
         // opacity: 1;
         // background: #283448;
         background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-light-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        // margin-right: 5rem;
       }
 
       :nth-child(1) {

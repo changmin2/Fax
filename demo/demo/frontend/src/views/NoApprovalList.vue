@@ -38,6 +38,7 @@
               name="searchGubunData"
               class="fax-form-input fax-form-input-receiver"
               v-model="senderNo"
+              placeholder="이름 또는 팩스번호"
             />
           </div>
           <div class="text-center">

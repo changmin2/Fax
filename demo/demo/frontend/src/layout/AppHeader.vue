@@ -16,7 +16,7 @@
       <div class="row" slot="content-header">
         <div class="col-6 collapse-brand">
           <a href="/home">
-            <img src="img/brand/logo3.png" />
+            <img src="img/brand/logo6.png" />
           </a>
         </div>
       </div>
@@ -158,7 +158,7 @@
       <div class="row" slot="content-header">
         <div class="col-6 collapse-brand">
           <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
-            <img src="img/brand/logo3.png" />
+            <img src="img/brand/logo6.png" />
           </a>
         </div>
       </div>

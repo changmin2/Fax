@@ -56,33 +56,33 @@
         <tr>
           <th>아이디</th>
           <td>
-            <base-input v-model="USER_ID"> </base-input>
+            <base-input v-model="USER_ID" readonly> </base-input>
           </td>
         </tr>
         <tr>
           <th>이름</th>
           <td>
-            <base-input v-model="USER_NAME"></base-input>
+            <base-input v-model="USER_NAME" readonly></base-input>
           </td>
         </tr>
 
         <tr>
           <th>부서</th>
           <td>
-            <base-input v-model="DEPT_NAME"> </base-input>
+            <base-input v-model="DEPT_NAME" readonly> </base-input>
           </td>
         </tr>
         <tr>
           <th>직급</th>
           <td>
-            <base-input v-model="COMM_NAME"> </base-input>
+            <base-input v-model="COMM_NAME" readonly> </base-input>
           </td>
         </tr>
 
         <tr>
           <th>팩스번호</th>
           <td>
-            <base-input v-model="FAX_NO"> </base-input>
+            <base-input v-model="FAX_NO" readonly> </base-input>
           </td>
         </tr>
         <tr v-if="GRADE_CODE > 1">
