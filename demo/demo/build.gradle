@@ -36,7 +36,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'com.google.cloud:google-cloud-vision:2.0.17'
 	implementation group: 'io.grpc', name: 'grpc-netty-shaded', version: '1.43.2'
-
+	testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.36'
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 tasks.named('test') {
