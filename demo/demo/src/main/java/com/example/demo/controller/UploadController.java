@@ -90,8 +90,10 @@ public class UploadController {
     public HashMap<String,Object> uploadScan(@RequestParam("userId") String userId,
                                                @RequestParam(value = "userKey",defaultValue = "None") String userKey,
                                                 @RequestParam("files") List<MultipartFile> files) throws Exception {
+
+        userId = userId.substring(6);
         System.out.println(userId+" "+userKey+" "+files);
-        String RealPath =userId+"_"+"SCAN.pdf";
+        String RealPath = userId+"_"+"SCAN.pdf";
 
         //스캔
         HashMap<String,Object> result = userService.getSCAN(files,RealPath);
