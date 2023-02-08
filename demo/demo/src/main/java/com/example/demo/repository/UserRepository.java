@@ -91,4 +91,5 @@ public interface UserRepository extends JpaRepository<User, String> {
             " from TB_USER \n" +
             " where USER_ID =:userId)",nativeQuery = true)
     List<Map<String,Object>> getDeptUsers(@Param(value = "userId")String userId);
+
 }

@@ -5,6 +5,7 @@ import com.example.demo.domain.Address.Address;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AddressService;
 import com.example.demo.service.MainService;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 
 @CrossOrigin(
         // localhost:5500 과 127.0.0.1 구분
