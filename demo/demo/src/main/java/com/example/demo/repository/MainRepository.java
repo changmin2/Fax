@@ -19,7 +19,7 @@ public interface MainRepository extends JpaRepository<Send_detail, Send_detailPK
     List<Map<String,Object>> selectNotice();
 
     @Query(value = "SELECT (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.USER_NO) NAME,\n" +
-            "\t\tDATE_FORMAT(s.INSERT_DATE , '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,s.TITLE \n" +
+            "\t\tSUBSTR(s.INSERT_DATE, 1,16) AS INSERT_DATE,s.TITLE \n" +
             "FROM TB_APPROVAL t,TB_SEND s\n" +
             "WHERE t.USER_KEY = s.USER_KEY\n" +
             "AND t.STATUS = '대기' AND s.USE_GBN = 'Y'\n" +
@@ -34,7 +34,7 @@ public interface MainRepository extends JpaRepository<Send_detail, Send_detailPK
             "AND t.APPR_PERSON = :userId ",nativeQuery = true)
     int selectNotApprCount(@Param(value = "userId")String userId);
 
-    @Query(value = "SELECT DATE_FORMAT(r.RECEIVE_DATE , '%Y-%m-%d %H:%i:%s') RECEIVE_DATE,r.PAGE_CNT,r.SENDER_NO \n" +
+    @Query(value = "SELECT SUBSTR(r.RECEIVE_DATE, 1,16),r.PAGE_CNT,r.SENDER_NO \n" +
             "FROM TB_RECEIVE r\n" +
             "WHERE r.READ_YN = 'N'\n" +
             "AND r.FAX_NO = :faxNo ORDER BY r.RECEIVE_DATE\n" +
