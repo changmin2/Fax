@@ -1,6 +1,6 @@
 <template>
   <div class="modal-container">
-    <div class="display-4 mb-4 font-weight-800 text-default ml-2">받은 팩스함</div>
+    <div class="display-4 mb-4 font-weight-800 text-default ml-2">부서 팩스함</div>
     <div class="modal-container-detail">
       <div class="left-content col">
         <span class="mt-3"><i class="fa fa-caret-right" aria-hidden="true"></i> 보낸 곳</span>

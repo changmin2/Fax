@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value= "SELECT CASE WHEN u.IS_ABSENCE = 'Y' THEN u.SUBSTITUTE ELSE u.USER_ID END USER_ID,                                                 \n" +
             "       CASE WHEN u.IS_ABSENCE = 'Y' THEN (SELECT USER_NAME FROM TB_USER WHERE USER_ID = u.SUBSTITUTE)                             \n" +
             "             ELSE u.USER_NAME END USER_NAME,                                                                                      \n" +
-            "       CASE WHEN u.IS_ABSENCE = 'Y' THEN '대체자' ELSE (SELECT COMM_NAME FROM TB_COMM WHERE u.GRADE_CODE = COMM_CODE) END COMM_NAM\n" +
+            "       CASE WHEN u.IS_ABSENCE = 'Y' THEN '대무자' ELSE (SELECT COMM_NAME FROM TB_COMM WHERE u.GRADE_CODE = COMM_CODE) END COMM_NAM\n" +
             "  FROM TB_USER u                                                                                                                  \n" +
             " JOIN (SELECT u.DEPT_CODE, u.GRADE_CODE , (SELECT tc.LEVEL FROM TB_COMM tc WHERE u.GRADE_CODE = tc.COMM_CODE) AS \"LEVEL\" \n" +
             " FROM TB_USER u \n" +

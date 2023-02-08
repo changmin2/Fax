@@ -72,7 +72,7 @@ public class UserService {
         User user = userRepository.findById(userId).get();
         if(user.getGRADE_CODE()==1){
             flag = false;
-            msg = "파트너는 대체자를 지정할 수 없습니다.";
+            msg = "파트너는 대무자를 지정할 수 없습니다.";
             resultMap.put("flag",flag);
             resultMap.put("msg",msg);
             return resultMap;

@@ -35,7 +35,7 @@
               >
             </div>
             <div v-if="IS_ABSENCE == 'Y'" class="ml-3">
-              <span class="mt-1 ml-3">대체자</span>
+              <span class="mt-1 ml-3">대무자</span>
               <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
                 <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
                   {{ item.name }}
@@ -99,7 +99,7 @@
               >
             </div>
             <div v-if="IS_ABSENCE == 'Y'" class="ml-3 substitute">
-              <span class="mt-1 ml-3">대체자</span>
+              <span class="mt-1 ml-3">대무자</span>
               <select v-model="SUBSTITUTE" class="ml-3 flex-fill">
                 <option v-for="(item, index) in subUsers" :key="index" :value="item.id">
                   {{ item.name }}
