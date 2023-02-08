@@ -19,7 +19,7 @@ public interface RecieveRepository extends JpaRepository<Recieve, String> {
     List<Recieve> findByFaxNo(@Param(value = "faxNo") String faxNo);
 
     @Query(value = "select  d.FAX_NO,d.FILE_DATA,d.PAGE_CNT,d.READ_DATE,d.READ_USER,d.READ_YN," +
-            "DATE_FORMAT(d.RECEIVE_DATE, '%Y-%m-%d %h:%m') RECEIVE_DATE," +
+            "SUBSTR(d.RECEIVE_DATE,1,16) RECEIVE_DATE," +
             "d.RECEIVE_No_SEQ,d.SENDER_NO,d.TITLE,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = d.READ_USER) read_user_name\n" +
             "  from TB_RECEIVE d\n" +
             " where d.FAX_NO =:faxNo" +
@@ -28,7 +28,7 @@ public interface RecieveRepository extends JpaRepository<Recieve, String> {
     List<Map<String,String>> findByFaxNo2(@Param(value = "faxNo") String faxNo, @Param(value = "searchFrom") String searchFrom, @Param(value = "searchTo") String searchTo);
 
     @Query(value = "select  d.FAX_NO,d.FILE_DATA,d.PAGE_CNT,d.READ_DATE,d.READ_USER,d.READ_YN," +
-            "DATE_FORMAT(d.RECEIVE_DATE, '%Y-%m-%d %h:%m') RECEIVE_DATE," +
+            "SUBSTR(d.RECEIVE_DATE,1,16) RECEIVE_DATE," +
             "d.RECEIVE_No_SEQ,d.SENDER_NO,d.TITLE,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = d.READ_USER) read_user_name\n" +
             "  from TB_RECEIVE d\n" +
             " where d.FAX_NO =:faxNo \n"  +

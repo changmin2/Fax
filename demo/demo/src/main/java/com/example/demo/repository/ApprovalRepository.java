@@ -17,9 +17,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
 
     //결재함 목록
     @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
+            "           SUBSTR(a.APPR_DATE,1,16) AS APPR_DATE,\n" +
             "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
-            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,s.PAGE_CNT \n" +
+            "           s.TITLE,s.FAX_NO,SUBSTR(s.INSERT_DATE,1,16) AS INSERT_DATE,s.PAGE_CNT \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY                       \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS = :status \n" +
@@ -32,9 +32,9 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                            @Param(value = "searchTo")String searchTo);
     //결재함 목록(전체)
     @Query(value = "select a.APPR_NO,a.STATUS,(SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "           DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
+            "           SUBSTR(a.APPR_DATE,1,16) AS APPR_DATE,\n" +
             "           (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
-            "           s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,s.PAGE_CNT \n" +
+            "           s.TITLE,s.FAX_NO,SUBSTR(s.INSERT_DATE,1,16) AS INSERT_DATE,s.PAGE_CNT \n" +
             "       from TB_APPROVAL a,TB_SEND s\n" +
             "       WHERE a.USER_KEY  = s.USER_KEY \n" +
             "         AND a.APPR_PERSON = :userId AND a.STATUS IN ('완료','반려','회수') \n" +
@@ -53,11 +53,11 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
 
     //결재함 상세
     @Query(value = "select a.APPR_NO,a.APPR_PERSON,a.USER_NO,a.STATUS,a.PRIVATE_INFO_YN,\n" +
-            "       a.USER_KEY,DATE_FORMAT(a.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE,\n" +
+            "       a.USER_KEY,SUBSTR(a.APPR_DATE,1,16) AS APPR_DATE,\n" +
             "       a.APPR_REMARK,\n" +
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "       (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.APPR_PERSON) as APPR_NAME,\n" +
-            "       s.TITLE,s.FAX_NO,DATE_FORMAT(s.INSERT_DATE, '%Y-%m-%d %H:%i:%s') as INSERT_DATE,\n" +
+            "       s.TITLE,s.FAX_NO,SUBSTR(a.INSERT_DATE,1,16) as INSERT_DATE,\n" +
             "       (SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME,s.PAGE_CNT \n" +
             "       ,s.PRIVATE_INFO_YN  \n" +
             "from TB_APPROVAL a ,TB_SEND s\n" +
@@ -67,10 +67,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
     List<Object[]> totalDetail(@Param(value = "apprNo")String apprNo);
 
     //발송대기 현황 전체
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE, 1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG    ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -94,10 +94,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                   @Param(value = "searchTo")String searchTo);
 
     //발송대기 현황 상태값있을때
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE, 1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG  ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -123,10 +123,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                @Param(value = "searchTo")String searchTo);
 
     //발송대기 현황 전체(+받는사람)
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.APPR_DATE,1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG    ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -150,10 +150,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                   @Param(value = "searchTo")String searchTo,@Param(value = "receiver")String receiver);
 
     //발송대기 현황 상태값있을때(+받는사람)
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE,1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG  ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -179,10 +179,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                @Param(value = "searchFrom")String searchFrom,
                                @Param(value = "searchTo")String searchTo,@Param(value = "receiver")String receiver);
     //발송대기 현황 상태값없을때(+보낸사람)
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE,1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG    ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -203,10 +203,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                   @Param(value = "searchTo")String searchTo,@Param(value = "senderId")String senderId);
 
     //발송대기 현황 상태값있을때(+보낸사람)
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE,1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG  ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -229,10 +229,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
                                @Param(value = "searchFrom")String searchFrom,
                                @Param(value = "searchTo")String searchTo,@Param(value = "senderId")String senderId);
     //발송대기 현황 상태값없을때(+보낸사람+받는사람)
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE,1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG    ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -253,10 +253,10 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             @Param(value = "searchTo")String searchTo,@Param(value = "senderId")String senderId,@Param(value = "receiver")String receiver);
 
     //발송대기 현황 상태값있을때(+보낸사람+받는사람)
-    @Query(value = "select a.USER_KEY ,a.STATUS ,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE  ,\n" +
+    @Query(value = "select a.USER_KEY ,a.STATUS ,SUBSTR(a.SEND_DATE,1,16) AS SEND_DATE  ,\n" +
             "              a.TITLE ,a.FAX_NO ,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              t.STATUS,t.APPR_PERSON,t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
             "              a.ERROR_MSG  ,a.PAGE_CNT, d.SUCCESS, d.FAIL, d.WAIT , d.TOTAL   \n" +
@@ -280,20 +280,20 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             @Param(value = "searchTo")String searchTo,@Param(value = "senderId")String senderId,@Param(value = "receiver")String receiver);
     //발송대기 상세 - 수신자 목록
     @Query(value = "select d.RECEIVE_NAME,d.RECEIVE_COMPANY,d.RECEIVE_FAX_NO,d.STATUS,d.STATUS_DETAIL, \n" +
-            "DATE_FORMAT(d.DONE_DATE, '%Y-%m-%d %H:%i:%s') AS DONE_DATE  from TB_SEND_D d\n" +
+            "SUBSTR(d.DONE_DATE,1,16) AS DONE_DATE  from TB_SEND_D d\n" +
             "where d.USER_KEY =:userKey ",nativeQuery = true)
     List<Object[]> detail2(@Param(value = "userKey")String userKey);
 
     //발송대기 상세
-    @Query(value = "select a.USER_KEY,a.STATUS,DATE_FORMAT(a.SEND_DATE, '%Y-%m-%d %H:%i:%s') AS SEND_DATE,\n" +
+    @Query(value = "select a.USER_KEY,a.STATUS,SUBSTR(a.SEND_DATE,1,16) AS SEND_DATE,\n" +
             "              a.RESERVE_YN,a.PRIVATE_INFO_YN,a.TITLE,\n" +
-            "              DATE_FORMAT(a.INSERT_DATE, '%Y-%m-%d %H:%i:%s') AS INSERT_DATE,\n" +
+            "              SUBSTR(a.INSERT_DATE,1,16) AS INSERT_DATE,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = a.USER_NO) as USER_NAME,\n" +
             "              t.STATUS,\n" +
             "              t.APPR_PERSON,\n" +
             "              t.APPR_REMARK,\n" +
             "              (SELECT USER_NAME FROM TB_USER WHERE USER_ID = t.APPR_PERSON) as APPR_NAME,\n" +
-            "              DATE_FORMAT(t.APPR_DATE, '%Y-%m-%d %H:%i:%s') AS APPR_DATE, a.FAX_NO" +
+            "              SUBSTR(t.APPR_DATE,1,16) AS APPR_DATE, a.FAX_NO" +
             "              ,(SELECT realFileName FROM Upload WHERE userKey = a.USER_KEY) as FILE_NAME,a.PAGE_CNT \n" +
             "              ,a.PRIVATE_INFO_YN  \n" +
             "       from TB_SEND a      \n" +
