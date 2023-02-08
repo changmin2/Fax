@@ -141,6 +141,7 @@ export default {
 
       searchFrom: "",
       searchTo: "",
+      userId: "",
       data: [],
     };
   },
@@ -150,7 +151,11 @@ export default {
     }),
   },
   created() {
+    setTimeout(() => {
+    let userInfo = this.userInfo;
+    this.userId = userInfo.userId;
     this.getMainInfo();
+    }, 0);
   },
   methods: {
     // landing 페이지 날짜 -> 현재시간 ~ 일주일 전까지
@@ -192,8 +197,10 @@ export default {
     async getMainInfo() {
       this.$store.commit("SET_LOADING_TRUE");
       try {
+        console.log('메인정보 불러오기');
+        console.log(this.userId);
         let response = await http.post("/mainInfo", {
-          userId: this.userInfo.userId,
+          userId: this.userId,
         });
 
         let { data } = response;

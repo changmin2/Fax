@@ -142,7 +142,7 @@
               <td class="fax-table-display">{{ receive.sender_NO }}</td>
 
               <td class="fax-table-display-none">{{ receive.read_YN }}</td>
-              <td class="fax-table-display-none">{{ receive.read_USER }}</td>
+              <td class="fax-table-display-none">{{ receive.read_user_name }}</td>
               <td class="fax-table-display-none">{{ receive.read_DATE }}</td>
             </tr>
           </tbody>

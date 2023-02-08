@@ -33,7 +33,7 @@ public class RecieveController {
 
     //수신 목록함 가져오기
     @RequestMapping("/recieveList")
-    public List<Recieve> recieveList(@RequestBody  Map<String, String> map) throws IOException, ParseException {
+    public List<Map<String,Object>> recieveList(@RequestBody  Map<String, String> map) throws IOException, ParseException {
         //api호출을 통해 얻은 전체 수신 목록
         List<RecieveForm> receive = receiveService.Receive(map);
         //DB에 저장되어 있지 않은 수신 목록 업데이트
