@@ -37,7 +37,7 @@ public class MainService {
 
 
         Map<String,String> map = new HashMap<>();
-        String RFax_No = userRepository.getFaxNo(userId);
+        String RFax_No = userRepository.getFaxNo(userId).replaceAll("-","");
         map.put("RFax_No", RFax_No);
         map.put("Date_Start", globalVariables.getBefore7Days());
         map.put("Date_End", globalVariables.getNowDate("yyyy-MM-dd"));
