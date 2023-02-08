@@ -197,8 +197,8 @@ public class ReceiveService {
         return recieveRepository.findByFaxNo(FaxNo);
     }
 
-    public List<Recieve> findByFaxNo2(Map<String, String> map){
-        List<Recieve> result = new ArrayList<>();
+    public List<Map<String,Object>> findByFaxNo2(Map<String, String> map){
+        List<Map<String,Object>> result = new ArrayList<>();
         String FaxNo = map.get("RFax_No");
         String searchFrom = map.get("Date_Start");
         String searchTo = map.get("Date_End");
