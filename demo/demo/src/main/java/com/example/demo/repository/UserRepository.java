@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             "ON u.DEPT_CODE = u2.DEPT_CODE                                        \n" +
             "WHERE u.IS_ABSENCE != 'Y'    \n" +
             "AND u.GRADE_CODE IN\n" +
-            "WHERE (tc.LEVEL = u2.GRADE_CODE-1 OR tc.LEVEL = u2.GRADE_CODE) AND tc.COMM_CODE != 10 AND tc.`LEVEL` != 1)\n" +
+            "WHERE (tc.LEVEL = u2.GRADE_CODE-1 OR tc.LEVEL = u2.GRADE_CODE) AND tc.COMM_CODE != 10 AND tc.LEVEL != 1)\n" +
             "AND u.USER_ID != :userId    "
             , nativeQuery = true)
     List<Object[]> getSubstituteUser(@Param(value = "userId") String userId);
