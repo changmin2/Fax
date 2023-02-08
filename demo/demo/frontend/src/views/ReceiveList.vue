@@ -134,16 +134,16 @@
             <tr
               v-for="(receive, index) in receivelist"
               :key="index"
-              @click="receiveDetail(receive.receive_No_SEQ)"
+              @click="receiveDetail(receive.RECEIVE_No_SEQ)"
               class="fax-table-tr"
             >
-              <td class="fax-table-display">{{ receive.receive_DATE }}</td>
-              <td class="fax-table-display">{{ receive.title }}</td>
-              <td class="fax-table-display">{{ receive.sender_NO }}</td>
+              <td class="fax-table-display">{{ receive.RECEIVE_DATE }}</td>
+              <td class="fax-table-display">{{ receive.TITLE }}</td>
+              <td class="fax-table-display">{{ receive.SENDER_NO }}</td>
 
-              <td class="fax-table-display-none">{{ receive.read_YN }}</td>
+              <td class="fax-table-display-none">{{ receive.READ_YN }}</td>
               <td class="fax-table-display-none">{{ receive.read_user_name }}</td>
-              <td class="fax-table-display-none">{{ receive.read_DATE }}</td>
+              <td class="fax-table-display-none">{{ receive.READ_DATE }}</td>
             </tr>
           </tbody>
         </table>
@@ -248,7 +248,7 @@ export default {
 
           //발신자 팩스번호 포맷지정
           for (let i in data) {
-            this.receivelist[i].sender_NO = this.setFormatting(data[i].sender_NO);
+            this.receivelist[i].SENDER_NO = this.setFormatting(data[i].SENDER_NO);
           }
         } else {
           console.log("전송 실패");
