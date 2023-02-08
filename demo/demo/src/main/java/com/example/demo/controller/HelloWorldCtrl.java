@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.GlobalVariables;
 import com.example.demo.service.DetectionServiceV2;
 import com.example.demo.service.SmsService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,11 @@ public class HelloWorldCtrl {
 
     private final DetectionServiceV2 detectionServiceV2;
     private final SmsService smsService;
-//
-//    @RequestMapping("/hello")
-//    public void hello(@RequestBody Map<String,String> map) throws IOException {
-//        smsService.smsSend(map);
-//    }
+    private final GlobalVariables globalVariables;
+
+    @RequestMapping("/hello")
+    public void hello() throws IOException {
+        log.info(globalVariables.getNow());
+    }
 
 }

@@ -411,15 +411,15 @@ export default {
     /* width: 105px; */
   }
   .fax-form-input-receiver {
-    /* width: 8rem; */
+    width: 8rem;
   }
   .fax-input-box {
     line-height: 45px;
   }
   .fax-input-content {
     display: flex;
-    margin-right: 10px;
-    margin-left: 20px;
+    margin-right: 5px;
+    margin-left: 15px;
 
     /* max-width: 350px; */
     /* width:inherit; */
@@ -433,6 +433,7 @@ export default {
   }
   .fax-form-input-date {
     width: 105px;
+    font-size: 12px;
   }
   th {
     padding-left: 4px;

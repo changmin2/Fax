@@ -33,6 +33,23 @@
           >
             <i class="ni ni-ui-01 d-lg-none"></i>
             <router-link
+              to="/send"
+              :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
+            >
+              팩스보내기
+            </router-link>
+          </a>
+        </li>
+        <li class="nav-item" menu-classes="dropdown-menu-xl ">
+          <a
+            slot="title"
+            class="nav-link"
+            data-toggle="dropdown"
+            role="button"
+            @click="setNavToggle"
+          >
+            <i class="ni ni-ui-01 d-lg-none"></i>
+            <router-link
               to="/send-list"
               :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
             >
@@ -55,23 +72,6 @@
               :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
             >
               받은팩스함
-            </router-link>
-          </a>
-        </li>
-        <li class="nav-item" menu-classes="dropdown-menu-xl ">
-          <a
-            slot="title"
-            class="nav-link"
-            data-toggle="dropdown"
-            role="button"
-            @click="setNavToggle"
-          >
-            <i class="ni ni-ui-01 d-lg-none"></i>
-            <router-link
-              to="/send"
-              :class="'nav-link-inner--text ml-0 font-weight-600 text-' + textColor"
-            >
-              팩스보내기
             </router-link>
           </a>
         </li>

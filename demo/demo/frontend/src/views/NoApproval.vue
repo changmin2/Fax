@@ -76,8 +76,8 @@
                     class="no-approval-textarea"
                     v-model="apprRemark"
                     @change="setRemark"
-                    cols="30"
-                    rows="5"
+                    cols="15"
+                    rows="4"
                   ></textarea>
                   <!-- <textarea
                     name="opinion"

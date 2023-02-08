@@ -110,6 +110,9 @@ public class ReceiveService {
             recieve.setREAD_YN("Y");
 
             recieve.setREAD_DATE(globalVariables.getNow());
+            log.info(globalVariables.getNow());
+            log.info(recieve.getREAD_DATE());
+            log.info("target");
         }
         result.put("receive_DATE",recieve.getRECEIVE_DATE());
         result.put("receive_No_SEQ",recieve.getRECEIVE_No_SEQ());
