@@ -2,7 +2,7 @@
   <section class="section">
     <div class="main-container">
       <div class="receive-title display-4 mb-4 font-weight-800 text-default">
-        받은팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
+        부서팩스함 - <span style="color: #d7191f; display: inline">{{ userInfo.deptName }}</span>
       </div>
 
       <!---->
