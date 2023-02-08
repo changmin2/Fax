@@ -8,7 +8,7 @@
           @click="navbarToggle1"
           class="navbar-li"
           :class="{ 'navbar-click': toggleValue1 === true }"
-          >팩스발신함</a
+          >보낸팩스함</a
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue1 === false }">
@@ -26,7 +26,7 @@
       </li>
       <li :class="{ 'navbar-click': toggleValue2 === true }">
         <a href="#" @click="navbarToggle2" :class="{ 'navbar-click': toggleValue2 === true }"
-          >팩스수신함</a
+          >받은팩스함</a
         >
         <ul class="navbar-sub">
           <li :class="{ 'li-a': toggleValue2 === false }">

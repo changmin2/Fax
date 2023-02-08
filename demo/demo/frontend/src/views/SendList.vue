@@ -440,7 +440,8 @@ export default {
     height: inherit;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    width: 100%;
+    /* width: 100%; */
+    width: 20px;
   }
 
   .fax-input {
@@ -463,8 +464,8 @@ export default {
   }
   .fax-input-content {
     display: flex;
-    margin-right: 10px;
-    margin-left: 20px;
+    margin-right: 5px;
+    margin-left: 15px;
 
     /* max-width: 350px; */
     /* width:inherit; */
@@ -478,6 +479,7 @@ export default {
   }
   .fax-form-input-date {
     width: 105px;
+    font-size: 12px;
   }
   th {
     padding-left: 4px;
