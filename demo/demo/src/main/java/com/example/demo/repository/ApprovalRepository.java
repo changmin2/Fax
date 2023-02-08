@@ -112,8 +112,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "   FROM TB_SEND_D ) D                                                    \n" +
             "   GROUP BY USER_KEY) d ON a.USER_KEY  = d.USER_KEY                     \n" +
             "    where  a.STATUS = :status    \n" +
-            "    and a.USER_NO   IN ( SELECT USER_ID     +\n" +
-            "       FROM TB_USER        +\n" +
+            "    and a.USER_NO   IN ( SELECT USER_ID    \n" +
+            "       FROM TB_USER        \n" +
             "      WHERE DEPT_CODE = (SELECT DEPT_CODE FROM TB_USER WHERE USER_ID=:userId)) AND a.USE_GBN = 'Y'                  \n" +
            "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +
             "    ORDER BY a.USER_KEY DESC",nativeQuery = true)
@@ -168,8 +168,8 @@ public interface ApprovalRepository extends JpaRepository<Approval, String> {
             "   FROM TB_SEND_D  WHERE (RECEIVE_NAME LIKE CONCAT('%',:receiver,'%') OR RECEIVE_FAX_NO LIKE CONCAT('%',:receiver,'%')) ) D      \n" +
             "   GROUP BY USER_KEY) d ON a.USER_KEY  = d.USER_KEY                     \n" +
             "    where  a.STATUS = :status    \n" +
-            "    and a.USER_NO   IN ( SELECT USER_ID     +\n" +
-            "       FROM TB_USER        +\n" +
+            "    and a.USER_NO   IN ( SELECT USER_ID     \n" +
+            "       FROM TB_USER        \n" +
             "      WHERE DEPT_CODE = (SELECT DEPT_CODE FROM TB_USER WHERE USER_ID=:userId)) AND a.USE_GBN = 'Y'                  \n" +
            "         AND STR_TO_DATE(a.INSERT_DATE, '%Y-%m-%d') BETWEEN :searchFrom AND :searchTo \n" +
             "    ORDER BY a.USER_KEY DESC",nativeQuery = true)
