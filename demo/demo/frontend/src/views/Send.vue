@@ -795,7 +795,6 @@ td {
 }
 th {
   width: 100px;
-  font-weight: normal;
 }
 td {
   vertical-align: middle;
@@ -862,7 +861,7 @@ input[type="checkbox"] {
     /* max-width: 50vw; */
   }
   .input-group-alternative >>> input {
-    font-size: 10px;
+    font-size: 12px;
     /* max-width: 50vw; */
   }
   .send-table {
