@@ -19,6 +19,7 @@ public class GlobalVariables {
     public String getNow(){
         Calendar now = Calendar.getInstance();
         now.setTime(new Date());
+        now.add(Calendar.HOUR,9);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(now.getTime());
     }
