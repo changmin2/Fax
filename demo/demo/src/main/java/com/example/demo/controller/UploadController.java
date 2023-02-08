@@ -91,7 +91,7 @@ public class UploadController {
                                                @RequestParam(value = "userKey",defaultValue = "None") String userKey,
                                                 @RequestParam("files") List<MultipartFile> files) throws Exception {
 
-        userId = userId.substring(6);
+        userId = userId.substring(7);
         System.out.println(userId+" "+userKey+" "+files);
         String RealPath = userId+"_"+"SCAN.pdf";
 
